@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "MasterViewController.h"
+#import "DetailViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,8 +18,31 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    
+    // 1.创建窗口
+    self.window = [[UIWindow alloc] init];
+    self.window.frame = [UIScreen mainScreen].bounds;
+    
+    // 2.显示窗口(成为主窗口)
+    [self.window makeKeyAndVisible];
+
+    MasterViewController *view = [[MasterViewController alloc] init];
+    UINavigationController *nav1 =  [[UINavigationController alloc] initWithRootViewController:view];
+
+    DetailViewController *view2 = [[DetailViewController alloc] init];
+    UINavigationController *nav2 =  [[UINavigationController alloc] initWithRootViewController:view2];
+
+    // 设置UISplitViewController的代理
+    UISplitViewController *split = [[UISplitViewController alloc] init];
+    
+    split.viewControllers = @[nav1,nav2];
+    
+    split.delegate = nav2.viewControllers[0];
+    
+    self.window.rootViewController = split;
     return YES;
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

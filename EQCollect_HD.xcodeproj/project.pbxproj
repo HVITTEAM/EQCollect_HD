@@ -9,11 +9,14 @@
 /* Begin PBXBuildFile section */
 		01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5B1B8EF22200C1CF21 /* main.m */; };
 		01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */; };
-		01EDAD621B8EF22200C1CF21 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD611B8EF22200C1CF21 /* ViewController.m */; };
 		01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD631B8EF22200C1CF21 /* Main.storyboard */; };
 		01EDAD671B8EF22200C1CF21 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD661B8EF22200C1CF21 /* Images.xcassets */; };
 		01EDAD6A1B8EF22200C1CF21 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD681B8EF22200C1CF21 /* LaunchScreen.xib */; };
 		01EDAD761B8EF22200C1CF21 /* EQCollect_HDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD751B8EF22200C1CF21 /* EQCollect_HDTests.m */; };
+		01EDAD9B1B8EFBF300C1CF21 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD951B8EFBF300C1CF21 /* DetailViewController.m */; };
+		01EDAD9C1B8EFBF300C1CF21 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */; };
+		01EDADA11B8EFC1F00C1CF21 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */; };
+		01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +35,19 @@
 		01EDAD5B1B8EF22200C1CF21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		01EDAD5D1B8EF22200C1CF21 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		01EDAD601B8EF22200C1CF21 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		01EDAD611B8EF22200C1CF21 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		01EDAD641B8EF22200C1CF21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		01EDAD661B8EF22200C1CF21 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		01EDAD691B8EF22200C1CF21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		01EDAD6F1B8EF22200C1CF21 /* EQCollect_HDTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EQCollect_HDTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01EDAD741B8EF22200C1CF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01EDAD751B8EF22200C1CF21 /* EQCollect_HDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EQCollect_HDTests.m; sourceTree = "<group>"; };
+		01EDAD941B8EFBF300C1CF21 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		01EDAD951B8EFBF300C1CF21 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		01EDAD961B8EFBF300C1CF21 /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		01EDAD9E1B8EFC1F00C1CF21 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,10 +89,9 @@
 		01EDAD581B8EF22200C1CF21 /* EQCollect_HD */ = {
 			isa = PBXGroup;
 			children = (
+				01EDAD891B8EFB8300C1CF21 /* Classes */,
 				01EDAD5D1B8EF22200C1CF21 /* AppDelegate.h */,
 				01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */,
-				01EDAD601B8EF22200C1CF21 /* ViewController.h */,
-				01EDAD611B8EF22200C1CF21 /* ViewController.m */,
 				01EDAD631B8EF22200C1CF21 /* Main.storyboard */,
 				01EDAD661B8EF22200C1CF21 /* Images.xcassets */,
 				01EDAD681B8EF22200C1CF21 /* LaunchScreen.xib */,
@@ -117,6 +124,76 @@
 				01EDAD741B8EF22200C1CF21 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		01EDAD891B8EFB8300C1CF21 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				01EDAD911B8EFBF300C1CF21 /* Main */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		01EDAD911B8EFBF300C1CF21 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				01EDAD921B8EFBF300C1CF21 /* Home */,
+				01EDAD9A1B8EFBF300C1CF21 /* Login */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		01EDAD921B8EFBF300C1CF21 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				01EDAD931B8EFBF300C1CF21 /* Ccontroller */,
+				01EDAD981B8EFBF300C1CF21 /* Model */,
+				01EDAD991B8EFBF300C1CF21 /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		01EDAD931B8EFBF300C1CF21 /* Ccontroller */ = {
+			isa = PBXGroup;
+			children = (
+				01EDAD941B8EFBF300C1CF21 /* DetailViewController.h */,
+				01EDAD951B8EFBF300C1CF21 /* DetailViewController.m */,
+				01EDAD961B8EFBF300C1CF21 /* MasterViewController.h */,
+				01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */,
+			);
+			path = Ccontroller;
+			sourceTree = "<group>";
+		};
+		01EDAD981B8EFBF300C1CF21 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		01EDAD991B8EFBF300C1CF21 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		01EDAD9A1B8EFBF300C1CF21 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				01EDAD9D1B8EFC0700C1CF21 /* Controller */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		01EDAD9D1B8EFC0700C1CF21 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				01EDAD9E1B8EFC1F00C1CF21 /* LoginViewController.h */,
+				01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */,
+				01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */,
 				01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */,
 				01EDAD6A1B8EF22200C1CF21 /* LaunchScreen.xib in Resources */,
 				01EDAD671B8EF22200C1CF21 /* Images.xcassets in Resources */,
@@ -219,9 +297,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01EDAD621B8EF22200C1CF21 /* ViewController.m in Sources */,
+				01EDAD9B1B8EFBF300C1CF21 /* DetailViewController.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
 				01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */,
+				01EDAD9C1B8EFBF300C1CF21 /* MasterViewController.m in Sources */,
+				01EDADA11B8EFC1F00C1CF21 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

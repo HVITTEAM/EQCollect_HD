@@ -17,6 +17,8 @@
 		01EDAD9C1B8EFBF300C1CF21 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */; };
 		01EDADA11B8EFC1F00C1CF21 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */; };
 		01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */; };
+		D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28D42E91B8FF81500E720AB /* AdminTableHead.xib */; };
+		D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */ = {isa = PBXBuildFile; fileRef = D28D42EC1B90006B00E720AB /* AdminTableHead.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,9 @@
 		01EDAD9E1B8EFC1F00C1CF21 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		D28D42E91B8FF81500E720AB /* AdminTableHead.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdminTableHead.xib; sourceTree = "<group>"; };
+		D28D42EB1B90006B00E720AB /* AdminTableHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdminTableHead.h; sourceTree = "<group>"; };
+		D28D42EC1B90006B00E720AB /* AdminTableHead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdminTableHead.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +179,9 @@
 		01EDAD991B8EFBF300C1CF21 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D28D42EB1B90006B00E720AB /* AdminTableHead.h */,
+				D28D42EC1B90006B00E720AB /* AdminTableHead.m */,
+				D28D42E91B8FF81500E720AB /* AdminTableHead.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -278,6 +286,7 @@
 			files = (
 				01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */,
 				01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */,
+				D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */,
 				01EDAD6A1B8EF22200C1CF21 /* LaunchScreen.xib in Resources */,
 				01EDAD671B8EF22200C1CF21 /* Images.xcassets in Resources */,
 			);
@@ -297,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */,
 				01EDAD9B1B8EFBF300C1CF21 /* DetailViewController.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
 				01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */,
@@ -498,6 +508,7 @@
 				01EDAD7B1B8EF22200C1CF21 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01EDAD7C1B8EF22200C1CF21 /* Build configuration list for PBXNativeTarget "EQCollect_HDTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +517,7 @@
 				01EDAD7E1B8EF22200C1CF21 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

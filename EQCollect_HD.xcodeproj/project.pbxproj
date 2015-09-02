@@ -7,6 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A09A1B9590C5003199F4 /* SurveyPointCell.m */; };
+		0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */; };
+		0177A0A11B9594C9003199F4 /* SurveyPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A09F1B9594C9003199F4 /* SurveyPointDetailViewController.m */; };
+		0177A0A21B9594C9003199F4 /* SurveyPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A0A01B9594C9003199F4 /* SurveyPointDetailViewController.xib */; };
+		0177A0AB1B9683C3003199F4 /* HMCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0A81B9683C3003199F4 /* HMCommonViewController.m */; };
+		0177A0AF1B9683F6003199F4 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0AE1B9683F6003199F4 /* SettingViewController.m */; };
+		0177A0C11B968436003199F4 /* HMCommonArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0B21B968436003199F4 /* HMCommonArrowItem.m */; };
+		0177A0C21B968436003199F4 /* HMCommonButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0B41B968436003199F4 /* HMCommonButtonItem.m */; };
+		0177A0C31B968436003199F4 /* HMCommonCenterItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0B61B968436003199F4 /* HMCommonCenterItem.m */; };
+		0177A0C41B968436003199F4 /* HMCommonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0B81B968436003199F4 /* HMCommonGroup.m */; };
+		0177A0C51B968436003199F4 /* HMCommonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0BA1B968436003199F4 /* HMCommonItem.m */; };
+		0177A0C61B968436003199F4 /* HMCommonLabelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0BC1B968436003199F4 /* HMCommonLabelItem.m */; };
+		0177A0C71B968436003199F4 /* HMCommonSwitchItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0BE1B968436003199F4 /* HMCommonSwitchItem.m */; };
+		0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0C01B968436003199F4 /* HMCommonTextfieldItem.m */; };
+		0177A0CB1B96845A003199F4 /* HMCommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0CA1B96845A003199F4 /* HMCommonCell.m */; };
+		0177A0CE1B968475003199F4 /* HMBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0CD1B968475003199F4 /* HMBadgeView.m */; };
+		0177A0D81B968496003199F4 /* UIBarButtonItem+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0D11B968496003199F4 /* UIBarButtonItem+Extension.m */; };
+		0177A0D91B968496003199F4 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0D31B968496003199F4 /* UIImage+Extension.m */; };
+		0177A0DA1B968496003199F4 /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0D51B968496003199F4 /* UINavigationBar+Awesome.m */; };
+		0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0D71B968496003199F4 /* UIView+Extension.m */; };
+		0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0E31B968A18003199F4 /* PersonCenterController.m */; };
+		0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A0E41B968A18003199F4 /* PersonCenterController.xib */; };
 		01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5B1B8EF22200C1CF21 /* main.m */; };
 		01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */; };
 		01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD631B8EF22200C1CF21 /* Main.storyboard */; };
@@ -32,6 +54,48 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0177A0991B9590C5003199F4 /* SurveyPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointCell.h; sourceTree = "<group>"; };
+		0177A09A1B9590C5003199F4 /* SurveyPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointCell.m; sourceTree = "<group>"; };
+		0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointCell.xib; sourceTree = "<group>"; };
+		0177A09E1B9594C9003199F4 /* SurveyPointDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointDetailViewController.h; sourceTree = "<group>"; };
+		0177A09F1B9594C9003199F4 /* SurveyPointDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointDetailViewController.m; sourceTree = "<group>"; };
+		0177A0A01B9594C9003199F4 /* SurveyPointDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointDetailViewController.xib; sourceTree = "<group>"; };
+		0177A0A71B9683C3003199F4 /* HMCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonViewController.h; sourceTree = "<group>"; };
+		0177A0A81B9683C3003199F4 /* HMCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonViewController.m; sourceTree = "<group>"; };
+		0177A0AD1B9683F6003199F4 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		0177A0AE1B9683F6003199F4 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		0177A0B11B968436003199F4 /* HMCommonArrowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonArrowItem.h; sourceTree = "<group>"; };
+		0177A0B21B968436003199F4 /* HMCommonArrowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonArrowItem.m; sourceTree = "<group>"; };
+		0177A0B31B968436003199F4 /* HMCommonButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonButtonItem.h; sourceTree = "<group>"; };
+		0177A0B41B968436003199F4 /* HMCommonButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonButtonItem.m; sourceTree = "<group>"; };
+		0177A0B51B968436003199F4 /* HMCommonCenterItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonCenterItem.h; sourceTree = "<group>"; };
+		0177A0B61B968436003199F4 /* HMCommonCenterItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonCenterItem.m; sourceTree = "<group>"; };
+		0177A0B71B968436003199F4 /* HMCommonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonGroup.h; sourceTree = "<group>"; };
+		0177A0B81B968436003199F4 /* HMCommonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonGroup.m; sourceTree = "<group>"; };
+		0177A0B91B968436003199F4 /* HMCommonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonItem.h; sourceTree = "<group>"; };
+		0177A0BA1B968436003199F4 /* HMCommonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonItem.m; sourceTree = "<group>"; };
+		0177A0BB1B968436003199F4 /* HMCommonLabelItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonLabelItem.h; sourceTree = "<group>"; };
+		0177A0BC1B968436003199F4 /* HMCommonLabelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonLabelItem.m; sourceTree = "<group>"; };
+		0177A0BD1B968436003199F4 /* HMCommonSwitchItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonSwitchItem.h; sourceTree = "<group>"; };
+		0177A0BE1B968436003199F4 /* HMCommonSwitchItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonSwitchItem.m; sourceTree = "<group>"; };
+		0177A0BF1B968436003199F4 /* HMCommonTextfieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonTextfieldItem.h; sourceTree = "<group>"; };
+		0177A0C01B968436003199F4 /* HMCommonTextfieldItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonTextfieldItem.m; sourceTree = "<group>"; };
+		0177A0C91B96845A003199F4 /* HMCommonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonCell.h; sourceTree = "<group>"; };
+		0177A0CA1B96845A003199F4 /* HMCommonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonCell.m; sourceTree = "<group>"; };
+		0177A0CC1B968475003199F4 /* HMBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMBadgeView.h; sourceTree = "<group>"; };
+		0177A0CD1B968475003199F4 /* HMBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMBadgeView.m; sourceTree = "<group>"; };
+		0177A0D01B968496003199F4 /* UIBarButtonItem+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Extension.h"; sourceTree = "<group>"; };
+		0177A0D11B968496003199F4 /* UIBarButtonItem+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Extension.m"; sourceTree = "<group>"; };
+		0177A0D21B968496003199F4 /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
+		0177A0D31B968496003199F4 /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
+		0177A0D41B968496003199F4 /* UINavigationBar+Awesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Awesome.h"; sourceTree = "<group>"; };
+		0177A0D51B968496003199F4 /* UINavigationBar+Awesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Awesome.m"; sourceTree = "<group>"; };
+		0177A0D61B968496003199F4 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		0177A0D71B968496003199F4 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		0177A0DC1B9684C9003199F4 /* EQCollect_HD.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EQCollect_HD.pch; sourceTree = "<group>"; };
+		0177A0E21B968A18003199F4 /* PersonCenterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonCenterController.h; sourceTree = "<group>"; };
+		0177A0E31B968A18003199F4 /* PersonCenterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCenterController.m; sourceTree = "<group>"; };
+		0177A0E41B968A18003199F4 /* PersonCenterController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonCenterController.xib; sourceTree = "<group>"; };
 		01EDAD561B8EF22200C1CF21 /* EQCollect_HD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EQCollect_HD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01EDAD5A1B8EF22200C1CF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01EDAD5B1B8EF22200C1CF21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -73,6 +137,118 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0177A0A31B968374003199F4 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				0177A0A41B968390003199F4 /* Controller */,
+				0177A0A51B968390003199F4 /* Model */,
+				0177A0A61B968390003199F4 /* View */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		0177A0A41B968390003199F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0177A0A71B9683C3003199F4 /* HMCommonViewController.h */,
+				0177A0A81B9683C3003199F4 /* HMCommonViewController.m */,
+				0177A0AD1B9683F6003199F4 /* SettingViewController.h */,
+				0177A0AE1B9683F6003199F4 /* SettingViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		0177A0A51B968390003199F4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0177A0A61B968390003199F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0177A0CC1B968475003199F4 /* HMBadgeView.h */,
+				0177A0CD1B968475003199F4 /* HMBadgeView.m */,
+				0177A0C91B96845A003199F4 /* HMCommonCell.h */,
+				0177A0CA1B96845A003199F4 /* HMCommonCell.m */,
+				0177A0B01B968436003199F4 /* Common */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0177A0B01B968436003199F4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				0177A0B11B968436003199F4 /* HMCommonArrowItem.h */,
+				0177A0B21B968436003199F4 /* HMCommonArrowItem.m */,
+				0177A0B31B968436003199F4 /* HMCommonButtonItem.h */,
+				0177A0B41B968436003199F4 /* HMCommonButtonItem.m */,
+				0177A0B51B968436003199F4 /* HMCommonCenterItem.h */,
+				0177A0B61B968436003199F4 /* HMCommonCenterItem.m */,
+				0177A0B71B968436003199F4 /* HMCommonGroup.h */,
+				0177A0B81B968436003199F4 /* HMCommonGroup.m */,
+				0177A0B91B968436003199F4 /* HMCommonItem.h */,
+				0177A0BA1B968436003199F4 /* HMCommonItem.m */,
+				0177A0BB1B968436003199F4 /* HMCommonLabelItem.h */,
+				0177A0BC1B968436003199F4 /* HMCommonLabelItem.m */,
+				0177A0BD1B968436003199F4 /* HMCommonSwitchItem.h */,
+				0177A0BE1B968436003199F4 /* HMCommonSwitchItem.m */,
+				0177A0BF1B968436003199F4 /* HMCommonTextfieldItem.h */,
+				0177A0C01B968436003199F4 /* HMCommonTextfieldItem.m */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		0177A0CF1B968496003199F4 /* Cateogrys */ = {
+			isa = PBXGroup;
+			children = (
+				0177A0D01B968496003199F4 /* UIBarButtonItem+Extension.h */,
+				0177A0D11B968496003199F4 /* UIBarButtonItem+Extension.m */,
+				0177A0D21B968496003199F4 /* UIImage+Extension.h */,
+				0177A0D31B968496003199F4 /* UIImage+Extension.m */,
+				0177A0D41B968496003199F4 /* UINavigationBar+Awesome.h */,
+				0177A0D51B968496003199F4 /* UINavigationBar+Awesome.m */,
+				0177A0D61B968496003199F4 /* UIView+Extension.h */,
+				0177A0D71B968496003199F4 /* UIView+Extension.m */,
+			);
+			path = Cateogrys;
+			sourceTree = "<group>";
+		};
+		0177A0DE1B9689FA003199F4 /* PersonCenter */ = {
+			isa = PBXGroup;
+			children = (
+				0177A0DF1B9689FA003199F4 /* Controller */,
+				0177A0E01B9689FA003199F4 /* Model */,
+				0177A0E11B9689FA003199F4 /* View */,
+			);
+			path = PersonCenter;
+			sourceTree = "<group>";
+		};
+		0177A0DF1B9689FA003199F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0177A0E21B968A18003199F4 /* PersonCenterController.h */,
+				0177A0E31B968A18003199F4 /* PersonCenterController.m */,
+				0177A0E41B968A18003199F4 /* PersonCenterController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		0177A0E01B9689FA003199F4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0177A0E11B9689FA003199F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		01EDAD4D1B8EF22200C1CF21 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +286,7 @@
 			children = (
 				01EDAD5A1B8EF22200C1CF21 /* Info.plist */,
 				01EDAD5B1B8EF22200C1CF21 /* main.m */,
+				0177A0DC1B9684C9003199F4 /* EQCollect_HD.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -134,6 +311,7 @@
 		01EDAD891B8EFB8300C1CF21 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0177A0CF1B968496003199F4 /* Cateogrys */,
 				01EDAD911B8EFBF300C1CF21 /* Main */,
 			);
 			path = Classes;
@@ -142,6 +320,8 @@
 		01EDAD911B8EFBF300C1CF21 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				0177A0DE1B9689FA003199F4 /* PersonCenter */,
+				0177A0A31B968374003199F4 /* Setting */,
 				01EDAD921B8EFBF300C1CF21 /* Home */,
 				01EDAD9A1B8EFBF300C1CF21 /* Login */,
 			);
@@ -165,6 +345,9 @@
 				01EDAD951B8EFBF300C1CF21 /* DetailViewController.m */,
 				01EDAD961B8EFBF300C1CF21 /* MasterViewController.h */,
 				01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */,
+				0177A09E1B9594C9003199F4 /* SurveyPointDetailViewController.h */,
+				0177A09F1B9594C9003199F4 /* SurveyPointDetailViewController.m */,
+				0177A0A01B9594C9003199F4 /* SurveyPointDetailViewController.xib */,
 			);
 			path = Ccontroller;
 			sourceTree = "<group>";
@@ -182,6 +365,9 @@
 				D28D42EB1B90006B00E720AB /* AdminTableHead.h */,
 				D28D42EC1B90006B00E720AB /* AdminTableHead.m */,
 				D28D42E91B8FF81500E720AB /* AdminTableHead.xib */,
+				0177A0991B9590C5003199F4 /* SurveyPointCell.h */,
+				0177A09A1B9590C5003199F4 /* SurveyPointCell.m */,
+				0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -286,9 +472,12 @@
 			files = (
 				01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */,
 				01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */,
+				0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */,
+				0177A0A21B9594C9003199F4 /* SurveyPointDetailViewController.xib in Resources */,
 				D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */,
 				01EDAD6A1B8EF22200C1CF21 /* LaunchScreen.xib in Resources */,
 				01EDAD671B8EF22200C1CF21 /* Images.xcassets in Resources */,
+				0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,11 +495,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */,
+				0177A0C21B968436003199F4 /* HMCommonButtonItem.m in Sources */,
+				0177A0C41B968436003199F4 /* HMCommonGroup.m in Sources */,
+				0177A0CE1B968475003199F4 /* HMBadgeView.m in Sources */,
 				D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */,
+				0177A0C31B968436003199F4 /* HMCommonCenterItem.m in Sources */,
+				0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */,
+				0177A0C51B968436003199F4 /* HMCommonItem.m in Sources */,
 				01EDAD9B1B8EFBF300C1CF21 /* DetailViewController.m in Sources */,
+				0177A0A11B9594C9003199F4 /* SurveyPointDetailViewController.m in Sources */,
+				0177A0D91B968496003199F4 /* UIImage+Extension.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
+				0177A0CB1B96845A003199F4 /* HMCommonCell.m in Sources */,
+				0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */,
+				0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */,
+				0177A0AB1B9683C3003199F4 /* HMCommonViewController.m in Sources */,
 				01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */,
+				0177A0C61B968436003199F4 /* HMCommonLabelItem.m in Sources */,
+				0177A0D81B968496003199F4 /* UIBarButtonItem+Extension.m in Sources */,
+				0177A0C11B968436003199F4 /* HMCommonArrowItem.m in Sources */,
 				01EDAD9C1B8EFBF300C1CF21 /* MasterViewController.m in Sources */,
+				0177A0AF1B9683F6003199F4 /* SettingViewController.m in Sources */,
+				0177A0C71B968436003199F4 /* HMCommonSwitchItem.m in Sources */,
+				0177A0DA1B968496003199F4 /* UINavigationBar+Awesome.m in Sources */,
 				01EDADA11B8EFC1F00C1CF21 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -439,6 +647,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = EQCollect_HD/EQCollect_HD.pch;
 				INFOPLIST_FILE = EQCollect_HD/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -449,6 +658,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = EQCollect_HD/EQCollect_HD.pch;
 				INFOPLIST_FILE = EQCollect_HD/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

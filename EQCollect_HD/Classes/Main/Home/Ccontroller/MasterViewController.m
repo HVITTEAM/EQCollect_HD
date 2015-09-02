@@ -21,6 +21,11 @@
     
     //设置表头视图
     self.tableView.tableHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"AdminTableHead" owner:self options:nil] lastObject];
+    
+    //设置导航栏颜色
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:102/255.0 green:147/255.0 blue:255/255.0 alpha:1.0];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark - Table view data source
@@ -61,7 +66,22 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    if (indexPath.section == 0)
+    {
+        if (!self.personView)
+            self.personView = [[PersonCenterController alloc] init];
+        self.nav = [[UINavigationController alloc] initWithRootViewController:self.personView];
+        self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:self.nav animated:YES completion:nil];
+    }
+    else if (indexPath.section == 2)
+    {
+        if (!self.settingView)
+            self.settingView = [[SettingViewController alloc] init];
+        self.nav = [[UINavigationController alloc] initWithRootViewController:self.settingView];
+        self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:self.nav animated:YES completion:nil];
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

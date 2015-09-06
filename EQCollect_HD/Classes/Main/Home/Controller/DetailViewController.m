@@ -16,7 +16,7 @@
     UISearchDisplayController *searchDisplayController;
     
     SurveyPointDetailViewController *detailview;
-
+    
 }
 @end
 
@@ -26,12 +26,13 @@
     [super viewDidLoad];
     self.title = @"调查点管理";
     
+    self.tableView.backgroundColor = HMGlobalBg;
     //设置导航栏颜色
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:102/255.0 green:147/255.0 blue:255/255.0 alpha:1.0];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"新增" style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"新增" style:UIBarButtonItemStylePlain target:self action:@selector(addSurveyPointClickHandler)];
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
@@ -51,6 +52,7 @@
     searchDisplayController.searchResultsDataSource = self;
     // searchResultsDelegate 就是 UITableViewDelegate
     searchDisplayController.searchResultsDelegate = self;
+    searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
 }
 
 #pragma mark 分割控制器代理方法
@@ -74,6 +76,13 @@
 }
 
 #pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    return 1;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tableView)
@@ -81,6 +90,11 @@
     else
         return 3;
 }
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 20;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -99,18 +113,23 @@
     return 80;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    
-}
-
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!detailview)
         detailview = [[SurveyPointDetailViewController alloc] init];
     [self.navigationController pushViewController:detailview animated:YES];
-    
+}
+
+#pragma mark addView
+
+-(void)addSurveyPointClickHandler
+{
+    if (!self.addView)
+        self.addView = [[AddSurveyPointController alloc] init];
+    self.nav = [[UINavigationController alloc] initWithRootViewController:self.addView];
+    self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:self.nav animated:YES completion:nil];
 }
 
 @end

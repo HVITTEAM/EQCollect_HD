@@ -5,7 +5,14 @@
 //123
 
 #import <UIKit/UIKit.h>
+#import "AddSurveyPointController.h"
+
 
 @interface DetailViewController : UITableViewController <UISplitViewControllerDelegate>
+
+
+@property (nonatomic, retain) AddSurveyPointController *addView;
+
+@property (nonatomic, retain) UINavigationController *nav;
 
 @end

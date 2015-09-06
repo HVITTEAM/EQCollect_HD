@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A09A1B9590C5003199F4 /* SurveyPointCell.m */; };
 		0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */; };
-		0177A0A11B9594C9003199F4 /* SurveyPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A09F1B9594C9003199F4 /* SurveyPointDetailViewController.m */; };
-		0177A0A21B9594C9003199F4 /* SurveyPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A0A01B9594C9003199F4 /* SurveyPointDetailViewController.xib */; };
 		0177A0AB1B9683C3003199F4 /* HMCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0A81B9683C3003199F4 /* HMCommonViewController.m */; };
 		0177A0AF1B9683F6003199F4 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0AE1B9683F6003199F4 /* SettingViewController.m */; };
 		0177A0C11B968436003199F4 /* HMCommonArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0B21B968436003199F4 /* HMCommonArrowItem.m */; };
@@ -35,10 +33,14 @@
 		01EDAD671B8EF22200C1CF21 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD661B8EF22200C1CF21 /* Images.xcassets */; };
 		01EDAD6A1B8EF22200C1CF21 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD681B8EF22200C1CF21 /* LaunchScreen.xib */; };
 		01EDAD761B8EF22200C1CF21 /* EQCollect_HDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD751B8EF22200C1CF21 /* EQCollect_HDTests.m */; };
-		01EDAD9B1B8EFBF300C1CF21 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD951B8EFBF300C1CF21 /* DetailViewController.m */; };
-		01EDAD9C1B8EFBF300C1CF21 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */; };
 		01EDADA11B8EFC1F00C1CF21 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */; };
 		01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */; };
+		01FEE2A11B9BCACF007C4641 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29B1B9BCACF007C4641 /* DetailViewController.m */; };
+		01FEE2A21B9BCACF007C4641 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29D1B9BCACF007C4641 /* MasterViewController.m */; };
+		01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */; };
+		01FEE2A41B9BCACF007C4641 /* SurveyPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */; };
+		01FEE2A81B9BCB0D007C4641 /* AddSurveyPointController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE2A61B9BCB0D007C4641 /* AddSurveyPointController.m */; };
+		01FEE2A91B9BCB0D007C4641 /* AddSurveyPointController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */; };
 		D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28D42E91B8FF81500E720AB /* AdminTableHead.xib */; };
 		D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */ = {isa = PBXBuildFile; fileRef = D28D42EC1B90006B00E720AB /* AdminTableHead.m */; };
 /* End PBXBuildFile section */
@@ -57,9 +59,6 @@
 		0177A0991B9590C5003199F4 /* SurveyPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointCell.h; sourceTree = "<group>"; };
 		0177A09A1B9590C5003199F4 /* SurveyPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointCell.m; sourceTree = "<group>"; };
 		0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointCell.xib; sourceTree = "<group>"; };
-		0177A09E1B9594C9003199F4 /* SurveyPointDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointDetailViewController.h; sourceTree = "<group>"; };
-		0177A09F1B9594C9003199F4 /* SurveyPointDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointDetailViewController.m; sourceTree = "<group>"; };
-		0177A0A01B9594C9003199F4 /* SurveyPointDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointDetailViewController.xib; sourceTree = "<group>"; };
 		0177A0A71B9683C3003199F4 /* HMCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCommonViewController.h; sourceTree = "<group>"; };
 		0177A0A81B9683C3003199F4 /* HMCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCommonViewController.m; sourceTree = "<group>"; };
 		0177A0AD1B9683F6003199F4 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -107,13 +106,19 @@
 		01EDAD6F1B8EF22200C1CF21 /* EQCollect_HDTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EQCollect_HDTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01EDAD741B8EF22200C1CF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01EDAD751B8EF22200C1CF21 /* EQCollect_HDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EQCollect_HDTests.m; sourceTree = "<group>"; };
-		01EDAD941B8EFBF300C1CF21 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		01EDAD951B8EFBF300C1CF21 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		01EDAD961B8EFBF300C1CF21 /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
-		01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		01EDAD9E1B8EFC1F00C1CF21 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		01FEE29A1B9BCACF007C4641 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		01FEE29B1B9BCACF007C4641 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		01FEE29C1B9BCACF007C4641 /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		01FEE29D1B9BCACF007C4641 /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		01FEE29E1B9BCACF007C4641 /* SurveyPointDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointDetailViewController.h; sourceTree = "<group>"; };
+		01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointDetailViewController.m; sourceTree = "<group>"; };
+		01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointDetailViewController.xib; sourceTree = "<group>"; };
+		01FEE2A51B9BCB0D007C4641 /* AddSurveyPointController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSurveyPointController.h; sourceTree = "<group>"; };
+		01FEE2A61B9BCB0D007C4641 /* AddSurveyPointController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSurveyPointController.m; sourceTree = "<group>"; };
+		01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddSurveyPointController.xib; sourceTree = "<group>"; };
 		D28D42E91B8FF81500E720AB /* AdminTableHead.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdminTableHead.xib; sourceTree = "<group>"; };
 		D28D42EB1B90006B00E720AB /* AdminTableHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdminTableHead.h; sourceTree = "<group>"; };
 		D28D42EC1B90006B00E720AB /* AdminTableHead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdminTableHead.m; sourceTree = "<group>"; };
@@ -331,25 +336,11 @@
 		01EDAD921B8EFBF300C1CF21 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				01EDAD931B8EFBF300C1CF21 /* Ccontroller */,
+				01FEE2991B9BCACF007C4641 /* Controller */,
 				01EDAD981B8EFBF300C1CF21 /* Model */,
 				01EDAD991B8EFBF300C1CF21 /* View */,
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		01EDAD931B8EFBF300C1CF21 /* Ccontroller */ = {
-			isa = PBXGroup;
-			children = (
-				01EDAD941B8EFBF300C1CF21 /* DetailViewController.h */,
-				01EDAD951B8EFBF300C1CF21 /* DetailViewController.m */,
-				01EDAD961B8EFBF300C1CF21 /* MasterViewController.h */,
-				01EDAD971B8EFBF300C1CF21 /* MasterViewController.m */,
-				0177A09E1B9594C9003199F4 /* SurveyPointDetailViewController.h */,
-				0177A09F1B9594C9003199F4 /* SurveyPointDetailViewController.m */,
-				0177A0A01B9594C9003199F4 /* SurveyPointDetailViewController.xib */,
-			);
-			path = Ccontroller;
 			sourceTree = "<group>";
 		};
 		01EDAD981B8EFBF300C1CF21 /* Model */ = {
@@ -386,6 +377,23 @@
 				01EDAD9E1B8EFC1F00C1CF21 /* LoginViewController.h */,
 				01EDAD9F1B8EFC1F00C1CF21 /* LoginViewController.m */,
 				01EDADA01B8EFC1F00C1CF21 /* LoginViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		01FEE2991B9BCACF007C4641 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				01FEE29A1B9BCACF007C4641 /* DetailViewController.h */,
+				01FEE29B1B9BCACF007C4641 /* DetailViewController.m */,
+				01FEE29C1B9BCACF007C4641 /* MasterViewController.h */,
+				01FEE29D1B9BCACF007C4641 /* MasterViewController.m */,
+				01FEE29E1B9BCACF007C4641 /* SurveyPointDetailViewController.h */,
+				01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */,
+				01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */,
+				01FEE2A51B9BCB0D007C4641 /* AddSurveyPointController.h */,
+				01FEE2A61B9BCB0D007C4641 /* AddSurveyPointController.m */,
+				01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -471,11 +479,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */,
+				01FEE2A91B9BCB0D007C4641 /* AddSurveyPointController.xib in Resources */,
 				01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */,
 				0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */,
-				0177A0A21B9594C9003199F4 /* SurveyPointDetailViewController.xib in Resources */,
 				D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */,
 				01EDAD6A1B8EF22200C1CF21 /* LaunchScreen.xib in Resources */,
+				01FEE2A41B9BCACF007C4641 /* SurveyPointDetailViewController.xib in Resources */,
 				01EDAD671B8EF22200C1CF21 /* Images.xcassets in Resources */,
 				0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */,
 			);
@@ -503,22 +512,23 @@
 				0177A0C31B968436003199F4 /* HMCommonCenterItem.m in Sources */,
 				0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */,
 				0177A0C51B968436003199F4 /* HMCommonItem.m in Sources */,
-				01EDAD9B1B8EFBF300C1CF21 /* DetailViewController.m in Sources */,
-				0177A0A11B9594C9003199F4 /* SurveyPointDetailViewController.m in Sources */,
+				01FEE2A11B9BCACF007C4641 /* DetailViewController.m in Sources */,
 				0177A0D91B968496003199F4 /* UIImage+Extension.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
 				0177A0CB1B96845A003199F4 /* HMCommonCell.m in Sources */,
 				0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */,
 				0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */,
+				01FEE2A81B9BCB0D007C4641 /* AddSurveyPointController.m in Sources */,
 				0177A0AB1B9683C3003199F4 /* HMCommonViewController.m in Sources */,
 				01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */,
+				01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */,
 				0177A0C61B968436003199F4 /* HMCommonLabelItem.m in Sources */,
 				0177A0D81B968496003199F4 /* UIBarButtonItem+Extension.m in Sources */,
 				0177A0C11B968436003199F4 /* HMCommonArrowItem.m in Sources */,
-				01EDAD9C1B8EFBF300C1CF21 /* MasterViewController.m in Sources */,
 				0177A0AF1B9683F6003199F4 /* SettingViewController.m in Sources */,
 				0177A0C71B968436003199F4 /* HMCommonSwitchItem.m in Sources */,
 				0177A0DA1B968496003199F4 /* UINavigationBar+Awesome.m in Sources */,
+				01FEE2A21B9BCACF007C4641 /* MasterViewController.m in Sources */,
 				01EDADA11B8EFC1F00C1CF21 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

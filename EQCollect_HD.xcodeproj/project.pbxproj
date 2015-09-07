@@ -43,6 +43,7 @@
 		01FEE2A91B9BCB0D007C4641 /* AddSurveyPointController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */; };
 		D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28D42E91B8FF81500E720AB /* AdminTableHead.xib */; };
 		D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */ = {isa = PBXBuildFile; fileRef = D28D42EC1B90006B00E720AB /* AdminTableHead.m */; };
+		D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,8 @@
 		D28D42E91B8FF81500E720AB /* AdminTableHead.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdminTableHead.xib; sourceTree = "<group>"; };
 		D28D42EB1B90006B00E720AB /* AdminTableHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdminTableHead.h; sourceTree = "<group>"; };
 		D28D42EC1B90006B00E720AB /* AdminTableHead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdminTableHead.m; sourceTree = "<group>"; };
+		D2C207F71B9D264A00454591 /* QCSlideSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QCSlideSwitchView.h; sourceTree = "<group>"; };
+		D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QCSlideSwitchView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,6 +356,7 @@
 		01EDAD991B8EFBF300C1CF21 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D2C207F61B9D264A00454591 /* SlideViewController */,
 				D28D42EB1B90006B00E720AB /* AdminTableHead.h */,
 				D28D42EC1B90006B00E720AB /* AdminTableHead.m */,
 				D28D42E91B8FF81500E720AB /* AdminTableHead.xib */,
@@ -396,6 +400,15 @@
 				01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		D2C207F61B9D264A00454591 /* SlideViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D2C207F71B9D264A00454591 /* QCSlideSwitchView.h */,
+				D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */,
+			);
+			path = SlideViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -514,6 +527,7 @@
 				0177A0C51B968436003199F4 /* HMCommonItem.m in Sources */,
 				01FEE2A11B9BCACF007C4641 /* DetailViewController.m in Sources */,
 				0177A0D91B968496003199F4 /* UIImage+Extension.m in Sources */,
+				D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
 				0177A0CB1B96845A003199F4 /* HMCommonCell.m in Sources */,
 				0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */,

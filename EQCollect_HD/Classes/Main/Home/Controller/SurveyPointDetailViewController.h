@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QCSlideSwitchView.h"
 
-@interface SurveyPointDetailViewController : UIViewController
-
+@interface SurveyPointDetailViewController : UIViewController<QCSlideSwitchViewDelegate>
+@property (strong,nonatomic)QCSlideSwitchView *slideSwitchView;
+@property (strong,nonatomic)NSMutableArray *vcArray;            //存放控制器的数组
 @end

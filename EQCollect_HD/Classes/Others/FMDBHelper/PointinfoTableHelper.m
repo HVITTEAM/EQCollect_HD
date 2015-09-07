@@ -39,6 +39,18 @@
 
 @implementation PointinfoTableHelper
 
++(PointinfoTableHelper *)sharedInstance
+{
+    static PointinfoTableHelper *pointinfoTableHelper;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        pointinfoTableHelper = [[PointinfoTableHelper alloc] init];
+        [pointinfoTableHelper initDataBase];
+    });
+    return pointinfoTableHelper;
+}
+
 -(void)initDataBase
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

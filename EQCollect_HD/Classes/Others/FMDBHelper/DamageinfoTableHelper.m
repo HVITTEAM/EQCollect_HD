@@ -33,6 +33,18 @@
 
 @implementation DamageinfoTableHelper
 
++(DamageinfoTableHelper *)sharedInstance
+{
+    static DamageinfoTableHelper *damageinfoTableHelper;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        damageinfoTableHelper = [[DamageinfoTableHelper alloc] init];
+        [damageinfoTableHelper initDataBase];
+    });
+    return damageinfoTableHelper;
+}
+
 -(void)initDataBase
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

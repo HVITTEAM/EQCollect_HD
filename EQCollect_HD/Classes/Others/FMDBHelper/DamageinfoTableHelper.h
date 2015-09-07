@@ -14,6 +14,7 @@
     NSString *database_path;
 }
 
++(DamageinfoTableHelper *)sharedInstance;
 /**初始化数据库**/
 - (void)initDataBase;
 /**创建表**/

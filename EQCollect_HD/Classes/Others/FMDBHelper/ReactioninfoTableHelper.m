@@ -49,6 +49,18 @@
 
 @implementation ReactioninfoTableHelper
 
++(ReactioninfoTableHelper *)sharedInstance
+{
+    static ReactioninfoTableHelper *reactioninfoTableHelper;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        reactioninfoTableHelper = [[ReactioninfoTableHelper alloc] init];
+        [reactioninfoTableHelper initDataBase];
+    });
+    return reactioninfoTableHelper;
+}
+
 -(void)initDataBase
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

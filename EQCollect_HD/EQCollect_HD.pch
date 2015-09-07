@@ -34,8 +34,6 @@
 #import "ReactionModel.h"
 #import "DamageModel.h"
 
-
-
 #define DBNAME @"EQCollect.sqlite"
 
 // 屏幕尺寸

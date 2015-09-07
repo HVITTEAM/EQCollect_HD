@@ -14,6 +14,8 @@
     NSString *database_path;
 }
 
++(AbnormalinfoTableHelper *)sharedInstance;
+
 /**初始化数据库**/
 - (void)initDataBase;
 /**创建表**/

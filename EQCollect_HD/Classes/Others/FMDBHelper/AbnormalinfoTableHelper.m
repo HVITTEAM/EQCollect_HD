@@ -37,6 +37,18 @@
 
 @implementation AbnormalinfoTableHelper
 
++(AbnormalinfoTableHelper *)sharedInstance
+{
+    static AbnormalinfoTableHelper *abnormalinfoTableHelper;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        abnormalinfoTableHelper = [[AbnormalinfoTableHelper alloc] init];
+        [abnormalinfoTableHelper initDataBase];
+    });
+    return abnormalinfoTableHelper;
+}
+
 -(void)initDataBase
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

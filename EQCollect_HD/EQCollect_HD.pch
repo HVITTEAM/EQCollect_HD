@@ -14,11 +14,29 @@
 
 #endif
 
+#import "MJExtension.h"
 #import "UIView+Extension.h"
 #import "UIBarButtonItem+Extension.h"
 #import "HMCommonGroup.h"
 #import "HMCommonArrowItem.h"
 #import "HMCommonCell.h"
+
+#import "FMDatabase.h"
+#import "FMDatabaseQueue.h"
+
+#import "PointinfoTableHelper.h"
+#import "AbnormalinfoTableHelper.h"
+#import "ReactioninfoTableHelper.h"
+#import "DamageinfoTableHelper.h"
+
+#import "PointModel.h"
+#import "AbnormalinfoModel.h"
+#import "ReactionModel.h"
+#import "DamageModel.h"
+
+
+
+#define DBNAME @"EQCollect.sqlite"
 
 // 屏幕尺寸
 

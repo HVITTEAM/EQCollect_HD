@@ -90,6 +90,8 @@ static const NSUInteger kTagOfRightSideButton = 999;
 //当横竖屏切换时可通过此方法调整布局
 - (void)layoutSubviews
 {
+    
+    NSLog(@"%f",slideWithchViewW);
     //创建完子视图UI才需要调整布局
     if (_isBuildUI) {
         //如果有设置右侧视图，缩小顶部滚动视图的宽度以适应按钮

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 董徐维. All rights reserved.
 //
 #import "SurveyPointDetailViewController.h"
+#import "PointinfoViewController.h"
 
 @interface SurveyPointDetailViewController ()
 
@@ -22,7 +23,7 @@
     
     //创建一组UIViewController作为slideSwitchView的数据源
     self.vcArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i<4; i++) {
+    for (int i = 0; i<3; i++) {
         UIViewController *vc = [[UIViewController alloc] init];
         
         vc.view = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -36,6 +37,9 @@
         vc.view.backgroundColor = [UIColor whiteColor];
         [self.vcArray addObject:vc];
     }
+    PointinfoViewController *pointInfo = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
+    pointInfo.title = @"调查点信息";
+    [self.vcArray addObject:pointInfo];
 }
 
 -(void)viewDidLayoutSubviews

@@ -27,8 +27,8 @@
 }
 
 /**
- *  初始化导航栏
- */
+
+ *  初始化导航栏 */
 -(void)initNavigation
 {
     self.title = @"个人中心";

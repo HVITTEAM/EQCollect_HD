@@ -145,6 +145,11 @@
         [db close];
     }
 }
+
+- (void)selectData1
+{
+    
+}
 //-(void) multithread
 //{
 //    FMDatabaseQueue * queue = [FMDatabaseQueue databaseQueueWithPath:database_path];

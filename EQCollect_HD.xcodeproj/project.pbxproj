@@ -48,6 +48,7 @@
 		01E3546E1B9D615700014114 /* PointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E3546D1B9D615700014114 /* PointModel.m */; };
 		01E354711B9D617900014114 /* AbnormalinfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354701B9D617900014114 /* AbnormalinfoModel.m */; };
 		01E354741B9D618900014114 /* ReactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354731B9D618900014114 /* ReactionModel.m */; };
+		01E3547A1B9D746900014114 /* VenderMannager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354791B9D746900014114 /* VenderMannager.m */; };
 		01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5B1B8EF22200C1CF21 /* main.m */; };
 		01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */; };
 		01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD631B8EF22200C1CF21 /* Main.storyboard */; };
@@ -169,6 +170,8 @@
 		01E354731B9D618900014114 /* ReactionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactionModel.m; sourceTree = "<group>"; };
 		01E354751B9D619900014114 /* DamageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamageModel.h; sourceTree = "<group>"; };
 		01E354761B9D619900014114 /* DamageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageModel.m; sourceTree = "<group>"; };
+		01E354781B9D746900014114 /* VenderMannager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenderMannager.h; sourceTree = "<group>"; };
+		01E354791B9D746900014114 /* VenderMannager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenderMannager.m; sourceTree = "<group>"; };
 		01EDAD561B8EF22200C1CF21 /* EQCollect_HD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EQCollect_HD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01EDAD5A1B8EF22200C1CF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01EDAD5B1B8EF22200C1CF21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -569,6 +572,8 @@
 			isa = PBXGroup;
 			children = (
 				01EED5971B9D2A190041D28A /* FMDBHelper */,
+				01E354781B9D746900014114 /* VenderMannager.h */,
+				01E354791B9D746900014114 /* VenderMannager.m */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -723,6 +728,7 @@
 			files = (
 				01EED59A1B9D2A3D0041D28A /* PointinfoTableHelper.m in Sources */,
 				0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */,
+				01E3547A1B9D746900014114 /* VenderMannager.m in Sources */,
 				0177A0C21B968436003199F4 /* HMCommonButtonItem.m in Sources */,
 				01E354651B9D5F5700014114 /* MJRefreshBaseView.m in Sources */,
 				01E354711B9D617900014114 /* AbnormalinfoModel.m in Sources */,

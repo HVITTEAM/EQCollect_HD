@@ -43,8 +43,6 @@
     [super viewDidLayoutSubviews];
     //初始化slideSwitchView
     [self initView];
-    [self.slideSwitchView buildUI];
-
 }
 
 /**
@@ -52,15 +50,22 @@
  */
 -(void)initView
 {
-    self.slideSwitchView = [[QCSlideSwitchView alloc]initWithFrame:CGRectMake(0,64,self.view.width,self.view.height-64)];
-    self.slideSwitchView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.slideSwitchView.slideSwitchViewDelegate = self;
-    [self.view addSubview:self.slideSwitchView];
-    
-    self.slideSwitchView.tabItemNormalColor = [QCSlideSwitchView colorFromHexRGB:@"868686"];
-    self.slideSwitchView.tabItemSelectedColor = [QCSlideSwitchView colorFromHexRGB:@"1e90ff"];
-    self.slideSwitchView.shadowImage = [[UIImage imageNamed:@"red_line_and_shadow"]
-                                        stretchableImageWithLeftCapWidth:59.0f topCapHeight:0.0f];
+    if (self.slideSwitchView)
+    {
+        self.slideSwitchView.frame = CGRectMake(0,64,self.view.width,self.view.height-64);
+    }
+    else
+    {
+        self.slideSwitchView = [[QCSlideSwitchView alloc]initWithFrame:CGRectMake(0,64,self.view.width,self.view.height-64)];
+        self.slideSwitchView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        self.slideSwitchView.slideSwitchViewDelegate = self;
+        [self.view addSubview:self.slideSwitchView];
+        self.slideSwitchView.tabItemNormalColor = [QCSlideSwitchView colorFromHexRGB:@"868686"];
+        self.slideSwitchView.tabItemSelectedColor = [QCSlideSwitchView colorFromHexRGB:@"1e90ff"];
+        self.slideSwitchView.shadowImage = [[UIImage imageNamed:@"red_line_and_shadow"]
+                                            stretchableImageWithLeftCapWidth:59.0f topCapHeight:0.0f];
+        [self.slideSwitchView buildUI];
+    }
 }
 
 #pragma mark SlideSwitchView协议方法
@@ -76,7 +81,7 @@
 
 - (void)slideSwitchView:(QCSlideSwitchView *)view didselectTab:(NSUInteger)number
 {
-    NSLog(@"选中了%d",number);
+    NSLog(@"选中了%lu",(unsigned long)number);
 }
 
 @end

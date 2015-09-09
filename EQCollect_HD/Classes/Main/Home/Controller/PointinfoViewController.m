@@ -50,9 +50,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
--(void)viewWillDisappear:(BOOL)animated
+-(void)dealloc
 {
-    [super viewWillDisappear:animated];
     //删除监听键盘通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

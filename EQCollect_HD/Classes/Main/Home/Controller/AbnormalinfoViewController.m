@@ -22,14 +22,12 @@
     
     self.navigationItem.title = @"宏观异常详情";
     
-    //获取设置当前方向
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    //设置横屏时的约束，默认为竖屏约束
-    if (orientation==UIDeviceOrientationLandscapeLeft||orientation==UIDeviceOrientationLandscapeRight) {
-        self.containerLeftCons.constant = 40;
-        self.containerWidthCons.constant = -80;
-        self.abnormalidWidthCons.constant = 180;
-    }
+    //获取设备当前方向
+    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
+    //将UIDeviceOrientation类型转为UIInterfaceOrientation
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
+    //根据屏幕方向设置视图的约束
+    [self rotationToInterfaceOrientation:interfaceOrientation];
     
     self.abnormalidTextF.delegate = self;
     self.abnormaltimeTextF.delegate = self;

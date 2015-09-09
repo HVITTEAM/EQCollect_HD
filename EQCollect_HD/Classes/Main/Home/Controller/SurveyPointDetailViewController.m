@@ -51,6 +51,19 @@
     [self initView];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    /*下面三行代码防止在另外界面进行旋转，返回此界面时调查点信息界面不更新*/
+    //获取设备当前方向
+    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
+    //将UIDeviceOrientation类型转为UIInterfaceOrientation
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
+    //根据屏幕方向设置调查点信息视图的约束
+    [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
+}
+
 /**
  *  初始化slideSwitchView
  */

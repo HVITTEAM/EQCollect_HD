@@ -6,7 +6,6 @@
 //  Copyright (c) 2015年 董徐维. All rights reserved.
 //
 #import "SurveyPointDetailViewController.h"
-#import "PointinfoViewController.h"
 
 @interface SurveyPointDetailViewController ()
 
@@ -23,23 +22,26 @@
     
     //创建一组UIViewController作为slideSwitchView的数据源
     self.vcArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i<3; i++) {
-        UIViewController *vc = [[UIViewController alloc] init];
-        
-        vc.view = [[UIView alloc] initWithFrame:self.view.bounds];
-        UILabel *lb = [[UILabel alloc] initWithFrame:CGRectMake(0,400, 80, 80)];
-        lb.text = [[NSString alloc] initWithFormat:@"标题为%d",i];
-        lb.font = [UIFont systemFontOfSize:18];
-        lb.backgroundColor = [UIColor magentaColor];
-        [vc.view addSubview:lb];
-        
-        vc.title = [[NSString alloc] initWithFormat:@"标题为%d",i];
-        vc.view.backgroundColor = [UIColor whiteColor];
-        [self.vcArray addObject:vc];
-    }
-    PointinfoViewController *pointInfo = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
-    pointInfo.title = @"调查点信息";
-    [self.vcArray addObject:pointInfo];
+    
+    self.pointinfoVC = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
+    self.pointinfoVC.title = @"调查点信息";
+    self.pointinfoVC.surveyPointDetailView = self.view;
+    [self.vcArray addObject:self.pointinfoVC];
+    
+    self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];
+    self.abnormalinfoListVC.title = @"宏观异常信息";
+    self.abnormalinfoListVC.nav = self.navigationController;
+    [self.vcArray addObject:self.abnormalinfoListVC];
+    
+    self.reactioninfoListVC = [[ReactioninfoListController alloc] initWithNibName:@"ReactioninfoListController" bundle:nil];
+    self.reactioninfoListVC.title = @"人物反应信息";
+    self.reactioninfoListVC.nav = self.navigationController;
+    [self.vcArray addObject:self.reactioninfoListVC];
+    
+    self.damageinfoListVC = [[DamageinfoListController alloc] initWithNibName:@"DamageinfoListController" bundle:nil];
+    self.damageinfoListVC.title = @"房屋震害信息";
+    self.damageinfoListVC.nav = self.navigationController;
+    [self.vcArray addObject:self.damageinfoListVC];
 }
 
 -(void)viewDidLayoutSubviews
@@ -87,5 +89,13 @@
 {
     NSLog(@"选中了%lu",(unsigned long)number);
 }
+
+//处理屏幕旋转
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
+{
+    //旋转调查点信息界面
+    [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
+}
+
 
 @end

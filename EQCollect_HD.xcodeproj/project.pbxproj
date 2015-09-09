@@ -72,6 +72,24 @@
 		01FEE2A91B9BCB0D007C4641 /* AddSurveyPointController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */; };
 		D23A1A421B9E613C00758DDD /* PointinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A401B9E613C00758DDD /* PointinfoViewController.m */; };
 		D23A1A431B9E613C00758DDD /* PointinfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */; };
+		D23A1A7C1B9E903B00758DDD /* AbnormalinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A7A1B9E903B00758DDD /* AbnormalinfoViewController.m */; };
+		D23A1A7D1B9E903B00758DDD /* AbnormalinfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A7B1B9E903B00758DDD /* AbnormalinfoViewController.xib */; };
+		D23A1A811B9EAC0C00758DDD /* ReactioninfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A7F1B9EAC0C00758DDD /* ReactioninfoViewController.m */; };
+		D23A1A821B9EAC0C00758DDD /* ReactioninfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A801B9EAC0C00758DDD /* ReactioninfoViewController.xib */; };
+		D23A1A861B9EBA9800758DDD /* DamageinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A841B9EBA9800758DDD /* DamageinfoViewController.m */; };
+		D23A1A871B9EBA9800758DDD /* DamageinfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A851B9EBA9800758DDD /* DamageinfoViewController.xib */; };
+		D23A1A8B1B9ED3FD00758DDD /* AbnormalinfoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A891B9ED3FD00758DDD /* AbnormalinfoListController.m */; };
+		D23A1A8C1B9ED3FD00758DDD /* AbnormalinfoListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A8A1B9ED3FD00758DDD /* AbnormalinfoListController.xib */; };
+		D23A1A951B9ED48200758DDD /* AbnormalinfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A931B9ED48200758DDD /* AbnormalinfoCell.m */; };
+		D23A1A961B9ED48200758DDD /* AbnormalinfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A941B9ED48200758DDD /* AbnormalinfoCell.xib */; };
+		D23A1A9F1B9EDE5400758DDD /* ReactioninfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A9D1B9EDE5400758DDD /* ReactioninfoCell.m */; };
+		D23A1AA01B9EDE5400758DDD /* ReactioninfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A9E1B9EDE5400758DDD /* ReactioninfoCell.xib */; };
+		D23A1AA41B9EE23000758DDD /* ReactioninfoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1AA21B9EE23000758DDD /* ReactioninfoListController.m */; };
+		D23A1AA51B9EE23000758DDD /* ReactioninfoListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1AA31B9EE23000758DDD /* ReactioninfoListController.xib */; };
+		D23A1AA91B9EE3C500758DDD /* DamageinfoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1AA71B9EE3C500758DDD /* DamageinfoListController.m */; };
+		D23A1AAA1B9EE3C500758DDD /* DamageinfoListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1AA81B9EE3C500758DDD /* DamageinfoListController.xib */; };
+		D23A1AAE1B9EE3F900758DDD /* DamageinfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1AAC1B9EE3F900758DDD /* DamageinfoCell.m */; };
+		D23A1AAF1B9EE3F900758DDD /* DamageinfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */; };
 		D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28D42E91B8FF81500E720AB /* AdminTableHead.xib */; };
 		D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */ = {isa = PBXBuildFile; fileRef = D28D42EC1B90006B00E720AB /* AdminTableHead.m */; };
 		D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */; };
@@ -215,6 +233,33 @@
 		D23A1A3F1B9E613C00758DDD /* PointinfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointinfoViewController.h; sourceTree = "<group>"; };
 		D23A1A401B9E613C00758DDD /* PointinfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointinfoViewController.m; sourceTree = "<group>"; };
 		D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PointinfoViewController.xib; sourceTree = "<group>"; };
+		D23A1A791B9E903B00758DDD /* AbnormalinfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbnormalinfoViewController.h; sourceTree = "<group>"; };
+		D23A1A7A1B9E903B00758DDD /* AbnormalinfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbnormalinfoViewController.m; sourceTree = "<group>"; };
+		D23A1A7B1B9E903B00758DDD /* AbnormalinfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AbnormalinfoViewController.xib; sourceTree = "<group>"; };
+		D23A1A7E1B9EAC0C00758DDD /* ReactioninfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactioninfoViewController.h; sourceTree = "<group>"; };
+		D23A1A7F1B9EAC0C00758DDD /* ReactioninfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactioninfoViewController.m; sourceTree = "<group>"; };
+		D23A1A801B9EAC0C00758DDD /* ReactioninfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactioninfoViewController.xib; sourceTree = "<group>"; };
+		D23A1A831B9EBA9800758DDD /* DamageinfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamageinfoViewController.h; sourceTree = "<group>"; };
+		D23A1A841B9EBA9800758DDD /* DamageinfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageinfoViewController.m; sourceTree = "<group>"; };
+		D23A1A851B9EBA9800758DDD /* DamageinfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DamageinfoViewController.xib; sourceTree = "<group>"; };
+		D23A1A881B9ED3FD00758DDD /* AbnormalinfoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbnormalinfoListController.h; sourceTree = "<group>"; };
+		D23A1A891B9ED3FD00758DDD /* AbnormalinfoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbnormalinfoListController.m; sourceTree = "<group>"; };
+		D23A1A8A1B9ED3FD00758DDD /* AbnormalinfoListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AbnormalinfoListController.xib; sourceTree = "<group>"; };
+		D23A1A921B9ED48200758DDD /* AbnormalinfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbnormalinfoCell.h; sourceTree = "<group>"; };
+		D23A1A931B9ED48200758DDD /* AbnormalinfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbnormalinfoCell.m; sourceTree = "<group>"; };
+		D23A1A941B9ED48200758DDD /* AbnormalinfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AbnormalinfoCell.xib; sourceTree = "<group>"; };
+		D23A1A9C1B9EDE5400758DDD /* ReactioninfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactioninfoCell.h; sourceTree = "<group>"; };
+		D23A1A9D1B9EDE5400758DDD /* ReactioninfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactioninfoCell.m; sourceTree = "<group>"; };
+		D23A1A9E1B9EDE5400758DDD /* ReactioninfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactioninfoCell.xib; sourceTree = "<group>"; };
+		D23A1AA11B9EE23000758DDD /* ReactioninfoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactioninfoListController.h; sourceTree = "<group>"; };
+		D23A1AA21B9EE23000758DDD /* ReactioninfoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactioninfoListController.m; sourceTree = "<group>"; };
+		D23A1AA31B9EE23000758DDD /* ReactioninfoListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactioninfoListController.xib; sourceTree = "<group>"; };
+		D23A1AA61B9EE3C500758DDD /* DamageinfoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamageinfoListController.h; sourceTree = "<group>"; };
+		D23A1AA71B9EE3C500758DDD /* DamageinfoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageinfoListController.m; sourceTree = "<group>"; };
+		D23A1AA81B9EE3C500758DDD /* DamageinfoListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DamageinfoListController.xib; sourceTree = "<group>"; };
+		D23A1AAB1B9EE3F900758DDD /* DamageinfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamageinfoCell.h; sourceTree = "<group>"; };
+		D23A1AAC1B9EE3F900758DDD /* DamageinfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageinfoCell.m; sourceTree = "<group>"; };
+		D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DamageinfoCell.xib; sourceTree = "<group>"; };
 		D28D42E91B8FF81500E720AB /* AdminTableHead.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdminTableHead.xib; sourceTree = "<group>"; };
 		D28D42EB1B90006B00E720AB /* AdminTableHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdminTableHead.h; sourceTree = "<group>"; };
 		D28D42EC1B90006B00E720AB /* AdminTableHead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdminTableHead.m; sourceTree = "<group>"; };
@@ -515,6 +560,15 @@
 				0177A0991B9590C5003199F4 /* SurveyPointCell.h */,
 				0177A09A1B9590C5003199F4 /* SurveyPointCell.m */,
 				0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */,
+				D23A1A921B9ED48200758DDD /* AbnormalinfoCell.h */,
+				D23A1A931B9ED48200758DDD /* AbnormalinfoCell.m */,
+				D23A1A941B9ED48200758DDD /* AbnormalinfoCell.xib */,
+				D23A1A9C1B9EDE5400758DDD /* ReactioninfoCell.h */,
+				D23A1A9D1B9EDE5400758DDD /* ReactioninfoCell.m */,
+				D23A1A9E1B9EDE5400758DDD /* ReactioninfoCell.xib */,
+				D23A1AAB1B9EE3F900758DDD /* DamageinfoCell.h */,
+				D23A1AAC1B9EE3F900758DDD /* DamageinfoCell.m */,
+				D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -614,6 +668,24 @@
 				D23A1A3F1B9E613C00758DDD /* PointinfoViewController.h */,
 				D23A1A401B9E613C00758DDD /* PointinfoViewController.m */,
 				D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */,
+				D23A1A881B9ED3FD00758DDD /* AbnormalinfoListController.h */,
+				D23A1A891B9ED3FD00758DDD /* AbnormalinfoListController.m */,
+				D23A1A8A1B9ED3FD00758DDD /* AbnormalinfoListController.xib */,
+				D23A1A791B9E903B00758DDD /* AbnormalinfoViewController.h */,
+				D23A1A7A1B9E903B00758DDD /* AbnormalinfoViewController.m */,
+				D23A1A7B1B9E903B00758DDD /* AbnormalinfoViewController.xib */,
+				D23A1AA11B9EE23000758DDD /* ReactioninfoListController.h */,
+				D23A1AA21B9EE23000758DDD /* ReactioninfoListController.m */,
+				D23A1AA31B9EE23000758DDD /* ReactioninfoListController.xib */,
+				D23A1A7E1B9EAC0C00758DDD /* ReactioninfoViewController.h */,
+				D23A1A7F1B9EAC0C00758DDD /* ReactioninfoViewController.m */,
+				D23A1A801B9EAC0C00758DDD /* ReactioninfoViewController.xib */,
+				D23A1AA61B9EE3C500758DDD /* DamageinfoListController.h */,
+				D23A1AA71B9EE3C500758DDD /* DamageinfoListController.m */,
+				D23A1AA81B9EE3C500758DDD /* DamageinfoListController.xib */,
+				D23A1A831B9EBA9800758DDD /* DamageinfoViewController.h */,
+				D23A1A841B9EBA9800758DDD /* DamageinfoViewController.m */,
+				D23A1A851B9EBA9800758DDD /* DamageinfoViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -707,16 +779,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D23A1A8C1B9ED3FD00758DDD /* AbnormalinfoListController.xib in Resources */,
 				01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */,
 				D23A1A431B9E613C00758DDD /* PointinfoViewController.xib in Resources */,
 				01FEE2A91B9BCB0D007C4641 /* AddSurveyPointController.xib in Resources */,
+				D23A1AAA1B9EE3C500758DDD /* DamageinfoListController.xib in Resources */,
 				01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */,
+				D23A1AAF1B9EE3F900758DDD /* DamageinfoCell.xib in Resources */,
+				D23A1A821B9EAC0C00758DDD /* ReactioninfoViewController.xib in Resources */,
 				0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */,
 				D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */,
+				D23A1A7D1B9E903B00758DDD /* AbnormalinfoViewController.xib in Resources */,
 				01EDAD6A1B8EF22200C1CF21 /* LaunchScreen.xib in Resources */,
+				D23A1AA51B9EE23000758DDD /* ReactioninfoListController.xib in Resources */,
 				01FEE2A41B9BCACF007C4641 /* SurveyPointDetailViewController.xib in Resources */,
 				01EDAD671B8EF22200C1CF21 /* Images.xcassets in Resources */,
+				D23A1A871B9EBA9800758DDD /* DamageinfoViewController.xib in Resources */,
+				D23A1A961B9ED48200758DDD /* AbnormalinfoCell.xib in Resources */,
 				01E354641B9D5F5700014114 /* MJRefresh.bundle in Resources */,
+				D23A1AA01B9EDE5400758DDD /* ReactioninfoCell.xib in Resources */,
 				0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -745,26 +826,33 @@
 				01E354631B9D5F5700014114 /* NSObject+MJKeyValue.m in Sources */,
 				0177A0CE1B968475003199F4 /* HMBadgeView.m in Sources */,
 				01EED5891B9D25420041D28A /* FMDatabasePool.m in Sources */,
+				D23A1A811B9EAC0C00758DDD /* ReactioninfoViewController.m in Sources */,
 				01E3545E1B9D5F5700014114 /* MJFoundation.m in Sources */,
 				01E354671B9D5F5700014114 /* MJRefreshFooterView.m in Sources */,
 				01EED58A1B9D25420041D28A /* FMDatabaseQueue.m in Sources */,
 				01E3546B1B9D5F5700014114 /* UIView+MJExtension.m in Sources */,
+				D23A1A7C1B9E903B00758DDD /* AbnormalinfoViewController.m in Sources */,
 				01EED58C1B9D25420041D28A /* FMResultSet.m in Sources */,
 				018A1D8B1B9D2EC000C97B48 /* AbnormalinfoTableHelper.m in Sources */,
 				018A1D8E1B9D314200C97B48 /* ReactioninfoTableHelper.m in Sources */,
 				D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */,
 				0177A0C31B968436003199F4 /* HMCommonCenterItem.m in Sources */,
 				0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */,
+				D23A1AAE1B9EE3F900758DDD /* DamageinfoCell.m in Sources */,
 				0177A0C51B968436003199F4 /* HMCommonItem.m in Sources */,
 				01FEE2A11B9BCACF007C4641 /* DetailViewController.m in Sources */,
 				0177A0D91B968496003199F4 /* UIImage+Extension.m in Sources */,
+				D23A1A951B9ED48200758DDD /* AbnormalinfoCell.m in Sources */,
+				D23A1A8B1B9ED3FD00758DDD /* AbnormalinfoListController.m in Sources */,
 				D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
 				0177A0CB1B96845A003199F4 /* HMCommonCell.m in Sources */,
+				D23A1A9F1B9EDE5400758DDD /* ReactioninfoCell.m in Sources */,
 				01EED5871B9D25420041D28A /* FMDatabase.m in Sources */,
 				0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */,
 				01E3546A1B9D5F5700014114 /* UIScrollView+MJRefresh.m in Sources */,
 				0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */,
+				D23A1AA91B9EE3C500758DDD /* DamageinfoListController.m in Sources */,
 				01FEE2A81B9BCB0D007C4641 /* AddSurveyPointController.m in Sources */,
 				01E354621B9D5F5700014114 /* NSObject+MJIvar.m in Sources */,
 				01E354661B9D5F5700014114 /* MJRefreshConst.m in Sources */,
@@ -776,6 +864,7 @@
 				01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */,
 				01EED5881B9D25420041D28A /* FMDatabaseAdditions.m in Sources */,
 				0177A0C61B968436003199F4 /* HMCommonLabelItem.m in Sources */,
+				D23A1A861B9EBA9800758DDD /* DamageinfoViewController.m in Sources */,
 				0177A0D81B968496003199F4 /* UIBarButtonItem+Extension.m in Sources */,
 				0177A0C11B968436003199F4 /* HMCommonArrowItem.m in Sources */,
 				01E354741B9D618900014114 /* ReactionModel.m in Sources */,
@@ -783,6 +872,7 @@
 				01E354691B9D5F5700014114 /* UIScrollView+MJExtension.m in Sources */,
 				0177A0AF1B9683F6003199F4 /* SettingViewController.m in Sources */,
 				01E354681B9D5F5700014114 /* MJRefreshHeaderView.m in Sources */,
+				D23A1AA41B9EE23000758DDD /* ReactioninfoListController.m in Sources */,
 				018A1D911B9D316400C97B48 /* DamageinfoTableHelper.m in Sources */,
 				0177A0C71B968436003199F4 /* HMCommonSwitchItem.m in Sources */,
 				01E3545F1B9D5F5700014114 /* MJIvar.m in Sources */,

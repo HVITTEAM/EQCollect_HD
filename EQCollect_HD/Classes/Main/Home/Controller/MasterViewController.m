@@ -26,6 +26,23 @@
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:102/255.0 green:147/255.0 blue:255/255.0 alpha:1.0];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    
+    [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : @"admin",
+                                                              @"pwd" : @"hvit"}
+                                 type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {
+                                     //                                     if ([[dict objectForKey:@"success"] isEqualToString:@"true"])
+                                     //                                     {
+                                     NSLog(@"添加成功");
+                                     //                                     }
+                                     //                                     else
+                                     //                                     {
+                                     //                                         NSLog(@"添加失败");
+                                     //                                     }
+                                     
+                                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                     NSLog(@"发生错误！%@",error);
+                                 }];
 }
 
 #pragma mark - Table view data source

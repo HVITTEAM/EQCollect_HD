@@ -51,8 +51,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AbnormalinfoViewController *abnor = [[AbnormalinfoViewController alloc] initWithNibName:@"AbnormalinfoViewController" bundle:nil];
-    [self.nav pushViewController:abnor animated:YES];
+    if (!self.abnormalinfoVC) {
+        self.abnormalinfoVC = [[AbnormalinfoViewController alloc] initWithNibName:@"AbnormalinfoViewController" bundle:nil];
+    }
+    [self.nav pushViewController:self.abnormalinfoVC animated:YES];
 }
 
 @end

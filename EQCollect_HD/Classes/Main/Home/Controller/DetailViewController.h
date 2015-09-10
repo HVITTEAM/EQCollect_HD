@@ -5,14 +5,9 @@
 //123
 
 #import <UIKit/UIKit.h>
-#import "AddSurveyPointController.h"
-
-
+@class PointinfoViewController;
 @interface DetailViewController : UITableViewController <UISplitViewControllerDelegate>
 
-
-@property (nonatomic, retain) AddSurveyPointController *addView;
-
 @property (nonatomic, retain) UINavigationController *nav;
-
+@property (nonatomic,retain) PointinfoViewController *pointinfoVC;
 @end

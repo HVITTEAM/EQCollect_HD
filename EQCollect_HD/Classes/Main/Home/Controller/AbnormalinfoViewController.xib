@@ -14,6 +14,7 @@
                 <outlet property="abnormalphenomenonTextF" destination="MSB-Ji-n5v" id="7y8-Wm-0Dz"/>
                 <outlet property="abnormaltimeTextF" destination="Pcu-Zv-Ljp" id="YMd-iU-re8"/>
                 <outlet property="containerLeftCons" destination="Ksr-4i-yFT" id="TnK-My-81g"/>
+                <outlet property="containerTopCons" destination="wx0-EH-9WV" id="pR1-e8-DgS"/>
                 <outlet property="containerView" destination="1or-Ja-edz" id="5kL-a1-4FS"/>
                 <outlet property="containerWidthCons" destination="PYU-ah-LdZ" id="Rkj-gV-g1A"/>
                 <outlet property="crediblyTextF" destination="mZA-MW-N5X" id="DtZ-0Y-uyC"/>
@@ -34,7 +35,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1or-Ja-edz">
-                            <rect key="frame" x="20" y="30" width="560" height="510"/>
+                            <rect key="frame" x="20" y="20" width="560" height="510"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="宏观异常编号:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDn-KC-uaT">
                                     <rect key="frame" x="0.0" y="6" width="88.5" height="17"/>
@@ -48,7 +49,7 @@
                                         <constraint firstAttribute="width" constant="110" id="AEt-5k-e1a"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="调查时间:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xna-6W-H1a">
                                     <rect key="frame" x="379.5" y="6" width="60.5" height="17"/>
@@ -59,7 +60,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="调查时间" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pcu-Zv-Ljp">
                                     <rect key="frame" x="450" y="0.0" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="被调查者:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcS-Cc-deh">
                                     <rect key="frame" x="0.0" y="66" width="60.5" height="17"/>
@@ -70,7 +71,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="被调查者:" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9dO-cQ-hyS">
                                     <rect key="frame" x="98" y="60" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="烈度:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="74I-BI-xsp">
                                     <rect key="frame" x="379" y="66" width="32.5" height="17"/>
@@ -87,7 +88,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="地下水" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lDU-pZ-6JG">
                                     <rect key="frame" x="98" y="120" width="462" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="动植物习性:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d9I-ah-1UI">
                                     <rect key="frame" x="0.0" y="186" width="74.5" height="17"/>
@@ -98,7 +99,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="动植物习性" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HZu-aE-Fkz">
                                     <rect key="frame" x="98" y="180" width="462" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="物化现象:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27D-S8-YK9">
                                     <rect key="frame" x="0.0" y="246" width="60.5" height="17"/>
@@ -109,7 +110,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="物化现象" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MSB-Ji-n5v">
                                     <rect key="frame" x="98" y="240" width="462" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="其他:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DvX-8i-UiR">
                                     <rect key="frame" x="0.0" y="306" width="32.5" height="17"/>
@@ -120,7 +121,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="其他" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zuf-xx-ybD">
                                     <rect key="frame" x="98" y="300" width="462" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="落实情况:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNK-QS-Jb5">
                                     <rect key="frame" x="0.0" y="366" width="60.5" height="17"/>
@@ -131,7 +132,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="落实情况:" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CB7-MS-pyE">
                                     <rect key="frame" x="98" y="360" width="462" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="初步分析:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="slm-yX-5nQ">
                                     <rect key="frame" x="0.0" y="426" width="60.5" height="17"/>
@@ -142,12 +143,12 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="初步分析:" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A4S-Mp-aQf">
                                     <rect key="frame" x="98" y="420" width="462" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="可信度:" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mZA-MW-N5X">
                                     <rect key="frame" x="98" y="480" width="462" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可信度:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gTh-C4-3LB">
                                     <rect key="frame" x="0.0" y="486" width="46.5" height="17"/>
@@ -158,7 +159,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="烈度" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cZL-5J-5MV">
                                     <rect key="frame" x="450" y="60" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -225,7 +226,7 @@
                         <constraint firstAttribute="trailing" secondItem="1or-Ja-edz" secondAttribute="trailing" id="4M0-Tv-tRG"/>
                         <constraint firstAttribute="bottom" secondItem="1or-Ja-edz" secondAttribute="bottom" id="HHJ-yx-30s"/>
                         <constraint firstItem="1or-Ja-edz" firstAttribute="leading" secondItem="Yg0-dE-XeY" secondAttribute="leading" constant="20" id="Ksr-4i-yFT"/>
-                        <constraint firstItem="1or-Ja-edz" firstAttribute="top" secondItem="Yg0-dE-XeY" secondAttribute="top" constant="30" id="wx0-EH-9WV"/>
+                        <constraint firstItem="1or-Ja-edz" firstAttribute="top" secondItem="Yg0-dE-XeY" secondAttribute="top" constant="20" id="wx0-EH-9WV"/>
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eRa-go-mzo">

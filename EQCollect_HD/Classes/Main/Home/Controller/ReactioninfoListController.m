@@ -55,8 +55,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReactioninfoViewController *react = [[ReactioninfoViewController alloc] initWithNibName:@"ReactioninfoViewController" bundle:nil];
-    [self.nav pushViewController:react animated:YES];
+    if (!self.reactionVC) {
+       self.reactionVC = [[ReactioninfoViewController alloc]initWithNibName:@"ReactioninfoViewController" bundle:nil];
+    }
+    [self.nav pushViewController:self.reactionVC animated:YES];
 }
 
 

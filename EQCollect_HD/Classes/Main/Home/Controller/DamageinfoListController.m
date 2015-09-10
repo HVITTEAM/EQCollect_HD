@@ -55,8 +55,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DamageinfoViewController *react = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
-    [self.nav pushViewController:react animated:YES];
+    if (!self.damageinfoVC) {
+        self.damageinfoVC = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
+    }
+    [self.nav pushViewController:self.damageinfoVC animated:YES];
 }
 
 @end

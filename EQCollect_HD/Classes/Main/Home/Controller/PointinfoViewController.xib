@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PointinfoViewController">
             <connections>
                 <outlet property="containerLeftCons" destination="9ze-l7-ZtW" id="snz-Wd-qhw"/>
+                <outlet property="containerTopCons" destination="yvm-Ky-i9l" id="XGg-TV-vDY"/>
                 <outlet property="containerView" destination="ryC-db-11D" id="dPb-Cu-Kre"/>
                 <outlet property="containerWidthCons" destination="aKA-Gj-nX4" id="6hU-a7-e8j"/>
                 <outlet property="earthidTextF" destination="4H5-sH-4M5" id="e9Y-6o-JcG"/>
@@ -33,7 +34,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="540" placeholderIntrinsicHeight="511" translatesAutoresizingMaskIntoConstraints="NO" id="ryC-db-11D">
-                            <rect key="frame" x="20" y="30" width="560" height="530"/>
+                            <rect key="frame" x="20" y="20" width="560" height="530"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="调查点编号:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QzN-yi-nfD">
                                     <rect key="frame" x="0.0" y="6" width="74.5" height="17"/>
@@ -47,7 +48,7 @@
                                         <constraint firstAttribute="width" priority="999" constant="90" id="2hd-BT-xF7"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地震编号:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSu-Gb-gEb">
                                     <rect key="frame" x="0.0" y="126" width="60.5" height="17"/>
@@ -58,12 +59,12 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="地震编号" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4H5-sH-4M5">
                                     <rect key="frame" x="84" y="120" width="476" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="调查点地点" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7Vr-hO-ZwT">
                                     <rect key="frame" x="470" y="0.0" width="90" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="调查点经度:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rUn-sy-3H7">
                                     <rect key="frame" x="0.0" y="186" width="74.5" height="17"/>
@@ -74,7 +75,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="调查点经度" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="omv-lp-C94">
                                     <rect key="frame" x="84" y="180" width="476" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="调查点纬度:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ir-tC-3wF">
                                     <rect key="frame" x="0.0" y="246" width="74.5" height="17"/>
@@ -85,7 +86,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="调查点纬度" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="22p-M8-9Dw">
                                     <rect key="frame" x="84" y="240" width="476" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="生成时间:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mAz-vd-zZb">
                                     <rect key="frame" x="385" y="66" width="60.5" height="17"/>
@@ -96,7 +97,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="生成时间" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EDo-x9-6Xb">
                                     <rect key="frame" x="470" y="60" width="90" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="小组名称:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kzt-jR-zcM">
                                     <rect key="frame" x="0.0" y="306" width="60.5" height="17"/>
@@ -107,12 +108,12 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="小组名称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E2X-Yk-O2P">
                                     <rect key="frame" x="84" y="300" width="476" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="评定烈度" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DKY-A5-Q4w">
                                     <rect key="frame" x="84" y="360" width="476" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="评定烈度:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3H-dE-BzN">
                                     <rect key="frame" x="0.0" y="366" width="60.5" height="17"/>
@@ -135,7 +136,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="调查点名称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cry-ei-nmc">
                                     <rect key="frame" x="84" y="60" width="90" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="调查点地点:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHG-Ut-6IP">
                                     <rect key="frame" x="385" y="6" width="74.5" height="17"/>
@@ -150,7 +151,7 @@
                                         <constraint firstAttribute="height" constant="100" id="Zi5-ju-Vaw"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                 </textView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -212,7 +213,7 @@
                         <constraint firstItem="ryC-db-11D" firstAttribute="leading" secondItem="YLG-HR-vRf" secondAttribute="leading" constant="20" id="9ze-l7-ZtW"/>
                         <constraint firstAttribute="trailing" secondItem="ryC-db-11D" secondAttribute="trailing" id="ggm-iR-jmw"/>
                         <constraint firstAttribute="bottom" secondItem="ryC-db-11D" secondAttribute="bottom" id="xoa-el-0pS"/>
-                        <constraint firstItem="ryC-db-11D" firstAttribute="top" secondItem="YLG-HR-vRf" secondAttribute="top" constant="30" id="yvm-Ky-i9l"/>
+                        <constraint firstItem="ryC-db-11D" firstAttribute="top" secondItem="YLG-HR-vRf" secondAttribute="top" constant="20" id="yvm-Ky-i9l"/>
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pq0-d9-6nf">
@@ -222,6 +223,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="YLG-HR-vRf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="26L-PY-49q"/>
                 <constraint firstItem="YLG-HR-vRf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="33Y-tv-1k1"/>

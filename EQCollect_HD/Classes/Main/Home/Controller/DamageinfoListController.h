@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class DamageinfoViewController;
 
 @interface DamageinfoListController : UITableViewController
+
 @property (strong,nonatomic)UINavigationController *nav;
+@property (strong,nonatomic)DamageinfoViewController *damageinfoVC;
 
 @end

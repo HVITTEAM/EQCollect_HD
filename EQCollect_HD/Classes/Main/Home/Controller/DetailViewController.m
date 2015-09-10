@@ -8,6 +8,9 @@
 #import "MasterViewController.h"
 #import "SurveyPointCell.h"
 #import "SurveyPointDetailViewController.h"
+#import "PointinfoViewController.h"
+//-------测试登陆
+#import "LoginViewController.h"
 
 @interface DetailViewController ()
 {
@@ -54,6 +57,9 @@
     // searchResultsDelegate 就是 UITableViewDelegate
     searchDisplayController.searchResultsDelegate = self;
     searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
+    
+    //----------------------------测试登陆----------------
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
 }
 
 #pragma mark 分割控制器代理方法
@@ -92,10 +98,6 @@
         return 3;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 20;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -126,11 +128,21 @@
 
 -(void)addSurveyPointClickHandler
 {
-    if (!self.addView)
-        self.addView = [[AddSurveyPointController alloc] init];
-    self.nav = [[UINavigationController alloc] initWithRootViewController:self.addView];
+    if (!self.pointinfoVC) {
+        self.pointinfoVC = [[PointinfoViewController alloc] init];
+    }
+    self.pointinfoVC.isAdd = YES;
+    self.nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
     self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:self.nav animated:YES completion:nil];
 }
 
+//测试登陆-------------
+-(void)login
+{
+    LoginViewController *login = [[LoginViewController alloc] init];
+    login.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:login animated:YES completion:nil];
+
+}
 @end

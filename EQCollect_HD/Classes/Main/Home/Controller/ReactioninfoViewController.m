@@ -5,7 +5,8 @@
 //  Created by shi on 15/9/8.
 //  Copyright (c) 2015年 董徐维. All rights reserved.
 //
-
+#define kNormalNavHeight 64
+#define kAddNavheight 44
 #import "ReactioninfoViewController.h"
 
 @interface ReactioninfoViewController ()
@@ -20,8 +21,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.navigationItem.title = @"人物反应详情";
+    self.navigationItem.title = @"人物反应";
     
+    if (self.isAdd ) {
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(add)];
+        self.navigationItem.leftBarButtonItem = leftItem;
+        self.navigationItem.rightBarButtonItem = rigthItem;
+        
+    }
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
     //将UIDeviceOrientation类型转为UIInterfaceOrientation
@@ -29,23 +37,31 @@
     //根据屏幕方向设置视图的约束
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
-    self.reactionidTextF.delegate = self;
-    self.reactiontimeTextF.delegate = self;
-    self.informantnameTextF.delegate = self;
-    self.informantageTextF.delegate = self;
-    self.informanteducationTextF.delegate = self;
-    self.informantjobTextF.delegate = self;
-    self.reactionaddressTextF.delegate = self;
-    self.rockfeelingTextF.delegate = self;
-    self.throwfeelingTextF.delegate = self;
-    self.throwtingsTextF.delegate = self;
-    self.throwdistanceTextF.delegate = self;
-    self.fallTextF.delegate = self;
-    self.hangTextF.delegate = self;
-    self.furnituresoundTextF.delegate = self;
-    self.furnituredumpTextF.delegate = self;
-    self.soundsizeTextF.delegate = self;
-    self.sounddirectionTextF.delegate = self;
+    self.textInputViews = @[
+                            self.reactionidTextF,
+                            self.reactiontimeTextF,
+                            self.informantnameTextF,
+                            self.informantageTextF,
+                            self.informanteducationTextF,
+                            self.informantjobTextF,
+                            self.reactionaddressTextF,
+                            self.rockfeelingTextF,
+                            self.throwfeelingTextF,
+                            self.throwtingsTextF,
+                            self.throwdistanceTextF,
+                            self.fallTextF,
+                            self.hangTextF,
+                            self.furnituresoundTextF,
+                            self.furnituredumpTextF,
+                            self.soundsizeTextF,
+                            self.sounddirectionTextF
+                            ];
+    for (int i = 0;i<self.textInputViews.count;i++) {
+        UITextField *textF = self.textInputViews[i];
+        textF.delegate = self;
+        //设置tag
+        textF.tag = 1000+i;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -76,17 +92,19 @@
  */
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+    if(UIInterfaceOrientationIsLandscape(interfaceOrientation) && !self.isAdd)
     {
-        //将要旋转到横屏时
+        //设备为横屏且不是新增界面，设置为横屏约束
+        self.containerTopCons.constant = 30;
         self.containerLeftCons.constant = 40;
         self.containerWidthCons.constant = -80;
         self.reactionidWidthCons.constant = 180;
     }else{
-        //将要旋转到竖屏时
+        //设备为竖屏或新增界面，设置为竖屏约束
+        self.containerTopCons.constant = 20;
         self.containerLeftCons.constant = 20;
         self.containerWidthCons.constant = -40;
-        self.reactionidWidthCons.constant = 90;
+        self.reactionidWidthCons.constant = 100;
     }
     //更新约束
     [self.view updateConstraintsIfNeeded];
@@ -102,6 +120,19 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     _currentTextField = nil;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField.returnKeyType == UIReturnKeyNext) {
+        //根据tag获取下一个文本框
+        UITextField *textF =(UITextField *)[self.containerView viewWithTag:textField.tag+1];
+        [textF becomeFirstResponder];
+    }
+    if (textField.returnKeyType == UIReturnKeyDone) {
+        [textField resignFirstResponder];
+    }
+    return YES;
 }
 
 /**
@@ -120,13 +151,15 @@
     CGRect currentTextFieldFrame = [self.view convertRect:_currentTextField.frame fromView:self.containerView];
     CGFloat currentTextFieldBottom = CGRectGetMaxY(currentTextFieldFrame);
     
+    //获取顶部导航栏和状态栏高度
+    NSInteger navHeight = self.isAdd?kAddNavheight:kNormalNavHeight;
     //条件成立，说明键盘遮挡了文本框
     if (currentTextFieldBottom >= keyboardTopToViewTop) {
-        self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, -64+currentTextFieldBottom - keyboardTopToViewTop+50, 0);
+        self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0,currentTextFieldBottom - keyboardTopToViewTop+60, 0);
         //向上移动
         [UIView animateWithDuration:duration delay:0 options:animationCurve animations:^{
             
-            self.rootScrollView.contentOffset = CGPointMake(0,-64+currentTextFieldBottom - keyboardTopToViewTop+50);
+            self.rootScrollView.contentOffset = CGPointMake(0,-navHeight+currentTextFieldBottom - keyboardTopToViewTop+60);
         } completion:nil];
     }
 }
@@ -141,11 +174,25 @@
     NSInteger animationCurve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
+    //获取顶部导航栏和状态栏高度
+    NSInteger navHeight = self.isAdd?kAddNavheight:kNormalNavHeight;
     //将rootScrollView的contentInset和contentOffset复原
     self.rootScrollView.contentInset = UIEdgeInsetsZero;
     [UIView animateWithDuration:duration delay:0 options:animationCurve animations:^{
-        self.rootScrollView.contentOffset = CGPointMake(0,-64);
+        self.rootScrollView.contentOffset = CGPointMake(0,-navHeight);
     } completion:nil];
+}
+
+
+-(void)add
+{
+    NSLog(@"新增");
+    [self dismissViewControllerAnimated:self completion:nil];
+}
+
+-(void)back
+{
+    [self dismissViewControllerAnimated:self completion:nil];
 }
 
 @end

@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReactioninfoViewController">
             <connections>
                 <outlet property="containerLeftCons" destination="7wz-BK-IWH" id="dVf-Hq-rZe"/>
+                <outlet property="containerTopCons" destination="qXW-PR-OTC" id="7tL-KZ-gRk"/>
                 <outlet property="containerView" destination="lQY-Gg-OSB" id="1sT-g4-Okv"/>
                 <outlet property="containerWidthCons" destination="wSL-0R-L3k" id="xGU-Z0-aQF"/>
                 <outlet property="fallTextF" destination="wZu-gP-lnD" id="1SB-TJ-JoB"/>
@@ -40,7 +41,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQY-Gg-OSB">
-                            <rect key="frame" x="20" y="30" width="560" height="510"/>
+                            <rect key="frame" x="20" y="20" width="560" height="510"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="人物反应编号:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbg-FX-gqz">
                                     <rect key="frame" x="0.0" y="6" width="88.5" height="17"/>
@@ -49,24 +50,24 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="反应编号" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0cN-Wk-vco">
-                                    <rect key="frame" x="98" y="0.0" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="0.0" width="110" height="30"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="100" id="h1P-i2-r9I"/>
+                                        <constraint firstAttribute="width" constant="110" id="h1P-i2-r9I"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="调查时间:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gs0-L3-9jY">
-                                    <rect key="frame" x="361" y="6" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="6" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="调查时间" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wJV-md-hPg">
-                                    <rect key="frame" x="460" y="0.0" width="100" height="30"/>
+                                    <rect key="frame" x="450" y="0.0" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="被调查者姓名:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Quz-sG-Wzh">
                                     <rect key="frame" x="0.0" y="66" width="88.5" height="17"/>
@@ -75,20 +76,20 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="姓名" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xlg-FC-XRR">
-                                    <rect key="frame" x="98" y="60" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="60" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="被调查者年龄:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QqD-kf-dtv">
-                                    <rect key="frame" x="361" y="66" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="66" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="年龄" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lG6-oP-6di">
-                                    <rect key="frame" x="460" y="60" width="100" height="30"/>
+                                    <rect key="frame" x="450" y="60" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="被调查者学历:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DWL-b6-pGA">
                                     <rect key="frame" x="0.0" y="126" width="88.5" height="17"/>
@@ -97,21 +98,16 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="学历" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9UU-m4-ohj">
-                                    <rect key="frame" x="98" y="120" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="120" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="被调查者职业:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WgS-kK-ZYO">
-                                    <rect key="frame" x="361" y="126" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="126" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="职业" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wwo-0i-jGO">
-                                    <rect key="frame" x="460" y="120" width="100" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="所在地:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oTg-Zx-0sO">
                                     <rect key="frame" x="0.0" y="186" width="46.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
@@ -119,20 +115,20 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="所在地" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KX5-Tb-l9U">
-                                    <rect key="frame" x="98" y="180" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="180" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="晃动感觉:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8aS-mw-wgE">
-                                    <rect key="frame" x="361" y="186" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="186" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="晃动感觉" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3uT-Ik-COH">
-                                    <rect key="frame" x="460" y="180" width="100" height="30"/>
+                                    <rect key="frame" x="450" y="180" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="抛起感觉:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CC0-lI-JGw">
                                     <rect key="frame" x="0.0" y="246" width="60.5" height="17"/>
@@ -141,20 +137,20 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="抛起感觉" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ylI-Ny-FBd">
-                                    <rect key="frame" x="98" y="240" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="240" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="抛弃物:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qgW-NA-iOa">
-                                    <rect key="frame" x="361" y="246" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="246" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="抛弃物:" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yaf-2z-ivw">
-                                    <rect key="frame" x="460" y="240" width="100" height="30"/>
+                                    <rect key="frame" x="450" y="240" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="抛起距离:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb4-jj-i6v">
                                     <rect key="frame" x="0.0" y="306" width="60.5" height="17"/>
@@ -163,20 +159,20 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="抛起距离:" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dqg-d4-DFz">
-                                    <rect key="frame" x="98" y="300" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="300" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="搁置物滚落:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BDH-Bu-ik6">
-                                    <rect key="frame" x="361" y="306" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="306" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="搁置物滚落" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wZu-gP-lnD">
-                                    <rect key="frame" x="460" y="300" width="100" height="30"/>
+                                    <rect key="frame" x="450" y="300" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="悬挂物:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QK5-9a-Gal">
                                     <rect key="frame" x="0.0" y="366" width="46.5" height="17"/>
@@ -185,20 +181,20 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="悬挂物" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5EZ-wS-Jbg">
-                                    <rect key="frame" x="98" y="360" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="360" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="家具声响:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1T8-gj-Uzt">
-                                    <rect key="frame" x="361" y="366" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="366" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="家具声响" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Y74-ok-epA">
-                                    <rect key="frame" x="460" y="360" width="100" height="30"/>
+                                    <rect key="frame" x="450" y="360" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="家具倾倒:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3v4-Fp-N6B">
                                     <rect key="frame" x="0.0" y="426" width="60.5" height="17"/>
@@ -207,14 +203,14 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="家具倾倒" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="02p-IZ-g1e">
-                                    <rect key="frame" x="98" y="420" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="420" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="地声大小" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VC4-Si-tcb">
-                                    <rect key="frame" x="460" y="420" width="100" height="30"/>
+                                    <rect key="frame" x="450" y="420" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地声方向:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yI-Ry-Ghx">
                                     <rect key="frame" x="0.0" y="486" width="60.5" height="17"/>
@@ -223,15 +219,20 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地声大小:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h90-JZ-ogX">
-                                    <rect key="frame" x="361" y="426" width="88.5" height="17"/>
+                                    <rect key="frame" x="351" y="426" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="地声方向" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sLL-3B-bGY">
-                                    <rect key="frame" x="98" y="480" width="100" height="30"/>
+                                    <rect key="frame" x="98" y="480" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                </textField>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="职业" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wwo-0i-jGO">
+                                    <rect key="frame" x="450" y="120" width="110" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
                             </subviews>
                             <constraints>
@@ -334,7 +335,7 @@
                         <constraint firstItem="lQY-Gg-OSB" firstAttribute="leading" secondItem="K8b-jJ-Hjv" secondAttribute="leading" constant="20" id="7wz-BK-IWH"/>
                         <constraint firstAttribute="trailing" secondItem="lQY-Gg-OSB" secondAttribute="trailing" id="9BP-Rj-IfU"/>
                         <constraint firstAttribute="bottom" secondItem="lQY-Gg-OSB" secondAttribute="bottom" id="nDG-kg-UtS"/>
-                        <constraint firstItem="lQY-Gg-OSB" firstAttribute="top" secondItem="K8b-jJ-Hjv" secondAttribute="top" constant="30" id="qXW-PR-OTC"/>
+                        <constraint firstItem="lQY-Gg-OSB" firstAttribute="top" secondItem="K8b-jJ-Hjv" secondAttribute="top" constant="20" id="qXW-PR-OTC"/>
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pK7-GR-96Y">

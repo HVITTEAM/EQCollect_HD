@@ -68,8 +68,6 @@
 		01FEE2A21B9BCACF007C4641 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29D1B9BCACF007C4641 /* MasterViewController.m */; };
 		01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */; };
 		01FEE2A41B9BCACF007C4641 /* SurveyPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */; };
-		01FEE2A81B9BCB0D007C4641 /* AddSurveyPointController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE2A61B9BCB0D007C4641 /* AddSurveyPointController.m */; };
-		01FEE2A91B9BCB0D007C4641 /* AddSurveyPointController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */; };
 		D23A1A421B9E613C00758DDD /* PointinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A401B9E613C00758DDD /* PointinfoViewController.m */; };
 		D23A1A431B9E613C00758DDD /* PointinfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */; };
 		D23A1A7C1B9E903B00758DDD /* AbnormalinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A7A1B9E903B00758DDD /* AbnormalinfoViewController.m */; };
@@ -227,9 +225,6 @@
 		01FEE29E1B9BCACF007C4641 /* SurveyPointDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointDetailViewController.h; sourceTree = "<group>"; };
 		01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointDetailViewController.m; sourceTree = "<group>"; };
 		01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointDetailViewController.xib; sourceTree = "<group>"; };
-		01FEE2A51B9BCB0D007C4641 /* AddSurveyPointController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSurveyPointController.h; sourceTree = "<group>"; };
-		01FEE2A61B9BCB0D007C4641 /* AddSurveyPointController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSurveyPointController.m; sourceTree = "<group>"; };
-		01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddSurveyPointController.xib; sourceTree = "<group>"; };
 		D23A1A3F1B9E613C00758DDD /* PointinfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointinfoViewController.h; sourceTree = "<group>"; };
 		D23A1A401B9E613C00758DDD /* PointinfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointinfoViewController.m; sourceTree = "<group>"; };
 		D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PointinfoViewController.xib; sourceTree = "<group>"; };
@@ -662,9 +657,6 @@
 				01FEE29E1B9BCACF007C4641 /* SurveyPointDetailViewController.h */,
 				01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */,
 				01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */,
-				01FEE2A51B9BCB0D007C4641 /* AddSurveyPointController.h */,
-				01FEE2A61B9BCB0D007C4641 /* AddSurveyPointController.m */,
-				01FEE2A71B9BCB0D007C4641 /* AddSurveyPointController.xib */,
 				D23A1A3F1B9E613C00758DDD /* PointinfoViewController.h */,
 				D23A1A401B9E613C00758DDD /* PointinfoViewController.m */,
 				D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */,
@@ -782,7 +774,6 @@
 				D23A1A8C1B9ED3FD00758DDD /* AbnormalinfoListController.xib in Resources */,
 				01EDADA21B8EFC1F00C1CF21 /* LoginViewController.xib in Resources */,
 				D23A1A431B9E613C00758DDD /* PointinfoViewController.xib in Resources */,
-				01FEE2A91B9BCB0D007C4641 /* AddSurveyPointController.xib in Resources */,
 				D23A1AAA1B9EE3C500758DDD /* DamageinfoListController.xib in Resources */,
 				01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */,
 				D23A1AAF1B9EE3F900758DDD /* DamageinfoCell.xib in Resources */,
@@ -853,7 +844,6 @@
 				01E3546A1B9D5F5700014114 /* UIScrollView+MJRefresh.m in Sources */,
 				0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */,
 				D23A1AA91B9EE3C500758DDD /* DamageinfoListController.m in Sources */,
-				01FEE2A81B9BCB0D007C4641 /* AddSurveyPointController.m in Sources */,
 				01E354621B9D5F5700014114 /* NSObject+MJIvar.m in Sources */,
 				01E354661B9D5F5700014114 /* MJRefreshConst.m in Sources */,
 				01E354611B9D5F5700014114 /* NSObject+MJCoding.m in Sources */,

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+@class AbnormalinfoViewController;
 
 @interface AbnormalinfoListController : UITableViewController
 @property (strong,nonatomic)UINavigationController *nav;
-
+@property (strong,nonatomic)AbnormalinfoViewController *abnormalinfoVC;
 @end

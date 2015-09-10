@@ -9,7 +9,9 @@
 #import "LoginViewController.h"
 
 @interface LoginViewController ()
-
+{
+    UITextField *_currentTextField;
+}
 @end
 
 @implementation LoginViewController
@@ -17,21 +19,104 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    self.loginBoxView.layer.cornerRadius = 10.0f;
+    self.loginBoxView.layer.masksToBounds = YES;
+    self.loginBoxView.clipsToBounds = YES;
+    
+    self.inputBgView.layer.cornerRadius = 5.0f;
+    self.inputBgView.layer.masksToBounds = YES;
+    
+    self.loginNowBtn.layer.cornerRadius = 5.0f;
+    self.loginNowBtn.layer.masksToBounds = YES;
+    
+    self.accountTextF.delegate = self;
+    self.passwdTextF.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //注册键盘通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    //删除监听键盘通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-*/
 
+#pragma mark UITextFieldDelegate方法
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    _currentTextField = textField;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    _currentTextField = nil;
+}
+
+/**
+ *  处理键盘遮挡文本
+ */
+-(void)keyBoardWillShow:(NSNotification *)notification
+{
+    //获取键盘动画曲线和持续时间和键盘高
+    NSDictionary *keyboardDict = [notification userInfo];
+    CGFloat keyboardHeight = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size.height;
+    NSInteger animationCurve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    //键盘顶部到屏幕顶部距离
+    CGFloat keyboardTopToViewTop = self.view.height - keyboardHeight;
+    //当前文本框底部到屏幕顶部距离
+    CGRect currentTextFieldFrame = [self.view convertRect:_currentTextField.frame fromView:self.inputBgView];
+    CGFloat currentTextFieldBottom = CGRectGetMaxY(currentTextFieldFrame);
+    
+    //条件成立，说明键盘遮挡了文本框
+    if (currentTextFieldBottom >= keyboardTopToViewTop-60) {
+        //向上移动
+        self.loginBoxCenterYCons.constant += currentTextFieldBottom - keyboardTopToViewTop+60;
+        [UIView animateWithDuration:duration delay:0 options:animationCurve animations:^{
+            //更新约束
+            [self.view layoutIfNeeded];
+        } completion:nil];
+    }
+}
+
+/**
+ *  处理键盘遮挡文本
+ */
+-(void)keyboardWillHide:(NSNotification *)notification
+{
+    //获取键盘动画曲线和持续时间
+    NSDictionary *keyboardDict = [notification userInfo];
+    NSInteger animationCurve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    //复原约束
+    self.loginBoxCenterYCons.constant = 0;
+    [UIView animateWithDuration:duration delay:0 options:animationCurve animations:^{
+        //更新约束
+        [self.view layoutIfNeeded];
+    } completion:nil];
+}
+
+/**
+ *  忘记密码
+ */
+- (IBAction)forgetPasswd:(id)sender {
+    NSLog(@"忘记密码");
+}
+
+/**
+ *  登录
+ */
+- (IBAction)loginNow:(id)sender {
+    NSLog(@"立即登录");
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

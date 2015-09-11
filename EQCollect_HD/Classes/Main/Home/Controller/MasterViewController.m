@@ -20,7 +20,11 @@
     self.title = @"浙江省地震灾害现场采集";
     
     //设置表头视图
-    self.tableView.tableHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"AdminTableHead" owner:self options:nil] lastObject];
+    
+  AdminTableHead *headView  = [[[NSBundle mainBundle] loadNibNamed:@"AdminTableHead" owner:self options:nil] lastObject];
+    headView.useridLabel.text = [NSString stringWithFormat:@"%ld",self.usermd.userid];
+    headView.usernameLabel.text = self.usermd.username;
+    self.tableView.tableHeaderView = headView;
     
     //设置导航栏颜色
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:102/255.0 green:147/255.0 blue:255/255.0 alpha:1.0];

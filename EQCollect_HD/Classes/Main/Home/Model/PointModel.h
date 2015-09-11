@@ -35,4 +35,6 @@
 @property (nonatomic, retain) NSString *pointperson2;
 @property (nonatomic, retain) NSString *pointintensity;
 @property (nonatomic, assign) NSString *pointcontent;
+
+//-(instancetype)initWithNSDictionary:(NSDictionary *)dict;
 @end

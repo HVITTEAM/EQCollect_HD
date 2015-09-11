@@ -11,5 +11,7 @@
 @interface AdminTableHead : UIView
 @property (weak, nonatomic) IBOutlet UIView *headIconBk;      //头像背景View
 @property (weak, nonatomic) IBOutlet UIImageView *headIcon;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *useridLabel;
 
 @end

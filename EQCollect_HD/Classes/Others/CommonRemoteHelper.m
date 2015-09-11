@@ -56,8 +56,7 @@ static NSOperationQueue * _queue;
     {
         // 请求的方法
         [manager POST:url
-           parameters: @{@"loginname" : @"admin",
-                         @"pwd" : @"hvit"}
+           parameters:parameters
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   
                   NSString *html = operation.responseString;
@@ -82,26 +81,26 @@ static NSOperationQueue * _queue;
     {
         // 请求的方法
         [manager GET:url
-           parameters:parameters
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  
-                  NSString *html = operation.responseString;
-                  NSData* data=[html dataUsingEncoding:NSUTF8StringEncoding];
-                  NSDictionary *dict=[NSJSONSerialization  JSONObjectWithData:data options:0 error:nil];
-                  success(dict,responseObject);
-                  
-                  // 请求头部信息(我们执行网络请求的时候给服务器发送的包头信息)
-                  NSLog(@"%@", operation.request.allHTTPHeaderFields);
-                  
-                  // 服务器给我们返回的包得头部信息
-                  NSLog(@"%@", operation.response);
-                  
-                  // 返回的数据
-                  NSLog(@"%@", responseObject);
-              }
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  failure(operation,error);
-              }];
+          parameters:parameters
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 
+                 NSString *html = operation.responseString;
+                 NSData* data=[html dataUsingEncoding:NSUTF8StringEncoding];
+                 NSDictionary *dict=[NSJSONSerialization  JSONObjectWithData:data options:0 error:nil];
+                 success(dict,responseObject);
+                 
+                 // 请求头部信息(我们执行网络请求的时候给服务器发送的包头信息)
+                 NSLog(@"%@", operation.request.allHTTPHeaderFields);
+                 
+                 // 服务器给我们返回的包得头部信息
+                 NSLog(@"%@", operation.response);
+                 
+                 // 返回的数据
+                 NSLog(@"%@", responseObject);
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 failure(operation,error);
+             }];
     }
 }
 @end

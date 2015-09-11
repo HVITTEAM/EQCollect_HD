@@ -31,15 +31,7 @@
     [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : @"admin",
                                                               @"pwd" : @"hvit"}
                                  type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {
-                                     //                                     if ([[dict objectForKey:@"success"] isEqualToString:@"true"])
-                                     //                                     {
-                                     NSLog(@"添加成功");
-                                     //                                     }
-                                     //                                     else
-                                     //                                     {
-                                     //                                         NSLog(@"添加失败");
-                                     //                                     }
-                                     
+                                     NSLog(@"成功");
                                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                      NSLog(@"发生错误！%@",error);
                                  }];
@@ -50,7 +42,6 @@
 {
     return 1;
 }
-
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

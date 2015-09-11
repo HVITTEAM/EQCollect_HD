@@ -65,6 +65,7 @@
 		01E81AED1BA2A557008FE6EC /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AEC1BA2A557008FE6EC /* UserModel.m */; };
 		01E81AF11BA2A5CE008FE6EC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AF01BA2A5CE008FE6EC /* MBProgressHUD.m */; };
 		01E81AF41BA2A60B008FE6EC /* NoticeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AF31BA2A60B008FE6EC /* NoticeHelper.m */; };
+		01E81AF61BA2A9C2008FE6EC /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AF51BA2A9C2008FE6EC /* README.md */; };
 		01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5B1B8EF22200C1CF21 /* main.m */; };
 		01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */; };
 		01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD631B8EF22200C1CF21 /* Main.storyboard */; };
@@ -239,6 +240,7 @@
 		01E81AF01BA2A5CE008FE6EC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		01E81AF21BA2A60B008FE6EC /* NoticeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeHelper.h; sourceTree = "<group>"; };
 		01E81AF31BA2A60B008FE6EC /* NoticeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeHelper.m; sourceTree = "<group>"; };
+		01E81AF51BA2A9C2008FE6EC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		01EDAD561B8EF22200C1CF21 /* EQCollect_HD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EQCollect_HD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01EDAD5A1B8EF22200C1CF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01EDAD5B1B8EF22200C1CF21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 		01E354331B9D5F5700014114 /* MJExtension */ = {
 			isa = PBXGroup;
 			children = (
+				01E81AF51BA2A9C2008FE6EC /* README.md */,
 				01E354341B9D5F5700014114 /* MJConst.h */,
 				01E354351B9D5F5700014114 /* MJConst.m */,
 				01E354361B9D5F5700014114 /* MJExtension.h */,
@@ -943,6 +946,7 @@
 				01E3546B1B9D5F5700014114 /* UIView+MJExtension.m in Sources */,
 				D23A1A7C1B9E903B00758DDD /* AbnormalinfoViewController.m in Sources */,
 				01EED58C1B9D25420041D28A /* FMResultSet.m in Sources */,
+				01E81AF61BA2A9C2008FE6EC /* README.md in Sources */,
 				018A1D8B1B9D2EC000C97B48 /* AbnormalinfoTableHelper.m in Sources */,
 				01A26EE61BA17F1A00EEB627 /* CommonRemoteHelper.m in Sources */,
 				018A1D8E1B9D314200C97B48 /* ReactioninfoTableHelper.m in Sources */,

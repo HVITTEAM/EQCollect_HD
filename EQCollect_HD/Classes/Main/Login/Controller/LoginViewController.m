@@ -136,7 +136,6 @@
                                          [HUD removeFromSuperview];
                                          [NoticeHelper AlertShow:@"登陆失败！请重试！" view:self.view];
                                      }];
-        
     }
     else
     {

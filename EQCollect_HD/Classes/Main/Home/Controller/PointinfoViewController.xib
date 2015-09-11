@@ -30,6 +30,12 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pq0-d9-6nf">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="5" id="ctD-rY-n8Z"/>
+                    </constraints>
+                </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YLG-HR-vRf">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
@@ -216,12 +222,6 @@
                         <constraint firstItem="ryC-db-11D" firstAttribute="top" secondItem="YLG-HR-vRf" secondAttribute="top" constant="20" id="yvm-Ky-i9l"/>
                     </constraints>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pq0-d9-6nf">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="5"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="5" id="ctD-rY-n8Z"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>

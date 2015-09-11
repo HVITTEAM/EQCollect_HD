@@ -62,6 +62,9 @@
 		01E81AE61BA274F5008FE6EC /* ArchiverCacheHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AE11BA274F5008FE6EC /* ArchiverCacheHelper.m */; };
 		01E81AE71BA274F5008FE6EC /* HMControllerTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AE31BA274F5008FE6EC /* HMControllerTool.m */; };
 		01E81AE81BA274F5008FE6EC /* SharedAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AE51BA274F5008FE6EC /* SharedAppUtil.m */; };
+		01E81AED1BA2A557008FE6EC /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AEC1BA2A557008FE6EC /* UserModel.m */; };
+		01E81AF11BA2A5CE008FE6EC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AF01BA2A5CE008FE6EC /* MBProgressHUD.m */; };
+		01E81AF41BA2A60B008FE6EC /* NoticeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AF31BA2A60B008FE6EC /* NoticeHelper.m */; };
 		01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5B1B8EF22200C1CF21 /* main.m */; };
 		01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */; };
 		01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD631B8EF22200C1CF21 /* Main.storyboard */; };
@@ -81,7 +84,6 @@
 		01FEE2A21B9BCACF007C4641 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29D1B9BCACF007C4641 /* MasterViewController.m */; };
 		01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */; };
 		01FEE2A41B9BCACF007C4641 /* SurveyPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */; };
-		D218FA891BA26EB900D3B5C6 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D218FA881BA26EB900D3B5C6 /* UserModel.m */; };
 		D23A1A421B9E613C00758DDD /* PointinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A401B9E613C00758DDD /* PointinfoViewController.m */; };
 		D23A1A431B9E613C00758DDD /* PointinfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */; };
 		D23A1A7C1B9E903B00758DDD /* AbnormalinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A7A1B9E903B00758DDD /* AbnormalinfoViewController.m */; };
@@ -231,6 +233,12 @@
 		01E81AE31BA274F5008FE6EC /* HMControllerTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMControllerTool.m; sourceTree = "<group>"; };
 		01E81AE41BA274F5008FE6EC /* SharedAppUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedAppUtil.h; sourceTree = "<group>"; };
 		01E81AE51BA274F5008FE6EC /* SharedAppUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedAppUtil.m; sourceTree = "<group>"; };
+		01E81AEB1BA2A557008FE6EC /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		01E81AEC1BA2A557008FE6EC /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		01E81AEF1BA2A5CE008FE6EC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		01E81AF01BA2A5CE008FE6EC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		01E81AF21BA2A60B008FE6EC /* NoticeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeHelper.h; sourceTree = "<group>"; };
+		01E81AF31BA2A60B008FE6EC /* NoticeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeHelper.m; sourceTree = "<group>"; };
 		01EDAD561B8EF22200C1CF21 /* EQCollect_HD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EQCollect_HD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01EDAD5A1B8EF22200C1CF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01EDAD5B1B8EF22200C1CF21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -266,8 +274,6 @@
 		01FEE29E1B9BCACF007C4641 /* SurveyPointDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointDetailViewController.h; sourceTree = "<group>"; };
 		01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointDetailViewController.m; sourceTree = "<group>"; };
 		01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointDetailViewController.xib; sourceTree = "<group>"; };
-		D218FA871BA26EB900D3B5C6 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
-		D218FA881BA26EB900D3B5C6 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		D23A1A3F1B9E613C00758DDD /* PointinfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointinfoViewController.h; sourceTree = "<group>"; };
 		D23A1A401B9E613C00758DDD /* PointinfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointinfoViewController.m; sourceTree = "<group>"; };
 		D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PointinfoViewController.xib; sourceTree = "<group>"; };
@@ -507,6 +513,31 @@
 			path = MJRefresh;
 			sourceTree = "<group>";
 		};
+		01E81AE91BA2A52E008FE6EC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				01E81AEB1BA2A557008FE6EC /* UserModel.h */,
+				01E81AEC1BA2A557008FE6EC /* UserModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		01E81AEA1BA2A52E008FE6EC /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		01E81AEE1BA2A5CE008FE6EC /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				01E81AEF1BA2A5CE008FE6EC /* MBProgressHUD.h */,
+				01E81AF01BA2A5CE008FE6EC /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 		01EDAD4D1B8EF22200C1CF21 = {
 			isa = PBXGroup;
 			children = (
@@ -602,8 +633,6 @@
 		01EDAD981B8EFBF300C1CF21 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D218FA871BA26EB900D3B5C6 /* UserModel.h */,
-				D218FA881BA26EB900D3B5C6 /* UserModel.m */,
 				01E3546C1B9D615700014114 /* PointModel.h */,
 				01E3546D1B9D615700014114 /* PointModel.m */,
 				01E3546F1B9D617900014114 /* AbnormalinfoModel.h */,
@@ -642,6 +671,8 @@
 		01EDAD9A1B8EFBF300C1CF21 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				01E81AE91BA2A52E008FE6EC /* Model */,
+				01E81AEA1BA2A52E008FE6EC /* View */,
 				01EDAD9D1B8EFC0700C1CF21 /* Controller */,
 			);
 			path = Login;
@@ -660,6 +691,7 @@
 		01EED5791B9D25420041D28A /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				01E81AEE1BA2A5CE008FE6EC /* MBProgressHUD */,
 				01A26EC71BA17ED700EEB627 /* AFNetworking */,
 				01E354331B9D5F5700014114 /* MJExtension */,
 				01E354431B9D5F5700014114 /* MJRefresh */,
@@ -697,6 +729,8 @@
 		01EED5961B9D2A050041D28A /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				01E81AF21BA2A60B008FE6EC /* NoticeHelper.h */,
+				01E81AF31BA2A60B008FE6EC /* NoticeHelper.m */,
 				01E81AE01BA274F5008FE6EC /* ArchiverCacheHelper.h */,
 				01E81AE11BA274F5008FE6EC /* ArchiverCacheHelper.m */,
 				01E81AE21BA274F5008FE6EC /* HMControllerTool.h */,
@@ -894,7 +928,9 @@
 				01E81AE81BA274F5008FE6EC /* SharedAppUtil.m in Sources */,
 				01E354651B9D5F5700014114 /* MJRefreshBaseView.m in Sources */,
 				01E354711B9D617900014114 /* AbnormalinfoModel.m in Sources */,
+				01E81AF41BA2A60B008FE6EC /* NoticeHelper.m in Sources */,
 				0177A0C41B968436003199F4 /* HMCommonGroup.m in Sources */,
+				01E81AED1BA2A557008FE6EC /* UserModel.m in Sources */,
 				01E354631B9D5F5700014114 /* NSObject+MJKeyValue.m in Sources */,
 				0177A0CE1B968475003199F4 /* HMBadgeView.m in Sources */,
 				01EED5891B9D25420041D28A /* FMDatabasePool.m in Sources */,
@@ -914,7 +950,6 @@
 				0177A0C31B968436003199F4 /* HMCommonCenterItem.m in Sources */,
 				0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */,
 				D23A1AAE1B9EE3F900758DDD /* DamageinfoCell.m in Sources */,
-				D218FA891BA26EB900D3B5C6 /* UserModel.m in Sources */,
 				0177A0C51B968436003199F4 /* HMCommonItem.m in Sources */,
 				01A26EDF1BA17ED700EEB627 /* AFSecurityPolicy.m in Sources */,
 				01FEE2A11B9BCACF007C4641 /* DetailViewController.m in Sources */,
@@ -948,6 +983,7 @@
 				D23A1A861B9EBA9800758DDD /* DamageinfoViewController.m in Sources */,
 				0177A0D81B968496003199F4 /* UIBarButtonItem+Extension.m in Sources */,
 				0177A0C11B968436003199F4 /* HMCommonArrowItem.m in Sources */,
+				01E81AF11BA2A5CE008FE6EC /* MBProgressHUD.m in Sources */,
 				01E354741B9D618900014114 /* ReactionModel.m in Sources */,
 				01A26EDB1BA17ED700EEB627 /* AFHTTPRequestOperation.m in Sources */,
 				01E3545D1B9D5F5700014114 /* MJConst.m in Sources */,

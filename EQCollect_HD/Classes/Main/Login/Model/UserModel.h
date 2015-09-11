@@ -21,13 +21,11 @@
 @property (nonatomic, retain) NSString *username;
 @property (nonatomic, retain) NSString *userpwd;
 @property (nonatomic, retain) NSString *useraddress;
-@property (nonatomic, assign) NSString *userstatus;
+@property (nonatomic, retain) NSString *userstatus;
 @property (nonatomic, retain) NSString *userlon;
 @property (nonatomic, retain) NSString *userlat;
-@property (nonatomic, assign) NSString *usertel;
+@property (nonatomic, retain) NSString *usertel;
 @property (nonatomic, retain) NSString *jobname;
 @property (nonatomic, retain) NSString *groupname;
-
--(instancetype)initWithNSDictionary:(NSDictionary *)dict;
 
 @end

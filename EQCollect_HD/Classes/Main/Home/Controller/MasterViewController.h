@@ -7,7 +7,6 @@
 #import <UIKit/UIKit.h>
 #import "SettingViewController.h"
 #import "PersonCenterController.h"
-#import "UserModel.h"
 #import "AdminTableHead.h"
 
 @interface MasterViewController : UITableViewController
@@ -18,6 +17,5 @@
 
 @property (nonatomic, retain) UINavigationController *nav;
 
-@property (nonatomic,strong) UserModel *usermd;
 
 @end

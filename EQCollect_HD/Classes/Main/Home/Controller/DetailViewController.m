@@ -9,8 +9,6 @@
 #import "SurveyPointCell.h"
 #import "SurveyPointDetailViewController.h"
 #import "PointinfoViewController.h"
-//-------测试登陆
-#import "LoginViewController.h"
 
 @interface DetailViewController ()
 {
@@ -58,8 +56,6 @@
     searchDisplayController.searchResultsDelegate = self;
     searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
     
-    //----------------------------测试登陆----------------
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
 }
 
 #pragma mark 分割控制器代理方法
@@ -137,12 +133,4 @@
     [self presentViewController:self.nav animated:YES completion:nil];
 }
 
-//测试登陆-------------
--(void)login
-{
-    LoginViewController *login = [[LoginViewController alloc] init];
-    login.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:login animated:YES completion:nil];
-
-}
 @end

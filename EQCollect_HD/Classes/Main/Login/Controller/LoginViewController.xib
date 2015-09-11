@@ -23,12 +23,6 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginBkImg" translatesAutoresizingMaskIntoConstraints="NO" id="hQe-fA-pz2">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="浙江省地震灾害现场采集" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ok3-IH-Bck">
-                    <rect key="frame" x="91" y="59" width="418" height="38"/>
-                    <fontDescription key="fontDescription" name="STHeitiTC-Medium" family="Heiti TC" pointSize="38"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="csN-qy-7Oz">
                     <rect key="frame" x="120" y="147" width="360" height="305"/>
                     <subviews>
@@ -61,12 +55,12 @@
                                         <constraint firstAttribute="height" constant="1" id="HT8-MJ-WJl"/>
                                     </constraints>
                                 </view>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CAO-rg-Zg0">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="hvit" placeholder="请输入密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CAO-rg-Zg0">
                                     <rect key="frame" x="66" y="59" width="228.5" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ked-kb-NWN">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="admin" placeholder="请输入手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ked-kb-NWN">
                                     <rect key="frame" x="69" y="14" width="226" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -134,15 +128,18 @@
                         <constraint firstAttribute="bottom" secondItem="vcI-nK-dVf" secondAttribute="bottom" constant="30" id="vcf-dK-0eY"/>
                     </constraints>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="titleImg" translatesAutoresizingMaskIntoConstraints="NO" id="kUF-EV-d0V">
+                    <rect key="frame" x="80.5" y="35" width="439" height="32"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="Ok3-IH-Bck" secondAttribute="centerX" id="EHc-Gc-xp8"/>
+                <constraint firstItem="csN-qy-7Oz" firstAttribute="top" secondItem="kUF-EV-d0V" secondAttribute="bottom" constant="80" id="Hh9-cJ-X3v"/>
                 <constraint firstAttribute="trailing" secondItem="hQe-fA-pz2" secondAttribute="trailing" id="N8q-rN-jc7"/>
                 <constraint firstAttribute="centerY" secondItem="csN-qy-7Oz" secondAttribute="centerY" id="NXv-9E-2nV"/>
                 <constraint firstAttribute="bottom" secondItem="hQe-fA-pz2" secondAttribute="bottom" id="NiG-ix-02P"/>
-                <constraint firstItem="csN-qy-7Oz" firstAttribute="top" secondItem="Ok3-IH-Bck" secondAttribute="bottom" constant="50" id="Olg-3n-Sss"/>
                 <constraint firstAttribute="centerX" secondItem="csN-qy-7Oz" secondAttribute="centerX" id="PLj-v9-kCg"/>
+                <constraint firstAttribute="centerX" secondItem="kUF-EV-d0V" secondAttribute="centerX" id="RBw-0A-go4"/>
                 <constraint firstItem="hQe-fA-pz2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="cE7-Bg-iCK"/>
                 <constraint firstItem="hQe-fA-pz2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vMf-9h-9F2"/>
             </constraints>
@@ -151,5 +148,6 @@
     </objects>
     <resources>
         <image name="loginBkImg" width="1024" height="768"/>
+        <image name="titleImg" width="439" height="32"/>
     </resources>
 </document>

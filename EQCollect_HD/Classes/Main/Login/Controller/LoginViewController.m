@@ -7,6 +7,8 @@
 //
 
 #import "LoginViewController.h"
+#import "MasterViewController.h"
+#import "DetailViewController.h"
 
 @interface LoginViewController ()
 {
@@ -116,7 +118,41 @@
  *  登录
  */
 - (IBAction)loginNow:(id)sender {
-    NSLog(@"立即登录");
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    NSString *account = self.accountTextF.text;
+    NSString *passwd = self.passwdTextF.text;
+    if (account!=nil && account.length>0 && passwd!=nil && passwd.length>0) {
+        
+        [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : account,
+                                                                  @"pwd" : passwd}
+                                     type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {
+                                         
+                                         MasterViewController *masterView = [[MasterViewController alloc] init];
+                                         UINavigationController *masterNav =  [[UINavigationController alloc] initWithRootViewController:masterView];
+                                         //创建用户数据模型
+                                         UserModel *usermd = [[UserModel alloc] initWithNSDictionary:dict];
+                                         masterView.usermd = usermd;
+                                         
+                                         DetailViewController *detailView = [[DetailViewController alloc] init];
+                                         UINavigationController *detailNav =  [[UINavigationController alloc] initWithRootViewController:detailView];
+                                         
+                                         // 设置UISplitViewController的代理
+                                         UISplitViewController *split = [[UISplitViewController alloc] init];
+                                         split.viewControllers = @[masterNav,detailNav];
+                                         split.delegate = detailNav.viewControllers[0];
+                                         
+                                         UIWindow *kWindow = [[UIApplication sharedApplication] keyWindow];
+                                         kWindow.rootViewController = split;
+                                         
+                                         
+                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                         NSLog(@"发生错误！%@",error);
+                                     }];
+
+    }else{
+        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alertV show];
+    }
+    
 }
 @end

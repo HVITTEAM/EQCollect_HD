@@ -56,6 +56,8 @@
             <connections>
                 <outlet property="headIcon" destination="5yc-Ef-4MR" id="UFI-86-dOy"/>
                 <outlet property="headIconBk" destination="1bG-U1-L6A" id="sdA-hP-buo"/>
+                <outlet property="useridLabel" destination="HC1-oi-pg9" id="amN-Y1-4VN"/>
+                <outlet property="usernameLabel" destination="Y9o-VJ-MJC" id="NZY-uk-Hhg"/>
             </connections>
             <point key="canvasLocation" x="224" y="-43.5"/>
         </view>

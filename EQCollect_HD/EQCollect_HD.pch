@@ -146,7 +146,7 @@
  *   网络请求的url
  */
 
-#define URL_Login @"http://192.168.1.116:3000"
+#define URL_Login @"http://192.168.1.116:3000/login"
 
 #define URL_Registerfamily(telnum, pwd)  [NSString stringWithFormat:@"%@registerfamily?rtelnum=%@&rpwd=%@",URL_IP,telnum,pwd];
 

@@ -31,6 +31,13 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eRa-go-mzo">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="5"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="5" id="2MD-Dy-JRO"/>
+                    </constraints>
+                </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yg0-dE-XeY">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
@@ -229,13 +236,6 @@
                         <constraint firstItem="1or-Ja-edz" firstAttribute="top" secondItem="Yg0-dE-XeY" secondAttribute="top" constant="20" id="wx0-EH-9WV"/>
                     </constraints>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eRa-go-mzo">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="5"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="5" id="2MD-Dy-JRO"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>

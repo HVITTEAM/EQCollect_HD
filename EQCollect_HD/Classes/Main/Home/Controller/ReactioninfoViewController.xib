@@ -37,6 +37,12 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pK7-GR-96Y">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="5" id="BfC-hG-W7w"/>
+                    </constraints>
+                </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8b-jJ-Hjv">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
@@ -180,11 +186,6 @@
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="悬挂物" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5EZ-wS-Jbg">
-                                    <rect key="frame" x="98" y="360" width="110" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
-                                </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="家具声响:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1T8-gj-Uzt">
                                     <rect key="frame" x="351" y="366" width="88.5" height="17"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
@@ -227,10 +228,15 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="地声方向" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sLL-3B-bGY">
                                     <rect key="frame" x="98" y="480" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="职业" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wwo-0i-jGO">
                                     <rect key="frame" x="450" y="120" width="110" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                </textField>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="悬挂物" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5EZ-wS-Jbg">
+                                    <rect key="frame" x="98" y="360" width="110" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
@@ -338,12 +344,6 @@
                         <constraint firstItem="lQY-Gg-OSB" firstAttribute="top" secondItem="K8b-jJ-Hjv" secondAttribute="top" constant="20" id="qXW-PR-OTC"/>
                     </constraints>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pK7-GR-96Y">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="5"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="5" id="BfC-hG-W7w"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>

@@ -13,6 +13,7 @@
 @interface DamageinfoViewController ()
 {
     UITextField *_currentTextField;
+    CGFloat _navHeight;              // 导航栏与状态栏总的高度
 }
 @end
 
@@ -24,12 +25,17 @@
     
     self.navigationItem.title = @"房屋震害";
     
+    //默认有状态栏，高度为64
+    _navHeight = kNormalNavHeight;
     if (self.isAdd ) {
         //设置导航栏按钮
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(add)];
         self.navigationItem.leftBarButtonItem = leftItem;
         self.navigationItem.rightBarButtonItem = rigthItem;
+        
+        //当为新增时没有状态栏，高度为44
+        _navHeight = kAddNavheight;
     }
     
     //获取设备当前方向
@@ -90,13 +96,13 @@
     if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&& !self.isAdd)
     {
         //设备为横屏且不是新增界面，设置为横屏约束
-        self.containerTopCons.constant = 30;
+        self.containerTopCons.constant = 30+_navHeight;
         self.containerLeftCons.constant = 40;
         self.containerWidthCons.constant = -80;
         self.damageidWidthCons.constant = 180;
     }else{
         //设备为竖屏或新增界面，设置为竖屏约束
-        self.containerTopCons.constant = 20;
+        self.containerTopCons.constant = 20+_navHeight;
         self.containerLeftCons.constant = 20;
         self.containerWidthCons.constant = -40;
         self.damageidWidthCons.constant = 100;
@@ -145,8 +151,6 @@
     CGRect currentTextFieldFrame = [self.view convertRect:_currentTextField.frame fromView:self.containerView];
     CGFloat currentTextFieldBottom = CGRectGetMaxY(currentTextFieldFrame);
     
-    //获取顶部导航栏和状态栏高度
-    NSInteger navHeight = self.isAdd?kAddNavheight:kNormalNavHeight;
     //条件成立，说明键盘遮挡了文本框
     if (currentTextFieldBottom >= keyboardTopToViewTop) {
         
@@ -154,7 +158,7 @@
         //向上移动
         [UIView animateWithDuration:duration delay:0 options:animationCurve animations:^{
             
-            self.rootScrollView.contentOffset = CGPointMake(0,-navHeight+currentTextFieldBottom - keyboardTopToViewTop+60);
+            self.rootScrollView.contentOffset = CGPointMake(0,currentTextFieldBottom - keyboardTopToViewTop+60);
         } completion:nil];
     }
 }
@@ -169,12 +173,10 @@
     NSInteger animationCurve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
-    //获取顶部导航栏和状态栏高度
-    NSInteger navHeight = self.isAdd?kAddNavheight:kNormalNavHeight;
     //将rootScrollView的contentInset和contentOffset复原
     self.rootScrollView.contentInset = UIEdgeInsetsZero;
     [UIView animateWithDuration:duration delay:0 options:animationCurve animations:^{
-        self.rootScrollView.contentOffset = CGPointMake(0,-navHeight);
+        self.rootScrollView.contentOffset = CGPointMake(0,0);
     } completion:nil];
 }
 

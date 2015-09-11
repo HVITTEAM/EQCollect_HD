@@ -21,6 +21,10 @@
 #import "HMCommonArrowItem.h"
 #import "HMCommonCell.h"
 #import "CommonRemoteHelper.h"
+#import "ArchiverCacheHelper.h"
+#import "HMControllerTool.h"
+#import "SharedAppUtil.h"
+
 
 
 #import "FMDatabase.h"

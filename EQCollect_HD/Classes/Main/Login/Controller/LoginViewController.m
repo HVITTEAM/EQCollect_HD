@@ -18,7 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     
     self.loginBoxView.layer.cornerRadius = 10.0f;
     self.loginBoxView.layer.masksToBounds = YES;

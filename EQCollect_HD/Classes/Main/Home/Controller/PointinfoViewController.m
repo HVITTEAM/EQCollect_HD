@@ -11,18 +11,29 @@
 
 @interface PointinfoViewController ()
 {
-    UITextField *_currentTextField;
-    UITextView *_currentTextView;
     CGFloat _navHeight;              // 导航栏与状态栏总的高度
+    CGFloat keyBoardHeight;         //键盘高度
 }
 @end
 
 @implementation PointinfoViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //    self.rootScrollView.userInteractionEnabled = NO;
     
+    keyBoardHeight = 352;
     //默认情况下ScrollView中的内容不会被导航栏遮挡
     _navHeight = 0;
     if (self.isAdd ) {
@@ -51,7 +62,7 @@
                             self.pointintensityTextF,
                             self.pointcontentTextV
                             ];
-    for (int i = 0;i<self.textInputViews.count-1;i++) {
+    for (int i = 0;i < self.textInputViews.count-1; i++) {
         UITextField *textF = self.textInputViews[i];
         textF.delegate = self;
         //设置tag
@@ -59,28 +70,34 @@
     }
     //pointcontentTextV类型是UITextView单独处理
     self.pointcontentTextV.delegate = self;
-    self.pointcontentTextV.tag = 1000+self.textInputViews.count-1;
+    self.pointcontentTextV.tag = 1000 + self.textInputViews.count-1;
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    //注册键盘通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
+    [super viewWillDisappear:animated];
 }
 
-//-(void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    //删除监听键盘通知
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//}
-
--(void)dealloc
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 {
-    //删除监听键盘通知
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    switch (interfaceOrientation)
+    {
+        case UIInterfaceOrientationPortrait:
+            keyBoardHeight = 264 - 100;
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            keyBoardHeight = 264 - 100;
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            keyBoardHeight = 352;
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            keyBoardHeight = 352;
+            break;
+        default:
+            break;
+    }
+    [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 /**
@@ -90,7 +107,6 @@
  */
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-
     if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&&!self.isAdd)
     {
         //设备为横屏且不是新增界面，设置为横屏约束
@@ -110,10 +126,31 @@
 }
 
 #pragma mark UITextFieldDelegate方法
+//开始编辑输入框的时候，软键盘出现，执行此事件
+
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _currentTextView = nil;
-    _currentTextField = textField;
+    CGRect frame = textField.frame;
+    int offset = CGRectGetMaxY(frame) - (self.view.frame.size.height - keyBoardHeight + 30);
+    NSTimeInterval animationDuration = 0.30f;
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    
+    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
+    if(offset > 0)
+        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
+    [UIView commitAnimations];
+}
+
+//输入框编辑完成以后，将视图恢复到原始状态
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -132,101 +169,21 @@
 #pragma mark UITextViewDelegate方法
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
-    _currentTextField = nil;
-    _currentTextView = textView;
+    CGRect frame = textView.frame;
+    int offset = CGRectGetMaxY(frame) - (self.view.frame.size.height - keyBoardHeight);
+    NSTimeInterval animationDuration = 0.30f;
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
+    if(offset > 0)
+        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
+    [UIView commitAnimations];
 }
 
-/**
- *  处理键盘遮挡文本
- */
--(void)keyBoardWillShow:(NSNotification *)notification
+//输入框编辑完成以后，将视图恢复到原始状态
+-(void)textViewDidEndEditing:(UITextView *)textView
 {
-    //键盘高
-    NSDictionary *keyboardDict = [notification userInfo];
-    CGFloat keyboardHeight = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size.height;
-    //动画时间
-    CGFloat duration = 0.5;
-    
-    //键盘顶部到屏幕顶部距离
-    CGFloat keyboardTopToViewTop;
-    //当前文本框在屏幕中的位置
-    CGRect currentTextFieldFrame;
-    CGRect currentTextViewFrame;
-    //当前文本框底部到屏幕顶部距离
-    CGFloat currentTextFieldBottom;
-    CGFloat currentTextViewBottom;
-    
-    //如果当前控制器的根view是作为surveyPointDetailView的子控件且当前文本框是UITextField则执行下面代码
-    if (self.parentView !=nil && _currentTextView ==nil) {
-        keyboardTopToViewTop = self.parentView.height - keyboardHeight;
-        currentTextFieldFrame = [self.parentView convertRect:_currentTextField.frame fromView:self.containerView];
-        currentTextFieldBottom = CGRectGetMaxY(currentTextFieldFrame);
-        
-        //条件成立，说明键盘遮挡了文本框
-        if (currentTextFieldBottom >= keyboardTopToViewTop) {
-            self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, currentTextFieldBottom - keyboardTopToViewTop+60, 0);
-            //向上移动
-            [UIView animateWithDuration:duration animations:^{
-                self.rootScrollView.contentOffset = CGPointMake(0,currentTextFieldBottom - keyboardTopToViewTop+60);
-            }];
-        }
-    }else if (self.parentView !=nil && _currentTextView !=nil){
-        //如果当前控制器的根view是作为surveyPointDetailView的子控件且当前文本框是UITextView则执行下面代码
-        keyboardTopToViewTop = self.parentView.height - keyboardHeight;
-        currentTextViewFrame = [self.parentView convertRect:_currentTextView.frame fromView:self.containerView];
-        currentTextViewBottom = CGRectGetMaxY(currentTextViewFrame);
-        
-        //条件成立，说明键盘遮挡了文本框
-        if (currentTextViewBottom >= keyboardTopToViewTop) {
-            self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, currentTextViewBottom - keyboardTopToViewTop+60, 0);
-            //向上移动
-            //向上移动
-            [UIView animateWithDuration:duration animations:^{
-                self.rootScrollView.contentOffset = CGPointMake(0,currentTextViewBottom - keyboardTopToViewTop+60);
-            }];
-        }
-    }else if (self.parentView == nil && _currentTextView ==nil){
-        //当前文本框是UITextField则执行下面代码
-        keyboardTopToViewTop = self.view.height - keyboardHeight;
-        currentTextFieldFrame = [self.view convertRect:_currentTextField.frame fromView:self.containerView];
-        currentTextFieldBottom = CGRectGetMaxY(currentTextFieldFrame);
-        
-         //条件成立，说明键盘遮挡了文本框
-        if (currentTextFieldBottom >= keyboardTopToViewTop) {
-            self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0,currentTextFieldBottom - keyboardTopToViewTop+60, 0);
-            //向上移动
-            [UIView animateWithDuration:duration animations:^{
-                self.rootScrollView.contentOffset = CGPointMake(0,currentTextFieldBottom - keyboardTopToViewTop+60);
-            }];
-        }
-    }else{
-        //当前文本框是UITextView则执行下面代码
-        keyboardTopToViewTop = self.view.height - keyboardHeight;
-        currentTextViewFrame = [self.view convertRect:_currentTextView.frame fromView:self.containerView];
-        currentTextViewBottom = CGRectGetMaxY(currentTextViewFrame);
-        
-        //条件成立，说明键盘遮挡了文本框
-        if (currentTextViewBottom >= keyboardTopToViewTop) {
-            self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0,currentTextViewBottom - keyboardTopToViewTop+60, 0);
-            //向上移动
-            [UIView animateWithDuration:duration animations:^{
-                self.rootScrollView.contentOffset = CGPointMake(0,currentTextViewBottom - keyboardTopToViewTop+60);
-            }];
-        }
-    }
-}
-
-/**
- *  处理键盘遮挡文本
- */
--(void)keyboardWillHide:(NSNotification *)notification
-{
-    CGFloat duration = 0.25;
-    //将rootScrollView的contentInset和contentOffset复原
-    [UIView animateWithDuration:duration animations:^{
-            self.rootScrollView.contentOffset = CGPointMake(0,0);
-    }];
-    self.rootScrollView.contentInset = UIEdgeInsetsZero;
+    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 -(void)back

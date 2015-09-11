@@ -59,6 +59,9 @@
 		01E354711B9D617900014114 /* AbnormalinfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354701B9D617900014114 /* AbnormalinfoModel.m */; };
 		01E354741B9D618900014114 /* ReactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354731B9D618900014114 /* ReactionModel.m */; };
 		01E3547A1B9D746900014114 /* VenderMannager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354791B9D746900014114 /* VenderMannager.m */; };
+		01E81AE61BA274F5008FE6EC /* ArchiverCacheHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AE11BA274F5008FE6EC /* ArchiverCacheHelper.m */; };
+		01E81AE71BA274F5008FE6EC /* HMControllerTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AE31BA274F5008FE6EC /* HMControllerTool.m */; };
+		01E81AE81BA274F5008FE6EC /* SharedAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E81AE51BA274F5008FE6EC /* SharedAppUtil.m */; };
 		01EDAD5C1B8EF22200C1CF21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5B1B8EF22200C1CF21 /* main.m */; };
 		01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EDAD5E1B8EF22200C1CF21 /* AppDelegate.m */; };
 		01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EDAD631B8EF22200C1CF21 /* Main.storyboard */; };
@@ -221,6 +224,12 @@
 		01E354761B9D619900014114 /* DamageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageModel.m; sourceTree = "<group>"; };
 		01E354781B9D746900014114 /* VenderMannager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenderMannager.h; sourceTree = "<group>"; };
 		01E354791B9D746900014114 /* VenderMannager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenderMannager.m; sourceTree = "<group>"; };
+		01E81AE01BA274F5008FE6EC /* ArchiverCacheHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiverCacheHelper.h; sourceTree = "<group>"; };
+		01E81AE11BA274F5008FE6EC /* ArchiverCacheHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiverCacheHelper.m; sourceTree = "<group>"; };
+		01E81AE21BA274F5008FE6EC /* HMControllerTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMControllerTool.h; sourceTree = "<group>"; };
+		01E81AE31BA274F5008FE6EC /* HMControllerTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMControllerTool.m; sourceTree = "<group>"; };
+		01E81AE41BA274F5008FE6EC /* SharedAppUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedAppUtil.h; sourceTree = "<group>"; };
+		01E81AE51BA274F5008FE6EC /* SharedAppUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedAppUtil.m; sourceTree = "<group>"; };
 		01EDAD561B8EF22200C1CF21 /* EQCollect_HD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EQCollect_HD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01EDAD5A1B8EF22200C1CF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01EDAD5B1B8EF22200C1CF21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -683,6 +692,12 @@
 		01EED5961B9D2A050041D28A /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				01E81AE01BA274F5008FE6EC /* ArchiverCacheHelper.h */,
+				01E81AE11BA274F5008FE6EC /* ArchiverCacheHelper.m */,
+				01E81AE21BA274F5008FE6EC /* HMControllerTool.h */,
+				01E81AE31BA274F5008FE6EC /* HMControllerTool.m */,
+				01E81AE41BA274F5008FE6EC /* SharedAppUtil.h */,
+				01E81AE51BA274F5008FE6EC /* SharedAppUtil.m */,
 				01A26EE41BA17F1A00EEB627 /* CommonRemoteHelper.h */,
 				01A26EE51BA17F1A00EEB627 /* CommonRemoteHelper.m */,
 				01EED5971B9D2A190041D28A /* FMDBHelper */,
@@ -871,6 +886,7 @@
 				0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */,
 				01E3547A1B9D746900014114 /* VenderMannager.m in Sources */,
 				0177A0C21B968436003199F4 /* HMCommonButtonItem.m in Sources */,
+				01E81AE81BA274F5008FE6EC /* SharedAppUtil.m in Sources */,
 				01E354651B9D5F5700014114 /* MJRefreshBaseView.m in Sources */,
 				01E354711B9D617900014114 /* AbnormalinfoModel.m in Sources */,
 				0177A0C41B968436003199F4 /* HMCommonGroup.m in Sources */,
@@ -897,10 +913,12 @@
 				01A26EDF1BA17ED700EEB627 /* AFSecurityPolicy.m in Sources */,
 				01FEE2A11B9BCACF007C4641 /* DetailViewController.m in Sources */,
 				0177A0D91B968496003199F4 /* UIImage+Extension.m in Sources */,
+				01E81AE71BA274F5008FE6EC /* HMControllerTool.m in Sources */,
 				D23A1A951B9ED48200758DDD /* AbnormalinfoCell.m in Sources */,
 				D23A1A8B1B9ED3FD00758DDD /* AbnormalinfoListController.m in Sources */,
 				D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
+				01E81AE61BA274F5008FE6EC /* ArchiverCacheHelper.m in Sources */,
 				0177A0CB1B96845A003199F4 /* HMCommonCell.m in Sources */,
 				D23A1A9F1B9EDE5400758DDD /* ReactioninfoCell.m in Sources */,
 				01EED5871B9D25420041D28A /* FMDatabase.m in Sources */,
@@ -908,7 +926,6 @@
 				01E3546A1B9D5F5700014114 /* UIScrollView+MJRefresh.m in Sources */,
 				0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */,
 				D23A1AA91B9EE3C500758DDD /* DamageinfoListController.m in Sources */,
-				01FEE2A81B9BCB0D007C4641 /* AddSurveyPointController.m in Sources */,
 				01A26EDC1BA17ED700EEB627 /* AFHTTPRequestOperationManager.m in Sources */,
 				01E354621B9D5F5700014114 /* NSObject+MJIvar.m in Sources */,
 				01A26EE31BA17ED700EEB627 /* AFURLSessionManager.m in Sources */,

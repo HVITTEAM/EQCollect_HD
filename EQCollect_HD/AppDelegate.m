@@ -7,8 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "MasterViewController.h"
-#import "DetailViewController.h"
 
 @interface AppDelegate ()
 
@@ -24,18 +22,15 @@
     
     // 2.显示窗口(成为主窗口)
     [self.window makeKeyAndVisible];
-
-    MasterViewController *masterView = [[MasterViewController alloc] init];
-    UINavigationController *masterNav =  [[UINavigationController alloc] initWithRootViewController:masterView];
-
-    DetailViewController *detailView = [[DetailViewController alloc] init];
-    UINavigationController *detailNav =  [[UINavigationController alloc] initWithRootViewController:detailView];
-
-    // 设置UISplitViewController的代理
-    UISplitViewController *split = [[UISplitViewController alloc] init];
-    split.viewControllers = @[masterNav,detailNav];
-    split.delegate = detailNav.viewControllers[0];
-    self.window.rootViewController = split;
+    
+    if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
+    {
+        [HMControllerTool setRootViewController];
+    }
+    else
+    {
+        [HMControllerTool setLoginViewController];
+    }
     return YES;
 }
 

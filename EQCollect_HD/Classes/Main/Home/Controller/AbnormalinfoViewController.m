@@ -42,7 +42,6 @@
     //根据屏幕方向设置视图的约束
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
-    
     self.textInputViews = @[
                            self.abnormalidTextF,
                            self.abnormaltimeTextF,

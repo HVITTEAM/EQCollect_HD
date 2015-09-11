@@ -27,7 +27,6 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    
     [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : @"admin",
                                                               @"pwd" : @"hvit"}
                                  type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {

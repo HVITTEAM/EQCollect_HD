@@ -9,12 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate>
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerTopCons;        //容器view的顶部约束
-@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;                 //底层的ScrollView用于滚动
-@property (weak, nonatomic) IBOutlet UIView *containerView;                        //容器view
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerLeftCons;     //容器view的左边约束
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerWidthCons;    //容器view的宽约束(相对于参照view)
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 
 @property (weak, nonatomic) IBOutlet UITextField *pointidTextF;                 //调查点编号
@@ -29,8 +24,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *pointcontentTextV;             //调查简述
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
-@property (strong,nonatomic)UIView *parentView;                //视图控制器根View所在的父视图
-
 @property (strong,nonatomic)NSArray *textInputViews;
 
 //旋转屏幕时更改约束

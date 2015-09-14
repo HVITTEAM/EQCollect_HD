@@ -110,17 +110,12 @@
     if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&&!self.isAdd)
     {
         //设备为横屏且不是新增界面，设置为横屏约束
-        self.containerTopCons.constant = 30+_navHeight;
-        self.containerLeftCons.constant = 40;
-        self.containerWidthCons.constant = -80;
         self.pointidWidthCons.constant = 180;
     }else{
         //设备为竖屏或新增界面，设置为竖屏约束
-        self.containerTopCons.constant = 20+_navHeight;
-        self.containerLeftCons.constant = 20;
-        self.containerWidthCons.constant = -40;
         self.pointidWidthCons.constant = 100;
     }
+    self.pointidTopCons.constant = 20+_navHeight;
     //更新约束
     [self.view updateConstraintsIfNeeded];
 }
@@ -157,7 +152,7 @@
 {
     if (textField.returnKeyType == UIReturnKeyNext) {
         //根据tag获取下一个文本框
-        UITextField *textF =(UITextField *)[self.containerView viewWithTag:textField.tag+1];
+        UITextField *textF =(UITextField *)[self.view viewWithTag:textField.tag+1];
         [textF becomeFirstResponder];
     }
     if (textField.returnKeyType == UIReturnKeyDone) {

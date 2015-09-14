@@ -38,7 +38,6 @@
     
     self.pointinfoVC = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
     self.pointinfoVC.title = @"调查点";
-    self.pointinfoVC.parentView = self.view;
     [self.vcArray addObject:self.pointinfoVC];
     
     self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];

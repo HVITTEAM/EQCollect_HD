@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AbnormalinfoViewController : UIViewController<UITextFieldDelegate>
+@interface AbnormalinfoViewController : UIViewController<UITextFieldDelegate,UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidTopCons;        //宏观异常编号TextField顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidWidthCons;      //宏观异常编号TextField宽约束
@@ -26,5 +26,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *crediblyTextF;                   //可信度
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
-@property (strong,nonatomic)NSArray *textInputViews;
+
+@property (strong,nonatomic)NSArray *textInputViews;           //所有的文本输入框
+@property (strong,nonatomic)NSArray *intensityItems;           //烈度选项
+@property (strong,nonatomic)NSArray *groundwaterItems;         //地下水选项
+@property (strong,nonatomic)NSArray *habitItems;               //动植物习性选项
+@property (strong,nonatomic)NSArray *phenomenonItems;          //物化现象选项
 @end

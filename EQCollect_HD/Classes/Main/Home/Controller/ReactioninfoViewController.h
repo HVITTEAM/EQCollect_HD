@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ReactioninfoViewController : UIViewController<UITextFieldDelegate>
+@interface ReactioninfoViewController : UIViewController<UITextFieldDelegate,UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *reactionidTopCons;        //人物反应编号TextField的顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *reactionidWidthCons;     //人物反应编号TextField宽约束
@@ -33,6 +33,14 @@
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
 
-@property (strong,nonatomic)NSArray *textInputViews;
-
+@property (strong,nonatomic)NSArray *textInputViews;           //所有的文本输入框
+@property (strong,nonatomic)NSArray *educationItems;           //学历选项
+@property (strong,nonatomic)NSArray *rockfeelingItems;         //晃动感觉选项
+@property (strong,nonatomic)NSArray *throwfeelingItems;        //抛起感觉选项
+@property (strong,nonatomic)NSArray *throwtingsItems;          //抛弃物选项
+@property (strong,nonatomic)NSArray *fallItems;                //搁置物滚落选项
+@property (strong,nonatomic)NSArray *hangItems;                //悬挂物选项
+@property (strong,nonatomic)NSArray *furnituresoundItems;      //家具声响选项
+@property (strong,nonatomic)NSArray *soundsizeItems;           //地声大小选项
+@property (strong,nonatomic)NSArray *sounddirectionItems;      //地声方向选项
 @end

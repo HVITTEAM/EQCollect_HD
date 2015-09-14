@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DamageinfoViewController : UIViewController<UITextFieldDelegate>
+@interface DamageinfoViewController : UIViewController<UITextFieldDelegate,UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidTopCons;         //房屋震害编号TextField顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidWidthCons;        //房屋震害编号TextField宽约束
@@ -25,6 +25,10 @@
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
 
-@property (strong,nonatomic)NSArray *textInputViews; 
+@property (strong,nonatomic)NSArray *textInputViews;                //所有的文本输入框
+@property (strong,nonatomic)NSArray *intensityItems;                //烈度选项
+@property (strong,nonatomic)NSArray *fortificationintensityItems;   //设防烈度选项
+@property (strong,nonatomic)NSArray *damagesituationItems;          //破坏情况选项
+@property (strong,nonatomic)NSArray *damageindexItems;              //震害指数选项
 
 @end

@@ -36,12 +36,16 @@
     keyBoardHeight = 352;
     //默认情况下ScrollView中的内容不会被导航栏遮挡
     _navHeight = 0;
+    //禁用交互
+    [self.view setUserInteractionEnabled:NO];
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         self.navigationItem.leftBarButtonItem = leftItem;
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
+        //启用交互
+        [self.view setUserInteractionEnabled:YES];
     }
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
@@ -122,7 +126,6 @@
 
 #pragma mark UITextFieldDelegate方法
 //开始编辑输入框的时候，软键盘出现，执行此事件
-
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     CGRect frame = textField.frame;
@@ -173,7 +176,7 @@
     if(offset > 0)
         self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
     [UIView commitAnimations];
-}
+ }
 
 //输入框编辑完成以后，将视图恢复到原始状态
 -(void)textViewDidEndEditing:(UITextView *)textView

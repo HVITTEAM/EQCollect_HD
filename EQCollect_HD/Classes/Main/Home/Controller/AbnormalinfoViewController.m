@@ -13,6 +13,7 @@
 {
     CGFloat _navHeight;              // 导航栏与状态栏总的高度
     CGFloat keyBoardHeight;         //键盘高度
+    NSUInteger _currentInputViewTag;  //当前文本框的tag
 }
 @end
 
@@ -21,20 +22,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    [self initAbnormalinfoVC];
+}
+
+/**
+ *  初始化宏观异常信息控制器
+ */
+-(void)initAbnormalinfoVC
+{
     self.navigationItem.title = @"宏观异常";
     
     keyBoardHeight = 352;
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
+    //禁用交互
+    [self.view setUserInteractionEnabled:NO];
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-        UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(add)];
+        UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addAbnormalinfo)];
         self.navigationItem.leftBarButtonItem = leftItem;
         self.navigationItem.rightBarButtonItem = rigthItem;
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
+        //启用交互
+        [self.view setUserInteractionEnabled:YES];
     }
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
@@ -44,17 +56,17 @@
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
     self.textInputViews = @[
-                           self.abnormalidTextF,
-                           self.abnormaltimeTextF,
-                           self.informantTextF,
-                           self.abnormalintensityTextF,
-                           self.groundwaterTextF,
-                           self.abnormalhabitTextF,
-                           self.abnormalphenomenonTextF,
-                           self.otherTextF,
-                           self.implementationTextF,
-                           self.abnormalanalysisTextF,
-                           self.crediblyTextF
+                            self.abnormalidTextF,
+                            self.abnormaltimeTextF,
+                            self.informantTextF,
+                            self.abnormalintensityTextF,
+                            self.groundwaterTextF,
+                            self.abnormalhabitTextF,
+                            self.abnormalphenomenonTextF,
+                            self.otherTextF,
+                            self.implementationTextF,
+                            self.abnormalanalysisTextF,
+                            self.crediblyTextF
                             ];
     for (int i = 0;i<self.textInputViews.count;i++) {
         UITextField *textF = self.textInputViews[i];
@@ -62,16 +74,12 @@
         //设置tag
         textF.tag = 1000+i;
     }
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
+    
+    self.intensityItems = @[@"强",@"中等",@"弱"];
+    self.groundwaterItems = @[@"地下水1",@"地下水2",@"地下水3",@"地下水4"];
+    self.habitItems = @[@"习性1",@"习性2",@"习性3",@"习性4"];
+    self.phenomenonItems = @[@"物化1",@"物化2",@"物化3",@"物化4",@"物化5"];
+    
 }
 
 //处理屏幕旋转
@@ -120,7 +128,6 @@
 
 #pragma mark UITextFieldDelegate方法
 //开始编辑输入框的时候，软键盘出现，执行此事件
-
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     CGRect frame = textField.frame;
@@ -131,14 +138,14 @@
     
     //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
     if(offset > 0)
-        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
+        self.view.bounds = CGRectMake(0.0f, offset, self.view.frame.size.width, self.view.frame.size.height);
     [UIView commitAnimations];
 }
 
 //输入框编辑完成以后，将视图恢复到原始状态
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.bounds =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -159,7 +166,37 @@
     return YES;
 }
 
--(void)add
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    BOOL canEdit;
+    _currentInputViewTag = textField.tag;
+    
+    //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
+    switch (_currentInputViewTag) {
+        case 1003:
+            canEdit = NO;
+            [self showActionSheetWithTextField:textField items:self.intensityItems];
+            break;
+        case 1004:
+            canEdit = NO;
+            [self showActionSheetWithTextField:textField items:self.groundwaterItems];
+            break;
+        case 1005:
+            canEdit = NO;
+            [self showActionSheetWithTextField:textField items:self.habitItems];
+            break;
+        case 1006:
+            canEdit = NO;
+            [self showActionSheetWithTextField:textField items:self.phenomenonItems];
+            break;
+        default:
+            canEdit = YES;
+            break;
+    }
+    return canEdit;
+}
+
+-(void)addAbnormalinfo
 {
     NSLog(@"新增");
     [self dismissViewControllerAnimated:self completion:nil];
@@ -168,6 +205,34 @@
 -(void)back
 {
     [self dismissViewControllerAnimated:self completion:nil];
+}
+
+/**
+ *  使用UIActionSheet向文本框输入内容
+ *
+ *  @param textField 需要输入内容的文本框
+ *  @param items     选项数组
+ */
+-(void)showActionSheetWithTextField:(UITextField *)textField items:(NSArray *)items
+{
+    //创建UIActionSheet并设置标题
+    NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:titleStr delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles: nil];
+    //添加ActionSheet控件上的按钮
+    for (NSString *buttonTitle in items) {
+        [actionSheet addButtonWithTitle:buttonTitle];
+    }
+    //显示ActionSheet控件
+    [actionSheet showInView:self.view];
+}
+
+#pragma mark UIActionSheetDelegate方法
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *inputView = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
+    //将选中的按钮标题设为当前文本框的内容
+    NSString *itemStr = [actionSheet buttonTitleAtIndex:buttonIndex];
+    inputView.text = itemStr;
 }
 
 @end

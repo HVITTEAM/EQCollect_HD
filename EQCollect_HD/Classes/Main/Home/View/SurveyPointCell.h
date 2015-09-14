@@ -10,4 +10,7 @@
 
 @interface SurveyPointCell : UITableViewCell
 
+@property (strong, nonatomic) IBOutlet UILabel *pointTitleText;
+@property (strong, nonatomic) IBOutlet UILabel *pointAddressText;
+@property (strong, nonatomic) IBOutlet UILabel *pointTimeText;
 @end

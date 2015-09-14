@@ -44,7 +44,7 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房屋震灾" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiF-bf-Ihw">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiF-bf-Ihw">
                         <rect key="frame" x="10" y="28" width="68" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="68" id="Cby-We-4vM"/>
@@ -54,7 +54,7 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="宏观异常" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJt-9k-Lci">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJt-9k-Lci">
                         <rect key="frame" x="177" y="28" width="68" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="68" id="baV-I0-azV"/>
@@ -88,7 +88,7 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="任务反应" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eo-T4-NBg">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eo-T4-NBg">
                         <rect key="frame" x="92" y="28" width="68" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="68" id="L81-Ds-zU6"/>
@@ -118,6 +118,11 @@
                     <constraint firstItem="2eo-T4-NBg" firstAttribute="leading" secondItem="EiF-bf-Ihw" secondAttribute="trailing" constant="14" id="qDO-fD-d6T"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="pointAddressText" destination="v2R-Z4-ohB" id="f9e-2X-rsK"/>
+                <outlet property="pointTimeText" destination="CZK-k2-mne" id="1T6-gg-O9O"/>
+                <outlet property="pointTitleText" destination="K0k-7s-Hvk" id="wo8-5S-rte"/>
+            </connections>
         </tableViewCell>
     </objects>
 </document>

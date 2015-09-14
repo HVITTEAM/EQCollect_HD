@@ -35,12 +35,6 @@
     self.view.backgroundColor = HMGlobalBg;
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    
-    PointinfoTableHelper *helper = [[PointinfoTableHelper alloc] init];
-    [helper initDataBase];
-    [helper createTable];
-    [helper insertData];
-    [helper selectData];
 }
 
 -(void)back

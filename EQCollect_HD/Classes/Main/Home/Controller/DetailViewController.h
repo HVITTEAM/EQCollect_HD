@@ -9,5 +9,7 @@
 @interface DetailViewController : UITableViewController <UISplitViewControllerDelegate>
 
 @property (nonatomic, retain) UINavigationController *nav;
-@property (nonatomic,retain) PointinfoViewController *pointinfoVC;       
+@property (nonatomic,retain) PointinfoViewController *pointinfoVC;
+
+@property (nonatomic, retain) NSMutableArray *dataProvider;
 @end

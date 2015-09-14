@@ -26,9 +26,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self initNavgation];
+    
     self.title = @"调查点管理";
     
     self.tableView.backgroundColor = HMGlobalBg;
+    
+    [self getDataProvider];
+}
+
+-(void)initNavgation
+{
     //设置导航栏颜色
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:102/255.0 green:147/255.0 blue:255/255.0 alpha:1.0];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -55,7 +64,12 @@
     // searchResultsDelegate 就是 UITableViewDelegate
     searchDisplayController.searchResultsDelegate = self;
     searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
-    
+}
+
+-(void)getDataProvider
+{
+    [[PointinfoTableHelper sharedInstance] initDataBase];
+    self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
 }
 
 #pragma mark 分割控制器代理方法

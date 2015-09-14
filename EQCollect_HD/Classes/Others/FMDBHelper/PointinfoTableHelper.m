@@ -113,12 +113,12 @@
 {
     if ([db open])
     {
-
+        
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
                                TABLENAME, POINTID, @"张三"];
         BOOL res = [db executeUpdate:deleteSql];
-
+        
         if (!res) {
             NSLog(@"error when delete db table");
         } else {
@@ -128,28 +128,33 @@
     }
 }
 
--(void) selectData
+- (NSMutableArray *)selectData;
 {
+    NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
     {
         NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@",TABLENAME];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            int pointid = [rs intForColumn:POINTID];
+            NSString * pointid = [rs stringForColumn:POINTID];
             NSString * earthid = [rs stringForColumn:EARTHID];
             NSString * pointlocation = [rs stringForColumn:POINTLOCATION];
             NSString * pointlon = [rs stringForColumn:POINTLON];
-            NSLog(@"id = %d, earthid = %@, pointlocation = %@  pointlon = %@", pointid, earthid, pointlocation, pointlon);
+            NSLog(@"id = %@, earthid = %@, pointlocation = %@  pointlon = %@", pointid, earthid, pointlocation, pointlon);
+            
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:pointid forKey:@"id"];
+            [dict setObject:earthid forKey:@"earthid"];
+            [dict setObject:pointlocation forKey:@"pointlocation"];
+            [dict setObject:pointlon forKey:@"pointlon"];
+            [dataCollect addObject:dict];
         }
         [db close];
     }
+    return dataCollect;
 }
 
-- (void)selectData1
-{
-    
-}
 //-(void) multithread
 //{
 //    FMDatabaseQueue * queue = [FMDatabaseQueue databaseQueueWithPath:database_path];

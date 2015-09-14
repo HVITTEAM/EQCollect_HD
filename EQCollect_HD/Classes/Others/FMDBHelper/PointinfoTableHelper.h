@@ -22,7 +22,7 @@
 /**插入数据**/
 - (void)insertData;
 /**查询数据**/
-- (void)selectData;
+- (NSMutableArray *)selectData;
 
 
 @end

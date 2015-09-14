@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate>
+@interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 

@@ -128,7 +128,7 @@
                                          [HUD removeFromSuperview];
                                          UserModel *usermd = [UserModel objectWithKeyValues:dict];
                                          [SharedAppUtil defaultCommonUtil].userInfor = usermd;
-                                         [HMControllerTool setRootViewController];
+                                        // [HMControllerTool setRootViewController];
                                          [ArchiverCacheHelper saveObjectToLoacl:usermd key:User_Archiver_Key filePath:User_Archiver_Path];
                                          
                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -142,5 +142,6 @@
         UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alertV show];
     }
+    [HMControllerTool setRootViewController];
 }
 @end

@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^deleteSurveyPoint)();
+
 @interface SurveyPointCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *pointTitleText;
 @property (strong, nonatomic) IBOutlet UILabel *pointAddressText;
 @property (strong, nonatomic) IBOutlet UILabel *pointTimeText;
+
+@property (copy)deleteSurveyPoint deletePointBlock;
+
+- (IBAction)deleteSurveyPoint:(id)sender;
 @end

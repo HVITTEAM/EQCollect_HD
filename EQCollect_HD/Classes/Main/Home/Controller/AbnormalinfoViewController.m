@@ -22,6 +22,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initAbnormalinfoVC];
+
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self showAbnormalinfoData];
 }
 
 /**
@@ -79,6 +85,23 @@
     self.habitItems = @[@"习性1",@"习性2",@"习性3",@"习性4"];
     self.phenomenonItems = @[@"物化1",@"物化2",@"物化3",@"物化4",@"物化5"];
     
+}
+
+-(void)showAbnormalinfoData
+{
+    if (!self.isAdd) {
+        self.abnormalidTextF.text = self.abnormalinfo.abnormalid;
+        self.abnormaltimeTextF.text = self.abnormalinfo.abnormaltime;
+        self.informantTextF.text = self.abnormalinfo.informant;
+        self.abnormalintensityTextF.text = self.abnormalinfo.abnormalintensity;
+        self.groundwaterTextF.text = self.abnormalinfo.groundwater;
+        self.abnormalhabitTextF.text = self.abnormalinfo.abnormalhabit;
+        self.abnormalphenomenonTextF.text = self.abnormalinfo.abnormalphenomenon;
+        self.otherTextF.text = self.abnormalinfo.other;
+        self.implementationTextF.text = self.abnormalinfo.implementation;
+        self.abnormalanalysisTextF.text = self.abnormalinfo.abnormalanalysis;
+        self.crediblyTextF.text = self.abnormalinfo.credibly;
+    }
 }
 
 //处理屏幕旋转
@@ -197,7 +220,47 @@
 
 -(void)addAbnormalinfo
 {
-    NSLog(@"新增");
+    NSString *abnormalid = self.abnormalidTextF.text;
+    NSString *abnormaltime = self.abnormaltimeTextF.text;
+    NSString *informant = self.informantTextF.text;
+    NSString *abnormalintensity = self.abnormalintensityTextF.text;
+    NSString *groundwater = self.groundwaterTextF.text;
+    NSString *abnormalhabit = self.abnormalhabitTextF.text;
+    NSString *abnormalphenomenon = self.abnormalphenomenonTextF.text;
+    NSString *other = self.otherTextF.text;
+    NSString *implementation = self.implementationTextF.text;
+    NSString *abnormalanalysis = self.abnormalanalysisTextF.text;
+    NSString *credibly = self.crediblyTextF.text;
+    
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        UITextField *textF = (UITextField *)self.textInputViews[i];
+        if (textF.text ==nil || textF.text.length <=0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                return;
+        }
+    }
+    //创建字典对象并向表中插和数据
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          abnormalid,@"abnormalid",
+                          abnormaltime,@"abnormaltime",
+                          informant,@"informant",
+                          abnormalintensity, @"abnormalintensity",
+                          groundwater, @"groundwater",
+                          abnormalhabit,@"abnormalhabit",
+                          abnormalphenomenon,@"abnormalphenomenon",
+                          other,@"other",
+                          implementation,@"implementation",
+                          abnormalanalysis,@"abnormalanalysis",
+                          credibly,@"credibly",
+                          self.pointid,@"pointid",
+                          nil];
+    
+    BOOL result = [[AbnormalinfoTableHelper sharedInstance] insertDataWith:dict];
+    if (!result) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }
+
     [self dismissViewControllerAnimated:self completion:nil];
 }
 

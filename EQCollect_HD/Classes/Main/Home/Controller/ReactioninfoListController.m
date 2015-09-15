@@ -18,23 +18,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self getDataProvider];
+}
+
+-(void)getDataProvider
+{
+    self.dataProvider = [[ReactioninfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 10;
+    return self.dataProvider.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -45,6 +47,27 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ReactioninfoCell" owner:nil options:nil] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    //获取cell的数据
+    __block ReactionModel * reactioninfo = [self.dataProvider objectAtIndex:indexPath.row];
+    //设置cell的属性
+    cell.reactionTittle.text = [NSString stringWithFormat:@"NO.%lu  %@",indexPath.row,reactioninfo.reactionid];
+    cell.reactiontime.text = reactioninfo.reactiontime;
+    cell.reactionaddress.text = reactioninfo.reactionaddress;
+    cell.informantname.text = reactioninfo.informantname;
+    cell.informantage.text = reactioninfo.informantage;
+    cell.informanteducation.text = reactioninfo.informanteducation;
+    //设置cell的block属性
+    cell.deleteReactioninfoBlock = ^{
+        //从数据库表中删除这个人物反应信息
+        BOOL result = [[ReactioninfoTableHelper sharedInstance] deleteDataByReactionid:reactioninfo.reactionid];
+        if (result) {
+            //删除成功，则把这个数据从dataProvider数组中删除并刷新
+            [self.dataProvider removeObjectAtIndex:indexPath.row];
+            [self.tableView reloadData];
+        }else{
+            [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        }
+    };
     return cell;
 }
 
@@ -58,9 +81,9 @@
     if (!self.reactionVC) {
        self.reactionVC = [[ReactioninfoViewController alloc]initWithNibName:@"ReactioninfoViewController" bundle:nil];
     }
+    self.reactionVC.reactioninfo = self.dataProvider[indexPath.row];
     [self.nav pushViewController:self.reactionVC animated:YES];
 }
 
-
-
 @end
+

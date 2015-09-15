@@ -20,4 +20,7 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)deleteReactioninfo:(id)sender {
+    self.deleteReactioninfoBlock();
+}
 @end

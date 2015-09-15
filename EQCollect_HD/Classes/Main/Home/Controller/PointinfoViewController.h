@@ -25,6 +25,7 @@
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
 @property (strong,nonatomic)NSArray *textInputViews;
+@property (strong,nonatomic)PointModel *pointinfo;             //选中的调查点信息
 
 //旋转屏幕时更改约束
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;

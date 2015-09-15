@@ -68,7 +68,6 @@
 
 -(void)getDataProvider
 {
-    [[PointinfoTableHelper sharedInstance] initDataBase];
     self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
 }
 
@@ -103,7 +102,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tableView)
-        return 10;
+        return self.dataProvider.count;
     else
         return 3;
 }
@@ -118,6 +117,24 @@
         cell = [nibs lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    //根据indexPath获取cell的数据
+    __block PointModel * pointInfo = [self.dataProvider objectAtIndex:indexPath.row];
+    //设置cell的属性
+    cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%lu  %@",indexPath.row,pointInfo.pointname];
+    cell.pointTimeText.text = pointInfo.pointtime;
+    cell.pointAddressText.text = pointInfo.pointlocation;
+    //设置cell的deletePointBlock属性，
+    cell.deletePointBlock = ^{
+        //从数据库表中删除数据
+        BOOL result = [[PointinfoTableHelper sharedInstance] deleteDataByPointid:pointInfo.pointid];
+        if (result) {
+            //数据库中删除成功，则从dataProvider数组中删除数据并刷新界面
+            [self.dataProvider removeObjectAtIndex:indexPath.row];
+            [self.tableView reloadData];
+        }else{
+            [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        }
+    };
     return  cell;
 }
 
@@ -131,6 +148,7 @@
 {
     if (!detailview)
         detailview = [[SurveyPointDetailViewController alloc] init];
+    detailview.pointinfo = self.dataProvider[indexPath.row];
     [self.navigationController pushViewController:detailview animated:YES];
 }
 

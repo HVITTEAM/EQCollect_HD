@@ -18,13 +18,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- }
 
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self getDataProvider];
+}
+
+-(void)getDataProvider
+{
+    self.dataProvider = [[AbnormalinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
+    [self.tableView reloadData];
+}
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 10;
+    return self.dataProvider.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -35,6 +46,27 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"AbnormalinfoCell" owner:nil options:nil] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    //获取Cell的数据
+    __block AbnormalinfoModel * abnormalInfo = [self.dataProvider objectAtIndex:indexPath.row];
+    
+    //设置cell的属性
+    cell.abnormalTitleText.text = [NSString stringWithFormat:@"NO.%lu  %@",indexPath.row,abnormalInfo.abnormalid];
+    cell.abnormaltimeText.text = abnormalInfo.abnormaltime;
+    cell.intensityText.text = abnormalInfo.abnormalintensity;
+    cell.analysisText.text = abnormalInfo.abnormalanalysis;
+    cell.crediblyText.text = abnormalInfo.credibly;
+    //设置cell的block属性
+    cell.deleteAbnormalinfoBlock = ^{
+        //从数据库表中删除这个宏观异常信息
+        BOOL result = [[AbnormalinfoTableHelper sharedInstance] deleteDataByAbnormalid:abnormalInfo.abnormalid];
+        if (result) {
+            //删除成功，则把这个宏观异常信息从dataProvider数组中删除并刷新界面
+            [self.dataProvider removeObjectAtIndex:indexPath.row];
+            [self.tableView reloadData];
+        }else{
+            [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        }
+    };
     return cell;
 }
 
@@ -48,6 +80,7 @@
     if (!self.abnormalinfoVC) {
         self.abnormalinfoVC = [[AbnormalinfoViewController alloc] initWithNibName:@"AbnormalinfoViewController" bundle:nil];
     }
+    self.abnormalinfoVC.abnormalinfo = self.dataProvider[indexPath.row];
     [self.nav pushViewController:self.abnormalinfoVC animated:YES];
 }
 

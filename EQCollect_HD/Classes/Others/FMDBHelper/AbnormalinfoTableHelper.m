@@ -33,6 +33,8 @@
 #define ABNORMALANALYSIS   @"abnormalanalysis"
 #define CREDIBLY           @"credibly"
 
+#define POINTID            @"pointid"
+
 #import "AbnormalinfoTableHelper.h"
 
 @implementation AbnormalinfoTableHelper
@@ -45,6 +47,7 @@
     dispatch_once(&onceToken, ^{
         abnormalinfoTableHelper = [[AbnormalinfoTableHelper alloc] init];
         [abnormalinfoTableHelper initDataBase];
+        [abnormalinfoTableHelper createTable];
     });
     return abnormalinfoTableHelper;
 }
@@ -61,8 +64,8 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' INTEGER, '%@' TEXT, '%@' INTEGER, '%@' INTEGER, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
-                                     INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
+                                     INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -73,20 +76,24 @@
     }
 }
 
--(void) insertData
+-(BOOL) insertDataWith:(NSDictionary *)dict
 {
+    BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,ABNORMALID,ABNORMALTIME,INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY, @"张三",@"张三", @"济南",@"张三", @"13", @"济南",@"张三", @"13", @"济南",@"张三", @"13"];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME,ABNORMALID,ABNORMALTIME,INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY, POINTID,dict[@"abnormalid"],dict[@"abnormaltime"], dict[@"informant"],dict[@"abnormalintensity"], dict[@"groundwater"], dict[@"abnormalhabit"],dict[@"abnormalphenomenon"], dict[@"other"], dict[@"implementation"],dict[@"abnormalanalysis"], dict[@"credibly"],dict[@"pointid"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
+            result = NO;
         } else {
             NSLog(@"success to insert db table");
+            result = YES;
         }
         [db close];
     }
+    return result;
 }
 //
 //-(void) updateData
@@ -108,41 +115,115 @@
 //
 //}
 //
--(void) deleteData
+-(BOOL) deleteDataByAbnormalid:(NSString *)abnormalidStr
 {
+    BOOL result = NO;
     if ([db open])
     {
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, ABNORMALID, @"张三"];
+                               TABLENAME, ABNORMALID, abnormalidStr];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
             NSLog(@"error when delete db table");
+            result = NO;
         } else {
             NSLog(@"success to delete db table");
+            result = YES;
         }
         [db close];
     }
+    return  result;
 }
 
--(void) selectData
+-(NSMutableArray *) selectData
 {
+    NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
     {
         NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@",TABLENAME];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            int abnormalid = [rs intForColumn:ABNORMALID];
+            NSString * abnormalid = [rs stringForColumn:ABNORMALID];
             NSString * abnormaltime = [rs stringForColumn:ABNORMALTIME];
+            NSString * informant = [rs stringForColumn:INFORMANT];
             NSString * abnormalintensity = [rs stringForColumn:ABNORMALINTENSITY];
             NSString * groundwater = [rs stringForColumn:GROUPDWATER];
-            NSLog(@"id = %d, earthid = %@, pointlocation = %@  pointlon = %@", abnormalid, abnormaltime, abnormalintensity, groundwater);
+            NSString * abnormalhabit = [rs stringForColumn:ABNORMALHABIT];
+            NSString * abnormalphenomenon = [rs stringForColumn:ABNORMALPHENOMENON];
+            NSString * other = [rs stringForColumn:OTHER];
+            NSString * implementation = [rs stringForColumn:IMPLEMENTATION];
+            NSString * abnormalanalysis = [rs stringForColumn:ABNORMALANALYSIS];
+            NSString * credibly = [rs stringForColumn:CREDIBLY];
+            NSString * pointid = [rs stringForColumn:POINTID];
+
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:abnormalid forKey:@"abnormalid"];
+            [dict setObject:abnormaltime forKey:@"abnormaltime"];
+            [dict setObject:informant forKey:@"informant"];
+            [dict setObject:abnormalintensity forKey:@"abnormalintensity"];
+            [dict setObject:groundwater forKey:@"groundwater"];
+            [dict setObject:abnormalhabit forKey:@"abnormalhabit"];
+            [dict setObject:abnormalphenomenon forKey:@"abnormalphenomenon"];
+            [dict setObject:other forKey:@"other"];
+            [dict setObject:implementation forKey:@"implementation"];
+            [dict setObject:abnormalanalysis forKey:@"abnormalanalysis"];
+            [dict setObject:credibly forKey:@"credibly"];
+            [dict setObject:pointid forKey:@"pointid"];
+            
+            [dataCollect addObject:[AbnormalinfoModel objectWithKeyValues:dict]];
         }
         [db close];
     }
+    return dataCollect;
+}
+
+-(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value
+{
+    NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
+    if ([db open])
+    {
+        NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@ WHERE %@ ='%@'",TABLENAME,attribute,value];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next])
+        {
+            NSString * abnormalid = [rs stringForColumn:ABNORMALID];
+            NSString * abnormaltime = [rs stringForColumn:ABNORMALTIME];
+            NSString * informant = [rs stringForColumn:INFORMANT];
+            NSString * abnormalintensity = [rs stringForColumn:ABNORMALINTENSITY];
+            NSString * groundwater = [rs stringForColumn:GROUPDWATER];
+            NSString * abnormalhabit = [rs stringForColumn:ABNORMALHABIT];
+            NSString * abnormalphenomenon = [rs stringForColumn:ABNORMALPHENOMENON];
+            NSString * other = [rs stringForColumn:OTHER];
+            NSString * implementation = [rs stringForColumn:IMPLEMENTATION];
+            NSString * abnormalanalysis = [rs stringForColumn:ABNORMALANALYSIS];
+            NSString * credibly = [rs stringForColumn:CREDIBLY];
+            NSString * pointid = [rs stringForColumn:POINTID];
+            
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:abnormalid forKey:@"abnormalid"];
+            [dict setObject:abnormaltime forKey:@"abnormaltime"];
+            [dict setObject:informant forKey:@"informant"];
+            [dict setObject:abnormalintensity forKey:@"abnormalintensity"];
+            [dict setObject:groundwater forKey:@"groundwater"];
+            [dict setObject:abnormalhabit forKey:@"abnormalhabit"];
+            [dict setObject:abnormalphenomenon forKey:@"abnormalphenomenon"];
+            [dict setObject:other forKey:@"other"];
+            [dict setObject:implementation forKey:@"implementation"];
+            [dict setObject:abnormalanalysis forKey:@"abnormalanalysis"];
+            [dict setObject:credibly forKey:@"credibly"];
+            [dict setObject:pointid forKey:@"pointid"];
+            
+            [dataCollect addObject:[AbnormalinfoModel objectWithKeyValues:dict]];
+        }
+        [db close];
+    }
+    return dataCollect;
 }
 
 @end
+
+

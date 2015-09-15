@@ -45,6 +45,8 @@
 #define SOUNDSIZE          @"soundsize"
 #define SOUNDDIRECTION     @"sounddirection"
 
+#define POINTID            @"pointid"
+
 #import "ReactioninfoTableHelper.h"
 
 @implementation ReactioninfoTableHelper
@@ -57,6 +59,7 @@
     dispatch_once(&onceToken, ^{
         reactioninfoTableHelper = [[ReactioninfoTableHelper alloc] init];
         [reactioninfoTableHelper initDataBase];
+        [reactioninfoTableHelper createTable];
     });
     return reactioninfoTableHelper;
 }
@@ -73,8 +76,8 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' INTEGER, '%@' TEXT, '%@' INTEGER, '%@' INTEGER, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,REACTIONID,REACTIONTIME,
-                                     INFORMANTNAME,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,REACTIONID,REACTIONTIME,
+                                     INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -85,21 +88,25 @@
     }
 }
 
--(void) insertData
+-(BOOL) insertDataWith:(NSDictionary *)dict
 {
+    BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@')",
                                TABLENAME,REACTIONID,REACTIONTIME,
-                               INFORMANTNAME,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION, @"张三",@"张三", @"济南",@"张三", @"13", @"济南",@"张三", @"13", @"济南",@"张三", @"13",@"张三",@"张三", @"济南",@"张三", @"13"];
+                               INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID, dict[@"reactionid"],dict[@"reactiontime"], dict[@"informantname"],dict[@"informantage"], dict[@"informanteducation"], dict[@"informantjob"],dict[@"reactionaddress"], dict[@"rockfeeling"],dict[@"throwfeeling"],dict[@"throwtings"],dict[@"throwdistance"],dict[@"fall"],dict[@"hang"], dict[@"furnituresound"],dict[@"furnituredump"], dict[@"soundsize"],dict[@"sounddirection"],dict[@"pointid"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
+            result = NO;
         } else {
             NSLog(@"success to insert db table");
+            result = YES;
         }
         [db close];
     }
+    return result;
 }
 //
 //-(void) updateData
@@ -121,41 +128,139 @@
 //
 //}
 //
--(void) deleteData
+-(BOOL) deleteDataByReactionid:(NSString *)reactionidStr
 {
+    BOOL result = NO;
     if ([db open])
     {
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, REACTIONID, @"张三"];
+                               TABLENAME, REACTIONID, reactionidStr];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
             NSLog(@"error when delete db table");
+            result = NO;
         } else {
             NSLog(@"success to delete db table");
+            result = YES;
         }
         [db close];
     }
+    return result;
 }
 
--(void) selectData
+-(NSMutableArray *) selectData
 {
+    NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
     {
         NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@",TABLENAME];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            int reactionid = [rs intForColumn:REACTIONID];
+            NSString * reactionid = [rs stringForColumn:REACTIONID];
+            NSString * reactiontime = [rs stringForColumn:REACTIONTIME];
+            NSString * informantname = [rs stringForColumn:INFORMANTNAME];
+            NSString * informantage = [rs stringForColumn:INFORMANTAGE];
+            NSString * informanteducation = [rs stringForColumn:INFORMANTEDUCATION];
+            NSString * informantjob = [rs stringForColumn:INFORMANTJOB];
+            NSString * reactionaddress = [rs stringForColumn:REACTIONADDRESS];
+            NSString * rockfeeling = [rs stringForColumn:ROCKFEELING];
+            NSString * throwfeeling = [rs stringForColumn:THROWFEELING];
+            NSString * throwtings = [rs stringForColumn:THROWTINGS];
+            NSString * throwdistance = [rs stringForColumn:THROWDISTANCE];
+            NSString * fall = [rs stringForColumn:FALL];
+            NSString * hang = [rs stringForColumn:HANG];
+            NSString * furnituresound = [rs stringForColumn:FURNITURESOUND];
+            NSString * furnituredump = [rs stringForColumn:FURNITUREDUMP];
             NSString * sounddirection = [rs stringForColumn:SOUNDDIRECTION];
             NSString * soundsize = [rs stringForColumn:SOUNDSIZE];
-            NSString * hang = [rs stringForColumn:HANG];
-            NSLog(@"id = %d, earthid = %@, pointlocation = %@  pointlon = %@", reactionid, sounddirection, soundsize, hang);
+            NSString * pointid = [rs stringForColumn:POINTID];
+
+             NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:reactionid forKey:@"reactionid"];
+            [dict setObject:reactiontime forKey:@"reactiontime"];
+            [dict setObject:informantname forKey:@"informantname"];
+            [dict setObject:informantage forKey:@"informantage"];
+            [dict setObject:informanteducation forKey:@"informanteducation"];
+            [dict setObject:informantjob forKey:@"informantjob"];
+            [dict setObject:reactionaddress forKey:@"reactionaddress"];
+            [dict setObject:rockfeeling forKey:@"rockfeeling"];
+            [dict setObject:throwfeeling forKey:@"throwfeeling"];
+            [dict setObject:throwtings forKey:@"throwtings"];
+            [dict setObject:throwdistance forKey:@"throwdistance"];
+            [dict setObject:fall forKey:@"fall"];
+            [dict setObject:hang forKey:@"hang"];
+            [dict setObject:furnituresound forKey:@"furnituresound"];
+            [dict setObject:furnituredump forKey:@"furnituredump"];
+            [dict setObject:soundsize forKey:@"soundsize"];
+            [dict setObject:sounddirection forKey:@"sounddirection"];
+            [dict setObject:pointid forKey:@"pointid"];
+            
+            [dataCollect addObject:[ReactionModel objectWithKeyValues:dict]];
         }
         [db close];
     }
+    return dataCollect;
 }
 
+-(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value
+{
+    NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
+    if ([db open])
+    {
+        NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@ WHERE %@ ='%@'",TABLENAME,attribute,value];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next])
+        {
+            NSString * reactionid = [rs stringForColumn:REACTIONID];
+            NSString * reactiontime = [rs stringForColumn:REACTIONTIME];
+            NSString * informantname = [rs stringForColumn:INFORMANTNAME];
+            NSString * informantage = [rs stringForColumn:INFORMANTAGE];
+            NSString * informanteducation = [rs stringForColumn:INFORMANTEDUCATION];
+            NSString * informantjob = [rs stringForColumn:INFORMANTJOB];
+            NSString * reactionaddress = [rs stringForColumn:REACTIONADDRESS];
+            NSString * rockfeeling = [rs stringForColumn:ROCKFEELING];
+            NSString * throwfeeling = [rs stringForColumn:THROWFEELING];
+            NSString * throwtings = [rs stringForColumn:THROWTINGS];
+            NSString * throwdistance = [rs stringForColumn:THROWDISTANCE];
+            NSString * fall = [rs stringForColumn:FALL];
+            NSString * hang = [rs stringForColumn:HANG];
+            NSString * furnituresound = [rs stringForColumn:FURNITURESOUND];
+            NSString * furnituredump = [rs stringForColumn:FURNITUREDUMP];
+            NSString * sounddirection = [rs stringForColumn:SOUNDDIRECTION];
+            NSString * soundsize = [rs stringForColumn:SOUNDSIZE];
+            NSString * pointid = [rs stringForColumn:POINTID];
+            
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:reactionid forKey:@"reactionid"];
+            [dict setObject:reactiontime forKey:@"reactiontime"];
+            [dict setObject:informantname forKey:@"informantname"];
+            [dict setObject:informantage forKey:@"informantage"];
+            [dict setObject:informanteducation forKey:@"informanteducation"];
+            [dict setObject:informantjob forKey:@"informantjob"];
+            [dict setObject:reactionaddress forKey:@"reactionaddress"];
+            [dict setObject:rockfeeling forKey:@"rockfeeling"];
+            [dict setObject:throwfeeling forKey:@"throwfeeling"];
+            [dict setObject:throwtings forKey:@"throwtings"];
+            [dict setObject:throwdistance forKey:@"throwdistance"];
+            [dict setObject:fall forKey:@"fall"];
+            [dict setObject:hang forKey:@"hang"];
+            [dict setObject:furnituresound forKey:@"furnituresound"];
+            [dict setObject:furnituredump forKey:@"furnituredump"];
+            [dict setObject:soundsize forKey:@"soundsize"];
+            [dict setObject:sounddirection forKey:@"sounddirection"];
+            [dict setObject:pointid forKey:@"pointid"];
+            
+            [dataCollect addObject:[ReactionModel objectWithKeyValues:dict]];
+        }
+        [db close];
+    }
+    return dataCollect;
+}
+
+
 @end
+

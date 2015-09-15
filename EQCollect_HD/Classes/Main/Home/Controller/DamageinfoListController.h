@@ -14,4 +14,6 @@
 @property (strong,nonatomic)UINavigationController *nav;
 @property (strong,nonatomic)DamageinfoViewController *damageinfoVC;
 
+@property (nonatomic, retain) NSMutableArray *dataProvider;
+@property (copy,nonatomic)NSString *pointid;
 @end

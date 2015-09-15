@@ -20,7 +20,9 @@
 /**创建表**/
 - (void)createTable;
 /**插入数据**/
-- (void)insertData;
+-(BOOL) insertDataWith:(NSDictionary *)dict;
+/**删除数据**/
+-(BOOL) deleteDataByPointid:(NSString *)pointidStr;
 /**查询数据**/
 - (NSMutableArray *)selectData;
 

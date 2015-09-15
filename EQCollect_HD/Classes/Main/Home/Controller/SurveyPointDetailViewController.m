@@ -27,33 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"调查点详情";
-    
-    _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"新增" style:UIBarButtonItemStylePlain target:self action:@selector(newInfor:)];
-    
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    //创建一组UIViewController作为slideSwitchView的数据源
-    self.vcArray = [[NSMutableArray alloc] init];
-    
-    self.pointinfoVC = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
-    self.pointinfoVC.title = @"调查点";
-    [self.vcArray addObject:self.pointinfoVC];
-    
-    self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];
-    self.abnormalinfoListVC.title = @"宏观异常";
-    self.abnormalinfoListVC.nav = self.navigationController;
-    [self.vcArray addObject:self.abnormalinfoListVC];
-    
-    self.reactioninfoListVC = [[ReactioninfoListController alloc] initWithNibName:@"ReactioninfoListController" bundle:nil];
-    self.reactioninfoListVC.title = @"人物反应";
-    self.reactioninfoListVC.nav = self.navigationController;
-    [self.vcArray addObject:self.reactioninfoListVC];
-    
-    self.damageinfoListVC = [[DamageinfoListController alloc] initWithNibName:@"DamageinfoListController" bundle:nil];
-    self.damageinfoListVC.title = @"房屋震害";
-    self.damageinfoListVC.nav = self.navigationController;
-    [self.vcArray addObject:self.damageinfoListVC];
+    //初始化调查点详情界面
+    [self initSurveyPointDetail];
 }
 
 -(void)viewDidLayoutSubviews
@@ -74,6 +49,51 @@
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
     //根据屏幕方向设置调查点信息视图的约束
     [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
+    
+    //更新数据
+    self.pointinfoVC.pointinfo = self.pointinfo;
+    [self.pointinfoVC viewWillAppear:YES];
+    
+    self.abnormalinfoListVC.pointid = self.pointinfo.pointid;
+    [self.abnormalinfoListVC viewWillAppear:YES];
+    
+    self.reactioninfoListVC.pointid = self.pointinfo.pointid;
+    [self.reactioninfoListVC viewWillAppear:YES];
+    
+     self.damageinfoListVC.pointid = self.pointinfo.pointid;
+    [self.damageinfoListVC viewWillAppear:YES];
+}
+
+-(void)initSurveyPointDetail
+{
+    self.title = @"调查点详情";
+    
+    _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"新增" style:UIBarButtonItemStylePlain target:self action:@selector(newInfor:)];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    //创建一组UIViewController作为slideSwitchView的数据源
+    self.vcArray = [[NSMutableArray alloc] init];
+    
+    self.pointinfoVC = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
+    self.pointinfoVC.title = @"调查点";
+    [self.vcArray addObject:self.pointinfoVC];
+    
+    self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];
+    self.abnormalinfoListVC.title = @"宏观异常";
+    self.abnormalinfoListVC.nav = self.navigationController;
+
+    [self.vcArray addObject:self.abnormalinfoListVC];
+    
+    self.reactioninfoListVC = [[ReactioninfoListController alloc] initWithNibName:@"ReactioninfoListController" bundle:nil];
+    self.reactioninfoListVC.title = @"人物反应";
+    self.reactioninfoListVC.nav = self.navigationController;
+    [self.vcArray addObject:self.reactioninfoListVC];
+    
+    self.damageinfoListVC = [[DamageinfoListController alloc] initWithNibName:@"DamageinfoListController" bundle:nil];
+    self.damageinfoListVC.title = @"房屋震害";
+    self.damageinfoListVC.nav = self.navigationController;
+    [self.vcArray addObject:self.damageinfoListVC];
 }
 
 /**
@@ -134,6 +154,7 @@
             self.abnormalVC = [[AbnormalinfoViewController alloc] init];
         }
         self.abnormalVC.isAdd = YES;
+        self.abnormalVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.abnormalVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
@@ -142,6 +163,7 @@
             self.reactionifoVC = [[ReactioninfoViewController alloc] init];
         }
         self.reactionifoVC.isAdd = YES;
+        self.reactionifoVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.reactionifoVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
@@ -150,6 +172,7 @@
             self.damageinfoVC = [[DamageinfoViewController alloc] init];
         }
         self.damageinfoVC.isAdd = YES;
+        self.damageinfoVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.damageinfoVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];

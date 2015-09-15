@@ -22,16 +22,17 @@
 #import <Foundation/Foundation.h>
 
 @interface AbnormalinfoModel : NSObject
-@property (nonatomic, assign) float abnormalid;
-@property (nonatomic, retain) NSString *abnormaltime;
-@property (nonatomic, retain) NSString *informant;
-@property (nonatomic, retain) NSString *abnormalintensity;
-@property (nonatomic, retain) NSString *groundwater;
-@property (nonatomic, retain) NSString *abnormalhabit;
-@property (nonatomic, retain) NSString *abnormalphenomenon;
-@property (nonatomic, retain) NSString *other;
-@property (nonatomic, retain) NSString *implementation;
-@property (nonatomic, retain) NSString *abnormalanalysis;
-@property (nonatomic, retain) NSString *credibly;
+@property (nonatomic, copy) NSString *abnormalid;
+@property (nonatomic, copy) NSString *abnormaltime;
+@property (nonatomic, copy) NSString *informant;
+@property (nonatomic, copy) NSString *abnormalintensity;
+@property (nonatomic, copy) NSString *groundwater;
+@property (nonatomic, copy) NSString *abnormalhabit;
+@property (nonatomic, copy) NSString *abnormalphenomenon;
+@property (nonatomic, copy) NSString *other;
+@property (nonatomic, copy) NSString *implementation;
+@property (nonatomic, copy) NSString *abnormalanalysis;
+@property (nonatomic, copy) NSString *credibly;
+@property (nonatomic, copy) NSString *pointid;
 
 @end

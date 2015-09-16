@@ -16,9 +16,12 @@
 
 @implementation AbnormalinfoListController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
+    self.tableView.backgroundColor = HMGlobalBg;
+    self.tableView.tableFooterView = [[UIView alloc] init];
 }
 -(void)viewWillAppear:(BOOL)animated
 {

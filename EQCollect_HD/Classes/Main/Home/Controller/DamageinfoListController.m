@@ -42,7 +42,18 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+/**
+ *  刷新数据
+ */
+-(void)rereshing
+{
+    [self getDataProvider];
+    [self.tableView headerEndRefreshing];
+}
 
+/**
+ *  获取数据
+ */
 -(void)getDataProvider
 {
     self.dataProvider = [[DamageinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
@@ -103,7 +114,7 @@
 
 -(void)updateDamageinfo:(NSNotification *)notification
 {
-    [self getDataProvider];
+    [self.tableView headerBeginRefreshing];
 }
 
 @end

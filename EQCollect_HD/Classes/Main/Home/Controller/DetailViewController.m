@@ -197,5 +197,4 @@
     [self.tableView headerBeginRefreshing];
 }
 
-
 @end

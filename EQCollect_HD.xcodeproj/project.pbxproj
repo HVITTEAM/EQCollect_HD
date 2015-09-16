@@ -150,6 +150,8 @@
 		D23A1AAF1B9EE3F900758DDD /* DamageinfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */; };
 		D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28D42E91B8FF81500E720AB /* AdminTableHead.xib */; };
 		D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */ = {isa = PBXBuildFile; fileRef = D28D42EC1B90006B00E720AB /* AdminTableHead.m */; };
+		D2C189651BA94D0F00312EBA /* PictureInfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */; };
+		D2C189681BA9510100312EBA /* PictureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189671BA9510100312EBA /* PictureMode.m */; };
 		D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */; };
 /* End PBXBuildFile section */
 
@@ -447,6 +449,10 @@
 		D28D42E91B8FF81500E720AB /* AdminTableHead.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdminTableHead.xib; sourceTree = "<group>"; };
 		D28D42EB1B90006B00E720AB /* AdminTableHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdminTableHead.h; sourceTree = "<group>"; };
 		D28D42EC1B90006B00E720AB /* AdminTableHead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdminTableHead.m; sourceTree = "<group>"; };
+		D2C189631BA94D0F00312EBA /* PictureInfoTableHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureInfoTableHelper.h; sourceTree = "<group>"; };
+		D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureInfoTableHelper.m; sourceTree = "<group>"; };
+		D2C189661BA9510100312EBA /* PictureMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureMode.h; sourceTree = "<group>"; };
+		D2C189671BA9510100312EBA /* PictureMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureMode.m; sourceTree = "<group>"; };
 		D2C207F71B9D264A00454591 /* QCSlideSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QCSlideSwitchView.h; sourceTree = "<group>"; };
 		D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QCSlideSwitchView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -934,6 +940,8 @@
 				01E354731B9D618900014114 /* ReactionModel.m */,
 				01E354751B9D619900014114 /* DamageModel.h */,
 				01E354761B9D619900014114 /* DamageModel.m */,
+				D2C189661BA9510100312EBA /* PictureMode.h */,
+				D2C189671BA9510100312EBA /* PictureMode.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1050,6 +1058,8 @@
 				018A1D8D1B9D314200C97B48 /* ReactioninfoTableHelper.m */,
 				018A1D8F1B9D316400C97B48 /* DamageinfoTableHelper.h */,
 				018A1D901B9D316400C97B48 /* DamageinfoTableHelper.m */,
+				D2C189631BA94D0F00312EBA /* PictureInfoTableHelper.h */,
+				D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */,
 			);
 			path = FMDBHelper;
 			sourceTree = "<group>";
@@ -1263,6 +1273,7 @@
 				013CD3FF1BA9574E00470284 /* MWTapDetectingView.m in Sources */,
 				01A26EDD1BA17ED700EEB627 /* AFHTTPSessionManager.m in Sources */,
 				01A26EE01BA17ED700EEB627 /* AFURLConnectionOperation.m in Sources */,
+				D2C189681BA9510100312EBA /* PictureMode.m in Sources */,
 				01EED58A1B9D25420041D28A /* FMDatabaseQueue.m in Sources */,
 				01E3546B1B9D5F5700014114 /* UIView+MJExtension.m in Sources */,
 				013CD3FB1BA9574E00470284 /* MWGridViewController.m in Sources */,

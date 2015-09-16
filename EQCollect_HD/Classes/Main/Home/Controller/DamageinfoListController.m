@@ -19,11 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //下拉刷新
-    __weak typeof(self) weakSelf = self;
-    [self.tableView addHeaderWithCallback:^{
-        [weakSelf getDataProvider];
-        [weakSelf.tableView headerEndRefreshing];
-    }];
+    [self.tableView addHeaderWithTarget:self action:@selector(rereshing)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -39,7 +35,18 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+/**
+ *  刷新数据
+ */
+-(void)rereshing
+{
+    [self getDataProvider];
+    [self.tableView headerEndRefreshing];
+}
 
+/**
+ *  获取数据
+ */
 -(void)getDataProvider
 {
     self.dataProvider = [[DamageinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
@@ -100,7 +107,7 @@
 
 -(void)updateDamageinfo:(NSNotification *)notification
 {
-    [self getDataProvider];
+    [self.tableView headerBeginRefreshing];
 }
 
 @end

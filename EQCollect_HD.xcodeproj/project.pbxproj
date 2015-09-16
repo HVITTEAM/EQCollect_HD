@@ -27,6 +27,7 @@
 		0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0D71B968496003199F4 /* UIView+Extension.m */; };
 		0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0E31B968A18003199F4 /* PersonCenterController.m */; };
 		0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A0E41B968A18003199F4 /* PersonCenterController.xib */; };
+		0180A2CB1BA8248800D26866 /* DamageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354761B9D619900014114 /* DamageModel.m */; };
 		018A1D8B1B9D2EC000C97B48 /* AbnormalinfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 018A1D8A1B9D2EC000C97B48 /* AbnormalinfoTableHelper.m */; };
 		018A1D8E1B9D314200C97B48 /* ReactioninfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 018A1D8D1B9D314200C97B48 /* ReactioninfoTableHelper.m */; };
 		018A1D911B9D316400C97B48 /* DamageinfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 018A1D901B9D316400C97B48 /* DamageinfoTableHelper.m */; };
@@ -924,6 +925,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0180A2CB1BA8248800D26866 /* DamageModel.m in Sources */,
 				01EED59A1B9D2A3D0041D28A /* PointinfoTableHelper.m in Sources */,
 				0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */,
 				01E3547A1B9D746900014114 /* VenderMannager.m in Sources */,

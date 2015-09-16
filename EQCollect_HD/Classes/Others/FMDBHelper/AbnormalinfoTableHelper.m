@@ -45,6 +45,7 @@
     dispatch_once(&onceToken, ^{
         abnormalinfoTableHelper = [[AbnormalinfoTableHelper alloc] init];
         [abnormalinfoTableHelper initDataBase];
+        [abnormalinfoTableHelper createTable];
     });
     return abnormalinfoTableHelper;
 }
@@ -54,7 +55,6 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documents = [paths objectAtIndex:0];
     database_path = [documents stringByAppendingPathComponent:DBNAME];
-    
     db = [FMDatabase databaseWithPath:database_path];
 }
 

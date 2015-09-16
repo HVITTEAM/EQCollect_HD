@@ -23,6 +23,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self initReactioninfoVC];
+
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+     [self showReactioninfoData];
 }
 
 /**
@@ -90,6 +98,29 @@
     self.furnituresoundItems = @[@"轻微",@"较响",@"剧烈"];
     self.soundsizeItems = @[@"强烈",@"中等",@"微弱",@"无地声"];
     self.sounddirectionItems = @[@"东",@"南",@"西",@"北",@"东南",@"西北",@"西南",@"东北"];
+}
+
+-(void)showReactioninfoData
+{
+    if (!self.isAdd) {
+        self.reactionidTextF.text = self.reactioninfo.reactionid;
+        self.reactiontimeTextF.text= self.reactioninfo.reactiontime;
+        self.informantnameTextF.text= self.reactioninfo.informantname;
+        self.informantageTextF.text= self.reactioninfo.informantage;
+        self.informanteducationTextF.text= self.reactioninfo.informanteducation;
+        self.informantjobTextF.text= self.reactioninfo.informantjob;
+        self.reactionaddressTextF.text= self.reactioninfo.reactionaddress;
+        self.rockfeelingTextF.text= self.reactioninfo.rockfeeling;
+        self.throwfeelingTextF.text= self.reactioninfo.throwfeeling;
+        self.throwtingsTextF.text= self.reactioninfo.throwtings;
+        self.throwdistanceTextF.text= self.reactioninfo.throwdistance;
+        self.fallTextF.text= self.reactioninfo.fall;
+        self.hangTextF.text= self.reactioninfo.hang;
+        self.furnituresoundTextF.text= self.reactioninfo.furnituresound;
+        self.furnituredumpTextF.text= self.reactioninfo.furnituredump;
+        self.soundsizeTextF.text= self.reactioninfo.soundsize;
+        self.sounddirectionTextF.text= self.reactioninfo.sounddirection;
+    }
 }
 
 //处理屏幕旋转
@@ -227,10 +258,62 @@
     return canEdit;
 }
 
-
 -(void)addReactioninfo
 {
-    NSLog(@"新增");
+    NSString *reactionid = self.reactionidTextF.text;
+    NSString *reactiontime = self.reactiontimeTextF.text;
+    NSString *informantname = self.informantnameTextF.text;
+    NSString *informantage = self.informantageTextF.text;
+    NSString *informanteducation = self.informanteducationTextF.text;
+    NSString *informantjob = self.informantjobTextF.text;
+    NSString *reactionaddress = self.reactionaddressTextF.text;
+    NSString *rockfeeling = self.rockfeelingTextF.text;
+    NSString *throwfeeling = self.throwfeelingTextF.text;
+    NSString *throwtings = self.throwtingsTextF.text;
+    NSString *throwdistance = self.throwdistanceTextF.text;
+    NSString *fall = self.fallTextF.text;
+    NSString *hang = self.hangTextF.text;
+    NSString *furnituresound = self.furnituresoundTextF.text;
+    NSString *furnituredump = self.furnituredumpTextF.text;
+    NSString *soundsize = self.soundsizeTextF.text;
+    NSString *sounddirection = self.sounddirectionTextF.text;
+   
+    
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        UITextField *textF = (UITextField *)self.textInputViews[i];
+        if (textF.text ==nil || textF.text.length <=0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            return;
+        }
+    }
+    //创建字典对象并向表中插和数据
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          reactionid,@"reactionid",
+                          reactiontime,@"reactiontime",
+                          informantname,@"informantname",
+                          informantage, @"informantage",
+                          informanteducation, @"informanteducation",
+                          informantjob,@"informantjob",
+                          reactionaddress,@"reactionaddress",
+                          rockfeeling,@"rockfeeling",
+                          throwfeeling,@"throwfeeling",
+                          throwtings,@"throwtings",
+                          throwdistance,@"throwdistance",
+                          fall,@"fall",
+                          hang,@"hang",
+                          furnituresound,@"furnituresound",
+                          furnituredump,@"furnituredump",
+                          soundsize,@"soundsize",
+                          sounddirection,@"sounddirection",
+                          self.pointid,@"pointid",
+                          nil];
+    
+    BOOL result = [[ReactioninfoTableHelper sharedInstance] insertDataWith:dict];
+    if (!result) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }
+    
     [self dismissViewControllerAnimated:self completion:nil];
 }
 

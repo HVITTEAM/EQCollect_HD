@@ -47,6 +47,7 @@
     dispatch_once(&onceToken, ^{
         pointinfoTableHelper = [[PointinfoTableHelper alloc] init];
         [pointinfoTableHelper initDataBase];
+        [pointinfoTableHelper createTable];
     });
     return pointinfoTableHelper;
 }
@@ -63,7 +64,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' INTEGER, '%@' TEXT, '%@' INTEGER, '%@' INTEGER, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -74,21 +75,26 @@
     }
 }
 
--(void) insertData
+-(BOOL) insertDataWith:(NSDictionary *)dict
 {
+    BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT, @"张三", @"济南",@"张三", @"13", @"济南",@"张三", @"13", @"济南",@"张三", @"13", @"济南"];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME,POINTID, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT, dict[@"pointid"], dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson1"], dict[@"pointperson2"], dict[@"pointintensity"], dict[@"pointcontent"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
+            result = NO;
         } else {
             NSLog(@"success to insert db table");
+            result = YES;
         }
         [db close];
     }
+    return result;
 }
+
 //
 //-(void) updateData
 //{
@@ -109,23 +115,27 @@
 //
 //}
 //
--(void) deleteData
+-(BOOL) deleteDataByPointid:(NSString *)pointidStr
 {
+    BOOL result = NO;
     if ([db open])
     {
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, POINTID, @"张三"];
+                               TABLENAME, POINTID, pointidStr];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
             NSLog(@"error when delete db table");
+            result = NO;
         } else {
             NSLog(@"success to delete db table");
+            result = YES;
         }
         [db close];
     }
+    return result;
 }
 
 - (NSMutableArray *)selectData;
@@ -141,14 +151,33 @@
             NSString * earthid = [rs stringForColumn:EARTHID];
             NSString * pointlocation = [rs stringForColumn:POINTLOCATION];
             NSString * pointlon = [rs stringForColumn:POINTLON];
-            NSLog(@"id = %@, earthid = %@, pointlocation = %@  pointlon = %@", pointid, earthid, pointlocation, pointlon);
+            NSString * pointlat = [rs stringForColumn:POINTLAT];
+            NSString * pointname = [rs stringForColumn:POINTNAME];
+            NSString * pointtime = [rs stringForColumn:POINTTIME];
+            NSString * pointgroup = [rs stringForColumn:POINTGROUP];
+            NSString * pointperson1 = [rs stringForColumn:POINTPERSON1];
+            NSString * pointperson2 = [rs stringForColumn:POINTPERSON2];
+            NSString * pointintensity = [rs stringForColumn:POINTINTENSITY];
+            NSString * pointcontent = [rs stringForColumn:POINTCONTENT];
+            
+           // NSLog(@"id = %@, earthid = %@, pointlocation = %@  pointlon = %@", pointid, earthid, pointlocation, pointlon);
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:pointid forKey:@"id"];
+            [dict setObject:pointid forKey:@"pointid"];
             [dict setObject:earthid forKey:@"earthid"];
             [dict setObject:pointlocation forKey:@"pointlocation"];
             [dict setObject:pointlon forKey:@"pointlon"];
-            [dataCollect addObject:dict];
+            [dict setObject:pointlat forKey:@"pointlat"];
+            [dict setObject:pointname forKey:@"pointname"];
+            [dict setObject:pointtime forKey:@"pointtime"];
+            [dict setObject:pointgroup forKey:@"pointgroup"];
+            [dict setObject:pointperson1 forKey:@"pointperson1"];
+            [dict setObject:pointperson2 forKey:@"pointperson2"];
+            [dict setObject:pointintensity forKey:@"pointintensity"];
+            [dict setObject:pointcontent forKey:@"pointcontent"];
+
+            [dataCollect addObject:[PointModel objectWithKeyValues:dict]];
+            
         }
         [db close];
     }

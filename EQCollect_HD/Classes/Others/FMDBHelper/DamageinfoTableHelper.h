@@ -20,7 +20,11 @@
 /**创建表**/
 - (void)createTable;
 /**插入数据**/
-- (void)insertData;
+-(BOOL) insertDataWith:(NSDictionary *)dict;
+/**删除数据**/
+-(BOOL) deleteDataByDamageid:(NSString *)damageidStr;
 /**查询数据**/
-- (void)selectData;
+- (NSMutableArray *)selectData;
+/**根据字段查询数据**/
+-(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value;
 @end

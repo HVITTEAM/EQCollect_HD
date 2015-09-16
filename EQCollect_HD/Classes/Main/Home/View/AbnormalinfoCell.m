@@ -20,4 +20,7 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)deleteAbnormalinfo:(id)sender {
+    self.deleteAbnormalinfoBlock();
+}
 @end

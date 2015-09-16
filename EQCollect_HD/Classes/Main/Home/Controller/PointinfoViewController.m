@@ -21,18 +21,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    
+    [self initPointinfoVC];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //    self.rootScrollView.userInteractionEnabled = NO;
-    
+    [self showPointinfoData];
+}
+
+/**
+ *  初始化调查点信息控制器
+ */
+-(void)initPointinfoVC
+{
     keyBoardHeight = 352;
     //默认情况下ScrollView中的内容不会被导航栏遮挡
     _navHeight = 0;
@@ -41,6 +44,9 @@
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         self.navigationItem.leftBarButtonItem = leftItem;
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addPointinfo)];
+        self.navigationItem.rightBarButtonItem = rightItem;
+        
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
@@ -77,10 +83,22 @@
     self.pointcontentTextV.tag = 1000 + self.textInputViews.count-1;
 }
 
--(void)viewWillDisappear:(BOOL)animated
+-(void)showPointinfoData
 {
-    [super viewWillDisappear:animated];
+    if (!self.isAdd) {
+        self.pointidTextF.text = self.pointinfo.pointid;
+        self.earthidTextF.text = self.pointinfo.earthid;
+        self.pointlocationTextF.text = self.pointinfo.pointlocation;
+        self.pointlonTextF.text = self.pointinfo.pointlon;
+        self.pointlatTextF.text = self.pointinfo.pointlat;
+        self.pointnameTextF.text = self.pointinfo.pointname;
+        self.pointtimeTextF.text = self.pointinfo.pointtime;
+        self.pointgroupTextF.text = self.pointinfo.pointgroup;
+        self.pointintensityTextF.text = self.pointinfo.pointintensity;
+        self.pointcontentTextV.text = self.pointinfo.pointcontent;
+    }
 }
+
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 {
@@ -188,4 +206,59 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+-(void)addPointinfo
+{
+    NSString *pointid = self.pointidTextF.text;
+    NSString *earthid = self.earthidTextF.text;
+    NSString *pointlocation = self.pointlocationTextF.text;
+    NSString *pointlon = self.pointlonTextF.text;
+    NSString *pointlat = self.pointlatTextF.text;
+    NSString *pointname = self.pointnameTextF.text;
+    NSString *pointtime = self.pointtimeTextF.text;
+    NSString *pointgroup = self.pointgroupTextF.text;
+    NSString *pointperson1 = @"person1";
+    NSString *pointperson2 = @"person2";
+    NSString *pointintensity = self.pointintensityTextF.text;
+    NSString *pointcontent = self.pointcontentTextV.text;
+
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        if (i!=self.textInputViews.count-1) {
+            UITextField *textF = (UITextField *)self.textInputViews[i];
+            if (textF.text ==nil || textF.text.length <=0) {
+                [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                return;
+            }
+        }else{
+            UITextView *textV = (UITextView *)self.textInputViews[i];
+            if (textV.text ==nil || textV.text.length <=0) {
+                [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                return;
+            }
+        }
+    }
+    //创建字典对象并向表中插和数据
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          pointid,@"pointid",
+                          earthid,@"earthid",
+                          pointlocation,@"pointlocation",
+                          pointlon, @"pointlon",
+                          pointlat, @"pointlat",
+                          pointname,@"pointname",
+                          pointtime,@"pointtime",
+                          pointgroup,@"pointgroup",
+                          pointperson1,@"pointperson1",
+                          pointperson2,@"pointperson2",
+                          pointintensity,@"pointintensity",
+                          pointcontent,@"pointcontent", nil];
+
+    BOOL result = [[PointinfoTableHelper sharedInstance] insertDataWith:dict];
+    if (!result) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end
+

@@ -29,6 +29,8 @@
 #define DAMAGESITUATION  @"damagesituation"
 #define DAMAGEINDEX      @"damageindex"
 
+#define POINTID            @"pointid"
+
 #import "DamageinfoTableHelper.h"
 
 @implementation DamageinfoTableHelper
@@ -41,6 +43,8 @@
     dispatch_once(&onceToken, ^{
         damageinfoTableHelper = [[DamageinfoTableHelper alloc] init];
         [damageinfoTableHelper initDataBase];
+        [damageinfoTableHelper createTable];
+
     });
     return damageinfoTableHelper;
 }
@@ -57,8 +61,8 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' INTEGER, '%@' TEXT, '%@' INTEGER, '%@' INTEGER, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
-                                     DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
+                                     DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -69,21 +73,26 @@
     }
 }
 
--(void) insertData
+-(BOOL) insertDataWith:(NSDictionary *)dict
 {
+    BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,DAMAGEID,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX, @"张三",@"张三", @"济南",@"张三", @"13", @"济南",@"张三", @"13", @"济南"];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME,DAMAGEID,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID,dict[@"damageid"],dict[@"damagetime"], dict[@"damageaddress"],dict[@"damageintensity"], dict[@"zrcorxq"], dict[@"dworzh"],dict[@"fortificationintensity"], dict[@"damagesituation"], dict[@"damageindex"],dict[@"pointid"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
+            result = NO;
         } else {
             NSLog(@"success to insert db table");
+            result = YES;
         }
         [db close];
     }
+    return result;
 }
+
 //
 //-(void) updateData
 //{
@@ -104,41 +113,111 @@
 //
 //}
 //
--(void) deleteData
+-(BOOL) deleteDataByDamageid:(NSString *)damageidStr
 {
+    BOOL result = NO;
     if ([db open])
     {
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, DAMAGEID, @"张三"];
+                               TABLENAME, DAMAGEID, damageidStr];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
             NSLog(@"error when delete db table");
+            result = NO;
         } else {
             NSLog(@"success to delete db table");
+            result = YES;
         }
         [db close];
     }
+    return result;
 }
 
--(void) selectData
+-(NSMutableArray *) selectData
 {
+    NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
     {
         NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@",TABLENAME];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            int damageid = [rs intForColumn:DAMAGEID];
+            NSString * damageid = [rs stringForColumn:DAMAGEID];
             NSString * damagetime = [rs stringForColumn:DAMAGETIME];
             NSString * damageaddress = [rs stringForColumn:DAMAGEADDRESS];
             NSString * damageintensity = [rs stringForColumn:DAMAGEINTENSITY];
-            NSLog(@"id = %d, earthid = %@, pointlocation = %@  pointlon = %@", damageid, damagetime, damageaddress, damageintensity);
+            NSString * zrcorxq = [rs stringForColumn:ZRCORXQ];
+            NSString * dworzh = [rs stringForColumn:DWORZH];
+            NSString * fortificationintensity = [rs stringForColumn:FORTIFICATIONINTENSITY];
+            NSString * damagesituation = [rs stringForColumn:DAMAGESITUATION];
+            NSString * damageindex = [rs stringForColumn:DAMAGEINDEX];
+            NSString * pointid = [rs stringForColumn:POINTID];
+            
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:damageid forKey:@"damageid"];
+            [dict setObject:damagetime forKey:@"damagetime"];
+            [dict setObject:damageaddress forKey:@"damageaddress"];
+            [dict setObject:damageintensity forKey:@"damageintensity"];
+            [dict setObject:zrcorxq forKey:@"zrcorxq"];
+            [dict setObject:dworzh forKey:@"dworzh"];
+            [dict setObject:fortificationintensity forKey:@"fortificationintensity"];
+            [dict setObject:damagesituation forKey:@"damagesituation"];
+            [dict setObject:damageindex forKey:@"damageindex"];
+            [dict setObject:pointid forKey:@"pointid"];
+            [dataCollect addObject:dict];
+            //[dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
         }
         [db close];
     }
+    
+    return dataCollect;
+}
+
+-(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value;
+{
+    NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
+    if ([db open])
+    {
+        NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@ WHERE %@ ='%@'",TABLENAME,attribute,value];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next])
+        {
+            NSString * damageid = [rs stringForColumn:DAMAGEID];
+            NSString * damagetime = [rs stringForColumn:DAMAGETIME];
+            NSString * damageaddress = [rs stringForColumn:DAMAGEADDRESS];
+            NSString * damageintensity = [rs stringForColumn:DAMAGEINTENSITY];
+            NSString * zrcorxq = [rs stringForColumn:ZRCORXQ];
+            NSString * dworzh = [rs stringForColumn:DWORZH];
+            NSString * fortificationintensity = [rs stringForColumn:FORTIFICATIONINTENSITY];
+            NSString * damagesituation = [rs stringForColumn:DAMAGESITUATION];
+            NSString * damageindex = [rs stringForColumn:DAMAGEINDEX];
+            NSString * pointid = [rs stringForColumn:POINTID];
+            
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:damageid forKey:@"damageid"];
+            [dict setObject:damagetime forKey:@"damagetime"];
+            [dict setObject:damageaddress forKey:@"damageaddress"];
+            [dict setObject:damageintensity forKey:@"damageintensity"];
+            [dict setObject:zrcorxq forKey:@"zrcorxq"];
+            [dict setObject:dworzh forKey:@"dworzh"];
+            [dict setObject:fortificationintensity forKey:@"fortificationintensity"];
+            [dict setObject:damagesituation forKey:@"damagesituation"];
+            [dict setObject:damageindex forKey:@"damageindex"];
+            [dict setObject:pointid forKey:@"pointid"];
+            [dataCollect addObject:dict];
+//            [DamageModel objectWithKeyValues:dict];
+//            [dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
+        }
+        
+        [db close];
+    }
+    
+    return dataCollect;
 }
 
 @end
+
+

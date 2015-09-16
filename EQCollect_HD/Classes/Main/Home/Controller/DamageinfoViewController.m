@@ -25,6 +25,13 @@
     // Do any additional setup after loading the view from its nib.
     
     [self initDamageinfo];
+    [self showDamageinfoData];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
 }
 
 /**
@@ -81,7 +88,33 @@
     self.fortificationintensityItems = @[@"1级",@"2级",@"3级",@"4级",@"5级",@"6级",@"7级",@"8级",@"9级",@"10级"];
     self.damagesituationItems = @[@"严重",@"中等",@"轻微"];
     self.damageindexItems = @[@"1级",@"2级",@"3级",@"4级",@"5级",@"6级",@"7级",@"8级",@"9级",@"10级"];
-    
+}
+
+-(void)showDamageinfoData
+{
+    if (!self.isAdd) {
+//        self.damageidTextF.text = self.damageinfo.damageid;
+//        self.damagetimeTextF.text = self.damageinfo.damagetime;
+//        self.damageaddressTextF.text = self.damageinfo.damageaddress;
+//        self.damageintensityTextF.text = self.damageinfo.damageintensity;
+//        self.zrcorxqTextF.text = self.damageinfo.zrcorxq;
+//        self.dworzhTextF.text = self.damageinfo.dworzh;
+//        self.fortificationintensityTextF.text = self.damageinfo.fortificationintensity;
+//        self.damagesituationTextF.text = self.damageinfo.damagesituation;
+//        self.damageindexTextF.text = self.damageinfo.damageindex;
+        
+        
+        self.damageidTextF.text = self.damageinfo[@"damageid"];
+        self.damagetimeTextF.text = self.damageinfo[@"damagetime"];
+        self.damageaddressTextF.text = self.damageinfo[@"damageaddress"];
+        self.damageintensityTextF.text = self.damageinfo[@"damageintensity"];
+        self.zrcorxqTextF.text = self.damageinfo[@"zrcorxq"];
+        self.dworzhTextF.text = self.damageinfo[@"dworzh"];
+        self.fortificationintensityTextF.text = self.damageinfo[@"fortificationintensity"];
+        self.damagesituationTextF.text = self.damageinfo[@"damagesituation"];
+        self.damageindexTextF.text = self.damageinfo[@"damageindex"];
+
+    }
 }
 
 //处理屏幕旋转
@@ -204,7 +237,43 @@
  */
 -(void)addDamageinfo
 {
-    NSLog(@"新增");
+    NSString *damageid = self.damageidTextF.text;
+    NSString *damagetime = self.damagetimeTextF.text;
+    NSString *damageaddress = self.damageaddressTextF.text;
+    NSString *damageintensity = self.damageintensityTextF.text;
+    NSString *zrcorxq = self.zrcorxqTextF.text;
+    NSString *dworzh = self.dworzhTextF.text;
+    NSString *fortificationintensity = self.fortificationintensityTextF.text;
+    NSString *damagesituation = self.damagesituationTextF.text;
+    NSString *damageindex = self.damageindexTextF.text;
+    
+    
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        UITextField *textF = (UITextField *)self.textInputViews[i];
+        if (textF.text ==nil || textF.text.length <=0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            return;
+        }
+    }
+    //创建字典对象并向表中插和数据
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          damageid,@"damageid",
+                          damagetime,@"damagetime",
+                          damageaddress,@"damageaddress",
+                          damageintensity, @"damageintensity",
+                          zrcorxq, @"zrcorxq",
+                          dworzh,@"dworzh",
+                          fortificationintensity,@"fortificationintensity",
+                          damagesituation,@"damagesituation",
+                          damageindex,@"damageindex",
+                          self.pointid,@"pointid",
+                          nil];
+    
+    BOOL result = [[DamageinfoTableHelper sharedInstance] insertDataWith:dict];
+    if (!result) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }
     [self dismissViewControllerAnimated:self completion:nil];
 }
 

@@ -12,4 +12,7 @@
 @interface ReactioninfoListController : UITableViewController
 @property (strong,nonatomic)UINavigationController *nav;
 @property (strong,nonatomic) ReactioninfoViewController *reactionVC;
+
+@property (nonatomic, retain) NSMutableArray *dataProvider;
+@property (copy,nonatomic)NSString *pointid;
 @end

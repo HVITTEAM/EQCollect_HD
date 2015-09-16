@@ -12,4 +12,8 @@
 @interface AbnormalinfoListController : UITableViewController
 @property (strong,nonatomic)UINavigationController *nav;
 @property (strong,nonatomic)AbnormalinfoViewController *abnormalinfoVC;
+
+@property (nonatomic, retain) NSMutableArray *dataProvider;
+@property (copy,nonatomic)NSString *pointid;
+
 @end

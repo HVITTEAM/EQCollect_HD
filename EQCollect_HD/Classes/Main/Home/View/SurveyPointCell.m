@@ -20,4 +20,7 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)deleteSurveyPoint:(id)sender {
+    self.deletePointBlock();
+}
 @end

@@ -54,6 +54,9 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="deleteDamageinfo:" destination="gg3-cm-aAK" eventType="touchUpInside" id="Cno-QR-rkh"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设防烈度:6" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sc-5E-mjN">
                         <rect key="frame" x="78" y="54" width="73" height="18"/>
@@ -94,6 +97,14 @@
                     <constraint firstAttribute="bottom" secondItem="ven-L2-iyO" secondAttribute="bottom" constant="10" id="wri-ls-AZr"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="damageaddress" destination="ven-L2-iyO" id="ifX-fX-5nz"/>
+                <outlet property="damageid" destination="aQ6-23-7fi" id="wY7-g6-IFv"/>
+                <outlet property="damageintensity" destination="Nnk-7p-UQQ" id="q5A-6B-pOo"/>
+                <outlet property="damagesituation" destination="UhT-ZL-hqR" id="FHP-4B-2NZ"/>
+                <outlet property="damagetime" destination="DAw-Df-a6e" id="vly-w6-wcQ"/>
+                <outlet property="fortificationintensity" destination="5sc-5E-mjN" id="hmd-3w-YUc"/>
+            </connections>
             <point key="canvasLocation" x="312" y="322"/>
         </tableViewCell>
     </objects>

@@ -27,21 +27,22 @@
 #import <Foundation/Foundation.h>
 
 @interface ReactionModel : NSObject
-@property (nonatomic, assign) float reactionid;
-@property (nonatomic, retain) NSString *reactiontime;
-@property (nonatomic, retain) NSString *informantname;
-@property (nonatomic, retain) NSString *informantage;
-@property (nonatomic, retain) NSString *informanteducation;
-@property (nonatomic, retain) NSString *informantjob;
-@property (nonatomic, retain) NSString *reactionaddress;
-@property (nonatomic, retain) NSString *rockfeeling;
-@property (nonatomic, retain) NSString *throwfeeling;
-@property (nonatomic, retain) NSString *throwtings;
-@property (nonatomic, retain) NSString *throwdistance;
-@property (nonatomic, retain) NSString *fall;
-@property (nonatomic, retain) NSString *hang;
-@property (nonatomic, retain) NSString *furnituresound;
-@property (nonatomic, retain) NSString *furnituredump;
-@property (nonatomic, retain) NSString *soundsize;
-@property (nonatomic, retain) NSString *sounddirection;
+@property (nonatomic, copy) NSString *reactionid;
+@property (nonatomic, copy) NSString *reactiontime;
+@property (nonatomic, copy) NSString *informantname;
+@property (nonatomic, copy) NSString *informantage;
+@property (nonatomic, copy) NSString *informanteducation;
+@property (nonatomic, copy) NSString *informantjob;
+@property (nonatomic, copy) NSString *reactionaddress;
+@property (nonatomic, copy) NSString *rockfeeling;
+@property (nonatomic, copy) NSString *throwfeeling;
+@property (nonatomic, copy) NSString *throwtings;
+@property (nonatomic, copy) NSString *throwdistance;
+@property (nonatomic, copy) NSString *fall;
+@property (nonatomic, copy) NSString *hang;
+@property (nonatomic, copy) NSString *furnituresound;
+@property (nonatomic, copy) NSString *furnituredump;
+@property (nonatomic, copy) NSString *soundsize;
+@property (nonatomic, copy) NSString *sounddirection;
+@property (nonatomic, copy) NSString *pointid;
 @end

@@ -24,4 +24,6 @@
 @property (strong,nonatomic)AbnormalinfoViewController *abnormalVC;
 @property (strong,nonatomic)ReactioninfoViewController *reactionifoVC;
 @property (strong,nonatomic)DamageinfoViewController *damageinfoVC;
+
+@property (strong,nonatomic)PointModel *pointinfo;           //选中的调查点信息
 @end

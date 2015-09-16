@@ -20,13 +20,14 @@
 #import <Foundation/Foundation.h>
 
 @interface DamageModel : NSObject
-@property (nonatomic, assign) float damageid;
-@property (nonatomic, retain) NSString *damagetime;
-@property (nonatomic, retain) NSString *damageaddress;
-@property (nonatomic, retain) NSString *damageintensity;
-@property (nonatomic, retain) NSString *zrcorxq;
-@property (nonatomic, retain) NSString *dworzh;
-@property (nonatomic, retain) NSString *fortificationintensity;
-@property (nonatomic, retain) NSString *damagesituation;
-@property (nonatomic, retain) NSString *damageindex;
+@property (nonatomic, copy) NSString *damageid;
+@property (nonatomic, copy) NSString *damagetime;
+@property (nonatomic, copy) NSString *damageaddress;
+@property (nonatomic, copy) NSString *damageintensity;
+@property (nonatomic, copy) NSString *zrcorxq;
+@property (nonatomic, copy) NSString *dworzh;
+@property (nonatomic, copy) NSString *fortificationintensity;
+@property (nonatomic, copy) NSString *damagesituation;
+@property (nonatomic, copy) NSString *damageindex;
+@property (nonatomic, copy) NSString *pointid;
 @end

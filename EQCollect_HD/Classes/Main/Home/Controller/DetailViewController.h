@@ -11,5 +11,5 @@
 @property (nonatomic, retain) UINavigationController *nav;
 @property (nonatomic,retain) PointinfoViewController *pointinfoVC;
 
-@property (nonatomic, retain) NSMutableArray *dataProvider;
+@property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
 @end

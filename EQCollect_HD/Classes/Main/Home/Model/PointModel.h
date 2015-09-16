@@ -23,18 +23,17 @@
 
 @interface PointModel : NSObject
 
-@property (nonatomic, assign) float pointid;
-@property (nonatomic, assign) float earthid;
-@property (nonatomic, retain) NSString *pointlocation;
-@property (nonatomic, retain) NSString *pointlon;
-@property (nonatomic, retain) NSString *pointlat;
-@property (nonatomic, retain) NSString *pointname;
-@property (nonatomic, retain) NSString *totalname;
-@property (nonatomic, retain) NSString *pointgroup;
-@property (nonatomic, retain) NSString *pointperson1;
-@property (nonatomic, retain) NSString *pointperson2;
-@property (nonatomic, retain) NSString *pointintensity;
-@property (nonatomic, assign) NSString *pointcontent;
+@property (nonatomic, copy) NSString *pointid;
+@property (nonatomic, copy) NSString *earthid;
+@property (nonatomic, copy) NSString *pointlocation;
+@property (nonatomic, copy) NSString *pointlon;
+@property (nonatomic, copy) NSString *pointlat;
+@property (nonatomic, copy) NSString *pointname;
+@property (nonatomic, copy) NSString *pointtime;
+@property (nonatomic, copy) NSString *pointgroup;
+@property (nonatomic, copy) NSString *pointperson1;
+@property (nonatomic, copy) NSString *pointperson2;
+@property (nonatomic, copy) NSString *pointintensity;
+@property (nonatomic, copy) NSString *pointcontent;
 
-//-(instancetype)initWithNSDictionary:(NSDictionary *)dict;
 @end

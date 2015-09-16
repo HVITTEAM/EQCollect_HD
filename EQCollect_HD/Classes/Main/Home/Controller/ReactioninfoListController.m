@@ -18,14 +18,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    //下拉刷新
+    __weak typeof(self) weakSelf = self;
+    [self.tableView addHeaderWithCallback:^{
+        [weakSelf getDataProvider];
+        [weakSelf.tableView headerEndRefreshing];
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self getDataProvider];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateReactioninfo:) name:kAddReactioninfoSucceedNotification object:nil];
 }
+
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 -(void)getDataProvider
 {
@@ -83,6 +99,11 @@
     }
     self.reactionVC.reactioninfo = self.dataProvider[indexPath.row];
     [self.nav pushViewController:self.reactionVC animated:YES];
+}
+
+-(void)updateReactioninfo:(NSNotification *)notification
+{
+    [self getDataProvider];
 }
 
 @end

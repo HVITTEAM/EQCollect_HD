@@ -34,6 +34,25 @@
     self.tableView.backgroundColor = HMGlobalBg;
     
     [self getDataProvider];
+    
+    //下拉刷新
+    __weak typeof(self) weakSelf = self;
+    [self.tableView addHeaderWithCallback:^{
+        [weakSelf getDataProvider];
+        [weakSelf.tableView headerEndRefreshing];
+    }];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePointinfo:) name:kAddPointinfoSucceedNotification object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)initNavgation
@@ -69,6 +88,7 @@
 -(void)getDataProvider
 {
     self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
+    [self.tableView reloadData];
 }
 
 #pragma mark 分割控制器代理方法
@@ -120,7 +140,7 @@
     //根据indexPath获取cell的数据
     __block PointModel * pointInfo = [self.dataProvider objectAtIndex:indexPath.row];
     //设置cell的属性
-    cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%lu  %@",indexPath.row,pointInfo.pointname];
+    cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%lu  %@",indexPath.row,pointInfo.pointid];
     cell.pointTimeText.text = pointInfo.pointtime;
     cell.pointAddressText.text = pointInfo.pointlocation;
     //设置cell的deletePointBlock属性，
@@ -153,7 +173,6 @@
 }
 
 #pragma mark addView
-
 -(void)addSurveyPointClickHandler
 {
     if (!self.pointinfoVC) {
@@ -164,5 +183,11 @@
     self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:self.nav animated:YES completion:nil];
 }
+
+-(void)updatePointinfo:(NSNotification *)notification
+{
+     [self getDataProvider];
+}
+
 
 @end

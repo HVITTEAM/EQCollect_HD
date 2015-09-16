@@ -10,7 +10,7 @@
 
 typedef void (^deleteDamageinfo)();
 
-@interface DamageinfoCell : UITableViewCell
+@interface DamageinfoCell : UITableViewCell<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *damageid;
 @property (weak, nonatomic) IBOutlet UILabel *damageintensity;
 @property (weak, nonatomic) IBOutlet UILabel *fortificationintensity;

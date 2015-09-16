@@ -101,6 +101,11 @@
         self.implementationTextF.text = self.abnormalinfo.implementation;
         self.abnormalanalysisTextF.text = self.abnormalinfo.abnormalanalysis;
         self.crediblyTextF.text = self.abnormalinfo.credibly;
+    }else {
+        NSDate *date = [NSDate date];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM-dd HH:mm"];
+        self.abnormaltimeTextF.text = [formatter stringFromDate:date];
     }
 }
 
@@ -195,21 +200,24 @@
     
     //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
     switch (_currentInputViewTag) {
+        case 1001:
+            canEdit = NO;
+            break;
         case 1003:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.intensityItems];
+            [self showAlertViewWithTextField:textField items:self.intensityItems];
             break;
         case 1004:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.groundwaterItems];
+            [self showAlertViewWithTextField:textField items:self.groundwaterItems];
             break;
         case 1005:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.habitItems];
+            [self showAlertViewWithTextField:textField items:self.habitItems];
             break;
         case 1006:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.phenomenonItems];
+            [self showAlertViewWithTextField:textField items:self.phenomenonItems];
             break;
         default:
             canEdit = YES;
@@ -258,9 +266,21 @@
     
     BOOL result = [[AbnormalinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }else{
+        self.abnormalidTextF.text = nil;
+        self.abnormaltimeTextF.text = nil;
+        self.informantTextF.text = nil;
+        self.abnormalintensityTextF.text = nil;
+        self.groundwaterTextF.text = nil;
+        self.abnormalhabitTextF.text = nil;
+        self.abnormalphenomenonTextF.text = nil;
+        self.otherTextF.text = nil;
+        self.implementationTextF.text = nil;
+        self.abnormalanalysisTextF.text = nil;
+        self.crediblyTextF.text =nil;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
     }
-
     [self dismissViewControllerAnimated:self completion:nil];
 }
 
@@ -270,30 +290,31 @@
 }
 
 /**
- *  使用UIActionSheet向文本框输入内容
+ *  使用UIAlertView向文本框输入内容
  *
  *  @param textField 需要输入内容的文本框
  *  @param items     选项数组
  */
--(void)showActionSheetWithTextField:(UITextField *)textField items:(NSArray *)items
+-(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
 {
-    //创建UIActionSheet并设置标题
+    [self.view endEditing:YES];
+    //创建UIAlertView并设置标题
     NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:titleStr delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles: nil];
-    //添加ActionSheet控件上的按钮
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    //添加AlertView控件上的按钮
     for (NSString *buttonTitle in items) {
-        [actionSheet addButtonWithTitle:buttonTitle];
+        [alert addButtonWithTitle:buttonTitle];
     }
-    //显示ActionSheet控件
-    [actionSheet showInView:self.view];
+    //显示AlertView控件
+    [alert show];
 }
 
-#pragma mark UIActionSheetDelegate方法
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+#pragma mark UIAlertViewDelegate方法
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     UITextField *inputView = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
     //将选中的按钮标题设为当前文本框的内容
-    NSString *itemStr = [actionSheet buttonTitleAtIndex:buttonIndex];
+    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
     inputView.text = itemStr;
 }
 

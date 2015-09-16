@@ -120,6 +120,11 @@
         self.furnituredumpTextF.text= self.reactioninfo.furnituredump;
         self.soundsizeTextF.text= self.reactioninfo.soundsize;
         self.sounddirectionTextF.text= self.reactioninfo.sounddirection;
+    }else {
+        NSDate *date = [NSDate date];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM-dd HH:mm"];
+        self.reactiontimeTextF.text = [formatter stringFromDate:date];
     }
 }
 
@@ -215,41 +220,44 @@
     
     //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
     switch (_currentInputViewTag) {
+        case 1001:
+            canEdit = NO;
+            break;
         case 1004:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.educationItems];
+            [self showAlertViewWithTextField:textField items:self.educationItems];
             break;
         case 1007:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.rockfeelingItems];
+            [self showAlertViewWithTextField:textField items:self.rockfeelingItems];
             break;
         case 1008:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.throwfeelingItems];
+            [self showAlertViewWithTextField:textField items:self.throwfeelingItems];
             break;
         case 1009:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.throwtingsItems];
+            [self showAlertViewWithTextField:textField items:self.throwtingsItems];
             break;
         case 1011:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.fallItems];
+            [self showAlertViewWithTextField:textField items:self.fallItems];
             break;
         case 1012:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.hangItems];
+            [self showAlertViewWithTextField:textField items:self.hangItems];
             break;
         case 1013:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.furnituresoundItems];
+            [self showAlertViewWithTextField:textField items:self.furnituresoundItems];
             break;
         case 1015:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.soundsizeItems];
+            [self showAlertViewWithTextField:textField items:self.soundsizeItems];
             break;
         case 1016:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.sounddirectionItems];
+            [self showAlertViewWithTextField:textField items:self.sounddirectionItems];
             break;
         default:
             canEdit = YES;
@@ -311,8 +319,29 @@
     
     BOOL result = [[ReactioninfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }else{
+        self.reactionidTextF.text = nil;
+        self.reactiontimeTextF.text = nil;
+        self.informantnameTextF.text = nil;
+        self.informantageTextF.text = nil;
+        self.informanteducationTextF.text = nil;
+        self.informantjobTextF.text = nil;
+        self.reactionaddressTextF.text = nil;
+        self.rockfeelingTextF.text = nil;
+        self.throwfeelingTextF.text = nil;
+        self.throwtingsTextF.text = nil;
+        self.throwdistanceTextF.text = nil;
+        self.fallTextF.text = nil;
+        self.hangTextF.text = nil;
+        self.furnituresoundTextF.text = nil;
+        self.furnituredumpTextF.text = nil;
+        self.soundsizeTextF.text = nil;
+        self.sounddirectionTextF.text = nil;
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
     }
+
     
     [self dismissViewControllerAnimated:self completion:nil];
 }
@@ -323,32 +352,32 @@
 }
 
 /**
- *  使用UIActionSheet向文本框输入内容
+ *  使用UIAlertView向文本框输入内容
  *
  *  @param textField 需要输入内容的文本框
  *  @param items     选项数组
  */
--(void)showActionSheetWithTextField:(UITextField *)textField items:(NSArray *)items
+-(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
 {
-    //创建UIActionSheet并设置标题
+    [self.view endEditing:YES];
+    //创建UIAlertView并设置标题
     NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:titleStr delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles: nil];
-    //添加ActionSheet控件上的按钮
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    //添加AlertView控件上的按钮
     for (NSString *buttonTitle in items) {
-        [actionSheet addButtonWithTitle:buttonTitle];
+        [alert addButtonWithTitle:buttonTitle];
     }
-    //显示ActionSheet控件
-    [actionSheet showInView:self.view];
+    //显示AlertView控件
+    [alert show];
 }
 
-#pragma mark UIActionSheetDelegate方法
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+#pragma mark UIAlertViewDelegate方法
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     UITextField *inputView = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
     //将选中的按钮标题设为当前文本框的内容
-    NSString *itemStr = [actionSheet buttonTitleAtIndex:buttonIndex];
+    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
     inputView.text = itemStr;
 }
-
 
 @end

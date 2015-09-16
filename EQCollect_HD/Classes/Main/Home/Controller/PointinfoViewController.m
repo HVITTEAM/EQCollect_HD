@@ -96,6 +96,11 @@
         self.pointgroupTextF.text = self.pointinfo.pointgroup;
         self.pointintensityTextF.text = self.pointinfo.pointintensity;
         self.pointcontentTextV.text = self.pointinfo.pointcontent;
+    }else {
+        NSDate *date = [NSDate date];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM-dd HH:mm"];
+        self.pointtimeTextF.text = [formatter stringFromDate:date];
     }
 }
 
@@ -182,6 +187,21 @@
     return YES;
 }
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    BOOL canEdit;
+    switch (textField.tag) {
+        case 1003:
+            canEdit = NO;
+            break;
+        default:
+            canEdit = YES;
+            break;
+    }
+    return canEdit;
+}
+
+
 #pragma mark UITextViewDelegate方法
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
@@ -255,9 +275,20 @@
 
     BOOL result = [[PointinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }else{
+        self.pointidTextF.text = nil;
+        self.earthidTextF.text = nil;
+        self.pointlocationTextF.text = nil;
+        self.pointlonTextF.text = nil;
+        self.pointlatTextF.text = nil;
+        self.pointnameTextF.text = nil;
+        self.pointtimeTextF.text = nil;
+        self.pointgroupTextF.text = nil;
+        self.pointintensityTextF.text = nil;
+        self.pointcontentTextV.text = nil;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
     }
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

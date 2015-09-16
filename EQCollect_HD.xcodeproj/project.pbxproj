@@ -85,6 +85,7 @@
 		01FEE2A21B9BCACF007C4641 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29D1B9BCACF007C4641 /* MasterViewController.m */; };
 		01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */; };
 		01FEE2A41B9BCACF007C4641 /* SurveyPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */; };
+		D2173F361BA86BC800DB61B7 /* DamageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354761B9D619900014114 /* DamageModel.m */; };
 		D23A1A421B9E613C00758DDD /* PointinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A401B9E613C00758DDD /* PointinfoViewController.m */; };
 		D23A1A431B9E613C00758DDD /* PointinfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1A411B9E613C00758DDD /* PointinfoViewController.xib */; };
 		D23A1A7C1B9E903B00758DDD /* AbnormalinfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1A7A1B9E903B00758DDD /* AbnormalinfoViewController.m */; };
@@ -924,6 +925,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2173F361BA86BC800DB61B7 /* DamageModel.m in Sources */,
 				01EED59A1B9D2A3D0041D28A /* PointinfoTableHelper.m in Sources */,
 				0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */,
 				01E3547A1B9D746900014114 /* VenderMannager.m in Sources */,

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 typedef void (^deleteReactioninfo)();
 
-@interface ReactioninfoCell : UITableViewCell
+@interface ReactioninfoCell : UITableViewCell<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *reactionTittle;
 @property (weak, nonatomic) IBOutlet UILabel *informantname;
 @property (weak, nonatomic) IBOutlet UILabel *informantage;

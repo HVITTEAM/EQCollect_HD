@@ -26,7 +26,17 @@
 {
     [super viewWillAppear:animated];
     [self getDataProvider];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateReactioninfo:) name:kAddReactioninfoSucceedNotification object:nil];
 }
+
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 -(void)getDataProvider
 {
@@ -84,6 +94,11 @@
     }
     self.reactionVC.reactioninfo = self.dataProvider[indexPath.row];
     [self.nav pushViewController:self.reactionVC animated:YES];
+}
+
+-(void)updateReactioninfo:(NSNotification *)notification
+{
+    [self getDataProvider];
 }
 
 @end

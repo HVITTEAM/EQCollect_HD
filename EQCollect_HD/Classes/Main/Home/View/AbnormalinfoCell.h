@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 typedef void (^deleteAbnormalinfo)();
 
-@interface AbnormalinfoCell : UITableViewCell
+@interface AbnormalinfoCell : UITableViewCell<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *abnormalTitleText;
 @property (weak, nonatomic) IBOutlet UILabel *abnormaltimeText;
 @property (weak, nonatomic) IBOutlet UILabel *intensityText;

@@ -19,6 +19,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //下拉刷新
+    __weak typeof(self) weakSelf = self;
+    [self.tableView addHeaderWithCallback:^{
+        [weakSelf getDataProvider];
+        [weakSelf.tableView headerEndRefreshing];
+    }];
 
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -27,7 +34,16 @@
 {
     [super viewWillAppear:animated];
     [self getDataProvider];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAbnormalinfo:) name:kAddAbnormalinfoSucceedNotification object:nil];
 }
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 -(void)getDataProvider
 {
@@ -85,6 +101,12 @@
     }
     self.abnormalinfoVC.abnormalinfo = self.dataProvider[indexPath.row];
     [self.nav pushViewController:self.abnormalinfoVC animated:YES];
+}
+
+
+-(void)updateAbnormalinfo:(NSNotification *)notification
+{
+    [self getDataProvider];
 }
 
 @end

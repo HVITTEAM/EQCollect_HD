@@ -26,7 +26,7 @@
 #import "SharedAppUtil.h"
 #import "MBProgressHUD.h"
 #import "NoticeHelper.h"
-
+#import "MJRefresh.h"
 
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
@@ -159,4 +159,8 @@
 
 #define URL_UpdatePwd(oldpwd, nowpwd, rid, tb)  [NSString stringWithFormat:@"%@updatefamilypwd?oldpwd=%@&newpwd=%@&id=%@&tb=%@",URL_IP,oldpwd,nowpwd,rid,tb];
 
+#define kAddPointinfoSucceedNotification @"AddPointinfosucceedNotifiaction"
+#define kAddAbnormalinfoSucceedNotification @"AddAbnormalinfoSucceedNotification"
+#define kAddReactioninfoSucceedNotification @"AddReactioninfoSucceedNotification"
+#define kAddDamageinfoSucceedNotification @"AddDamageinfoSucceedNotification"
 

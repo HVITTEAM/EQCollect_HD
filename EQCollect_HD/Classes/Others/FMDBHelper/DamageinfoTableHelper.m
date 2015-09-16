@@ -61,7 +61,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'TEXT PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
                                      DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
@@ -167,8 +167,8 @@
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
             [dict setObject:pointid forKey:@"pointid"];
-            [dataCollect addObject:dict];
-            //[dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
+            //[dataCollect addObject:dict];
+            [dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
         }
         [db close];
     }
@@ -207,9 +207,7 @@
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
             [dict setObject:pointid forKey:@"pointid"];
-            [dataCollect addObject:dict];
-//            [DamageModel objectWithKeyValues:dict];
-//            [dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
+            [dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
         }
         
         [db close];

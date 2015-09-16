@@ -10,7 +10,7 @@
 
 typedef void (^deleteSurveyPoint)();
 
-@interface SurveyPointCell : UITableViewCell
+@interface SurveyPointCell : UITableViewCell<UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *pointTitleText;
 @property (strong, nonatomic) IBOutlet UILabel *pointAddressText;

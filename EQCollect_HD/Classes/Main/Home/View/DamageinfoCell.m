@@ -21,6 +21,13 @@
 }
 
 - (IBAction)deleteDamageinfo:(id)sender {
-    self.deleteDamageinfoBlock();
+    [[[UIAlertView alloc] initWithTitle:@"警告" message:@"数据一但删除将不可恢复" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] show];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex ==1) {
+        self.deleteDamageinfoBlock();
+    }
 }
 @end

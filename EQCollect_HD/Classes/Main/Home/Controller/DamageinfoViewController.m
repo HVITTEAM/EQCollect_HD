@@ -23,15 +23,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
     [self initDamageinfo];
-    [self showDamageinfoData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    [self showDamageinfoData];
 }
 
 /**
@@ -93,27 +91,20 @@
 -(void)showDamageinfoData
 {
     if (!self.isAdd) {
-//        self.damageidTextF.text = self.damageinfo.damageid;
-//        self.damagetimeTextF.text = self.damageinfo.damagetime;
-//        self.damageaddressTextF.text = self.damageinfo.damageaddress;
-//        self.damageintensityTextF.text = self.damageinfo.damageintensity;
-//        self.zrcorxqTextF.text = self.damageinfo.zrcorxq;
-//        self.dworzhTextF.text = self.damageinfo.dworzh;
-//        self.fortificationintensityTextF.text = self.damageinfo.fortificationintensity;
-//        self.damagesituationTextF.text = self.damageinfo.damagesituation;
-//        self.damageindexTextF.text = self.damageinfo.damageindex;
-        
-        
-        self.damageidTextF.text = self.damageinfo[@"damageid"];
-        self.damagetimeTextF.text = self.damageinfo[@"damagetime"];
-        self.damageaddressTextF.text = self.damageinfo[@"damageaddress"];
-        self.damageintensityTextF.text = self.damageinfo[@"damageintensity"];
-        self.zrcorxqTextF.text = self.damageinfo[@"zrcorxq"];
-        self.dworzhTextF.text = self.damageinfo[@"dworzh"];
-        self.fortificationintensityTextF.text = self.damageinfo[@"fortificationintensity"];
-        self.damagesituationTextF.text = self.damageinfo[@"damagesituation"];
-        self.damageindexTextF.text = self.damageinfo[@"damageindex"];
-
+        self.damageidTextF.text = self.damageinfo.damageid;
+        self.damagetimeTextF.text = self.damageinfo.damagetime;
+        self.damageaddressTextF.text = self.damageinfo.damageaddress;
+        self.damageintensityTextF.text = self.damageinfo.damageintensity;
+        self.zrcorxqTextF.text = self.damageinfo.zrcorxq;
+        self.dworzhTextF.text = self.damageinfo.dworzh;
+        self.fortificationintensityTextF.text = self.damageinfo.fortificationintensity;
+        self.damagesituationTextF.text = self.damageinfo.damagesituation;
+        self.damageindexTextF.text = self.damageinfo.damageindex;
+    }else {
+        NSDate *date = [NSDate date];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM-dd HH:mm"];
+        self.damagetimeTextF.text = [formatter stringFromDate:date];
     }
 }
 
@@ -209,21 +200,24 @@
     
     //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
     switch (_currentInputViewTag) {
+        case 1001:
+            canEdit = NO;
+            break;
         case 1004:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.intensityItems];
+            [self showAlertViewWithTextField:textField items:self.intensityItems];
             break;
         case 1005:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.fortificationintensityItems];
+            [self showAlertViewWithTextField:textField items:self.fortificationintensityItems];
             break;
         case 1006:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.damagesituationItems];
+            [self showAlertViewWithTextField:textField items:self.damagesituationItems];
             break;
         case 1007:
             canEdit = NO;
-            [self showActionSheetWithTextField:textField items:self.damageindexItems];
+            [self showAlertViewWithTextField:textField items:self.damageindexItems];
             break;
         default:
             canEdit = YES;
@@ -272,7 +266,19 @@
     
     BOOL result = [[DamageinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }else{
+        self.damageidTextF.text = nil;
+        self.damagetimeTextF.text = nil;
+        self.damageaddressTextF.text = nil;
+        self.damageintensityTextF.text = nil;
+        self.zrcorxqTextF.text = nil;
+        self.dworzhTextF.text = nil;
+        self.fortificationintensityTextF.text = nil;
+        self.damagesituationTextF.text = nil;
+        self.damageindexTextF.text = nil;
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
     }
     [self dismissViewControllerAnimated:self completion:nil];
 }
@@ -283,30 +289,30 @@
 }
 
 /**
- *  使用UIActionSheet向文本框输入内容
+ *  使用UIAlertView向文本框输入内容
  *
  *  @param textField 需要输入内容的文本框
  *  @param items     选项数组
  */
--(void)showActionSheetWithTextField:(UITextField *)textField items:(NSArray *)items
+-(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
 {
-    //创建UIActionSheet并设置标题
+    //创建UIAlertView并设置标题
     NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:titleStr delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles: nil];
-    //添加ActionSheet控件上的按钮
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    //添加AlertView控件上的按钮
     for (NSString *buttonTitle in items) {
-        [actionSheet addButtonWithTitle:buttonTitle];
+        [alert addButtonWithTitle:buttonTitle];
     }
-    //显示ActionSheet控件
-    [actionSheet showInView:self.view];
+    //显示AlertView控件
+    [alert show];
 }
 
-#pragma mark UIActionSheetDelegate方法
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+#pragma mark UIAlertViewDelegate方法
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     UITextField *inputView = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
     //将选中的按钮标题设为当前文本框的内容
-    NSString *itemStr = [actionSheet buttonTitleAtIndex:buttonIndex];
+    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
     inputView.text = itemStr;
 }
 

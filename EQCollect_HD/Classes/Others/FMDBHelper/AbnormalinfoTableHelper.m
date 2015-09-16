@@ -63,7 +63,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'TEXT PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
                                      INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {

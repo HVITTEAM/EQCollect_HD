@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MWPhotoBrowser.h"
 
-@interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate>
+@interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 
@@ -30,4 +31,12 @@
 //旋转屏幕时更改约束
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
+
+
+@property (strong,nonatomic) NSMutableArray *imageNotes;
+
+@property (strong,nonatomic) NSMutableArray *imageCollect;
+
+@property (nonatomic, strong) NSMutableArray *photos;
+@property (nonatomic, strong) NSMutableArray *thumbs;
 @end

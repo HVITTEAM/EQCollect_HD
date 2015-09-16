@@ -214,7 +214,7 @@
     if(offset > 0)
         self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
     [UIView commitAnimations];
- }
+}
 
 //输入框编辑完成以后，将视图恢复到原始状态
 -(void)textViewDidEndEditing:(UITextView *)textView
@@ -241,7 +241,7 @@
     NSString *pointperson2 = @"person2";
     NSString *pointintensity = self.pointintensityTextF.text;
     NSString *pointcontent = self.pointcontentTextV.text;
-
+    
     //判断文本输入框是否为空，如果为空则提示并返回
     for (int i=0; i<self.textInputViews.count; i++) {
         if (i!=self.textInputViews.count-1) {
@@ -272,7 +272,7 @@
                           pointperson2,@"pointperson2",
                           pointintensity,@"pointintensity",
                           pointcontent,@"pointcontent", nil];
-
+    
     BOOL result = [[PointinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
@@ -291,5 +291,164 @@
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark Photo 相关方法
+
+-(void)uploadImgClickHandler:(UIButton*)sender
+{
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"请选择图片来源" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从手机相册选择", nil];
+    [alert show];
+}
+
+#pragma mark 拍照选择模块
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex==1)
+        [self shootPiicturePrVideo];
+    else if(buttonIndex==2)
+        [self selectExistingPictureOrVideo];
+}
+
+/**从相机*/
+-(void)shootPiicturePrVideo
+{
+    [self getMediaFromSource:UIImagePickerControllerSourceTypeCamera];
+}
+
+///**从相册*/
+-(void)selectExistingPictureOrVideo
+{
+    [self getMediaFromSource:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+#pragma 拍照模块
+-(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    //实例化一个NSDateFormatter对象
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式,这里可以设置成自己需要的格式
+    [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+    //用[NSDate date]可以获取系统当前时间
+    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    //输出格式为：2010-10-27 10:22:13
+    NSLog(@"%@",currentDateStr);
+    
+    NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    //当选择的类型是图片
+    if ([type isEqualToString:@"public.image"])
+    {
+        //先把图片转成NSData
+        UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        NSData *data;
+        
+        data = UIImageJPEGRepresentation(image, 0.000005);//压缩图片
+        
+        //关闭相册界面
+        [picker dismissViewControllerAnimated:NO completion:nil];
+        
+        // Save the image to the album
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+- (void)image:(UIImage*)image didFinishSavingWithError:(NSError*)error contextInfo:(void*)contextInfo
+{
+    
+}
+
+-(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    NSLog(@"您取消了选择图片");
+    [picker dismissViewControllerAnimated:NO completion:nil];
+}
+
+-(void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType
+{
+    NSArray *mediatypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
+    if([UIImagePickerController isSourceTypeAvailable:sourceType] &&[mediatypes count]>0)
+    {
+        NSArray *mediatypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.mediaTypes = mediatypes;
+        picker.delegate = self;
+        picker.allowsEditing = NO;
+        picker.sourceType = sourceType;
+        NSString *requiredmediatype = (NSString *)kUTTypeImage;
+        NSArray *arrmediatypes = [NSArray arrayWithObject:requiredmediatype];
+        [picker setMediaTypes:arrmediatypes];
+        [self presentViewController:picker animated:YES completion:nil];
+    }
+    else{
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"错误信息!" message:@"当前设备不支持拍摄功能" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
+
+#pragma mark - 浏览图片
+-(void)tapAction:(UITapGestureRecognizer*)tap
+{
+    NSLog(@"显示采集图片");
+    
+    // Browser
+    NSMutableArray *photos = [[NSMutableArray alloc] init];
+    NSMutableArray *thumbs = [[NSMutableArray alloc] init];
+    MWPhoto *photo;
+    BOOL displayActionButton = YES;
+    BOOL displaySelectionButtons = NO;
+    BOOL displayNavArrows = NO;
+    BOOL enableGrid = NO;
+    BOOL startOnGrid = YES;
+    
+    for(NSMutableDictionary* imageObj in self.imageNotes)
+    {
+        //获取保存的图片
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", [imageObj objectForKey:@"imageName"]]];   // 保存文件的名称
+        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+        photo = [MWPhoto photoWithImage:img];
+        photo.caption = [imageObj objectForKey:@"imageName"];
+        [photos addObject:photo];
+    }
+    
+    // Options
+    self.photos = photos;
+    self.thumbs = thumbs;
+    // Create browser
+    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    browser.displayActionButton = displayActionButton;//分享按钮,默认是
+    browser.displayNavArrows = displayNavArrows;//左右分页切换,默认否
+    browser.displaySelectionButtons = displaySelectionButtons;//是否显示选择按钮在图片上,默认否
+    browser.alwaysShowControls = displaySelectionButtons;//控制条件控件 是否显示,默认否
+    browser.zoomPhotosToFill = NO;//是否全屏,默认是
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+    browser.wantsFullScreenLayout = YES;//是否全屏
+#endif
+    browser.enableGrid = enableGrid;//是否允许用网格查看所有图片,默认是
+    browser.startOnGrid = startOnGrid;//是否第一张,默认否
+    browser.enableSwipeToDismiss = YES;
+    [browser showNextPhotoAnimated:YES];
+    [browser showPreviousPhotoAnimated:YES];
+    [browser setCurrentPhotoIndex:tap.view.tag];
+    
+    UINavigationController *nav = [UIApplication sharedApplication].keyWindow.rootViewController;
+    //    [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:self animated:NO];
+    [nav pushViewController:browser animated:YES];
+}
+
+#pragma mark - MWPhotoBrowserDelegate
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
+{
+    return _photos.count;
+}
+
+- (id )photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
+{
+    if (index < _photos.count)
+        return [_photos objectAtIndex:index];
+    return nil;
+}
+
 @end
 

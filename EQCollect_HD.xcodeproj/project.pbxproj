@@ -926,7 +926,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0180A2CB1BA8248800D26866 /* DamageModel.m in Sources */,
+				D2173F361BA86BC800DB61B7 /* DamageModel.m in Sources */,
 				01EED59A1B9D2A3D0041D28A /* PointinfoTableHelper.m in Sources */,
 				0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */,
 				01E3547A1B9D746900014114 /* VenderMannager.m in Sources */,

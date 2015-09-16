@@ -36,11 +36,7 @@
     [self getDataProvider];
     
     //下拉刷新
-    __weak typeof(self) weakSelf = self;
-    [self.tableView addHeaderWithCallback:^{
-        [weakSelf getDataProvider];
-        [weakSelf.tableView headerEndRefreshing];
-    }];
+    [self.tableView addHeaderWithTarget:self action:@selector(reflesh)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -83,6 +79,17 @@
     // searchResultsDelegate 就是 UITableViewDelegate
     searchDisplayController.searchResultsDelegate = self;
     searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
+}
+
+#pragma mark 集成刷新控件
+
+/**
+ *  集成刷新控件
+ */
+-(void)reflesh
+{
+    [self getDataProvider];
+    [self.tableView headerEndRefreshing];
 }
 
 -(void)getDataProvider
@@ -186,7 +193,7 @@
 
 -(void)updatePointinfo:(NSNotification *)notification
 {
-     [self getDataProvider];
+    [self.tableView headerBeginRefreshing];
 }
 
 

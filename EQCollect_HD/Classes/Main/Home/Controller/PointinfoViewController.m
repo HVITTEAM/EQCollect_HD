@@ -39,19 +39,14 @@
     keyBoardHeight = 352;
     //默认情况下ScrollView中的内容不会被导航栏遮挡
     _navHeight = 0;
-    //禁用交互
-    [self.view setUserInteractionEnabled:NO];
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         self.navigationItem.leftBarButtonItem = leftItem;
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addPointinfo)];
         self.navigationItem.rightBarButtonItem = rightItem;
         
-        
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
-        //启用交互
-        [self.view setUserInteractionEnabled:YES];
     }
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
@@ -190,14 +185,18 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     BOOL canEdit;
-    switch (textField.tag) {
-        case 1003:
-            canEdit = NO;
-            break;
-        default:
-            canEdit = YES;
-            break;
-    }
+    
+    if (self.isAdd) {
+        switch (textField.tag) {
+            case 1003:
+                canEdit = NO;
+                break;
+            default:
+                canEdit = YES;
+                break;
+        }
+    }else canEdit = NO;
+    
     return canEdit;
 }
 
@@ -220,6 +219,13 @@
 -(void)textViewDidEndEditing:(UITextView *)textView
 {
     self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+}
+
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if (self.isAdd) {
+        return YES;
+    }else return NO;
 }
 
 -(void)back

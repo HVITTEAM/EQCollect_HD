@@ -12,8 +12,9 @@
 @interface AbnormalinfoViewController ()
 {
     CGFloat _navHeight;              // 导航栏与状态栏总的高度
-    CGFloat keyBoardHeight;         //键盘高度
     NSUInteger _currentInputViewTag;  //当前文本框的tag
+    NSNotification *_currentKeyboardNotification;   //保存键盘通知对象，键盘隐藏时为nil
+    NSInteger _lastDistance;                        //键盘遮挡文本时前一次向上移动的距离
 }
 @end
 
@@ -28,6 +29,17 @@
 {
     [super viewWillAppear:animated];
     [self showAbnormalinfoData];
+    
+    //注册键盘通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    //取消监听键盘事件
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /**
@@ -37,7 +49,6 @@
 {
     self.navigationItem.title = @"宏观异常";
     
-    keyBoardHeight = 352;
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     //禁用交互
@@ -112,23 +123,6 @@
 //处理屏幕旋转
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
-    switch (interfaceOrientation)
-    {
-        case UIInterfaceOrientationPortrait:
-            keyBoardHeight = 264 - 100;
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            keyBoardHeight = 264 - 100;
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-            keyBoardHeight = 352;
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            keyBoardHeight = 352;
-            break;
-        default:
-            break;
-    }
     [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
@@ -157,22 +151,15 @@
 //开始编辑输入框的时候，软键盘出现，执行此事件
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    CGRect frame = textField.frame;
-    int offset = CGRectGetMaxY(frame) - (self.view.frame.size.height - keyBoardHeight + 30);
-    NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    
-    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
-    if(offset > 0)
-        self.view.bounds = CGRectMake(0.0f, offset, self.view.frame.size.width, self.view.frame.size.height);
-    [UIView commitAnimations];
+    //如果为空，则表是当前键盘隐藏，系统会发出键盘通知
+    if (_currentKeyboardNotification !=nil) {
+        [self keyboardWillShow:_currentKeyboardNotification];
+    }
 }
 
 //输入框编辑完成以后，将视图恢复到原始状态
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    self.view.bounds =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -183,8 +170,9 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField.returnKeyType == UIReturnKeyNext) {
+        _currentInputViewTag +=1;
         //根据tag获取下一个文本框
-        UITextField *textF =(UITextField *)[self.view viewWithTag:textField.tag+1];
+        UITextField *textF =(UITextField *)[self.view viewWithTag:_currentInputViewTag];
         [textF becomeFirstResponder];
     }
     if (textField.returnKeyType == UIReturnKeyDone) {
@@ -317,5 +305,59 @@
     NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
     inputView.text = itemStr;
 }
+
+/**
+ *  键盘处理方法，键盘将出现时调用
+ */
+-(void)keyboardWillShow:(NSNotification *)notification
+{
+    
+    _currentKeyboardNotification = notification;
+    UIWindow *keyWin = [[UIApplication sharedApplication] keyWindow];
+    //获取键盘属性字典
+    NSDictionary *keyboardDict = [notification userInfo];
+    //获取键盘y值
+    CGRect keyboardFrame = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+    //获取键盘动画时间
+    CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    //获取动画曲线
+    NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    //获取当前文本框中window中的最大Y值
+    UITextField *currentTextField = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
+    CGRect frameInWindow = [keyWin convertRect:currentTextField.frame fromView:self.view];
+    CGFloat currentTextFieldMaxY = CGRectGetMaxY(frameInWindow)+_lastDistance;  //加_lastDistance消除偏移
+    
+    //当键盘被遮挡时view上移
+    if (currentTextFieldMaxY >= keyboardY) {
+        [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
+            self.view.bounds= CGRectMake(0, currentTextFieldMaxY - keyboardY+60, self.view.width, self.view.height);
+        } completion:nil];
+        //将向上移距离赋值给_lastDistance
+        _lastDistance = currentTextFieldMaxY - keyboardY+60;
+    }
+}
+
+/**
+ *  键盘处理方法，键盘将隐藏时调用
+ */
+-(void)keyboardWillHide:(NSNotification *)notification
+{
+    
+    //获取键盘属性字典
+    NSDictionary *keyboardDict = [notification userInfo];
+    //获取键盘动画时间
+    CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    //获取动画曲线
+    NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    //复原View属性
+    [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
+        self.view.bounds= CGRectMake(0, 0, self.view.width, self.view.height);
+    } completion:nil];
+    
+    _currentKeyboardNotification = nil;
+    _lastDistance = 0;
+}
+
 
 @end

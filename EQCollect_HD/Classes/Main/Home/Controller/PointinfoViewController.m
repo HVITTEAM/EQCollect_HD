@@ -11,24 +11,41 @@
 
 @interface PointinfoViewController ()
 {
-    CGFloat _navHeight;              // 导航栏与状态栏总的高度
-    CGFloat keyBoardHeight;         //键盘高度
+    
 }
 @end
 
 @implementation PointinfoViewController
+{
+    CGFloat _navHeight;       // 导航栏与状态栏总的高度
+    CGFloat keyBoardHeight;   //键盘高度
+    
+    NSMutableArray *imageArr;//图片数组
+    
+    NSMutableArray *imageViews;//图片视图数组
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self initPointinfoVC];
+    
+    imageArr = [[NSMutableArray alloc] init];
+    
+    imageViews = [[NSMutableArray alloc] init];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [self showPointinfoData];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 /**
@@ -40,14 +57,12 @@
     //默认情况下ScrollView中的内容不会被导航栏遮挡
     _navHeight = 0;
     //禁用交互
-    [self.view setUserInteractionEnabled:NO];
+    //    [self.view setUserInteractionEnabled:NO];
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         self.navigationItem.leftBarButtonItem = leftItem;
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addPointinfo)];
         self.navigationItem.rightBarButtonItem = rightItem;
-        
-        
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
         //启用交互
@@ -83,9 +98,40 @@
     self.pointcontentTextV.tag = 1000 + self.textInputViews.count-1;
 }
 
+/**
+ *  获取调查点下的图片
+ */
+-(void)getImages
+{
+    //获取图片之前需要把当前视图中得imageView清除
+    if (imageViews)
+    {
+        for (UIImageView * imgView in imageViews)
+        {
+            [imgView removeFromSuperview];
+        }
+        imageViews = [[NSMutableArray alloc] init];
+    }
+    
+    imageArr = [[PictureInfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointinfo.pointid];
+    //循环添加图片
+    for(PictureMode* pic in imageArr)
+    {
+        PictureVO *vo = [[PictureVO alloc] init];
+        vo.name = pic.pictureName;
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", pic.pictureName]];
+        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+        vo.image = img;
+        [self showImage:vo index:[imageArr indexOfObject:pic]];
+    }
+}
+
 -(void)showPointinfoData
 {
-    if (!self.isAdd) {
+    if (!self.isAdd)
+    {
         self.pointidTextF.text = self.pointinfo.pointid;
         self.earthidTextF.text = self.pointinfo.earthid;
         self.pointlocationTextF.text = self.pointinfo.pointlocation;
@@ -96,14 +142,15 @@
         self.pointgroupTextF.text = self.pointinfo.pointgroup;
         self.pointintensityTextF.text = self.pointinfo.pointintensity;
         self.pointcontentTextV.text = self.pointinfo.pointcontent;
-    }else {
+        [self getImages];
+    }else
+    {
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"MM-dd HH:mm"];
         self.pointtimeTextF.text = [formatter stringFromDate:date];
     }
 }
-
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 {
@@ -277,6 +324,7 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
+        [self saveImages];
         self.pointidTextF.text = nil;
         self.earthidTextF.text = nil;
         self.pointlocationTextF.text = nil;
@@ -292,9 +340,32 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)saveImages
+{
+    //保存图片
+    for(PictureVO* v in imageArr)
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", v.name]];
+        BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+        if (result)
+        {
+            NSLog(@"success to writeFile");
+            NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                  v.name,@"pictureName",
+                                  filePath,@"picturePath",
+                                  self.pointidTextF.text,@"pointid",
+                                  nil];
+            NSLog(@"%@",filePath);
+            //保存数据库
+            [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+        }
+    }
+}
+
 #pragma mark Photo 相关方法
 
--(void)uploadImgClickHandler:(UIButton*)sender
+- (IBAction)getImgBtnClickHandler:(id)sender
 {
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"请选择图片来源" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从手机相册选择", nil];
     [alert show];
@@ -322,7 +393,7 @@
 }
 
 #pragma 拍照模块
--(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     //实例化一个NSDateFormatter对象
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -347,8 +418,11 @@
         //关闭相册界面
         [picker dismissViewControllerAnimated:NO completion:nil];
         
-        // Save the image to the album
-        UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+        PictureVO *imgVo = [[PictureVO alloc] init];
+        imgVo.name = currentDateStr;
+        imgVo.image = [UIImage imageWithData:data];
+        [imageArr addObject:imgVo];
+        [self addImgToview:imgVo];
     }
 }
 
@@ -368,7 +442,7 @@
     if([UIImagePickerController isSourceTypeAvailable:sourceType] &&[mediatypes count]>0)
     {
         NSArray *mediatypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        CommonUIImagePickerController *picker = [[CommonUIImagePickerController alloc] init];
         picker.mediaTypes = mediatypes;
         picker.delegate = self;
         picker.allowsEditing = NO;
@@ -400,14 +474,14 @@
     BOOL enableGrid = NO;
     BOOL startOnGrid = YES;
     
-    for(NSMutableDictionary* imageObj in self.imageNotes)
+    for(PictureMode* imgmodel in imageArr)
     {
         //获取保存的图片
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", [imageObj objectForKey:@"imageName"]]];   // 保存文件的名称
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", imgmodel.pictureName]];   // 保存文件的名称
         UIImage *img = [UIImage imageWithContentsOfFile:filePath];
         photo = [MWPhoto photoWithImage:img];
-        photo.caption = [imageObj objectForKey:@"imageName"];
+        photo.caption = imgmodel.pictureName;
         [photos addObject:photo];
     }
     
@@ -431,9 +505,9 @@
     [browser showPreviousPhotoAnimated:YES];
     [browser setCurrentPhotoIndex:tap.view.tag];
     
-    UINavigationController *nav = [UIApplication sharedApplication].keyWindow.rootViewController;
-    //    [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:self animated:NO];
-    [nav pushViewController:browser animated:YES];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:browser];
+    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - MWPhotoBrowserDelegate
@@ -448,6 +522,36 @@
     if (index < _photos.count)
         return [_photos objectAtIndex:index];
     return nil;
+}
+
+/*
+ **
+ * 在视图上添加照片
+ **/
+-(void)addImgToview:(PictureVO *)imgVo
+{
+    float imageCount = imageArr.count;
+    UIImageView *img = [[UIImageView alloc]initWithImage:imgVo.image];
+    img.frame = CGRectMake((imageCount *120), 20, 100, 100);
+    self.imageBgview.contentSize = CGSizeMake(CGRectGetMaxX(img.frame), 100);
+    [self.imageBgview addSubview:img];
+    
+}
+
+/*
+ * 展示采集图片
+ * index 照片序列
+ **/
+-(void)showImage:(PictureVO *)imgVo index:(NSUInteger)index
+{
+    UIImageView *img = [[UIImageView alloc]initWithImage:imgVo.image];
+    img.frame = CGRectMake(index * 120, 20, 100, 100);
+    [self.imageBgview addSubview:img];
+    [imageViews addObject:img];
+    self.imageBgview.contentSize = CGSizeMake(CGRectGetMaxX(img.frame), 100);
+    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+    [img addGestureRecognizer:tap];
+    img.userInteractionEnabled = YES;
 }
 
 @end

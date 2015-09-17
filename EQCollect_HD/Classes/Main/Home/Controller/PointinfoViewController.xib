@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -7,6 +7,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PointinfoViewController">
             <connections>
                 <outlet property="earthidTextF" destination="4H5-sH-4M5" id="e9Y-6o-JcG"/>
+                <outlet property="getImgBtn" destination="wHB-Ws-ieB" id="nIO-9C-88q"/>
+                <outlet property="imageBgview" destination="Bcq-Td-vwE" id="fkf-Vs-rvo"/>
                 <outlet property="pointcontentTextV" destination="3VG-kc-3c9" id="UrB-D7-Wwu"/>
                 <outlet property="pointgroupTextF" destination="E2X-Yk-O2P" id="a3T-Pk-iPc"/>
                 <outlet property="pointidTextF" destination="NBa-R0-w0Z" id="dCd-dX-zBG"/>
@@ -139,12 +141,15 @@
                                     <rect key="frame" x="20" y="570" width="560" height="150"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wHB-Ws-ieB">
-                                            <rect key="frame" x="57" y="22" width="107" height="106"/>
+                                            <rect key="frame" x="0.0" y="20" width="100" height="100"/>
                                             <color key="backgroundColor" red="0.99607843139999996" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <state key="normal" title="Button">
                                                 <color key="titleColor" red="1" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <action selector="getImgBtnClickHandler:" destination="-1" eventType="touchUpInside" id="yrh-Ue-M8Z"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>

@@ -92,9 +92,11 @@
     [self.tableView headerEndRefreshing];
 }
 
+/**
+ *  获取数据
+ */
 -(void)getDataProvider
 {
-    [self.tableView headerBeginRefreshing];
     self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
     [self.tableView reloadData];
 }

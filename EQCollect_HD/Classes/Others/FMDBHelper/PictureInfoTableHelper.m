@@ -26,7 +26,6 @@
         pictureInfoTableHelper = [[PictureInfoTableHelper alloc] init];
         [pictureInfoTableHelper initDataBase];
         [pictureInfoTableHelper createTable];
-        
     });
     return pictureInfoTableHelper;
 }
@@ -43,12 +42,12 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'TEXT PRIMARY KEY, '%@' TEXT, '%@' TEXT,'%@' TEXT)",TABLENAME,PICTUREID,PICTURENAME,PICTUREPATH,POINTID];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (PICTUREID INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT,'%@' TEXT)",TABLENAME,PICTURENAME,PICTUREPATH,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
-            NSLog(@"error when creating db table");
+            NSLog(@"error when creating imgaedb table");
         } else {
-            NSLog(@"success to creating db table");
+            NSLog(@"success to creating imgaedb table");
         }
         [db close];
     }
@@ -59,14 +58,14 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@')",
-                               TABLENAME,PICTUREID,PICTURENAME,PICTUREPATH,POINTID,dict[@"pictureid"],dict[@"pictureName"], dict[@"picturePath"],dict[@"pointid"]];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@')  VALUES ('%@', '%@', '%@')",
+                               TABLENAME,PICTURENAME,PICTUREPATH,POINTID,dict[@"pictureName"], dict[@"picturePath"],dict[@"pointid"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
-            NSLog(@"error when insert db table");
+            NSLog(@"error when insert db Imgtable");
             result = NO;
         } else {
-            NSLog(@"success to insert db table");
+            NSLog(@"success to insert db Imgtable");
             result = YES;
         }
         [db close];
@@ -119,7 +118,6 @@
             [dict setObject:pointid forKey:@"pointid"];
             [dataCollect addObject:[PictureMode objectWithKeyValues:dict]];
         }
-        
         [db close];
     }
     

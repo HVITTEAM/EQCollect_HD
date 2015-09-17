@@ -42,7 +42,6 @@
 		013CD4191BA9574E00470284 /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3E01BA9574E00470284 /* SDWebImageDownloaderOperation.m */; };
 		013CD41A1BA9574E00470284 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3E21BA9574E00470284 /* SDWebImageManager.m */; };
 		013CD41B1BA9574E00470284 /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3E51BA9574E00470284 /* SDWebImagePrefetcher.m */; };
-		013CD41C1BA9574E00470284 /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3E71BA9574E00470284 /* UIButton+WebCache.m */; };
 		013CD41D1BA9574E00470284 /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3E91BA9574E00470284 /* UIImage+GIF.m */; };
 		013CD41E1BA9574E00470284 /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3EB1BA9574E00470284 /* UIImage+MultiFormat.m */; };
 		013CD41F1BA9574E00470284 /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3ED1BA9574E00470284 /* UIImage+WebP.m */; };
@@ -50,6 +49,8 @@
 		013CD4211BA9574E00470284 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3F11BA9574E00470284 /* UIImageView+WebCache.m */; };
 		013CD4221BA9574E00470284 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3F31BA9574E00470284 /* UIView+WebCacheOperation.m */; };
 		013CD4231BA9574E00470284 /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 013CD3F51BA9574E00470284 /* MWPhotoBrowser.bundle */; };
+		013CD42A1BA95B1900470284 /* CommonUIImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD4291BA95B1900470284 /* CommonUIImagePickerController.m */; };
+		013CD42E1BA95D2D00470284 /* PictureVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD42D1BA95D2D00470284 /* PictureVO.m */; };
 		0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A09A1B9590C5003199F4 /* SurveyPointCell.m */; };
 		0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */; };
 		0177A0AB1B9683C3003199F4 /* HMCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0A81B9683C3003199F4 /* HMCommonViewController.m */; };
@@ -263,6 +264,10 @@
 		013CD3F41BA9574E00470284 /* MWPhotoBrowser-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MWPhotoBrowser-Prefix.pch"; sourceTree = "<group>"; };
 		013CD3F51BA9574E00470284 /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MWPhotoBrowser.bundle; sourceTree = "<group>"; };
 		013CD3F61BA9574E00470284 /* MWPhotoBrowser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = MWPhotoBrowser.xcodeproj; sourceTree = "<group>"; };
+		013CD4281BA95B1900470284 /* CommonUIImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUIImagePickerController.h; sourceTree = "<group>"; };
+		013CD4291BA95B1900470284 /* CommonUIImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUIImagePickerController.m; sourceTree = "<group>"; };
+		013CD42C1BA95D2D00470284 /* PictureVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureVO.h; sourceTree = "<group>"; };
+		013CD42D1BA95D2D00470284 /* PictureVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureVO.m; sourceTree = "<group>"; };
 		0177A0991B9590C5003199F4 /* SurveyPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointCell.h; sourceTree = "<group>"; };
 		0177A09A1B9590C5003199F4 /* SurveyPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointCell.m; sourceTree = "<group>"; };
 		0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointCell.xib; sourceTree = "<group>"; };
@@ -942,6 +947,8 @@
 				01E354761B9D619900014114 /* DamageModel.m */,
 				D2C189661BA9510100312EBA /* PictureMode.h */,
 				D2C189671BA9510100312EBA /* PictureMode.m */,
+				013CD42C1BA95D2D00470284 /* PictureVO.h */,
+				013CD42D1BA95D2D00470284 /* PictureVO.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -965,6 +972,8 @@
 				D23A1AAB1B9EE3F900758DDD /* DamageinfoCell.h */,
 				D23A1AAC1B9EE3F900758DDD /* DamageinfoCell.m */,
 				D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */,
+				013CD4281BA95B1900470284 /* CommonUIImagePickerController.h */,
+				013CD4291BA95B1900470284 /* CommonUIImagePickerController.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1245,6 +1254,7 @@
 				013CD4211BA9574E00470284 /* UIImageView+WebCache.m in Sources */,
 				013CD41D1BA9574E00470284 /* UIImage+GIF.m in Sources */,
 				013CD40B1BA9574E00470284 /* PSTCollectionViewLayout.m in Sources */,
+				013CD42E1BA95D2D00470284 /* PictureVO.m in Sources */,
 				D2173F361BA86BC800DB61B7 /* DamageModel.m in Sources */,
 				01EED59A1B9D2A3D0041D28A /* PointinfoTableHelper.m in Sources */,
 				0177A0C81B968436003199F4 /* HMCommonTextfieldItem.m in Sources */,
@@ -1322,6 +1332,7 @@
 				013CD40F1BA9574E00470284 /* PSTGridLayoutRow.m in Sources */,
 				01E354621B9D5F5700014114 /* NSObject+MJIvar.m in Sources */,
 				01A26EE31BA17ED700EEB627 /* AFURLSessionManager.m in Sources */,
+				013CD42A1BA95B1900470284 /* CommonUIImagePickerController.m in Sources */,
 				01E354661B9D5F5700014114 /* MJRefreshConst.m in Sources */,
 				01E354611B9D5F5700014114 /* NSObject+MJCoding.m in Sources */,
 				01E354601B9D5F5700014114 /* MJType.m in Sources */,
@@ -1333,7 +1344,7 @@
 				01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */,
 				01EED5881B9D25420041D28A /* FMDatabaseAdditions.m in Sources */,
 				0177A0C61B968436003199F4 /* HMCommonLabelItem.m in Sources */,
-				013CD41C1BA9574E00470284 /* UIButton+WebCache.m in Sources */,
+				D2C189651BA94D0F00312EBA /* PictureInfoTableHelper.m in Sources */,
 				D23A1A861B9EBA9800758DDD /* DamageinfoViewController.m in Sources */,
 				0177A0D81B968496003199F4 /* UIBarButtonItem+Extension.m in Sources */,
 				013CD4051BA9574E00470284 /* PSTCollectionView.m in Sources */,

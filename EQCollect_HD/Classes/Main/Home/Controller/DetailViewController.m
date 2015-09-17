@@ -36,7 +36,7 @@
     [self getDataProvider];
     
     //下拉刷新
-    [self.tableView addHeaderWithTarget:self action:@selector(rereshing)];
+    [self.tableView addHeaderWithTarget:self action:@selector(reflesh)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -81,10 +81,12 @@
     searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
 }
 
+#pragma mark 集成刷新控件
+
 /**
- *  刷新数据
+ *  集成刷新控件
  */
--(void)rereshing
+-(void)reflesh
 {
     [self getDataProvider];
     [self.tableView headerEndRefreshing];

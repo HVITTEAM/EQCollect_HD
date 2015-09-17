@@ -16,12 +16,15 @@
 
 @implementation AbnormalinfoListController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     //下拉刷新
     [self.tableView addHeaderWithTarget:self action:@selector(rereshing)];
 
+    self.tableView.backgroundColor = HMGlobalBg;
+    self.tableView.tableFooterView = [[UIView alloc] init];
 }
 -(void)viewWillAppear:(BOOL)animated
 {

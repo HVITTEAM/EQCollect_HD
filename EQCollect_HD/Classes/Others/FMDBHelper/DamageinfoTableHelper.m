@@ -209,10 +209,8 @@
             [dict setObject:pointid forKey:@"pointid"];
             [dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
         }
-        
         [db close];
     }
-    
     return dataCollect;
 }
 

@@ -18,7 +18,12 @@
 @implementation PointinfoViewController
 {
     CGFloat _navHeight;       // 导航栏与状态栏总的高度
-    CGFloat keyBoardHeight;   //键盘高度
+    
+    NSUInteger _currentInputViewTag;  //当前文本框的tag
+    
+    NSNotification *_currentKeyboardNotification;   //保存键盘通知对象，键盘隐藏时为nil
+    
+    NSInteger _lastDistance;                  //键盘遮挡文本时前一次向上移动的距离
     
     NSMutableArray *imageArr;//图片数组
     
@@ -41,11 +46,15 @@
     [super viewWillAppear:animated];
     
     [self showPointinfoData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /**
@@ -53,7 +62,6 @@
  */
 -(void)initPointinfoVC
 {
-    keyBoardHeight = 352;
     //默认情况下ScrollView中的内容不会被导航栏遮挡
     _navHeight = 0;
     if (self.isAdd ) {
@@ -64,6 +72,9 @@
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
+        
+        //只有新增界面才显示
+        self.getImgBtn.hidden = NO;
     }
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
@@ -151,24 +162,7 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 {
-    switch (interfaceOrientation)
-    {
-        case UIInterfaceOrientationPortrait:
-            keyBoardHeight = 264 - 100;
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            keyBoardHeight = 264 - 100;
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-            keyBoardHeight = 352;
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            keyBoardHeight = 352;
-            break;
-        default:
-            break;
-    }
-    [self rotationToInterfaceOrientation:interfaceOrientation];
+     [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 /**
@@ -195,22 +189,14 @@
 //开始编辑输入框的时候，软键盘出现，执行此事件
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    CGRect frame = textField.frame;
-    int offset = CGRectGetMaxY(frame) - (self.view.frame.size.height - keyBoardHeight);
-    NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    
-    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
-    if(offset > 0)
-        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
-    [UIView commitAnimations];
+    if (_currentKeyboardNotification !=nil) {
+        [self keyboardWillShow:_currentKeyboardNotification];
+    }
 }
 
 //输入框编辑完成以后，将视图恢复到原始状态
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -221,8 +207,9 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField.returnKeyType == UIReturnKeyNext) {
+        _currentInputViewTag +=1;
         //根据tag获取下一个文本框
-        UITextField *textF =(UITextField *)[self.view viewWithTag:textField.tag+1];
+        UITextField *textF =(UITextField *)[self.view viewWithTag:_currentInputViewTag];
         [textF becomeFirstResponder];
     }
     if (textField.returnKeyType == UIReturnKeyDone) {
@@ -234,6 +221,7 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     BOOL canEdit;
+    _currentInputViewTag = textField.tag;
     
     if (self.isAdd) {
         switch (textField.tag) {
@@ -253,15 +241,10 @@
 #pragma mark UITextViewDelegate方法
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
-    CGRect frame = textView.frame;
-    int offset = CGRectGetMaxY(frame) - (self.view.frame.size.height - keyBoardHeight);
-    NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
-    if(offset > 0)
-        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
-    [UIView commitAnimations];
+    _currentInputViewTag = textView.tag;
+    if (_currentKeyboardNotification !=nil) {
+        [self keyboardWillShow:_currentKeyboardNotification];
+    }
 }
 
 //输入框编辑完成以后，将视图恢复到原始状态
@@ -560,6 +543,64 @@
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
     [img addGestureRecognizer:tap];
     img.userInteractionEnabled = YES;
+}
+
+
+/**
+ *  键盘处理方法，键盘将出现时调用
+ */
+-(void)keyboardWillShow:(NSNotification *)notification
+{
+    _currentKeyboardNotification = notification;
+    UIWindow *keyWin = [[UIApplication sharedApplication] keyWindow];
+    
+    //获取键盘属性字典
+    NSDictionary *keyboardDict = [notification userInfo];
+    //获取键盘y值
+    CGRect keyboardFrame = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+    //获取键盘动画时间
+    CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    //获取动画曲线
+    NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    //获取当前文本框在window中的最大Y值
+    UIView *currentInputView = [self.view viewWithTag:_currentInputViewTag];
+    CGRect frameInWindow = [keyWin convertRect:currentInputView.frame fromView:self.containerView];
+    CGFloat currentInputViewMaxY = CGRectGetMaxY(frameInWindow)+_lastDistance;  //加_lastDistance消除偏移
+    
+    //当键盘被遮挡时view上移
+    if (currentInputViewMaxY >= keyboardY) {
+        self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, (currentInputViewMaxY - keyboardY+60), 0);
+        [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
+            self.rootScrollView.contentOffset = CGPointMake(0, (currentInputViewMaxY - keyboardY+60));
+        } completion:nil];
+        //将向上移距离赋值给_lastDistance
+        _lastDistance = currentInputViewMaxY - keyboardY+60;
+    }
+}
+
+/**
+ *  键盘处理方法，键盘将隐藏时调用
+ */
+-(void)keyboardWillHide:(NSNotification *)notification
+{
+    //获取键盘属性字典
+    NSDictionary *keyboardDict = [notification userInfo];
+    //获取键盘动画时间
+    CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    //获取动画曲线
+    NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    //复原rootScrollView属性
+    [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
+        self.rootScrollView.contentOffset = CGPointMake(0, 0);
+    } completion:nil];
+    self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    _currentKeyboardNotification = nil;
+    _lastDistance = 0;
+    
 }
 
 @end

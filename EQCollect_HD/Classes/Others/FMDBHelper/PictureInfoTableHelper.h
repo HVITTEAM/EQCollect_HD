@@ -22,7 +22,7 @@
 /**插入数据**/
 -(BOOL) insertDataWith:(NSDictionary *)dict;
 /**删除数据**/
--(BOOL) deleteDataByDamageid:(NSString *)damageidStr;
+-(BOOL) deleteDataByPictureid:(NSString *)pictureidStr;
 ///**查询数据**/
 //- (NSMutableArray *)selectData;
 /**根据字段查询数据**/

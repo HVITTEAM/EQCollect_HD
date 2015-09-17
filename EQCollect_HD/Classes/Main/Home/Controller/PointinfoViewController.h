@@ -18,6 +18,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+
 @property (weak, nonatomic) IBOutlet UITextField *pointidTextF;                 //调查点编号
 @property (weak, nonatomic) IBOutlet UITextField *earthidTextF;                 //地震编号
 @property (weak, nonatomic) IBOutlet UITextField *pointlocationTextF;           //调查点地点

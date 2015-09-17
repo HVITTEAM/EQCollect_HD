@@ -39,7 +39,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateReactioninfo:) name:kAddReactioninfoSucceedNotification object:nil];
 }
 
-
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];

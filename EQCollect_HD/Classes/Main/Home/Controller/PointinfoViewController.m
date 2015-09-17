@@ -35,11 +35,11 @@
     
     imageViews = [[NSMutableArray alloc] init];
     
-    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
-    ImageCollectionView *imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
-    imgview.view.frame = CGRectMake(0, self.getImgBtn.y, self.view.width, 100);
-    [self addChildViewController:imgview];
-    [self.imageBgview addSubview:imgview.view];
+//    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
+//    ImageCollectionView *imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+//    imgview.view.frame = CGRectMake(0, self.getImgBtn.y, self.view.width, 100);
+//    [self addChildViewController:imgview];
+//    [self.imageBgview addSubview:imgview.view];
 }
 
 -(void)viewWillAppear:(BOOL)animated

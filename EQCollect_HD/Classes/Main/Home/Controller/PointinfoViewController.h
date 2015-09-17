@@ -12,6 +12,7 @@
 #import "PictureMode.h"
 #import "PictureVO.h"
 #import "PictureInfoTableHelper.h"
+#import "ImageCollectionView.h"
 
 
 @interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MWPhotoBrowserDelegate>

@@ -34,6 +34,12 @@
     imageArr = [[NSMutableArray alloc] init];
     
     imageViews = [[NSMutableArray alloc] init];
+    
+    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
+    ImageCollectionView *imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+    imgview.view.frame = CGRectMake(0, self.getImgBtn.y, self.view.width, 100);
+    [self addChildViewController:imgview];
+    [self.imageBgview addSubview:imgview.view];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -143,6 +149,7 @@
         self.pointintensityTextF.text = self.pointinfo.pointintensity;
         self.pointcontentTextV.text = self.pointinfo.pointcontent;
         [self getImages];
+        self.getImgBtn.hidden = YES;
     }else
     {
         NSDate *date = [NSDate date];
@@ -337,7 +344,17 @@
         self.pointcontentTextV.text = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        //添加成功之后移除视图
+        for (UIView *v in self.imageBgview.subviews)
+        {
+            if ([v isKindOfClass:[UIImageView class]]) {
+                [(UIImageView*)v removeFromSuperview];
+            }
+        }
+        [imageArr removeAllObjects];
+        [imageViews removeAllObjects];
+    }];
 }
 
 -(void)saveImages

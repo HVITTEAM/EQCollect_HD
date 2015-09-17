@@ -5,7 +5,9 @@
 //123
 
 #import <UIKit/UIKit.h>
+
 @class PointinfoViewController;
+
 @interface DetailViewController : UITableViewController <UISplitViewControllerDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, retain) UINavigationController *nav;

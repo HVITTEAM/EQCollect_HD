@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010CAB451BAB962100828EBD /* SQCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 010CAB441BAB962100828EBD /* SQCollectionCell.xib */; };
 		013CD3F91BA9574E00470284 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3981BA9574D00470284 /* MWCaptionView.m */; };
 		013CD3FA1BA9574E00470284 /* MWGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD39B1BA9574D00470284 /* MWGridCell.m */; };
 		013CD3FB1BA9574E00470284 /* MWGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD39D1BA9574D00470284 /* MWGridViewController.m */; };
@@ -176,6 +177,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		010CAB441BAB962100828EBD /* SQCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SQCollectionCell.xib; path = SlideViewController/SQCollectionCell.xib; sourceTree = "<group>"; };
 		013CD3971BA9574D00470284 /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		013CD3981BA9574D00470284 /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
 		013CD3991BA9574D00470284 /* MWCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCommon.h; sourceTree = "<group>"; };
@@ -961,6 +963,7 @@
 		01EDAD991B8EFBF300C1CF21 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				010CAB441BAB962100828EBD /* SQCollectionCell.xib */,
 				D2C207F61B9D264A00454591 /* SlideViewController */,
 				D28D42EB1B90006B00E720AB /* AdminTableHead.h */,
 				D28D42EC1B90006B00E720AB /* AdminTableHead.m */,
@@ -1242,6 +1245,7 @@
 				016734891BAAA358009C5620 /* ImageCollectionView.xib in Resources */,
 				01E354641B9D5F5700014114 /* MJRefresh.bundle in Resources */,
 				D23A1AA01B9EDE5400758DDD /* ReactioninfoCell.xib in Resources */,
+				010CAB451BAB962100828EBD /* SQCollectionCell.xib in Resources */,
 				0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

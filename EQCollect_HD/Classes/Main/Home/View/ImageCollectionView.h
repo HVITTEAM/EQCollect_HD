@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MWPhotoBrowser.h"
+#import "CommonUIImagePickerController.h"
+#import "PictureVO.h"
 
-@interface ImageCollectionView : UICollectionViewController
+@interface ImageCollectionView : UICollectionViewController<UIAlertViewDelegate,UIImagePickerControllerDelegate,MWPhotoBrowserDelegate,UINavigationControllerDelegate>
 
+@property (nonatomic, retain) NSMutableArray *dataProvider;
+
+@property (nonatomic, strong) NSMutableArray *photos;
+@property (nonatomic, strong) NSMutableArray *thumbs;
+
+@property (nonatomic, retain) UINavigationController *nav;
+/**页面方式 默认是添加图片模式  YES为浏览模式**/
+@property (nonatomic, assign) BOOL showType;
 @end

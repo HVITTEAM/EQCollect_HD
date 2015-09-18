@@ -192,8 +192,6 @@
     self.nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
     self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:self.nav animated:YES completion:nil];
-    
-    
 }
 
 -(void)updatePointinfo:(NSNotification *)notification

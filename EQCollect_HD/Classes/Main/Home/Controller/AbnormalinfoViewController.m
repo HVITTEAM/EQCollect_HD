@@ -7,7 +7,10 @@
 //
 #define kNormalNavHeight 64
 #define kAddNavheight 44
+
 #import "AbnormalinfoViewController.h"
+#import "ImageCollectionView.h"
+#import "PictureMode.h"
 
 @interface AbnormalinfoViewController ()
 {
@@ -19,17 +22,28 @@
 @end
 
 @implementation AbnormalinfoViewController
+{
+    ImageCollectionView *imgview;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self initAbnormalinfoVC];
-
+    
+    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
+    imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+    imgview.view.frame = CGRectMake(0, 600, self.view.width, 360);
+    imgview.nav = self.navigationController;
+    imgview.showType = !self.isAdd;
+    [self addChildViewController:imgview];
+    [self.view addSubview:imgview.view];
+    
 }
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self showAbnormalinfoData];
-    
     //注册键盘通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -52,7 +66,7 @@
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     //禁用交互
-    [self.view setUserInteractionEnabled:NO];
+//    [self.view setUserInteractionEnabled:NO];
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addAbnormalinfo)];
@@ -110,6 +124,7 @@
         self.implementationTextF.text = self.abnormalinfo.implementation;
         self.abnormalanalysisTextF.text = self.abnormalinfo.abnormalanalysis;
         self.crediblyTextF.text = self.abnormalinfo.credibly;
+        [self getimage];
     }else {
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -131,7 +146,7 @@
  */
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-
+    
     if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&&!self.isAdd)
     {
         //设备为横屏且不是新增界面，设置为横屏约束
@@ -229,9 +244,9 @@
     //判断文本输入框是否为空，如果为空则提示并返回
     for (int i=0; i<self.textInputViews.count; i++) {
         UITextField *textF = (UITextField *)self.textInputViews[i];
-        if (textF.text ==nil || textF.text.length <=0) {
+        if (textF.text ==nil || textF.text.length <= 0) {
             [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                return;
+            return;
         }
     }
     //创建字典对象并向表中插和数据
@@ -355,6 +370,59 @@
     
     _currentKeyboardNotification = nil;
     _lastDistance = 0;
+}
+
+/**
+ * 保存图片
+ **/
+-(void)saveImagesWithReleteId:(NSString *)releteID
+{
+    //保存图片
+    for (int i = 0; i < imgview.dataProvider.count ; i++)
+    {
+        if ([imgview.dataProvider[i] isKindOfClass:[PictureVO class]])
+        {
+            PictureVO *v = (PictureVO*)imgview.dataProvider[i];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", v.name]];
+            BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+            if (result)
+            {
+                NSLog(@"success to writeFile");
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                      v.name,@"pictureName",
+                                      filePath,@"picturePath",
+                                      releteID,@"abnormalid",
+                                      nil];
+                NSLog(@"%@",filePath);
+                //保存数据库
+                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+            }
+        }
+    }
+}
+
+/**
+ * 获取图片
+ **/
+-(void)getimage
+{
+    NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
+    NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByAttribute:@"abnormalid" value:self.abnormalinfo.abnormalid];
+    //循环添加图片
+    for(PictureMode* pic in imageArr)
+    {
+        PictureVO *vo = [[PictureVO alloc] init];
+        vo.name = pic.pictureName;
+    
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", pic.pictureName]];
+        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+        vo.image = img;
+        [dataProvider addObject:vo];
+    }
+    imgview.showType = YES;
+    imgview.dataProvider = dataProvider;
 }
 
 

@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MWPhotoBrowser.h"
 #import "CommonUIImagePickerController.h"
 #import "PictureMode.h"
 #import "PictureVO.h"
 #import "PictureInfoTableHelper.h"
 
 
-@interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MWPhotoBrowserDelegate>
+@interface PointinfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 
@@ -33,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *pointcontentTextV;             //调查简述
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
+
 @property (strong,nonatomic)NSArray *textInputViews;
 @property (strong,nonatomic)PointModel *pointinfo;             //选中的调查点信息
 
@@ -42,7 +42,4 @@
 @property (strong, nonatomic) IBOutlet UIScrollView *imageBgview;
 @property (strong, nonatomic) IBOutlet UIButton *getImgBtn;
 - (IBAction)getImgBtnClickHandler:(id)sender;
-
-@property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) NSMutableArray *thumbs;
 @end

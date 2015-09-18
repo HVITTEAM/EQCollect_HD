@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010CAB451BAB962100828EBD /* SQCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 010CAB441BAB962100828EBD /* SQCollectionCell.xib */; };
 		013CD3F91BA9574E00470284 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD3981BA9574D00470284 /* MWCaptionView.m */; };
 		013CD3FA1BA9574E00470284 /* MWGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD39B1BA9574D00470284 /* MWGridCell.m */; };
 		013CD3FB1BA9574E00470284 /* MWGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD39D1BA9574D00470284 /* MWGridViewController.m */; };
@@ -51,6 +52,8 @@
 		013CD4231BA9574E00470284 /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 013CD3F51BA9574E00470284 /* MWPhotoBrowser.bundle */; };
 		013CD42A1BA95B1900470284 /* CommonUIImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD4291BA95B1900470284 /* CommonUIImagePickerController.m */; };
 		013CD42E1BA95D2D00470284 /* PictureVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CD42D1BA95D2D00470284 /* PictureVO.m */; };
+		016734881BAAA358009C5620 /* ImageCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 016734861BAAA358009C5620 /* ImageCollectionView.m */; };
+		016734891BAAA358009C5620 /* ImageCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 016734871BAAA358009C5620 /* ImageCollectionView.xib */; };
 		0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A09A1B9590C5003199F4 /* SurveyPointCell.m */; };
 		0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */; };
 		0177A0AB1B9683C3003199F4 /* HMCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0A81B9683C3003199F4 /* HMCommonViewController.m */; };
@@ -174,6 +177,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		010CAB441BAB962100828EBD /* SQCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SQCollectionCell.xib; path = SlideViewController/SQCollectionCell.xib; sourceTree = "<group>"; };
 		013CD3971BA9574D00470284 /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		013CD3981BA9574D00470284 /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
 		013CD3991BA9574D00470284 /* MWCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCommon.h; sourceTree = "<group>"; };
@@ -268,6 +272,9 @@
 		013CD4291BA95B1900470284 /* CommonUIImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUIImagePickerController.m; sourceTree = "<group>"; };
 		013CD42C1BA95D2D00470284 /* PictureVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureVO.h; sourceTree = "<group>"; };
 		013CD42D1BA95D2D00470284 /* PictureVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureVO.m; sourceTree = "<group>"; };
+		016734851BAAA358009C5620 /* ImageCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCollectionView.h; sourceTree = "<group>"; };
+		016734861BAAA358009C5620 /* ImageCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCollectionView.m; sourceTree = "<group>"; };
+		016734871BAAA358009C5620 /* ImageCollectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCollectionView.xib; sourceTree = "<group>"; };
 		0177A0991B9590C5003199F4 /* SurveyPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointCell.h; sourceTree = "<group>"; };
 		0177A09A1B9590C5003199F4 /* SurveyPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointCell.m; sourceTree = "<group>"; };
 		0177A09B1B9590C5003199F4 /* SurveyPointCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointCell.xib; sourceTree = "<group>"; };
@@ -956,6 +963,7 @@
 		01EDAD991B8EFBF300C1CF21 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				010CAB441BAB962100828EBD /* SQCollectionCell.xib */,
 				D2C207F61B9D264A00454591 /* SlideViewController */,
 				D28D42EB1B90006B00E720AB /* AdminTableHead.h */,
 				D28D42EC1B90006B00E720AB /* AdminTableHead.m */,
@@ -974,6 +982,9 @@
 				D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */,
 				013CD4281BA95B1900470284 /* CommonUIImagePickerController.h */,
 				013CD4291BA95B1900470284 /* CommonUIImagePickerController.m */,
+				016734851BAAA358009C5620 /* ImageCollectionView.h */,
+				016734861BAAA358009C5620 /* ImageCollectionView.m */,
+				016734871BAAA358009C5620 /* ImageCollectionView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1231,8 +1242,10 @@
 				013CD4111BA9574E00470284 /* LICENSE in Resources */,
 				D23A1A871B9EBA9800758DDD /* DamageinfoViewController.xib in Resources */,
 				D23A1A961B9ED48200758DDD /* AbnormalinfoCell.xib in Resources */,
+				016734891BAAA358009C5620 /* ImageCollectionView.xib in Resources */,
 				01E354641B9D5F5700014114 /* MJRefresh.bundle in Resources */,
 				D23A1AA01B9EDE5400758DDD /* ReactioninfoCell.xib in Resources */,
+				010CAB451BAB962100828EBD /* SQCollectionCell.xib in Resources */,
 				0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1287,6 +1300,7 @@
 				01EED58A1B9D25420041D28A /* FMDatabaseQueue.m in Sources */,
 				01E3546B1B9D5F5700014114 /* UIView+MJExtension.m in Sources */,
 				013CD3FB1BA9574E00470284 /* MWGridViewController.m in Sources */,
+				016734881BAAA358009C5620 /* ImageCollectionView.m in Sources */,
 				D23A1A7C1B9E903B00758DDD /* AbnormalinfoViewController.m in Sources */,
 				013CD4041BA9574E00470284 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				01EED58C1B9D25420041D28A /* FMResultSet.m in Sources */,

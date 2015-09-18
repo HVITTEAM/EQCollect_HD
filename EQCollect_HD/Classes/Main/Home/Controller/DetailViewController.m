@@ -150,17 +150,16 @@
     //根据indexPath获取cell的数据
     __block PointModel * pointInfo = [self.dataProvider objectAtIndex:indexPath.row];
     //设置cell的属性
-    cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%lu  %@",indexPath.row,pointInfo.pointid];
+    cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%@",pointInfo.pointid];
     cell.pointTimeText.text = pointInfo.pointtime;
     cell.pointAddressText.text = pointInfo.pointlocation;
     //设置cell的deletePointBlock属性，
     cell.deletePointBlock = ^{
         //从数据库表中删除数据
-        BOOL result = [[PointinfoTableHelper sharedInstance] deleteDataByPointid:pointInfo.pointid];
+        BOOL result = [[PointinfoTableHelper sharedInstance] deleteDataByAttribute:@"pointid" value:pointInfo.pointid];
         if (result) {
-            //数据库中删除成功，则从dataProvider数组中删除数据并刷新界面
-            [self.dataProvider removeObjectAtIndex:indexPath.row];
-            [self.tableView reloadData];
+            //数据库中删除成功，则重新获取数据刷新界面
+            [self getDataProvider];
         }else{
             [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
         }

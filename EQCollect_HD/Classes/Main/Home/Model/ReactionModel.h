@@ -45,4 +45,5 @@
 @property (nonatomic, copy) NSString *soundsize;
 @property (nonatomic, copy) NSString *sounddirection;
 @property (nonatomic, copy) NSString *pointid;
+
 @end

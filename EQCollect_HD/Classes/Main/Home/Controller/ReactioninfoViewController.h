@@ -32,7 +32,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *sounddirectionTextF;            //地声方向
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
-@property (copy,nonatomic)NSString *pointid;
+@property (copy,nonatomic)NSString *pointid;                 //调查点pointid,新增人物反应时使用;
 @property (strong,nonatomic)ReactionModel *reactioninfo;       //选中的人物反应信息
 
 @property (strong,nonatomic)NSArray *textInputViews;           //所有的文本输入框

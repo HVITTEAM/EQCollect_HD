@@ -72,7 +72,6 @@
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
     self.textInputViews = @[
-                            self.abnormalidTextF,
                             self.abnormaltimeTextF,
                             self.informantTextF,
                             self.abnormalintensityTextF,
@@ -101,7 +100,6 @@
 -(void)showAbnormalinfoData
 {
     if (!self.isAdd) {
-        self.abnormalidTextF.text = self.abnormalinfo.abnormalid;
         self.abnormaltimeTextF.text = self.abnormalinfo.abnormaltime;
         self.informantTextF.text = self.abnormalinfo.informant;
         self.abnormalintensityTextF.text = self.abnormalinfo.abnormalintensity;
@@ -216,7 +214,7 @@
 
 -(void)addAbnormalinfo
 {
-    NSString *abnormalid = self.abnormalidTextF.text;
+    //NSString *abnormalid = self.abnormalidTextF.text;
     NSString *abnormaltime = self.abnormaltimeTextF.text;
     NSString *informant = self.informantTextF.text;
     NSString *abnormalintensity = self.abnormalintensityTextF.text;
@@ -238,7 +236,7 @@
     }
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          abnormalid,@"abnormalid",
+                          //abnormalid,@"abnormalid",
                           abnormaltime,@"abnormaltime",
                           informant,@"informant",
                           abnormalintensity, @"abnormalintensity",
@@ -256,7 +254,7 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        self.abnormalidTextF.text = nil;
+        //self.abnormalidTextF.text = nil;
         self.abnormaltimeTextF.text = nil;
         self.informantTextF.text = nil;
         self.abnormalintensityTextF.text = nil;

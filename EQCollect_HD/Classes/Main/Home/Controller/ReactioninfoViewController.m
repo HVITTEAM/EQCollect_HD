@@ -75,7 +75,7 @@
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
     self.textInputViews = @[
-                            self.reactionidTextF,
+                            //self.reactionidTextF,
                             self.reactiontimeTextF,
                             self.informantnameTextF,
                             self.informantageTextF,
@@ -114,7 +114,6 @@
 -(void)showReactioninfoData
 {
     if (!self.isAdd) {
-        self.reactionidTextF.text = self.reactioninfo.reactionid;
         self.reactiontimeTextF.text= self.reactioninfo.reactiontime;
         self.informantnameTextF.text= self.reactioninfo.informantname;
         self.informantageTextF.text= self.reactioninfo.informantage;
@@ -255,7 +254,7 @@
 
 -(void)addReactioninfo
 {
-    NSString *reactionid = self.reactionidTextF.text;
+    //NSString *reactionid = self.reactionidTextF.text;
     NSString *reactiontime = self.reactiontimeTextF.text;
     NSString *informantname = self.informantnameTextF.text;
     NSString *informantage = self.informantageTextF.text;
@@ -284,7 +283,7 @@
     }
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          reactionid,@"reactionid",
+                          //reactionid,@"reactionid",
                           reactiontime,@"reactiontime",
                           informantname,@"informantname",
                           informantage, @"informantage",
@@ -308,7 +307,7 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        self.reactionidTextF.text = nil;
+        //self.reactionidTextF.text = nil;
         self.reactiontimeTextF.text = nil;
         self.informantnameTextF.text = nil;
         self.informantageTextF.text = nil;

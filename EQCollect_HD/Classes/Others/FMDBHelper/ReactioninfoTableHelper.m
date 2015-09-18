@@ -26,7 +26,7 @@
 //soundsize	         地声大小	            Varchar
 //sounddirection	 地声方向       	    Varchar
 
-#define TABLENAME          @"reactioninfo"
+#define TABLENAME          @"REACTIONINFOTAB"
 #define REACTIONID         @"reactionid"
 #define REACTIONTIME       @"reactiontime"
 #define INFORMANTNAME      @"informantname"
@@ -76,8 +76,8 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'TEXT PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,REACTIONID,REACTIONTIME,
-                                     INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,
+                                     REACTIONID,REACTIONTIME,INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -93,9 +93,9 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@')",
-                               TABLENAME,REACTIONID,REACTIONTIME,
-                               INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID, dict[@"reactionid"],dict[@"reactiontime"], dict[@"informantname"],dict[@"informantage"], dict[@"informanteducation"], dict[@"informantjob"],dict[@"reactionaddress"], dict[@"rockfeeling"],dict[@"throwfeeling"],dict[@"throwtings"],dict[@"throwdistance"],dict[@"fall"],dict[@"hang"], dict[@"furnituresound"],dict[@"furnituredump"], dict[@"soundsize"],dict[@"sounddirection"],dict[@"pointid"]];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@')",
+                               TABLENAME,REACTIONTIME,
+                               INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID,dict[@"reactiontime"], dict[@"informantname"],dict[@"informantage"], dict[@"informanteducation"], dict[@"informantjob"],dict[@"reactionaddress"], dict[@"rockfeeling"],dict[@"throwfeeling"],dict[@"throwtings"],dict[@"throwdistance"],dict[@"fall"],dict[@"hang"], dict[@"furnituresound"],dict[@"furnituredump"], dict[@"soundsize"],dict[@"sounddirection"],dict[@"pointid"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
@@ -127,8 +127,8 @@
 //    }
 //
 //}
-//
--(BOOL) deleteDataByReactionid:(NSString *)reactionidStr
+
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
     BOOL result = NO;
     if ([db open])
@@ -136,7 +136,7 @@
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, REACTIONID, reactionidStr];
+                               TABLENAME, attribute, value];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
@@ -150,6 +150,7 @@
     }
     return result;
 }
+
 
 -(NSMutableArray *) selectData
 {

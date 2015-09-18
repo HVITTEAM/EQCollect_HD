@@ -76,7 +76,7 @@
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
     self.textInputViews = @[
-                            self.damageidTextF,
+                            //self.damageidTextF,
                             self.damagetimeTextF,
                             self.zrcorxqTextF,
                             self.dworzhTextF,
@@ -102,7 +102,7 @@
 -(void)showDamageinfoData
 {
     if (!self.isAdd) {
-        self.damageidTextF.text = self.damageinfo.damageid;
+        //self.damageidTextF.text = self.damageinfo.damageid;
         self.damagetimeTextF.text = self.damageinfo.damagetime;
         self.damageaddressTextF.text = self.damageinfo.damageaddress;
         self.damageintensityTextF.text = self.damageinfo.damageintensity;
@@ -239,7 +239,7 @@
     }
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          damageid,@"damageid",
+                          //damageid,@"damageid",
                           damagetime,@"damagetime",
                           damageaddress,@"damageaddress",
                           damageintensity, @"damageintensity",

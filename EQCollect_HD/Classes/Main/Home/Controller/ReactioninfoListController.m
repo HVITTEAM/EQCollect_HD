@@ -81,7 +81,7 @@
     //获取cell的数据
     __block ReactionModel * reactioninfo = [self.dataProvider objectAtIndex:indexPath.row];
     //设置cell的属性
-    cell.reactionTittle.text = [NSString stringWithFormat:@"NO.%lu  %@",indexPath.row,reactioninfo.reactionid];
+    cell.reactionTittle.text = [NSString stringWithFormat:@"NO.%@",reactioninfo.reactionid];
     cell.reactiontime.text = reactioninfo.reactiontime;
     cell.reactionaddress.text = reactioninfo.reactionaddress;
     cell.informantname.text = reactioninfo.informantname;
@@ -90,12 +90,11 @@
     //设置cell的block属性
     cell.deleteReactioninfoBlock = ^{
         //从数据库表中删除这个人物反应信息
-        BOOL result = [[ReactioninfoTableHelper sharedInstance] deleteDataByReactionid:reactioninfo.reactionid];
+        BOOL result = [[ReactioninfoTableHelper sharedInstance] deleteDataByAttribute:@"reactionid" value:reactioninfo.reactionid];
         if (result) {
-            //删除成功，则把这个数据从dataProvider数组中删除并刷新
-            [self.dataProvider removeObjectAtIndex:indexPath.row];
-            [self.tableView reloadData];
-        }else{
+            //删除成功，则重新获取数据并刷新
+            [self getDataProvider];
+          }else{
             [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
         }
     };

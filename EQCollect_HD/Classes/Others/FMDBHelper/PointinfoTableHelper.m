@@ -20,7 +20,7 @@
 //pointcontent	 调查简述	          Varchar
 
 
-#define TABLENAME      @"pointinfo"
+#define TABLENAME      @"POINTINFOTAB"
 #define POINTID        @"pointid"
 #define EARTHID        @"earthid"
 #define POINTLOCATION  @"pointlocation"
@@ -60,11 +60,11 @@
     
     db = [FMDatabase databaseWithPath:database_path];
 }
-
+//integer primary key autoincrement
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'TEXT PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -80,8 +80,8 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,POINTID, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT, dict[@"pointid"], dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson1"], dict[@"pointperson2"], dict[@"pointintensity"], dict[@"pointcontent"]];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT, dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson1"], dict[@"pointperson2"], dict[@"pointintensity"], dict[@"pointcontent"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
@@ -115,17 +115,19 @@
 //
 //}
 //
--(BOOL) deleteDataByPointid:(NSString *)pointidStr
+
+
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
     BOOL result = NO;
     if ([db open])
     {
-        
+
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, POINTID, pointidStr];
+                               TABLENAME, attribute, value];
         BOOL res = [db executeUpdate:deleteSql];
-        
+
         if (!res) {
             NSLog(@"error when delete db table");
             result = NO;
@@ -159,8 +161,6 @@
             NSString * pointperson2 = [rs stringForColumn:POINTPERSON2];
             NSString * pointintensity = [rs stringForColumn:POINTINTENSITY];
             NSString * pointcontent = [rs stringForColumn:POINTCONTENT];
-            
-           // NSLog(@"id = %@, earthid = %@, pointlocation = %@  pointlon = %@", pointid, earthid, pointlocation, pointlon);
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:pointid forKey:@"pointid"];

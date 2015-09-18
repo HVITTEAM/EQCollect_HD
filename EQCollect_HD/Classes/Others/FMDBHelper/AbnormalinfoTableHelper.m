@@ -20,7 +20,7 @@
 //abnormalanalysis 	 初步分析	          Varchar
 //credibly	         可信度	          Varchar
 
-#define TABLENAME          @"abnormalinfo"
+#define TABLENAME          @"ABNORMALINFOTAB"
 #define ABNORMALID         @"abnormalid"
 #define ABNORMALTIME       @"abnormaltime"
 #define INFORMANT          @"informant"
@@ -63,7 +63,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'TEXT PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
                                      INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
@@ -80,8 +80,8 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,ABNORMALID,ABNORMALTIME,INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY, POINTID,dict[@"abnormalid"],dict[@"abnormaltime"], dict[@"informant"],dict[@"abnormalintensity"], dict[@"groundwater"], dict[@"abnormalhabit"],dict[@"abnormalphenomenon"], dict[@"other"], dict[@"implementation"],dict[@"abnormalanalysis"], dict[@"credibly"],dict[@"pointid"]];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME,ABNORMALTIME,INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY, POINTID,dict[@"abnormaltime"], dict[@"informant"],dict[@"abnormalintensity"], dict[@"groundwater"], dict[@"abnormalhabit"],dict[@"abnormalphenomenon"], dict[@"other"], dict[@"implementation"],dict[@"abnormalanalysis"], dict[@"credibly"],dict[@"pointid"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
@@ -114,7 +114,8 @@
 //
 //}
 //
--(BOOL) deleteDataByAbnormalid:(NSString *)abnormalidStr
+
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
     BOOL result = NO;
     if ([db open])
@@ -122,7 +123,7 @@
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, ABNORMALID, abnormalidStr];
+                               TABLENAME, attribute, value];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
@@ -134,8 +135,9 @@
         }
         [db close];
     }
-    return  result;
+    return result;
 }
+
 
 -(NSMutableArray *) selectData
 {
@@ -201,6 +203,7 @@
             NSString * abnormalanalysis = [rs stringForColumn:ABNORMALANALYSIS];
             NSString * credibly = [rs stringForColumn:CREDIBLY];
             NSString * pointid = [rs stringForColumn:POINTID];
+
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:abnormalid forKey:@"abnormalid"];
@@ -215,6 +218,7 @@
             [dict setObject:abnormalanalysis forKey:@"abnormalanalysis"];
             [dict setObject:credibly forKey:@"credibly"];
             [dict setObject:pointid forKey:@"pointid"];
+        
             
             [dataCollect addObject:[AbnormalinfoModel objectWithKeyValues:dict]];
         }

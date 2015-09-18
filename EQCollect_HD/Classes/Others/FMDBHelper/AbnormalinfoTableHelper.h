@@ -22,8 +22,8 @@
 - (void)createTable;
 /**插入数据**/
 -(BOOL) insertDataWith:(NSDictionary *)dict;
-/**删除数据**/
--(BOOL) deleteDataByAbnormalid:(NSString *)abnormalidStr;
+/**根据某个字段删除数据**/
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value;
 /**查询数据**/
 - (NSMutableArray *)selectData;
 /**根据字段查询数据**/

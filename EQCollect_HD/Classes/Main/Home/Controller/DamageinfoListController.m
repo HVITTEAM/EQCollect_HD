@@ -86,12 +86,11 @@
     //设置cell的block属性
     cell.deleteDamageinfoBlock = ^{
         //从数据库表中删除房屋震害信息
-        BOOL result = [[DamageinfoTableHelper sharedInstance] deleteDataByDamageid:damageinfo.damageid];
+        BOOL result = [[DamageinfoTableHelper sharedInstance] deleteDataByAttribute:@"damageid" value:damageinfo.damageid];
         if (result) {
             //如果删除成功，则把房屋震害信息从dataProvider数组中删除并刷新界面
-            [self.dataProvider removeObjectAtIndex:indexPath.row];
-            [self.tableView reloadData];
-        }else{
+            [self getDataProvider];
+         }else{
             [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
         }
     };

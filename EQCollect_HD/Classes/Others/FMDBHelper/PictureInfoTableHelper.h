@@ -21,11 +21,13 @@
 - (void)createTable;
 /**插入数据**/
 -(BOOL) insertDataWith:(NSDictionary *)dict;
-/**删除数据**/
--(BOOL) deleteDataByPictureid:(NSString *)pictureidStr;
+
+/**根据字段删除数据**/
+-(BOOL) deleteDataByForeignTable:(NSString *)foreigntable Foreignid:(NSString *)foreignid;
+
 ///**查询数据**/
 //- (NSMutableArray *)selectData;
 /**根据字段查询数据**/
--(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value;
+-(NSMutableArray *) selectDataByForeignTable:(NSString *)foreigntable Foreignid:(NSString *)foreignid;
 
 @end

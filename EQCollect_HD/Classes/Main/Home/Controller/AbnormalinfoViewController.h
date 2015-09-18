@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *crediblyTextF;                   //可信度
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
-@property (copy,nonatomic)NSString *pointid;
+@property (copy,nonatomic)NSString *pointid;                 //调查点pointid,新增宏观异常时使用;
 @property (strong,nonatomic)AbnormalinfoModel *abnormalinfo;     //选中的宏观异常信息
 
 

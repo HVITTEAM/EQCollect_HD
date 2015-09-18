@@ -18,7 +18,7 @@
 //damagesituation	     破坏情况 	 Varchar
 //damageindex	         震害指数	     Float
 
-#define TABLENAME        @"damageinfo"
+#define TABLENAME        @"DAMAGEINFOTAB"
 #define DAMAGEID         @"damageid"
 #define DAMAGETIME       @"damagetime"
 #define DAMAGEADDRESS    @"damageaddress"
@@ -61,7 +61,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'TEXT PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
                                      DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
@@ -78,8 +78,8 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,DAMAGEID,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID,dict[@"damageid"],dict[@"damagetime"], dict[@"damageaddress"],dict[@"damageintensity"], dict[@"zrcorxq"], dict[@"dworzh"],dict[@"fortificationintensity"], dict[@"damagesituation"], dict[@"damageindex"],dict[@"pointid"]];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID,dict[@"damagetime"], dict[@"damageaddress"],dict[@"damageintensity"], dict[@"zrcorxq"], dict[@"dworzh"],dict[@"fortificationintensity"], dict[@"damagesituation"], dict[@"damageindex"],dict[@"pointid"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
@@ -112,8 +112,8 @@
 //    }
 //
 //}
-//
--(BOOL) deleteDataByDamageid:(NSString *)damageidStr
+
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
     BOOL result = NO;
     if ([db open])
@@ -121,7 +121,7 @@
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
-                               TABLENAME, DAMAGEID, damageidStr];
+                               TABLENAME, attribute, value];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
@@ -135,6 +135,7 @@
     }
     return result;
 }
+
 
 -(NSMutableArray *) selectData
 {
@@ -167,7 +168,7 @@
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
             [dict setObject:pointid forKey:@"pointid"];
-            //[dataCollect addObject:dict];
+    
             [dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
         }
         [db close];
@@ -207,6 +208,7 @@
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
             [dict setObject:pointid forKey:@"pointid"];
+            
             [dataCollect addObject:[DamageModel objectWithKeyValues:dict]];
         }
         [db close];

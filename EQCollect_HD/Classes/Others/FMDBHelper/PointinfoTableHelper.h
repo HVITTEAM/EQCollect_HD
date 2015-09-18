@@ -21,8 +21,8 @@
 - (void)createTable;
 /**插入数据**/
 -(BOOL) insertDataWith:(NSDictionary *)dict;
-/**删除数据**/
--(BOOL) deleteDataByPointid:(NSString *)pointidStr;
+/**根据某个字段删除数据**/
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value;
 /**查询数据**/
 - (NSMutableArray *)selectData;
 

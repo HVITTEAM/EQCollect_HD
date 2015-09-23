@@ -12,6 +12,9 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *reactionidTopCons;        //人物反应编号TextField的顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *reactionidWidthCons;     //人物反应编号TextField宽约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
 
 @property (weak, nonatomic) IBOutlet UITextField *reactionidTextF;                //人物反应编号
 @property (weak, nonatomic) IBOutlet UITextField *reactiontimeTextF;              //调查时间

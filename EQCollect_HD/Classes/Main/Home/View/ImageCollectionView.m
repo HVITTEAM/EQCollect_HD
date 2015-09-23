@@ -9,8 +9,8 @@
 
 
 static NSString *kcellIdentifier = @"collectionCellID";
-static float cellHeight = 80;
-static float cellWidth = 80;
+static float cellHeight = 70;
+static float cellWidth = 70;
 
 #import "ImageCollectionView.h"
 
@@ -46,9 +46,8 @@ static NSString * const reuseIdentifier = @"Cell";
 -(void)initCollectionView
 {
     [self.collectionView registerNib:[UINib nibWithNibName:@"SQCollectionCell" bundle:nil] forCellWithReuseIdentifier:kcellIdentifier];
-    
     self.collectionView.backgroundColor = [UIColor whiteColor];
-    self.collectionView.scrollEnabled = YES;
+    self.collectionView.scrollEnabled = NO;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     [self.collectionView reloadData];
@@ -92,7 +91,8 @@ static NSString * const reuseIdentifier = @"Cell";
     else
     {
         PictureVO *vo = self.dataProvider[index];
-        imageView.image = vo.image;
+        //创建缩略图来显示
+        imageView.image = [vo.image scaleImageToSize:CGSizeMake(cellWidth,cellHeight)];
     }
     return cell;
     
@@ -126,7 +126,7 @@ static NSString * const reuseIdentifier = @"Cell";
 //定义每个UICollectionView 的 margin
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(10, 10, 10, 10);//分别为上、左、下、右
+    return section==0?UIEdgeInsetsMake(0, 0, 7, 0):UIEdgeInsetsMake(7, 0, 0, 0);//分别为上、左、下、右
 }
 
 #pragma mark --UICollectionViewDelegate
@@ -204,6 +204,13 @@ static NSString * const reuseIdentifier = @"Cell";
             isFull = YES;
         }
         [self.collectionView reloadData];
+        
+        //默认为一行5张，高度为77，大于一行时调用
+        if (self.dataProvider.count>5) {
+            if (self.changeHeightBlock) {
+                self.changeHeightBlock(self.collectionView.contentSize.height);
+            }
+        }
     }
 }
 

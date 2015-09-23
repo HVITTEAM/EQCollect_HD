@@ -263,5 +263,34 @@
 }
 
 
+//-(NSInteger)getNumberOfRecords
+//{
+//    NSInteger count = 0;
+//    if ([db open]) {
+//        NSString *sql = [NSString stringWithFormat:@"SELECT COUNT(*) AS count FROM %@ ",TABLENAME];
+//        FMResultSet * rs = [db executeQuery:sql];
+//        while ([rs next]) {
+//            count = [rs intForColumn:@"count"];
+//            NSLog(@"%ld",count);
+//        }
+//    }
+//    [db close];
+//    return count;
+//}
+
+-(NSInteger)getMaxIdOfRecords
+{
+    NSInteger maxid = 0;
+    if ([db open]) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT MAX(reactionid) AS maxid FROM %@ ",TABLENAME];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next]) {
+            maxid = [rs intForColumn:@"maxid"];
+        }
+    }
+    [db close];
+    return maxid;
+}
+
 @end
 

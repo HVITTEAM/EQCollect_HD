@@ -216,6 +216,20 @@
     return dataCollect;
 }
 
+-(NSInteger)getMaxIdOfRecords
+{
+    NSInteger maxid = 0;
+    if ([db open]) {
+        NSString *sql = [NSString stringWithFormat:@"SELECT MAX(damageid) AS maxid FROM %@ ",TABLENAME];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next]) {
+            maxid = [rs intForColumn:@"maxid"];
+        }
+    }
+    [db close];
+    return maxid;
+}
+
 @end
 
 

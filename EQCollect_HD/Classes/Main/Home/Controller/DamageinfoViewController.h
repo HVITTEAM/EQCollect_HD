@@ -12,6 +12,9 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidTopCons;         //房屋震害编号TextField顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidWidthCons;        //房屋震害编号TextField宽约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
 
 @property (weak, nonatomic) IBOutlet UITextField *damageidTextF;                   //房屋震害编号
 @property (weak, nonatomic) IBOutlet UITextField *damagetimeTextF;                 //调查时间

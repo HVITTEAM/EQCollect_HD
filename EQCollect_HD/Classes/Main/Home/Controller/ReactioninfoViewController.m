@@ -8,6 +8,8 @@
 #define kNormalNavHeight 64
 #define kAddNavheight 44
 #import "ReactioninfoViewController.h"
+#import "ImageCollectionView.h"
+#import "PictureMode.h"
 
 @interface ReactioninfoViewController ()
 {
@@ -19,12 +21,14 @@
 @end
 
 @implementation ReactioninfoViewController
-
+{
+    ImageCollectionView *imgview;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self initReactioninfoVC];
-
+    [self initImageCollectionView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -36,6 +40,14 @@
     //注册键盘通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    imgview.showType = !self.isAdd;
+    if (!self.isAdd) {
+        [self getimage];
+    }
+    //根据图片的张数设置 view 的高度
+    CGFloat h = imgview.dataProvider.count <=5?77:154;
+    self.imgViewHeightCons.constant = h;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -55,7 +67,7 @@
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     //禁用交互
-    [self.view setUserInteractionEnabled:NO];
+    //[self.view setUserInteractionEnabled:NO];
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addReactioninfo)];
@@ -75,7 +87,7 @@
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
     self.textInputViews = @[
-                            //self.reactionidTextF,
+                            self.reactionidTextF,
                             self.reactiontimeTextF,
                             self.informantnameTextF,
                             self.informantageTextF,
@@ -110,6 +122,38 @@
     self.soundsizeItems = @[@"强烈",@"中等",@"微弱",@"无地声"];
     self.sounddirectionItems = @[@"东",@"南",@"西",@"北",@"东南",@"西北",@"西南",@"东北"];
 }
+
+
+-(void)initImageCollectionView
+{
+    //创建图片视图
+    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
+    imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+    imgview.nav = self.navigationController;
+    imgview.showType = !self.isAdd;
+    [self addChildViewController:imgview];
+    [self.containerView addSubview:imgview.collectionView];
+    
+    //设置 block，当图片行数发生变化时会调用
+    __weak typeof(self) weakSelf = self;
+    __weak ImageCollectionView * weakImgview = imgview;
+    imgview.changeHeightBlock = ^(CGFloat viewheight){
+        weakSelf.imgViewHeightCons.constant = viewheight;
+        [weakImgview.collectionView updateConstraintsIfNeeded];
+    };
+    
+    //设置视图约束
+    imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *dictViews = @{
+                                @"sounddirectionTextF":self.sounddirectionTextF,
+                                @"imgview":imgview.collectionView,
+                                };
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[sounddirectionTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:77];
+    [imgview.collectionView addConstraint:self.imgViewHeightCons];
+}
+
 
 -(void)showReactioninfoData
 {
@@ -326,9 +370,17 @@
         self.sounddirectionTextF.text = nil;
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
+        NSInteger maxid=[[ReactioninfoTableHelper sharedInstance] getMaxIdOfRecords];
+        if (maxid!=0 ) {
+            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",maxid] releteTable:@"REACTIONINFOTAB"];
+        }
     }
+    //清空imageCollectionView的数据
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    NSObject *obj = [[NSObject alloc] init];
+    [imgview.dataProvider addObject:obj];
+    [self dismissViewControllerAnimated:self completion:nil];
 
-    
     [self dismissViewControllerAnimated:self completion:nil];
 }
 
@@ -385,13 +437,14 @@
     NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     //获取当前文本框中window中的最大Y值
     UITextField *currentTextField = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
-    CGRect frameInWindow = [keyWin convertRect:currentTextField.frame fromView:self.view];
+    CGRect frameInWindow = [keyWin convertRect:currentTextField.frame fromView:self.containerView];
     CGFloat currentTextFieldMaxY = CGRectGetMaxY(frameInWindow)+_lastDistance;     //加_lastDistance消除偏移
       
     //当键盘被遮挡时view上移
-    if (currentTextFieldMaxY >= keyboardY) {
+    if (currentTextFieldMaxY >= keyboardY-60) {
+        self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, currentTextFieldMaxY - keyboardY+60, 0);
         [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
-            self.view.bounds= CGRectMake(0, currentTextFieldMaxY - keyboardY+60, self.view.width, self.view.height);
+            self.rootScrollView.contentOffset = CGPointMake(0, currentTextFieldMaxY - keyboardY+60);
         } completion:nil];
         //将向上移距离赋值给_lastDistance
         _lastDistance = currentTextFieldMaxY - keyboardY+60;
@@ -412,11 +465,66 @@
     NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     //复原View属性
     [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
-        self.view.bounds= CGRectMake(0, 0, self.view.width, self.view.height);
+        self.rootScrollView.contentOffset = CGPointMake(0, 0);
     } completion:nil];
+    self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
     _currentKeyboardNotification = nil;
     _lastDistance = 0;
 }
 
+/**
+ * 保存图片
+ **/
+-(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
+{
+    //保存图片
+    for (int i = 0; i < imgview.dataProvider.count ; i++)
+    {
+        if ([imgview.dataProvider[i] isKindOfClass:[PictureVO class]])
+        {
+            PictureVO *v = (PictureVO*)imgview.dataProvider[i];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", v.name]];
+            BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+            if (result)
+            {
+                NSLog(@"success to writeFile");
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                      v.name,@"pictureName",
+                                      filePath,@"picturePath",
+                                      releteID,@"releteid",
+                                      releteTable,@"reletetable",
+                                      nil];
+                NSLog(@"%@",filePath);
+                //保存数据库
+                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+            }
+        }
+    }
+}
+
+
+/**
+ * 获取图片
+ **/
+-(void)getimage
+{
+    NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
+    NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"REACTIONINFOTAB" Releteid:self.reactioninfo.reactionid];
+    //循环添加图片
+    for(PictureMode* pic in imageArr)
+    {
+        PictureVO *vo = [[PictureVO alloc] init];
+        vo.name = pic.pictureName;
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", pic.pictureName]];
+        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+        vo.image = img;
+        [dataProvider addObject:vo];
+    }
+    imgview.showType = YES;
+    imgview.dataProvider = dataProvider;
+}
 @end

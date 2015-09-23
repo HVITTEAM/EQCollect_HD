@@ -35,6 +35,7 @@
 #import "AbnormalinfoTableHelper.h"
 #import "ReactioninfoTableHelper.h"
 #import "DamageinfoTableHelper.h"
+#import "PictureInfoTableHelper.h"
 
 #import "PointModel.h"
 #import "AbnormalinfoModel.h"

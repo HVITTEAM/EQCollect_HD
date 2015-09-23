@@ -13,6 +13,6 @@
 @interface PictureMode : NSObject
 @property (nonatomic, copy) NSString *pictureName;
 @property (nonatomic, copy) NSString *picturePath;
-@property (nonatomic, copy) NSString *foreignid;
-@property (nonatomic, copy) NSString *foreigntable;
+@property (nonatomic, copy) NSString *releteid;
+@property (nonatomic, copy) NSString *reletetable;
 @end

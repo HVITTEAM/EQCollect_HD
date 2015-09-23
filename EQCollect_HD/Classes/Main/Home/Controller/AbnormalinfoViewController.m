@@ -30,15 +30,7 @@
     [super viewDidLoad];
     
     [self initAbnormalinfoVC];
-    
-    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
-    imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
-    imgview.view.frame = CGRectMake(0, 600, self.view.width, 360);
-    imgview.nav = self.navigationController;
-    imgview.showType = !self.isAdd;
-    [self addChildViewController:imgview];
-    [self.view addSubview:imgview.view];
-    
+    [self initImageCollectionView];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -47,6 +39,15 @@
     //注册键盘通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+    //获取图片数据
+    imgview.showType = !self.isAdd;
+    if (!self.isAdd) {
+        [self getimage];
+    }
+    //根据图片的张数设置 view 的高度
+    CGFloat h = imgview.dataProvider.count <=5?77:154;
+    self.imgViewHeightCons.constant = h;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -66,7 +67,6 @@
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     //禁用交互
-//    [self.view setUserInteractionEnabled:NO];
     if (self.isAdd ) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addAbnormalinfo)];
@@ -86,6 +86,7 @@
     [self rotationToInterfaceOrientation:interfaceOrientation];
     
     self.textInputViews = @[
+                            self.abnormalidTextF,
                             self.abnormaltimeTextF,
                             self.informantTextF,
                             self.abnormalintensityTextF,
@@ -109,6 +110,36 @@
     self.habitItems = @[@"习性1",@"习性2",@"习性3",@"习性4"];
     self.phenomenonItems = @[@"物化1",@"物化2",@"物化3",@"物化4",@"物化5"];
     
+}
+
+-(void)initImageCollectionView
+{
+    //创建图片视图
+    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
+    imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+    imgview.nav = self.navigationController;
+    imgview.showType = !self.isAdd;
+    [self addChildViewController:imgview];
+    [self.containerView addSubview:imgview.collectionView];
+    
+    //设置 block，当图片行数发生变化时会调用
+    __weak typeof(self) weakSelf = self;
+    __weak ImageCollectionView * weakImgview = imgview;
+    imgview.changeHeightBlock = ^(CGFloat viewheight){
+        weakSelf.imgViewHeightCons.constant = viewheight;
+        [weakImgview.collectionView updateConstraintsIfNeeded];
+    };
+    
+    //设置视图约束
+    imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *dictViews = @{
+                                @"crediblyTextF":self.crediblyTextF,
+                                @"imgview":imgview.collectionView,
+                                };
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[crediblyTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:77];
+    [imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
 
 -(void)showAbnormalinfoData
@@ -229,6 +260,7 @@
 
 -(void)addAbnormalinfo
 {
+
     //NSString *abnormalid = self.abnormalidTextF.text;
     NSString *abnormaltime = self.abnormaltimeTextF.text;
     NSString *informant = self.informantTextF.text;
@@ -269,6 +301,7 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
+        
         //self.abnormalidTextF.text = nil;
         self.abnormaltimeTextF.text = nil;
         self.informantTextF.text = nil;
@@ -281,7 +314,16 @@
         self.abnormalanalysisTextF.text = nil;
         self.crediblyTextF.text =nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
+        NSInteger maxid=[[AbnormalinfoTableHelper sharedInstance] getMaxIdOfRecords];
+        if (maxid!=0 ) {
+            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",maxid] releteTable:@"ABNORMALINFOTAB"];
+        }
     }
+    
+    //清空imageCollectionView的数据
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    NSObject *obj = [[NSObject alloc] init];
+    [imgview.dataProvider addObject:obj];
     [self dismissViewControllerAnimated:self completion:nil];
 }
 
@@ -338,13 +380,14 @@
     NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     //获取当前文本框中window中的最大Y值
     UITextField *currentTextField = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
-    CGRect frameInWindow = [keyWin convertRect:currentTextField.frame fromView:self.view];
+    CGRect frameInWindow = [keyWin convertRect:currentTextField.frame fromView:self.containerView];
     CGFloat currentTextFieldMaxY = CGRectGetMaxY(frameInWindow)+_lastDistance;  //加_lastDistance消除偏移
     
     //当键盘被遮挡时view上移
-    if (currentTextFieldMaxY >= keyboardY) {
+    if (currentTextFieldMaxY > keyboardY-60) {
+         self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, currentTextFieldMaxY - keyboardY+60, 0);
         [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
-            self.view.bounds= CGRectMake(0, currentTextFieldMaxY - keyboardY+60, self.view.width, self.view.height);
+            self.rootScrollView.contentOffset= CGPointMake(0, currentTextFieldMaxY - keyboardY+60);
         } completion:nil];
         //将向上移距离赋值给_lastDistance
         _lastDistance = currentTextFieldMaxY - keyboardY+60;
@@ -365,17 +408,19 @@
     NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     //复原View属性
     [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
-        self.view.bounds= CGRectMake(0, 0, self.view.width, self.view.height);
+        self.rootScrollView.contentOffset = CGPointMake(0, 0);
     } completion:nil];
+    self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
     _currentKeyboardNotification = nil;
     _lastDistance = 0;
 }
 
+
 /**
  * 保存图片
  **/
--(void)saveImagesWithReleteId:(NSString *)releteID
+-(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
 {
     //保存图片
     for (int i = 0; i < imgview.dataProvider.count ; i++)
@@ -392,7 +437,8 @@
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                       v.name,@"pictureName",
                                       filePath,@"picturePath",
-                                      releteID,@"abnormalid",
+                                      releteID,@"releteid",
+                                      releteTable,@"reletetable",
                                       nil];
                 NSLog(@"%@",filePath);
                 //保存数据库
@@ -402,13 +448,14 @@
     }
 }
 
+
 /**
  * 获取图片
  **/
 -(void)getimage
 {
     NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
-    NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByAttribute:@"abnormalid" value:self.abnormalinfo.abnormalid];
+    NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"ABNORMALINFOTAB" Releteid:self.abnormalinfo.abnormalid];
     //循环添加图片
     for(PictureMode* pic in imageArr)
     {

@@ -23,11 +23,12 @@
 -(BOOL) insertDataWith:(NSDictionary *)dict;
 
 /**根据字段删除数据**/
--(BOOL) deleteDataByForeignTable:(NSString *)foreigntable Foreignid:(NSString *)foreignid;
+-(BOOL) deleteDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid;
 
-///**查询数据**/
-//- (NSMutableArray *)selectData;
 /**根据字段查询数据**/
--(NSMutableArray *) selectDataByForeignTable:(NSString *)foreigntable Foreignid:(NSString *)foreignid;
+-(NSMutableArray *) selectDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid;
+
+/**根据字段删除沙盒中的图片**/
+-(BOOL)deletePictureFromDocumentDirectoryByReleteTable:(NSString *)reltable Releteid:(NSString *)relid;
 
 @end

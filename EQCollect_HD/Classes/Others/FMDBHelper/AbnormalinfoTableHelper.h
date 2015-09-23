@@ -28,4 +28,6 @@
 - (NSMutableArray *)selectData;
 /**根据字段查询数据**/
 -(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value;
+/**获得数据表中数据的最大id值 **/
+-(NSInteger)getMaxIdOfRecords;
 @end

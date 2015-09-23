@@ -84,7 +84,14 @@
     //设置cell的block属性
     cell.deleteAbnormalinfoBlock = ^{
         //从数据库表中删除这个宏观异常信息
-        BOOL result = [[AbnormalinfoTableHelper sharedInstance] deleteDataByAttribute:@"abnormalid" value:abnormalInfo.abnormalid];
+       __block BOOL result = YES;
+        result = [[PictureInfoTableHelper sharedInstance] deletePictureFromDocumentDirectoryByReleteTable:@"ABNORMALINFOTAB" Releteid:abnormalInfo.abnormalid];
+        if (result) {
+          result = [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"ABNORMALINFOTAB" Releteid:abnormalInfo.abnormalid];
+          if (result) {
+            result = [[AbnormalinfoTableHelper sharedInstance] deleteDataByAttribute:@"abnormalid" value:abnormalInfo.abnormalid];
+           }
+        }
         if (result) {
             //删除成功，则重新获取数据并刷新界面
             [self getDataProvider];

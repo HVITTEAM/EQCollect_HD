@@ -54,13 +54,13 @@
     self.pointinfoVC.pointinfo = self.pointinfo;
     [self.pointinfoVC viewWillAppear:YES];
     
-    self.abnormalinfoListVC.foreignid = self.pointinfo.pointid;
+    self.abnormalinfoListVC.pointid = self.pointinfo.pointid;
     [self.abnormalinfoListVC viewWillAppear:YES];
     
-    self.reactioninfoListVC.foreignid = self.pointinfo.pointid;
+    self.reactioninfoListVC.pointid = self.pointinfo.pointid;
     [self.reactioninfoListVC viewWillAppear:YES];
     
-     self.damageinfoListVC.foreignid = self.pointinfo.pointid;
+     self.damageinfoListVC.pointid = self.pointinfo.pointid;
     [self.damageinfoListVC viewWillAppear:YES];
 }
 
@@ -154,7 +154,7 @@
             self.abnormalVC = [[AbnormalinfoViewController alloc] init];
         }
         self.abnormalVC.isAdd = YES;
-        self.abnormalVC.foreignid = self.pointinfo.pointid;
+        self.abnormalVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.abnormalVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
@@ -163,7 +163,7 @@
             self.reactionifoVC = [[ReactioninfoViewController alloc] init];
         }
         self.reactionifoVC.isAdd = YES;
-        self.reactionifoVC.foreignid = self.pointinfo.pointid;
+        self.reactionifoVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.reactionifoVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
@@ -172,7 +172,7 @@
             self.damageinfoVC = [[DamageinfoViewController alloc] init];
         }
         self.damageinfoVC.isAdd = YES;
-        self.damageinfoVC.foreignid = self.pointinfo.pointid;
+        self.damageinfoVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.damageinfoVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];

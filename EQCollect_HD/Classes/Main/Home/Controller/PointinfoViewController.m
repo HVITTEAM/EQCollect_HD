@@ -326,10 +326,10 @@
     CGFloat currentInputViewMaxY = CGRectGetMaxY(frameInWindow)+_lastDistance;  //加_lastDistance消除偏移
     
     //当键盘被遮挡时view上移
-    if (currentInputViewMaxY >= keyboardY) {
-        self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, (currentInputViewMaxY - keyboardY+60), 0);
+    if (currentInputViewMaxY > keyboardY-60) {
+        self.rootScrollView.contentInset = UIEdgeInsetsMake(0, 0, currentInputViewMaxY - keyboardY+60, 0);
         [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
-            self.rootScrollView.contentOffset = CGPointMake(0, (currentInputViewMaxY - keyboardY+60));
+            self.rootScrollView.contentOffset = CGPointMake(0, currentInputViewMaxY - keyboardY+60);
         } completion:nil];
         //将向上移距离赋值给_lastDistance
         _lastDistance = currentInputViewMaxY - keyboardY+60;

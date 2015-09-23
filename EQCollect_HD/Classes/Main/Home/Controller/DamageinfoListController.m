@@ -86,7 +86,14 @@
     //设置cell的block属性
     cell.deleteDamageinfoBlock = ^{
         //从数据库表中删除房屋震害信息
-        BOOL result = [[DamageinfoTableHelper sharedInstance] deleteDataByAttribute:@"damageid" value:damageinfo.damageid];
+       __block BOOL result = YES;
+        result = [[PictureInfoTableHelper sharedInstance] deletePictureFromDocumentDirectoryByReleteTable:@"DAMAGEINFOTAB" Releteid:damageinfo.damageid];
+        if (result) {
+            result = [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"DAMAGEINFOTAB" Releteid:damageinfo.damageid];
+            if (result) {
+                result = [[DamageinfoTableHelper sharedInstance] deleteDataByAttribute:@"damageid" value:damageinfo.damageid];
+            }
+        }
         if (result) {
             //如果删除成功，则把房屋震害信息从dataProvider数组中删除并刷新界面
             [self getDataProvider];

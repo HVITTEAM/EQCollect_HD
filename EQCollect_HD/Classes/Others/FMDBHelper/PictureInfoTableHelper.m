@@ -13,8 +13,8 @@
 #define PICTUREID         @"pictureid"
 #define PICTURENAME       @"pictureName"
 #define PICTUREPATH       @"picturePath"
-#define FOREIGNID         @"foreignid"
-#define FOREIGNTABLE      @"foreigntable"
+#define RELETEID          @"releteid"
+#define RELETETABLE       @"reletetable"
 
 //#define POINTID           @"pointid"
 
@@ -45,7 +45,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,PICTUREID,PICTURENAME,PICTUREPATH,FOREIGNID,FOREIGNTABLE];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,PICTUREID,PICTURENAME,PICTUREPATH,RELETEID,RELETETABLE];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating imgaedb table");
@@ -62,7 +62,7 @@
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
                                @"INSERT INTO '%@' ('%@', '%@', '%@','%@')  VALUES ('%@', '%@', '%@','%@')",
-                               TABLENAME,PICTURENAME,PICTUREPATH,FOREIGNID,FOREIGNTABLE,dict[@"pictureName"], dict[@"picturePath"],dict[@"foreignid"],dict[@"foreigntable"]];
+                               TABLENAME,PICTURENAME,PICTUREPATH,RELETEID,RELETETABLE,dict[@"pictureName"], dict[@"picturePath"],dict[@"releteid"],dict[@"reletetable"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db Imgtable");
@@ -77,12 +77,12 @@
 }
 
 /**
- *  根据foreignid，foreigntable 字段删除相应的图片
+ *  根据releteid，reletetable 字段删除相应的图片
  *
- *  @param foreigntable 关联的表名
- *  @param foreignid    关联表中某条记录的id
+ *  @param reletetable 关联的表名
+ *  @param releteid    关联表中某条记录的id
  */
--(BOOL) deleteDataByForeignTable:(NSString *)foreigntable Foreignid:(NSString *)foreignid
+-(BOOL) deleteDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
 {
     BOOL result = NO;
     if ([db open])
@@ -90,7 +90,7 @@
 
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@' AND %@ = '%@'",
-                               TABLENAME,FOREIGNTABLE,foreigntable,FOREIGNID, foreignid];
+                               TABLENAME,RELETETABLE,reltable,RELETEID, relid];
         BOOL res = [db executeUpdate:deleteSql];
 
         if (!res) {
@@ -106,30 +106,30 @@
 }
 
 /**
- *  根据foreignid，foreigntable 字段查询相应的图片
+ *  根据releteid，reletetable 字段查询相应的图片
  *
- *  @param foreigntable 关联的表名
- *  @param foreignid    关联表中某条记录的id
+ *  @param reletetable 关联的表名
+ *  @param releteid    关联表中某条记录的id
  */
--(NSMutableArray *) selectDataByForeignTable:(NSString *)foreigntable Foreignid:(NSString *)foreignid
+-(NSMutableArray *) selectDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
 {
     NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
     {
-        NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@ where %@ = '%@' AND %@ = '%@'",TABLENAME,FOREIGNTABLE,foreigntable,FOREIGNID,foreignid];
+        NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@ where %@ = '%@' AND %@ = '%@'",TABLENAME,RELETETABLE,reltable,RELETEID,relid];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
             NSString * pictureName = [rs stringForColumn:PICTURENAME];
             NSString * picturePath = [rs stringForColumn:PICTUREPATH];
-            NSString * foreignid = [rs stringForColumn:FOREIGNID];
-            NSString * foreigntable = [rs stringForColumn:FOREIGNTABLE];
+            NSString * releteid = [rs stringForColumn:RELETEID];
+            NSString * reletetable = [rs stringForColumn:RELETETABLE];
 
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:pictureName forKey:@"pictureName"];
             [dict setObject:picturePath forKey:@"picturePath"];
-            [dict setObject:foreignid forKey:@"foreignid"];
-            [dict setObject:foreigntable forKey:@"foreigntable"];
+            [dict setObject:releteid forKey:@"releteid"];
+            [dict setObject:reletetable forKey:@"reletetable"];
             
             [dataCollect addObject:[PictureMode objectWithKeyValues:dict]];
         }
@@ -139,5 +139,33 @@
     return dataCollect;
 }
 
+/**
+ *  从沙盒目录中删除图片
+ *
+ *  @param reltable 关联的表
+ *  @param relid    关联记录的 ID
+ *
+ *  @return  成功返回 yes，失败返回 no
+ */
+-(BOOL)deletePictureFromDocumentDirectoryByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
+{
+    NSMutableArray *parhs = [[NSMutableArray alloc] init];
+    if ([db open]) {
+        NSString * sql = [NSString stringWithFormat: @"SELECT %@ FROM %@ where %@ = '%@' AND %@ = '%@'",PICTUREPATH,TABLENAME,RELETETABLE,reltable,RELETEID,relid];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next]) {
+            NSString *picturePath = [rs stringForColumnIndex:0];
+            [parhs addObject:picturePath];
+        }
+        [db close];
+    }
+    for (int i=0; i<parhs.count; i++) {
+       BOOL result = [[NSFileManager defaultManager]removeItemAtPath:parhs[i] error:nil];
+       if (!result) {
+           return result;
+        }
+    }
+    return YES;
+}
 
 @end

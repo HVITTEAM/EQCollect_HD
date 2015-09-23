@@ -90,7 +90,14 @@
     //设置cell的block属性
     cell.deleteReactioninfoBlock = ^{
         //从数据库表中删除这个人物反应信息
-        BOOL result = [[ReactioninfoTableHelper sharedInstance] deleteDataByAttribute:@"reactionid" value:reactioninfo.reactionid];
+       __block BOOL result = YES;
+        result = [[PictureInfoTableHelper sharedInstance] deletePictureFromDocumentDirectoryByReleteTable:@"REACTIONINFOTAB" Releteid:reactioninfo.reactionid];
+        if (result) {
+            result = [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"REACTIONINFOTAB" Releteid:reactioninfo.reactionid];
+            if (result) {
+                result = [[ReactioninfoTableHelper sharedInstance] deleteDataByAttribute:@"reactionid" value:reactioninfo.reactionid];
+            }
+        }
         if (result) {
             //删除成功，则重新获取数据并刷新
             [self getDataProvider];

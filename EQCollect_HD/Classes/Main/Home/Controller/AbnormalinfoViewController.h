@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PictureInfoTableHelper.h"
+
 
 @interface AbnormalinfoViewController : UIViewController<UITextFieldDelegate,UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidTopCons;        //宏观异常编号TextField顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidWidthCons;      //宏观异常编号TextField宽约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
 
 @property (weak, nonatomic) IBOutlet UITextField *abnormalidTextF;                 //宏观异常编号
 @property (weak, nonatomic) IBOutlet UITextField *abnormaltimeTextF;               //调查时间
@@ -27,9 +30,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *crediblyTextF;                   //可信度
 
 @property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
-@property (copy,nonatomic)NSString *pointid;                 //调查点pointid,新增宏观异常时使用;
+@property (copy,nonatomic)NSString *pointid;                   //调查点pointid,新增宏观异常时使用;
 @property (strong,nonatomic)AbnormalinfoModel *abnormalinfo;     //选中的宏观异常信息
-
 
 @property (strong,nonatomic)NSArray *textInputViews;           //所有的文本输入框
 @property (strong,nonatomic)NSArray *intensityItems;           //烈度选项

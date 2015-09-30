@@ -42,9 +42,12 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 /**
  *  刷新数据
@@ -119,6 +122,7 @@
        self.reactionVC = [[ReactioninfoViewController alloc]initWithNibName:@"ReactioninfoViewController" bundle:nil];
     }
     self.reactionVC.reactioninfo = self.dataProvider[indexPath.row];
+    self.reactionVC.actionType = kActionTypeShow;
     [self.nav pushViewController:self.reactionVC animated:YES];
 }
 

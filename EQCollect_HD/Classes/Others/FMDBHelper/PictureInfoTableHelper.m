@@ -77,7 +77,7 @@
 }
 
 /**
- *  根据releteid，reletetable 字段删除相应的图片
+ *  根据releteid，reletetable 字段删除相应的记录
  *
  *  @param reletetable 关联的表名
  *  @param releteid    关联表中某条记录的id
@@ -168,4 +168,71 @@
     return YES;
 }
 
+/**
+ *
+ *
+ *  @param attribute <#attribute description#>
+ *  @param value     <#value description#>
+ *
+ *  @return <#return value description#>
+ */
+-(BOOL) deleteImageByAttribute:(NSString *)attribute value:(NSString *)value
+{
+    BOOL result = NO;
+    NSString *picFilepath;
+    if ([db open])
+    {
+        NSString *selectsql = [NSString stringWithFormat:@"SELECT %@ FROM %@ WHERE %@='%@'",PICTUREPATH,TABLENAME,attribute,value];
+        NSString *deleteSql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'",TABLENAME, attribute, value];
+        FMResultSet *rs = [db executeQuery:selectsql];
+        while ([rs next]) {
+             picFilepath = [rs stringForColumn:PICTUREPATH];
+        }
+        
+        if (picFilepath!=nil) {
+            NSLog(@"%@",picFilepath);
+           BOOL re = [[NSFileManager defaultManager] removeItemAtPath:picFilepath error:nil];
+            if (re) {
+                BOOL res = [db executeUpdate:deleteSql];
+                if (!res) {
+                    NSLog(@"error when delete db table");
+                    result = NO;
+                } else {
+                    NSLog(@"success to delete db table");
+                    result = YES;
+                }
+
+            }
+        }
+      [db close];
+    }
+    return result;
+}
+
+
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
+{
+    BOOL result = NO;
+    if ([db open])
+    {
+        
+        NSString *deleteSql = [NSString stringWithFormat:
+                               @"delete from %@ where %@ = '%@'",
+                               TABLENAME, attribute, value];
+        BOOL res = [db executeUpdate:deleteSql];
+        
+        if (!res) {
+            NSLog(@"error when delete db table");
+            result = NO;
+        } else {
+            NSLog(@"success to delete db table");
+            result = YES;
+        }
+        [db close];
+    }
+    return result;
+}
+
 @end
+
+

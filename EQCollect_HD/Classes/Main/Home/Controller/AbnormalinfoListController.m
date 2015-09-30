@@ -113,6 +113,7 @@
         self.abnormalinfoVC = [[AbnormalinfoViewController alloc] initWithNibName:@"AbnormalinfoViewController" bundle:nil];
     }
     self.abnormalinfoVC.abnormalinfo = self.dataProvider[indexPath.row];
+    self.abnormalinfoVC.actionType = kActionTypeShow;
     [self.nav pushViewController:self.abnormalinfoVC animated:YES];
 }
 

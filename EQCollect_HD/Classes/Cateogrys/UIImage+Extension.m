@@ -45,16 +45,17 @@
 
 -(UIImage *)scaleImageToSize:(CGSize)size
 {
+    //获得宽高的缩放比例
     CGFloat scaleW = size.width/self.size.width;
     CGFloat scaleH = size.height/self.size.height;
-    
+    //按缩放后的小边的比例来计算
     CGFloat finalScale;
     if (scaleW > scaleH) {
         finalScale = scaleW;
     }else{
         finalScale = scaleH;
     }
-    
+    //计算缩放后的图片大小
     CGFloat finalW = self.size.width *finalScale;
     CGFloat finalH = self.size.height *finalScale;
     CGRect finalRect;
@@ -63,7 +64,7 @@
     }else{
         finalRect = CGRectMake(0, (size.height - finalH)/2, finalW, finalH);
     }
-    
+    //重新绘制图片
     UIGraphicsBeginImageContextWithOptions(size, NO, 1.0f);
     [self drawInRect:finalRect];
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();

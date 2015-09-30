@@ -33,6 +33,7 @@
 #define POINTPERSON2   @"pointperson2"
 #define POINTINTENSITY @"pointintensity"
 #define POINTCONTENT   @"pointcontent"
+#define UPLOAD         @"upload"
 
 #import "PointinfoTableHelper.h"
 
@@ -64,7 +65,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -80,8 +81,8 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT, dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson1"], dict[@"pointperson2"], dict[@"pointintensity"], dict[@"pointcontent"]];
+                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT,UPLOAD,dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson1"], dict[@"pointperson2"], dict[@"pointintensity"], dict[@"pointcontent"],dict[@"upload"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             NSLog(@"error when insert db table");
@@ -95,26 +96,27 @@
     return result;
 }
 
-//
-//-(void) updateData
-//{
-//    if ([db open])
-//    {
-//        NSString *updateSql = [NSString stringWithFormat:
-//                               @"UPDATE '%@' SET '%@' = '%@' WHERE '%@' = '%@'",
-//                               TABLENAME,   AGE,  @"15" ,AGE,  @"13"];
-//        BOOL res = [db executeUpdate:updateSql];
-//        if (!res) {
-//            NSLog(@"error when update db table");
-//        } else {
-//            NSLog(@"success to update db table");
-//        }
-//        [db close];
-//
-//    }
-//
-//}
-//
+-(BOOL) updateDataWith:(NSDictionary *)dict
+{
+    BOOL result = NO;
+    if ([db open])
+    {
+        NSString *updateSql = [NSString stringWithFormat:
+                               @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@' WHERE %@ = %@  ",TABLENAME,EARTHID,dict[@"earthid"],POINTLOCATION,dict[@"pointlocation"],POINTLON,dict[@"pointlon"],POINTLAT,dict[@"pointlat"],POINTNAME,dict[@"pointname"],POINTTIME,dict[@"pointtime"],POINTGROUP,dict[@"pointgroup"],POINTPERSON1,dict[@"pointperson1"],POINTPERSON2,dict[@"pointperson2"],POINTINTENSITY,dict[@"pointintensity"],POINTCONTENT,dict[@"pointcontent"],UPLOAD,dict[@"upload"],POINTID,dict[@"pointid"]];
+        NSLog(@"%@",updateSql);
+        BOOL res = [db executeUpdate:updateSql];
+        if (!res) {
+            NSLog(@"error when update db table");
+            result = NO;
+        } else {
+            NSLog(@"success to update db table");
+            result = YES;
+        }
+        [db close];
+    }
+    return result;
+}
+
 
 
 -(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
@@ -161,6 +163,7 @@
             NSString * pointperson2 = [rs stringForColumn:POINTPERSON2];
             NSString * pointintensity = [rs stringForColumn:POINTINTENSITY];
             NSString * pointcontent = [rs stringForColumn:POINTCONTENT];
+            NSString * upload = [rs stringForColumn:UPLOAD];
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:pointid forKey:@"pointid"];
@@ -175,6 +178,7 @@
             [dict setObject:pointperson2 forKey:@"pointperson2"];
             [dict setObject:pointintensity forKey:@"pointintensity"];
             [dict setObject:pointcontent forKey:@"pointcontent"];
+            [dict setObject:upload forKey:@"upload"];
 
             [dataCollect addObject:[PointModel objectWithKeyValues:dict]];
             

@@ -39,15 +39,13 @@
     //注册键盘通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
+    
     //获取图片数据
-    imgview.showType = !self.isAdd;
-    if (!self.isAdd) {
+    if (imgview.showType==kActionTypeShow) {
         [self getimage];
     }
-    //根据图片的张数设置 view 的高度
-    CGFloat h = imgview.dataProvider.count <=5?77:154;
-    self.imgViewHeightCons.constant = h;
+    
+    imgview.nav = self.navigationController;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -66,17 +64,16 @@
     
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
-    //禁用交互
-    if (self.isAdd ) {
+    UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
+    self.navigationItem.rightBarButtonItem = rigthItem;
+    
+    if (self.actionType == kActionTypeAdd){
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-        UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addAbnormalinfo)];
         self.navigationItem.leftBarButtonItem = leftItem;
-        self.navigationItem.rightBarButtonItem = rigthItem;
+        rigthItem.title = @"确定";
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
-        //启用交互
-        [self.view setUserInteractionEnabled:YES];
     }
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
@@ -110,6 +107,7 @@
     self.habitItems = @[@"习性1",@"习性2",@"习性3",@"习性4"];
     self.phenomenonItems = @[@"物化1",@"物化2",@"物化3",@"物化4",@"物化5"];
     
+    [self setActionType:self.actionType];
 }
 
 -(void)initImageCollectionView
@@ -118,19 +116,19 @@
     UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
     imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
     imgview.nav = self.navigationController;
-    imgview.showType = !self.isAdd;
+    imgview.showType = self.actionType;
     [self addChildViewController:imgview];
     [self.containerView addSubview:imgview.collectionView];
     
-    //设置 block，当图片行数发生变化时会调用
+    //设置 block，当图片数发生变化时会回调
     __weak typeof(self) weakSelf = self;
     __weak ImageCollectionView * weakImgview = imgview;
     imgview.changeHeightBlock = ^(CGFloat viewheight){
-        weakSelf.imgViewHeightCons.constant = viewheight;
+         weakSelf.imgViewHeightCons.constant = viewheight;
         [weakImgview.collectionView updateConstraintsIfNeeded];
-    };
+     };
     
-    //设置视图约束
+    //设置图片视图约束
     imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *dictViews = @{
                                 @"crediblyTextF":self.crediblyTextF,
@@ -138,13 +136,13 @@
                                 };
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[crediblyTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
-    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:77];
+    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
     [imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
 
 -(void)showAbnormalinfoData
 {
-    if (!self.isAdd) {
+    if (self.actionType == kActionTypeShow  || self.actionType == kactionTypeEdit) {
         self.abnormaltimeTextF.text = self.abnormalinfo.abnormaltime;
         self.informantTextF.text = self.abnormalinfo.informant;
         self.abnormalintensityTextF.text = self.abnormalinfo.abnormalintensity;
@@ -155,13 +153,33 @@
         self.implementationTextF.text = self.abnormalinfo.implementation;
         self.abnormalanalysisTextF.text = self.abnormalinfo.abnormalanalysis;
         self.crediblyTextF.text = self.abnormalinfo.credibly;
-        [self getimage];
+        
     }else {
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"MM-dd HH:mm"];
         self.abnormaltimeTextF.text = [formatter stringFromDate:date];
     }
+}
+
+/**
+ *  ActionType属性的 setter 方法
+ */
+-(void)setActionType:(ActionType)actionType
+{
+     _actionType = actionType;
+    
+     //根据当前选择设置文本框能否编辑
+    if (actionType == kActionTypeShow) {
+        for (UITextField *txt in self.textInputViews) {
+            txt.userInteractionEnabled = NO;
+        }
+    }else{
+        for (UITextField *txt in self.textInputViews) {
+            txt.userInteractionEnabled = YES;
+        }
+    }
+    imgview.showType = actionType;
 }
 
 //处理屏幕旋转
@@ -178,7 +196,7 @@
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     
-    if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&&!self.isAdd)
+    if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&&self.actionType == kActionTypeShow)
     {
         //设备为横屏且不是新增界面，设置为横屏约束
         self.abnormalidWidthCons.constant = 180;
@@ -199,16 +217,6 @@
     if (_currentKeyboardNotification !=nil) {
         [self keyboardWillShow:_currentKeyboardNotification];
     }
-}
-
-//输入框编辑完成以后，将视图恢复到原始状态
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-}
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self.view endEditing:YES];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -295,41 +303,30 @@
                           abnormalanalysis,@"abnormalanalysis",
                           credibly,@"credibly",
                           self.pointid,@"pointid",
+                          @"0",@"upload",
                           nil];
     
     BOOL result = [[AbnormalinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        
-        //self.abnormalidTextF.text = nil;
-        self.abnormaltimeTextF.text = nil;
-        self.informantTextF.text = nil;
-        self.abnormalintensityTextF.text = nil;
-        self.groundwaterTextF.text = nil;
-        self.abnormalhabitTextF.text = nil;
-        self.abnormalphenomenonTextF.text = nil;
-        self.otherTextF.text = nil;
-        self.implementationTextF.text = nil;
-        self.abnormalanalysisTextF.text = nil;
-        self.crediblyTextF.text =nil;
+        [self setTextinputViewsNil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
         NSInteger maxid=[[AbnormalinfoTableHelper sharedInstance] getMaxIdOfRecords];
         if (maxid!=0 ) {
-            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",maxid] releteTable:@"ABNORMALINFOTAB"];
+            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"ABNORMALINFOTAB"];
         }
     }
-    
     //清空imageCollectionView的数据
     imgview.dataProvider = [[NSMutableArray alloc] init];
-    NSObject *obj = [[NSObject alloc] init];
-    [imgview.dataProvider addObject:obj];
-    [self dismissViewControllerAnimated:self completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)back
 {
-    [self dismissViewControllerAnimated:self completion:nil];
+    [self setTextinputViewsNil];
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
@@ -468,9 +465,96 @@
         vo.image = img;
         [dataProvider addObject:vo];
     }
-    imgview.showType = YES;
     imgview.dataProvider = dataProvider;
 }
 
+-(void)rightItemTap:(UIBarButtonItem *)sender
+{
+    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
+        self.actionType = kactionTypeEdit;
+        self.navigationItem.rightBarButtonItem.title = @"确定";
+    }else{
+        if (self.actionType == kActionTypeAdd) {
+            [self addAbnormalinfo];
+        }else{
+            [self updateAbnormalinfo];
+            [self.view endEditing:YES];
+            self.actionType = kActionTypeShow;
+            self.navigationItem.rightBarButtonItem.title = @"编辑";
+        }
+    }
+}
 
+-(void)updateAbnormalinfo
+{
+    //NSString *abnormalid = self.abnormalidTextF.text;
+    NSString *abnormaltime = self.abnormaltimeTextF.text;
+    NSString *informant = self.informantTextF.text;
+    NSString *abnormalintensity = self.abnormalintensityTextF.text;
+    NSString *groundwater = self.groundwaterTextF.text;
+    NSString *abnormalhabit = self.abnormalhabitTextF.text;
+    NSString *abnormalphenomenon = self.abnormalphenomenonTextF.text;
+    NSString *other = self.otherTextF.text;
+    NSString *implementation = self.implementationTextF.text;
+    NSString *abnormalanalysis = self.abnormalanalysisTextF.text;
+    NSString *credibly = self.crediblyTextF.text;
+    
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        UITextField *textF = (UITextField *)self.textInputViews[i];
+        if (textF.text ==nil || textF.text.length <= 0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            return;
+        }
+    }
+    //创建字典对象并向表中插和数据
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          self.abnormalinfo.abnormalid,@"abnormalid",
+                          abnormaltime,@"abnormaltime",
+                          informant,@"informant",
+                          abnormalintensity, @"abnormalintensity",
+                          groundwater, @"groundwater",
+                          abnormalhabit,@"abnormalhabit",
+                          abnormalphenomenon,@"abnormalphenomenon",
+                          other,@"other",
+                          implementation,@"implementation",
+                          abnormalanalysis,@"abnormalanalysis",
+                          credibly,@"credibly",
+                          self.abnormalinfo.pointid,@"pointid",
+                          @"0",@"upload",
+                          nil];
+    
+    BOOL result = [[AbnormalinfoTableHelper sharedInstance] updateDataWith:dict];
+    if (!result) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }else{
+        [self.view endEditing:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
+        
+        for (id vo in imgview.dataProvider)
+        {
+            if ([vo isKindOfClass:[PictureVO class]]){
+                [[PictureInfoTableHelper sharedInstance] deleteDataByAttribute:@"pictureName" value:((PictureVO *)vo).name];
+            }
+        }
+        [self saveImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
+
+    }
+}
+
+
+-(void)setTextinputViewsNil
+{
+    //self.abnormalidTextF.text = nil;
+    self.abnormaltimeTextF.text = nil;
+    self.informantTextF.text = nil;
+    self.abnormalintensityTextF.text = nil;
+    self.groundwaterTextF.text = nil;
+    self.abnormalhabitTextF.text = nil;
+    self.abnormalphenomenonTextF.text = nil;
+    self.otherTextF.text = nil;
+    self.implementationTextF.text = nil;
+    self.abnormalanalysisTextF.text = nil;
+    self.crediblyTextF.text =nil;
+}
 @end

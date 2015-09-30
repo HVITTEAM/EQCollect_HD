@@ -10,10 +10,12 @@
 #import "MWPhotoBrowser.h"
 #import "CommonUIImagePickerController.h"
 #import "PictureVO.h"
+#import <AVFoundation/AVFoundation.h>
+#import "UzysAssetsPickerController.h"
 
 typedef void(^changeHeight)(CGFloat);
 
-@interface ImageCollectionView : UICollectionViewController<UIAlertViewDelegate,UIImagePickerControllerDelegate,MWPhotoBrowserDelegate,UINavigationControllerDelegate>
+@interface ImageCollectionView : UICollectionViewController<UIAlertViewDelegate,UIImagePickerControllerDelegate,MWPhotoBrowserDelegate,UzysAssetsPickerControllerDelegate,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate>
 
 @property (nonatomic, retain) NSMutableArray *dataProvider;
 
@@ -21,9 +23,11 @@ typedef void(^changeHeight)(CGFloat);
 @property (nonatomic, strong) NSMutableArray *thumbs;
 
 @property (nonatomic, retain) UINavigationController *nav;
-/**页面方式 默认是添加图片模式  YES为浏览模式**/
-@property (nonatomic, assign) BOOL showType;
+/**页面方式**/
+@property (nonatomic, assign) ActionType showType;
 
-/**根据图片的行数改变view的高度**/
+@property (nonatomic,assign)BOOL isShowAddBtn;
+
+/**根据图片的数改变view的高度**/
 @property (nonatomic,copy)changeHeight changeHeightBlock;
 @end

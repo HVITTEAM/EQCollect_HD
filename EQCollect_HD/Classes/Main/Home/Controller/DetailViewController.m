@@ -48,6 +48,10 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+}
+
+-(void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -251,7 +255,7 @@
     if (!self.pointinfoVC) {
         self.pointinfoVC = [[PointinfoViewController alloc] init];
     }
-    self.pointinfoVC.isAdd = YES;
+    self.pointinfoVC.actionType = kActionTypeAdd;
     self.nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
     self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:self.nav animated:YES completion:nil];

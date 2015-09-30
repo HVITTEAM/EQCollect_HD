@@ -12,4 +12,5 @@
 
 @property (nonatomic,copy) NSString *name;
 @property (strong, nonatomic)UIImage *image;
+//@property (nonatomic,copy)NSString *fileUrl;
 @end

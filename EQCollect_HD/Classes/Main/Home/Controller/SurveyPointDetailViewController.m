@@ -68,7 +68,10 @@
 {
     self.title = @"调查点详情";
     
-    _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"新增" style:UIBarButtonItemStylePlain target:self action:@selector(newInfor:)];
+    _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rigthItemTap:)];
+    if ([self.pointinfo.upload isEqualToString:@"0"]) {
+        self.navigationItem.rightBarButtonItem = _rightItem;
+    }
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -134,8 +137,13 @@
 {
     _currentIndex = number;
     if (number == 0) {
-        self.navigationItem.rightBarButtonItem = nil;
+        
+        if ([self.pointinfo.upload isEqualToString:@"0"]) {
+            _rightItem.title = @"编辑";
+            self.navigationItem.rightBarButtonItem = _rightItem;
+        }else self.navigationItem.rightBarButtonItem = nil;
     }else {
+         _rightItem.title = @"新增";
         self.navigationItem.rightBarButtonItem = _rightItem;
     }
 }
@@ -147,13 +155,23 @@
     [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
 }
 
--(void)newInfor:(id)sender
+-(void)rigthItemTap:(id)sender
 {
-    if (_currentIndex == 1) {
+    if (_currentIndex == 0) {
+        if ([_rightItem.title isEqualToString:@"编辑"]) {
+            self.pointinfoVC.actionType = kactionTypeEdit;
+            _rightItem.title = @"确定";
+        }else{
+            self.pointinfoVC.actionType = kActionTypeShow;
+            _rightItem.title = @"编辑";
+            //更新数据
+            [self.pointinfoVC updatePointinfo];
+        }
+    }else if (_currentIndex == 1) {
         if (!self.abnormalVC) {
             self.abnormalVC = [[AbnormalinfoViewController alloc] init];
         }
-        self.abnormalVC.isAdd = YES;
+        self.abnormalVC.actionType = kActionTypeAdd;
         self.abnormalVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.abnormalVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -162,7 +180,7 @@
         if (!self.reactionifoVC) {
             self.reactionifoVC = [[ReactioninfoViewController alloc] init];
         }
-        self.reactionifoVC.isAdd = YES;
+        self.reactionifoVC.actionType = kActionTypeAdd;
         self.reactionifoVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.reactionifoVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -171,7 +189,7 @@
         if (!self.damageinfoVC) {
             self.damageinfoVC = [[DamageinfoViewController alloc] init];
         }
-        self.damageinfoVC.isAdd = YES;
+        self.damageinfoVC.actionType = kActionTypeAdd;
         self.damageinfoVC.pointid = self.pointinfo.pointid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.damageinfoVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;

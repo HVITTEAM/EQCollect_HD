@@ -31,15 +31,13 @@
 @property (weak, nonatomic) IBOutlet UITextField *pointintensityTextF;          //评定烈度
 @property (weak, nonatomic) IBOutlet UITextView *pointcontentTextV;             //调查简述
 
-@property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
+@property (assign,nonatomic)ActionType actionType;             //操作类型
 
 @property (strong,nonatomic)NSArray *textInputViews;
 @property (strong,nonatomic)PointModel *pointinfo;             //选中的调查点信息
 
 //旋转屏幕时更改约束
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
+-(void)updatePointinfo;
 
-@property (strong, nonatomic) IBOutlet UIScrollView *imageBgview;
-@property (strong, nonatomic) IBOutlet UIButton *getImgBtn;
-- (IBAction)getImgBtnClickHandler:(id)sender;
 @end

@@ -29,4 +29,6 @@
 -(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value;
 /**获得数据表中数据的最大id值 **/
 -(NSInteger)getMaxIdOfRecords;
+/**更新数据**/
+-(BOOL) updateDataWith:(NSDictionary *)dict;
 @end

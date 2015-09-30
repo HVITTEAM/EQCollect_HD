@@ -31,4 +31,8 @@
 /**根据字段删除沙盒中的图片**/
 -(BOOL)deletePictureFromDocumentDirectoryByReleteTable:(NSString *)reltable Releteid:(NSString *)relid;
 
+-(BOOL) deleteImageByAttribute:(NSString *)attribute value:(NSString *)value;
+
+-(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value;
+
 @end

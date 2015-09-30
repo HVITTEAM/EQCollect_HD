@@ -25,6 +25,7 @@
 -(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value;
 /**查询数据**/
 - (NSMutableArray *)selectData;
-
+/**更新数据**/
+-(BOOL) updateDataWith:(NSDictionary *)dict;
 
 @end

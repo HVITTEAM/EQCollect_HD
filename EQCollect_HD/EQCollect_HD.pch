@@ -165,3 +165,8 @@
 #define kAddReactioninfoSucceedNotification @"AddReactioninfoSucceedNotification"
 #define kAddDamageinfoSucceedNotification @"AddDamageinfoSucceedNotification"
 
+typedef NS_ENUM(NSInteger, ActionType) {
+    kActionTypeShow,
+    kActionTypeAdd,
+    kactionTypeEdit
+};

@@ -34,5 +34,5 @@
 @property (nonatomic, copy) NSString *abnormalanalysis;
 @property (nonatomic, copy) NSString *credibly;
 @property (nonatomic, copy) NSString *pointid;
-
+@property (nonatomic, copy) NSString *upload;
 @end

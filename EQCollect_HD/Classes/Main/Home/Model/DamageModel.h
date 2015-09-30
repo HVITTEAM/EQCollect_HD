@@ -30,4 +30,5 @@
 @property (nonatomic, copy) NSString *damagesituation;
 @property (nonatomic, copy) NSString *damageindex;
 @property (nonatomic, copy) NSString *pointid;
+@property (nonatomic, copy) NSString *upload;
 @end

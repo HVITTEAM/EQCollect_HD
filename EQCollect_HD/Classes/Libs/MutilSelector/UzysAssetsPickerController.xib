@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UzysAssetsPickerController">
+            <connections>
+                <outlet property="bottomView" destination="kxD-PY-Oat" id="fmO-n5-9uB"/>
+                <outlet property="btnCamera" destination="8h0-kN-iqH" id="BN1-UZ-Qbu"/>
+                <outlet property="btnDone" destination="abt-dZ-axW" id="2rA-uc-JhG"/>
+                <outlet property="btnTitle" destination="rd5-Z7-vdI" id="cgS-pE-KEI"/>
+                <outlet property="collectionView" destination="3fL-gW-Ruo" id="0Zy-DB-HFi"/>
+                <outlet property="labelSelectedMedia" destination="HUE-lo-MS3" id="SFl-yr-V8h"/>
+                <outlet property="navigationTop" destination="eF0-Xh-u5U" id="gxF-h7-gEE"/>
+                <outlet property="noAssetView" destination="f11-Be-0m1" id="ig1-Mu-938"/>
+                <outlet property="segmentedControl" destination="44q-K1-3XI" id="15T-I7-UsW"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view tag="200" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eF0-Xh-u5U" userLabel="NavigationTop">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <subviews>
+                        <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GMr-RU-k94" userLabel="Button - Close">
+                            <rect key="frame" x="2" y="20" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="9iz-c5-dTf"/>
+                                <constraint firstAttribute="height" constant="44" id="qQa-3L-bEL"/>
+                            </constraints>
+                            <state key="normal" image="UzysAssetPickerController.bundle/uzysAP_navi_icon_close">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="yp1-Q0-WuH"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rd5-Z7-vdI" userLabel="Button - Title">
+                            <rect key="frame" x="125" y="23" width="69" height="40"/>
+                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="16"/>
+                            <state key="normal" title="sdfsdfasd">
+                                <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="9iB-BX-fxc"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="4nm-n6-bYD"/>
+                        <constraint firstAttribute="bottom" secondItem="GMr-RU-k94" secondAttribute="bottom" id="UVx-zg-Uvd"/>
+                        <constraint firstAttribute="bottom" secondItem="rd5-Z7-vdI" secondAttribute="bottom" constant="1" id="aIA-t3-PCa"/>
+                        <constraint firstItem="rd5-Z7-vdI" firstAttribute="top" secondItem="eF0-Xh-u5U" secondAttribute="top" constant="23" id="nom-Gs-nA3"/>
+                        <constraint firstAttribute="centerX" secondItem="rd5-Z7-vdI" secondAttribute="centerX" id="u1D-mG-lYq"/>
+                        <constraint firstItem="GMr-RU-k94" firstAttribute="leading" secondItem="eF0-Xh-u5U" secondAttribute="leading" constant="2" id="y9A-KI-LQl"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="3fL-gW-Ruo">
+                    <rect key="frame" x="0.0" y="64" width="320" height="456"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iDc-EJ-WV4">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f11-Be-0m1">
+                    <rect key="frame" x="0.0" y="64" width="320" height="456"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" tag="30" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UzysAssetPickerController.bundle/uzysAP_ico_no_image" translatesAutoresizingMaskIntoConstraints="NO" id="QUz-ob-eqI">
+                            <rect key="frame" x="95" y="123" width="130" height="110"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="130" id="PNe-2d-iRg"/>
+                                <constraint firstAttribute="height" constant="110" id="uIB-ON-68W"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="31" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Photos or Videos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88Q-IJ-d87">
+                            <rect key="frame" x="0.0" y="253" width="320" height="17.5"/>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="32" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can sync photos and videos onto your iPhone using iTunes." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pR3-dY-97i">
+                            <rect key="frame" x="50" y="280" width="220" height="32.5"/>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="QUz-ob-eqI" secondAttribute="centerY" constant="50" id="3dP-ee-OZM"/>
+                        <constraint firstItem="88Q-IJ-d87" firstAttribute="top" secondItem="QUz-ob-eqI" secondAttribute="bottom" constant="20" id="9LQ-X2-2pL"/>
+                        <constraint firstItem="88Q-IJ-d87" firstAttribute="leading" secondItem="f11-Be-0m1" secondAttribute="leading" id="We5-ha-bdU"/>
+                        <constraint firstAttribute="trailing" secondItem="88Q-IJ-d87" secondAttribute="trailing" id="Zo5-re-yjG"/>
+                        <constraint firstAttribute="centerX" secondItem="QUz-ob-eqI" secondAttribute="centerX" id="cbj-6G-I4c"/>
+                        <constraint firstItem="pR3-dY-97i" firstAttribute="top" secondItem="88Q-IJ-d87" secondAttribute="bottom" constant="10" id="dlg-XH-jgV"/>
+                        <constraint firstAttribute="trailing" secondItem="pR3-dY-97i" secondAttribute="trailing" constant="50" id="e50-TH-twt"/>
+                        <constraint firstItem="pR3-dY-97i" firstAttribute="leading" secondItem="f11-Be-0m1" secondAttribute="leading" constant="50" id="gXt-EE-Td4"/>
+                    </constraints>
+                </view>
+                <view tag="201" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kxD-PY-Oat" userLabel="BottomView">
+                    <rect key="frame" x="0.0" y="520" width="319.5" height="48"/>
+                    <subviews>
+                        <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abt-dZ-axW">
+                            <rect key="frame" x="244" y="9" width="55" height="30"/>
+                            <color key="backgroundColor" red="0.88235294117647056" green="0.24313725490196078" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="5CH-6z-vD0"/>
+                                <constraint firstAttribute="width" constant="55" id="Bve-Bm-OAR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <inset key="titleEdgeInsets" minX="-32" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="32" minY="1" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="0" image="UzysAssetPickerController.bundle/uzysAP_ico_upload_done.png">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="sbl-ar-Pla"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8h0-kN-iqH" userLabel="Button - Camera">
+                            <rect key="frame" x="20" y="15" width="15" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" image="UzysAssetPickerController.bundle/uzysAP_ico_upload_camera.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="2aB-DM-9M6"/>
+                            </connections>
+                        </button>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="44q-K1-3XI">
+                            <rect key="frame" x="98" y="10" width="123.5" height="29"/>
+                            <segments>
+                                <segment title="Photo" width="74.5">
+                                    <size key="contentOffset" width="0.0" height="1"/>
+                                </segment>
+                                <segment title="Video">
+                                    <size key="contentOffset" width="0.0" height="1"/>
+                                </segment>
+                            </segments>
+                            <color key="tintColor" red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="indexDidChangeForSegmentedControl:" destination="-1" eventType="valueChanged" id="xud-fs-HXo"/>
+                            </connections>
+                        </segmentedControl>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="245" verticalHuggingPriority="251" horizontalCompressionResistancePriority="745" text="Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUE-lo-MS3">
+                            <rect key="frame" x="55" y="16" width="169.5" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuK-5w-xJr">
+                            <rect key="frame" x="0.0" y="-1" width="319.5" height="0.5"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="axV-Yp-ICP"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="abt-dZ-axW" firstAttribute="leading" secondItem="HUE-lo-MS3" secondAttribute="trailing" constant="20" id="1Bn-Ng-jUg"/>
+                        <constraint firstItem="xuK-5w-xJr" firstAttribute="leading" secondItem="kxD-PY-Oat" secondAttribute="leading" id="3dV-WD-fWl"/>
+                        <constraint firstAttribute="centerY" secondItem="abt-dZ-axW" secondAttribute="centerY" id="4r0-Cu-V98"/>
+                        <constraint firstAttribute="centerX" secondItem="44q-K1-3XI" secondAttribute="centerX" id="5kg-Lk-3K2"/>
+                        <constraint firstAttribute="height" constant="48" id="Kut-e5-UYl"/>
+                        <constraint firstItem="xuK-5w-xJr" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="-1" id="RhR-om-QmJ"/>
+                        <constraint firstAttribute="trailing" secondItem="abt-dZ-axW" secondAttribute="trailing" constant="20" id="TnM-c6-QXN"/>
+                        <constraint firstAttribute="centerY" secondItem="8h0-kN-iqH" secondAttribute="centerY" id="aVv-P2-hhh"/>
+                        <constraint firstItem="8h0-kN-iqH" firstAttribute="leading" secondItem="kxD-PY-Oat" secondAttribute="leading" constant="20" id="acC-d1-bPL"/>
+                        <constraint firstAttribute="centerY" secondItem="HUE-lo-MS3" secondAttribute="centerY" id="g3k-mk-UzP"/>
+                        <constraint firstItem="HUE-lo-MS3" firstAttribute="leading" secondItem="8h0-kN-iqH" secondAttribute="trailing" constant="20" id="iB4-a0-p53"/>
+                        <constraint firstAttribute="centerY" secondItem="44q-K1-3XI" secondAttribute="centerY" id="sqP-0M-pdk"/>
+                        <constraint firstAttribute="trailing" secondItem="xuK-5w-xJr" secondAttribute="trailing" id="xGM-8g-v9w"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.38823529410000002" green="0.58039215690000001" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="kxD-PY-Oat" firstAttribute="top" secondItem="3fL-gW-Ruo" secondAttribute="bottom" id="1WX-aF-d63"/>
+                <constraint firstItem="eF0-Xh-u5U" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="2JL-TV-Irl"/>
+                <constraint firstItem="3fL-gW-Ruo" firstAttribute="top" secondItem="eF0-Xh-u5U" secondAttribute="bottom" id="BPd-R3-ife"/>
+                <constraint firstItem="f11-Be-0m1" firstAttribute="trailing" secondItem="3fL-gW-Ruo" secondAttribute="trailing" id="J5H-nZ-pRq"/>
+                <constraint firstItem="eF0-Xh-u5U" firstAttribute="top" secondItem="1" secondAttribute="top" id="RCa-KS-q6R"/>
+                <constraint firstItem="f11-Be-0m1" firstAttribute="bottom" secondItem="3fL-gW-Ruo" secondAttribute="bottom" id="YOi-OY-haq"/>
+                <constraint firstItem="kxD-PY-Oat" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Z1Y-30-fZQ"/>
+                <constraint firstAttribute="bottom" secondItem="kxD-PY-Oat" secondAttribute="bottom" id="aOm-sk-Wvd"/>
+                <constraint firstAttribute="trailing" secondItem="eF0-Xh-u5U" secondAttribute="trailing" id="eM2-rr-y2i"/>
+                <constraint firstAttribute="trailing" secondItem="kxD-PY-Oat" secondAttribute="trailing" id="hLa-tQ-6U4"/>
+                <constraint firstItem="f11-Be-0m1" firstAttribute="leading" secondItem="3fL-gW-Ruo" secondAttribute="leading" id="lMf-Vr-lve"/>
+                <constraint firstItem="3fL-gW-Ruo" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="nMO-AG-00j"/>
+                <constraint firstItem="f11-Be-0m1" firstAttribute="top" secondItem="3fL-gW-Ruo" secondAttribute="top" id="qnl-5M-xt2"/>
+                <constraint firstAttribute="trailing" secondItem="3fL-gW-Ruo" secondAttribute="trailing" id="z8y-Ez-xI5"/>
+            </constraints>
+            <point key="canvasLocation" x="289" y="318"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="UzysAssetPickerController.bundle/uzysAP_ico_no_image" width="15" height="15"/>
+        <image name="UzysAssetPickerController.bundle/uzysAP_ico_upload_camera.png" width="15" height="15"/>
+        <image name="UzysAssetPickerController.bundle/uzysAP_ico_upload_done.png" width="15" height="15"/>
+        <image name="UzysAssetPickerController.bundle/uzysAP_navi_icon_close" width="15" height="15"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

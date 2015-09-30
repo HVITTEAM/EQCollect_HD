@@ -26,7 +26,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *damagesituationTextF;            //破坏情况
 @property (weak, nonatomic) IBOutlet UITextField *damageindexTextF;                //震害指数
 
-@property (assign,nonatomic) BOOL isAdd;                       //是否是新增页面
+@property (assign,nonatomic)ActionType actionType;             //操作类型
+
 @property (copy,nonatomic)NSString *pointid;                 //调查点pointid,新增人物反应时使用;
 @property (strong,nonatomic)DamageModel *damageinfo;           //选中的房屋震害信息
 

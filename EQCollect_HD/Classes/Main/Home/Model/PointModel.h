@@ -35,5 +35,5 @@
 @property (nonatomic, copy) NSString *pointperson2;
 @property (nonatomic, copy) NSString *pointintensity;
 @property (nonatomic, copy) NSString *pointcontent;
-
+@property (nonatomic, copy) NSString *upload;
 @end

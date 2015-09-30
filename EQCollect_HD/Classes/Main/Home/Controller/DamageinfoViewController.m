@@ -42,13 +42,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    imgview.showType = !self.isAdd;
-    if (!self.isAdd) {
+    if (imgview.showType == kActionTypeShow) {
         [self getimage];
     }
-    //根据图片的张数设置 view 的高度
-    CGFloat h = imgview.dataProvider.count <=5?77:154;
-    self.imgViewHeightCons.constant = h;
+    imgview.nav = self.navigationController;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -67,14 +64,16 @@
     
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
-    //禁用交互
-    //[self.view setUserInteractionEnabled:NO];
-    if (self.isAdd ) {
+    
+    UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
+    self.navigationItem.rightBarButtonItem = rigthItem;
+
+    if (self.actionType == kActionTypeAdd) {
         //设置导航栏按钮
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-        UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addDamageinfo)];
         self.navigationItem.leftBarButtonItem = leftItem;
-        self.navigationItem.rightBarButtonItem = rigthItem;
+        
+        rigthItem.title = @"确定";
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
@@ -111,6 +110,8 @@
     self.fortificationintensityItems = @[@"1级",@"2级",@"3级",@"4级",@"5级",@"6级",@"7级",@"8级",@"9级",@"10级"];
     self.damagesituationItems = @[@"严重",@"中等",@"轻微"];
     self.damageindexItems = @[@"1级",@"2级",@"3级",@"4级",@"5级",@"6级",@"7级",@"8级",@"9级",@"10级"];
+    
+    [self setActionType:self.actionType];
 }
 
 -(void)initImageCollectionView
@@ -118,8 +119,15 @@
     //创建图片视图
     UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
     imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
-    imgview.nav = self.navigationController;
-    imgview.showType = !self.isAdd;
+
+    if (self.actionType == kActionTypeShow ) {
+        imgview.showType= kActionTypeShow;
+    }else if (self.actionType == kactionTypeEdit){
+        imgview.showType = kactionTypeEdit;
+    }else
+        imgview.showType = kActionTypeAdd;
+
+
     [self addChildViewController:imgview];
     [self.containerView addSubview:imgview.collectionView];
     
@@ -146,7 +154,7 @@
 
 -(void)showDamageinfoData
 {
-    if (!self.isAdd) {
+    if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit) {
         //self.damageidTextF.text = self.damageinfo.damageid;
         self.damagetimeTextF.text = self.damageinfo.damagetime;
         self.damageaddressTextF.text = self.damageinfo.damageaddress;
@@ -164,6 +172,28 @@
     }
 }
 
+-(void)setActionType:(ActionType)actionType
+{
+    _actionType = actionType;
+    if (actionType == kActionTypeShow) {
+        for (UITextField *txt in self.textInputViews) {
+            txt.userInteractionEnabled = NO;
+        }
+    }
+    if (actionType == kActionTypeAdd || actionType == kactionTypeEdit) {
+        for (UITextField *txt in self.textInputViews) {
+            txt.userInteractionEnabled = YES;
+        }
+    }
+    
+    if (self.actionType == kActionTypeShow ) {
+        imgview.showType= kActionTypeShow;
+    }else if (self.actionType == kactionTypeEdit){
+        imgview.showType = kactionTypeEdit;
+    }else
+        imgview.showType = kActionTypeAdd;
+}
+
 //处理屏幕旋转
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -178,7 +208,7 @@
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 
-    if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&& !self.isAdd)
+    if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&& self.actionType == kActionTypeShow)
     {
         //设备为横屏且不是新增界面，设置为横屏约束
         self.damageidWidthCons.constant = 180;
@@ -198,17 +228,6 @@
     if (_currentKeyboardNotification !=nil) {
         [self keyboardWillShow:_currentKeyboardNotification];
     }
-}
-
-//输入框编辑完成以后，将视图恢复到原始状态
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    
-}
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self.view endEditing:YES];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -294,6 +313,7 @@
                           damagesituation,@"damagesituation",
                           damageindex,@"damageindex",
                           self.pointid,@"pointid",
+                          @"0",@"upload",
                           nil];
     
     BOOL result = [[DamageinfoTableHelper sharedInstance] insertDataWith:dict];
@@ -314,21 +334,18 @@
         NSInteger maxid=[[DamageinfoTableHelper sharedInstance] getMaxIdOfRecords];
         if (maxid!=0 ) {
            
-            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",maxid] releteTable:@"DAMAGEINFOTAB"];
+            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"DAMAGEINFOTAB"];
         }
     }
     //清空imageCollectionView的数据
     imgview.dataProvider = [[NSMutableArray alloc] init];
-    NSObject *obj = [[NSObject alloc] init];
-    [imgview.dataProvider addObject:obj];
-    [self dismissViewControllerAnimated:self completion:nil];
-
-    [self dismissViewControllerAnimated:self completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)back
 {
-    [self dismissViewControllerAnimated:self completion:nil];
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
@@ -417,6 +434,7 @@
  **/
 -(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
 {
+    NSLog(@"%d",imgview.dataProvider.count);
     //保存图片
     for (int i = 0; i < imgview.dataProvider.count ; i++)
     {
@@ -462,9 +480,85 @@
         UIImage *img = [UIImage imageWithContentsOfFile:filePath];
         vo.image = img;
         [dataProvider addObject:vo];
+        NSLog(@"%@",vo.name);
     }
-    imgview.showType = YES;
+    //imgview.showType = YES;
+
     imgview.dataProvider = dataProvider;
 }
+
+
+
+
+-(void)rightItemTap:(UIBarButtonItem *)sender
+{
+    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
+        self.actionType = kactionTypeEdit;
+        self.navigationItem.rightBarButtonItem.title = @"确定";
+    }else{
+        if (self.actionType == kActionTypeAdd) {
+            [self addDamageinfo];
+        }else{
+            [self updateAbnormalinfo];
+            [self.view endEditing:YES];
+            self.actionType = kActionTypeShow;
+            self.navigationItem.rightBarButtonItem.title = @"编辑";
+        }
+    }
+}
+
+-(void)updateAbnormalinfo
+{
+   // NSString *damageid = self.damageidTextF.text;
+    NSString *damagetime = self.damagetimeTextF.text;
+    NSString *damageaddress = self.damageaddressTextF.text;
+    NSString *damageintensity = self.damageintensityTextF.text;
+    NSString *zrcorxq = self.zrcorxqTextF.text;
+    NSString *dworzh = self.dworzhTextF.text;
+    NSString *fortificationintensity = self.fortificationintensityTextF.text;
+    NSString *damagesituation = self.damagesituationTextF.text;
+    NSString *damageindex = self.damageindexTextF.text;
+    
+    
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        UITextField *textF = (UITextField *)self.textInputViews[i];
+        if (textF.text ==nil || textF.text.length <=0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            return;
+        }
+    }
+    //创建字典对象并向表中插和数据
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          self.damageinfo.damageid,@"damageid",
+                          damagetime,@"damagetime",
+                          damageaddress,@"damageaddress",
+                          damageintensity, @"damageintensity",
+                          zrcorxq, @"zrcorxq",
+                          dworzh,@"dworzh",
+                          fortificationintensity,@"fortificationintensity",
+                          damagesituation,@"damagesituation",
+                          damageindex,@"damageindex",
+                          self.damageinfo.pointid,@"pointid",
+                          self.damageinfo.upload,@"upload",
+                          nil];
+    
+    BOOL result = [[DamageinfoTableHelper sharedInstance] updateDataWith:dict];
+    if (!result) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }else{
+        [self.view endEditing:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
+        
+        for (id vo in imgview.dataProvider)
+        {
+            if ([vo isKindOfClass:[PictureVO class]]){
+            [[PictureInfoTableHelper sharedInstance] deleteDataByAttribute:@"pictureName" value:((PictureVO *)vo).name];
+            }
+        }
+        [self saveImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
+    }
+}
+
 
 @end

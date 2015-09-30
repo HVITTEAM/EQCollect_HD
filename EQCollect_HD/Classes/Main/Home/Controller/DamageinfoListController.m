@@ -39,7 +39,12 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
+
+-(void)dealloc
+{
+[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /**
@@ -115,6 +120,7 @@
         self.damageinfoVC = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
     }
     self.damageinfoVC.damageinfo = self.dataProvider[indexPath.row];
+    self.damageinfoVC.actionType = kActionTypeShow;
     [self.nav pushViewController:self.damageinfoVC animated:YES];
 }
 

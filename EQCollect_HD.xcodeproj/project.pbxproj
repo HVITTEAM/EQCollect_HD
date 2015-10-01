@@ -157,6 +157,7 @@
 		D2C189651BA94D0F00312EBA /* PictureInfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */; };
 		D2C189681BA9510100312EBA /* PictureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189671BA9510100312EBA /* PictureMode.m */; };
 		D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */; };
+		D2DCDE621BBD66020085CC25 /* SheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DCDE611BBD66020085CC25 /* SheetViewController.m */; };
 		D2DDCDE51BB92B1000A14147 /* UzysAssetPickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D2DDCDD61BB92B1000A14147 /* UzysAssetPickerController.bundle */; };
 		D2DDCDE61BB92B1000A14147 /* UzysAssetsPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DDCDD81BB92B1000A14147 /* UzysAssetsPickerController.m */; };
 		D2DDCDE71BB92B1000A14147 /* UzysAssetsPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2DDCDD91BB92B1000A14147 /* UzysAssetsPickerController.xib */; };
@@ -475,6 +476,8 @@
 		D2C189671BA9510100312EBA /* PictureMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureMode.m; sourceTree = "<group>"; };
 		D2C207F71B9D264A00454591 /* QCSlideSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QCSlideSwitchView.h; sourceTree = "<group>"; };
 		D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QCSlideSwitchView.m; sourceTree = "<group>"; };
+		D2DCDE601BBD66020085CC25 /* SheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SheetViewController.h; sourceTree = "<group>"; };
+		D2DCDE611BBD66020085CC25 /* SheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SheetViewController.m; sourceTree = "<group>"; };
 		D2DDCDD61BB92B1000A14147 /* UzysAssetPickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UzysAssetPickerController.bundle; sourceTree = "<group>"; };
 		D2DDCDD71BB92B1000A14147 /* UzysAssetsPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UzysAssetsPickerController.h; sourceTree = "<group>"; };
 		D2DDCDD81BB92B1000A14147 /* UzysAssetsPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UzysAssetsPickerController.m; sourceTree = "<group>"; };
@@ -1111,6 +1114,8 @@
 		01FEE2991B9BCACF007C4641 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				D2DCDE601BBD66020085CC25 /* SheetViewController.h */,
+				D2DCDE611BBD66020085CC25 /* SheetViewController.m */,
 				01FEE29A1B9BCACF007C4641 /* DetailViewController.h */,
 				01FEE29B1B9BCACF007C4641 /* DetailViewController.m */,
 				01FEE29C1B9BCACF007C4641 /* MasterViewController.h */,
@@ -1336,6 +1341,7 @@
 				013CD4061BA9574E00470284 /* PSTCollectionViewCell.m in Sources */,
 				013CD4201BA9574E00470284 /* UIImageView+HighlightedWebCache.m in Sources */,
 				0177A0CE1B968475003199F4 /* HMBadgeView.m in Sources */,
+				D2DCDE621BBD66020085CC25 /* SheetViewController.m in Sources */,
 				01EED5891B9D25420041D28A /* FMDatabasePool.m in Sources */,
 				D23A1A811B9EAC0C00758DDD /* ReactioninfoViewController.m in Sources */,
 				013CD3FA1BA9574E00470284 /* MWGridCell.m in Sources */,

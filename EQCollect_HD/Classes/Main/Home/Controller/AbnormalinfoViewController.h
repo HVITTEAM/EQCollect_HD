@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SheetViewController.h"
 
-
-@interface AbnormalinfoViewController : UIViewController<UITextFieldDelegate,UIActionSheetDelegate>
+@interface AbnormalinfoViewController : SheetViewController<UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidTopCons;        //宏观异常编号TextField顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidWidthCons;      //宏观异常编号TextField宽约束
@@ -30,7 +30,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *crediblyTextF;                   //可信度
 
 @property (assign,nonatomic)ActionType actionType;             //操作类型
-
 @property (copy,nonatomic)NSString *pointid;                   //调查点id,新增宏观异常时传递过来;
 @property (strong,nonatomic)AbnormalinfoModel *abnormalinfo;   //显示和编辑宏观异常信息时传递过来
 

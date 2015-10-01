@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface DamageinfoViewController : UIViewController<UITextFieldDelegate,UIAlertViewDelegate>
-
+#import "SheetViewController.h"
+@interface DamageinfoViewController : SheetViewController<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidTopCons;         //房屋震害编号TextField顶部约束
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidWidthCons;        //房屋震害编号TextField宽约束
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
 @property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
-@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
 
 @property (weak, nonatomic) IBOutlet UITextField *damageidTextF;                   //房屋震害编号
 @property (weak, nonatomic) IBOutlet UITextField *damagetimeTextF;                 //调查时间
@@ -27,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *damageindexTextF;                //震害指数
 
 @property (assign,nonatomic)ActionType actionType;             //操作类型
-
 @property (copy,nonatomic)NSString *pointid;                 //调查点pointid,新增人物反应时使用;
 @property (strong,nonatomic)DamageModel *damageinfo;           //选中的房屋震害信息
 

@@ -12,12 +12,7 @@
 
 @interface DetailViewController ()
 {
-    NSArray *_foods;
-    
-    UISearchDisplayController *searchDisplayController;
-    
     SurveyPointDetailViewController *detailview;
-    
 }
 @end
 
@@ -67,17 +62,6 @@
     
     // 添加 searchbar 到 headerview
     self.tableView.tableHeaderView = searchBar;
-    
-//    
-//    // 用 searchbar 初始化 SearchDisplayController
-//    // 并把 searchDisplayController 和当前 controller 关联起来
-//    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-//    
-//    // searchResultsDataSource 就是 UITableViewDataSource
-//    searchDisplayController.searchResultsDataSource = self;
-//    // searchResultsDelegate 就是 UITableViewDelegate
-//    searchDisplayController.searchResultsDelegate = self;
-//    searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
 }
 
 #pragma mark 集成刷新控件
@@ -97,6 +81,7 @@
 -(void)getDataProvider
 {
     self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
+    self.filtedData = self.dataProvider;
     [self.tableView reloadData];
 }
 
@@ -122,20 +107,10 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.tableView)
-        return self.dataProvider.count;
-    else
-        return 3;
+    return self.filtedData.count;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -147,7 +122,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     //根据indexPath获取cell的数据
-    __block PointModel * pointInfo = [self.dataProvider objectAtIndex:indexPath.row];
+    __block PointModel * pointInfo = [self.filtedData objectAtIndex:indexPath.row];
     //设置cell的属性
     cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%@",pointInfo.pointid];
     cell.pointTimeText.text = pointInfo.pointtime;
@@ -240,19 +215,27 @@
 {
     if (!detailview)
         detailview = [[SurveyPointDetailViewController alloc] init];
-    detailview.pointinfo = self.dataProvider[indexPath.row];
+    detailview.pointinfo = self.filtedData[indexPath.row];
     [self.navigationController pushViewController:detailview animated:YES];
 }
 
 
 #pragma mark UISearchBar delegate
+/**
+ *  UISearchBar的协议方法。根据用户输入的字符串来查找相应的内容。
+ */
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    for (PointModel *poModel in self.dataProvider) {
+    if (searchText.length == 0 || searchText == nil) {
+        self.filtedData = self.dataProvider;
+    }else{
+         //使用谓词来过虑，只要调查点信息中有一个属性包含用户输入的字符串，这个调查点就会显示。
+        NSPredicate* pred = [NSPredicate predicateWithFormat:@"SELF.pointid CONTAINS[c]%@  OR  SELF.earthid CONTAINS[c]%@  OR  SELF.pointlocation CONTAINS[c]%@  OR  SELF.pointlon CONTAINS[c]%@  OR  SELF.pointlat CONTAINS[c]%@  OR  SELF.pointname CONTAINS[c]%@  OR  SELF.pointtime CONTAINS[c]%@  OR  SELF.pointgroup CONTAINS[c]%@  OR  SELF.pointintensity CONTAINS[c]%@  OR  SELF.pointcontent CONTAINS[c]%@" ,searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText];
         
+        self.filtedData = [self.dataProvider filteredArrayUsingPredicate:pred];
     }
+    [self.tableView reloadData];
 }
-
 
 #pragma mark addView
 -(void)addSurveyPointClickHandler

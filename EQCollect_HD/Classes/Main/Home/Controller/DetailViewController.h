@@ -8,10 +8,11 @@
 
 @class PointinfoViewController;
 
-@interface DetailViewController : UITableViewController <UISplitViewControllerDelegate,UIAlertViewDelegate>
+@interface DetailViewController : UITableViewController <UISplitViewControllerDelegate,UIAlertViewDelegate,UISearchBarDelegate>
 
 @property (nonatomic, retain) UINavigationController *nav;
-@property (nonatomic,retain) PointinfoViewController *pointinfoVC;
+@property (nonatomic, retain) PointinfoViewController *pointinfoVC;
 
 @property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
+
 @end

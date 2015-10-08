@@ -10,7 +10,7 @@
 #import "AdminTableHead.h"
 
 @interface MasterViewController : UITableViewController
-@property (nonatomic, copy) void (^selectedType)(NSDictionary *type);
+//@property (nonatomic, copy) void (^selectedType)(NSDictionary *type);
 
 @property (nonatomic, retain) SettingViewController *settingView;
 @property (nonatomic, retain) PersonCenterController *personView;

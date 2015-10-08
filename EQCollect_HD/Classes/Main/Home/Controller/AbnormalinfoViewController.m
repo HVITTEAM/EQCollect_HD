@@ -472,5 +472,6 @@
     self.implementationTextF.text = nil;
     self.abnormalanalysisTextF.text = nil;
     self.crediblyTextF.text =nil;
+    [self.view endEditing:YES];
 }
 @end

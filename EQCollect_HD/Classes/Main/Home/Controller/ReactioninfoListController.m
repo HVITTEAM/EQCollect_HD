@@ -20,11 +20,8 @@
     [super viewDidLoad];
     
     //下拉刷新
-    __weak typeof(self) weakSelf = self;
-    [self.tableView addHeaderWithCallback:^{
-        [weakSelf getDataProvider];
-        [weakSelf.tableView headerEndRefreshing];
-    }];
+    //[self.tableView addHeaderWithTarget:self action:@selector(rereshing)];
+    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(rereshing)];
     
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -42,12 +39,13 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-}
-
--(void)dealloc
-{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+//-(void)dealloc
+//{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 
 /**
  *  刷新数据
@@ -55,7 +53,8 @@
 -(void)rereshing
 {
     [self getDataProvider];
-    [self.tableView headerEndRefreshing];
+    //[self.tableView headerEndRefreshing];
+    [self.tableView.header endRefreshing];
 }
 
 /**
@@ -128,7 +127,8 @@
 
 -(void)updateReactioninfo:(NSNotification *)notification
 {
-    [self.tableView headerBeginRefreshing];
+   // [self.tableView headerBeginRefreshing];
+    [self.tableView.header beginRefreshing];
 }
 
 @end

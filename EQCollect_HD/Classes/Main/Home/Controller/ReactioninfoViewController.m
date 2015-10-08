@@ -361,6 +361,7 @@
         self.soundsizeTextF.text = nil;
         self.sounddirectionTextF.text = nil;
 
+        [self.view endEditing:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
         NSInteger maxid=[[ReactioninfoTableHelper sharedInstance] getMaxIdOfRecords];
         if (maxid!=0 ) {

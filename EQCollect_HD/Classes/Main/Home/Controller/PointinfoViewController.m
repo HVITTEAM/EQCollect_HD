@@ -231,6 +231,7 @@
         self.pointgroupTextF.text = nil;
         self.pointintensityTextF.text = nil;
         self.pointcontentTextV.text = nil;
+        [self.view endEditing:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
     }
     [self dismissViewControllerAnimated:YES completion:nil];

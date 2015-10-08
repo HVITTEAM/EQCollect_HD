@@ -300,6 +300,7 @@
         self.damagesituationTextF.text = nil;
         self.damageindexTextF.text = nil;
 
+        [self.view endEditing:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
         NSInteger maxid=[[DamageinfoTableHelper sharedInstance] getMaxIdOfRecords];
         if (maxid!=0 ) {

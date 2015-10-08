@@ -23,7 +23,7 @@
     
     AdminTableHead *headView  = [[[NSBundle mainBundle] loadNibNamed:@"AdminTableHead" owner:self options:nil] lastObject];
     
-    headView.useridLabel.text = [NSString stringWithFormat:@"%ld",[SharedAppUtil defaultCommonUtil].userInfor.userid];
+    headView.useridLabel.text = [NSString stringWithFormat:@"%ld",(long)[SharedAppUtil defaultCommonUtil].userInfor.userid];
     headView.usernameLabel.text = [SharedAppUtil defaultCommonUtil].userInfor.username;
     self.tableView.tableHeaderView = headView;
     

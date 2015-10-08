@@ -32,22 +32,15 @@
     self.title = @"调查点管理";
     
     self.tableView.backgroundColor = HMGlobalBg;
-    
+    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reflesh)];
+
     [self getDataProvider];
-    
-    //下拉刷新
-    [self.tableView addHeaderWithTarget:self action:@selector(reflesh)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePointinfo:) name:kAddPointinfoSucceedNotification object:nil];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 -(void)dealloc
@@ -70,19 +63,21 @@
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width
                                                                            , 44)];
     searchBar.placeholder = @"搜索";
+    searchBar.delegate = self;
     
     // 添加 searchbar 到 headerview
     self.tableView.tableHeaderView = searchBar;
     
-    // 用 searchbar 初始化 SearchDisplayController
-    // 并把 searchDisplayController 和当前 controller 关联起来
-    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    
-    // searchResultsDataSource 就是 UITableViewDataSource
-    searchDisplayController.searchResultsDataSource = self;
-    // searchResultsDelegate 就是 UITableViewDelegate
-    searchDisplayController.searchResultsDelegate = self;
-    searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
+//    
+//    // 用 searchbar 初始化 SearchDisplayController
+//    // 并把 searchDisplayController 和当前 controller 关联起来
+//    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+//    
+//    // searchResultsDataSource 就是 UITableViewDataSource
+//    searchDisplayController.searchResultsDataSource = self;
+//    // searchResultsDelegate 就是 UITableViewDelegate
+//    searchDisplayController.searchResultsDelegate = self;
+//    searchDisplayController.searchResultsTableView.backgroundColor = HMGlobalBg;
 }
 
 #pragma mark 集成刷新控件
@@ -93,7 +88,7 @@
 -(void)reflesh
 {
     [self getDataProvider];
-    [self.tableView headerEndRefreshing];
+    [self.tableView.header endRefreshing];
 }
 
 /**
@@ -249,6 +244,16 @@
     [self.navigationController pushViewController:detailview animated:YES];
 }
 
+
+#pragma mark UISearchBar delegate
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    for (PointModel *poModel in self.dataProvider) {
+        
+    }
+}
+
+
 #pragma mark addView
 -(void)addSurveyPointClickHandler
 {
@@ -263,7 +268,7 @@
 
 -(void)updatePointinfo:(NSNotification *)notification
 {
-    [self.tableView headerBeginRefreshing];
+    [self.tableView.header beginRefreshing];
 }
 
 @end

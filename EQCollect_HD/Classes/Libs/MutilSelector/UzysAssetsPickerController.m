@@ -670,7 +670,6 @@
             break;
         case kTagButtonGroupPicker:
         {
-            NSLog(@"asdfsadfasd");
             [self.groupPicker toggle];
             [self menuArrowRotate];
         }

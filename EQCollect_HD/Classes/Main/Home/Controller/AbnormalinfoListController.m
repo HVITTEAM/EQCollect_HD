@@ -21,7 +21,8 @@
     [super viewDidLoad];
     
     //下拉刷新
-    [self.tableView addHeaderWithTarget:self action:@selector(rereshing)];
+    //[self.tableView addHeaderWithTarget:self action:@selector(rereshing)];
+    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(rereshing)];
 
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -46,7 +47,7 @@
 -(void)rereshing
 {
     [self getDataProvider];
-    [self.tableView headerEndRefreshing];
+    [self.tableView.header endRefreshing];
 }
 
 /**
@@ -120,7 +121,7 @@
 
 -(void)updateAbnormalinfo:(NSNotification *)notification
 {
-    [self.tableView headerBeginRefreshing];
+    [self.tableView.header beginRefreshing];
 }
 
 @end

@@ -15,4 +15,6 @@
 
 @property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
 
+@property (nonatomic, retain) NSMutableArray *filtedData;        //需要显示的调查点信息
+
 @end

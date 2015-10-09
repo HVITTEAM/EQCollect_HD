@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DamageinfoCell.h"
 @class DamageinfoViewController;
 
-@interface DamageinfoListController : UITableViewController
+@interface DamageinfoListController : UITableViewController<InfoCellDelegate>
 
 @property (strong,nonatomic)UINavigationController *nav;
 @property (strong,nonatomic)DamageinfoViewController *damageinfoVC;

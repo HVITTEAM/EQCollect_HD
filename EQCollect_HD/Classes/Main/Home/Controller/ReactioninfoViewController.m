@@ -536,12 +536,7 @@
 
         [self.view endEditing:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
-        for (id vo in imgview.dataProvider)
-        {
-            if ([vo isKindOfClass:[PictureVO class]]){
-                [[PictureInfoTableHelper sharedInstance] deleteDataByAttribute:@"pictureName" value:((PictureVO *)vo).name];
-            }
-        }
+        [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"REACTIONINFOTAB" Releteid:self.reactioninfo.reactionid];
         [self saveImagesWithReleteId:self.reactioninfo.reactionid releteTable:@"REACTIONINFOTAB"];
     }
 

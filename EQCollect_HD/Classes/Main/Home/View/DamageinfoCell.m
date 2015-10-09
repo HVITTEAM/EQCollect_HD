@@ -27,7 +27,9 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex ==1) {
-        self.deleteDamageinfoBlock();
+        if ([self.delegate respondsToSelector:@selector(infoCell:didClickDeleteBtnAtIndexPath:)]) {
+            [self.delegate infoCell:self didClickDeleteBtnAtIndexPath:self.indexPath];
+        }
     }
 }
 @end

@@ -141,7 +141,7 @@
                                 };
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[damageaddressTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
-    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:77];
+    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
     [imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
 
@@ -262,7 +262,6 @@
     NSString *damagesituation = self.damagesituationTextF.text;
     NSString *damageindex = self.damageindexTextF.text;
     
-    
     //判断文本输入框是否为空，如果为空则提示并返回
     for (int i=0; i<self.textInputViews.count; i++) {
         UITextField *textF = (UITextField *)self.textInputViews[i];
@@ -352,7 +351,6 @@
  **/
 -(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
 {
-    NSLog(@"%d",imgview.dataProvider.count);
     //保存图片
     for (int i = 0; i < imgview.dataProvider.count ; i++)
     {
@@ -468,12 +466,7 @@
         [self.view endEditing:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
         
-        for (id vo in imgview.dataProvider)
-        {
-            if ([vo isKindOfClass:[PictureVO class]]){
-            [[PictureInfoTableHelper sharedInstance] deleteDataByAttribute:@"pictureName" value:((PictureVO *)vo).name];
-            }
-        }
+        [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
         [self saveImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
     }
 }

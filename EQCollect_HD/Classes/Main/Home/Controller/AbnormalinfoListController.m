@@ -21,7 +21,6 @@
     [super viewDidLoad];
     
     //下拉刷新
-    //[self.tableView addHeaderWithTarget:self action:@selector(rereshing)];
     self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(rereshing)];
 
     self.tableView.backgroundColor = HMGlobalBg;
@@ -74,7 +73,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     //获取Cell的数据
-    __block AbnormalinfoModel * abnormalInfo = [self.dataProvider objectAtIndex:indexPath.row];
+    AbnormalinfoModel * abnormalInfo = [self.dataProvider objectAtIndex:indexPath.row];
     
     //设置cell的属性
     cell.abnormalTitleText.text = [NSString stringWithFormat:@"NO.%@",abnormalInfo.abnormalid];
@@ -82,24 +81,10 @@
     cell.intensityText.text = abnormalInfo.abnormalintensity;
     cell.analysisText.text = abnormalInfo.abnormalanalysis;
     cell.crediblyText.text = abnormalInfo.credibly;
-    //设置cell的block属性
-    cell.deleteAbnormalinfoBlock = ^{
-        //从数据库表中删除这个宏观异常信息
-       __block BOOL result = YES;
-        result = [[PictureInfoTableHelper sharedInstance] deletePictureFromDocumentDirectoryByReleteTable:@"ABNORMALINFOTAB" Releteid:abnormalInfo.abnormalid];
-        if (result) {
-          result = [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"ABNORMALINFOTAB" Releteid:abnormalInfo.abnormalid];
-          if (result) {
-            result = [[AbnormalinfoTableHelper sharedInstance] deleteDataByAttribute:@"abnormalid" value:abnormalInfo.abnormalid];
-           }
-        }
-        if (result) {
-            //删除成功，则重新获取数据并刷新界面
-            [self getDataProvider];
-        }else{
-            [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-        }
-    };
+    
+    cell.indexPath = indexPath;
+    cell.delegate = self;
+
     return cell;
 }
 
@@ -124,4 +109,25 @@
     [self.tableView.header beginRefreshing];
 }
 
+#pragma mark - InfoCellDelegate
+//删除cell
+-(void)infoCell:(InfoCell *)cell didClickDeleteBtnAtIndexPath:(NSIndexPath *)indexPath
+{
+    //获取Cell的数据
+    AbnormalinfoModel * abnormalInfo = [self.dataProvider objectAtIndex:indexPath.row];
+    
+    //从数据库表中删除这个宏观异常信息
+    BOOL result = YES;
+    result = [[PictureInfoTableHelper sharedInstance] deleteImageByReleteTable:@"ABNORMALINFOTAB" Releteid:abnormalInfo.abnormalid];
+    if (result) {
+        result = [[AbnormalinfoTableHelper sharedInstance] deleteDataByAttribute:@"abnormalid" value:abnormalInfo.abnormalid];
+    }
+    
+    if (result) {
+        //删除成功，则重新获取数据并刷新界面
+        [self getDataProvider];
+    }else{
+        [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }
+}
 @end

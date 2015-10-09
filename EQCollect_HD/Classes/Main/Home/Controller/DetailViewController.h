@@ -5,10 +5,10 @@
 //123
 
 #import <UIKit/UIKit.h>
-
+#import "SurveyPointCell.h"
 @class PointinfoViewController;
 
-@interface DetailViewController : UITableViewController <UISplitViewControllerDelegate,UIAlertViewDelegate,UISearchBarDelegate>
+@interface DetailViewController : UITableViewController <UISplitViewControllerDelegate,UIAlertViewDelegate,UISearchBarDelegate,InfoCellDelegate>
 
 @property (nonatomic, retain) UINavigationController *nav;
 @property (nonatomic, retain) PointinfoViewController *pointinfoVC;

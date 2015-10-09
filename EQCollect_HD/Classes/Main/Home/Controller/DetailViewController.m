@@ -6,7 +6,6 @@
 
 #import "DetailViewController.h"
 #import "MasterViewController.h"
-#import "SurveyPointCell.h"
 #import "SurveyPointDetailViewController.h"
 #import "PointinfoViewController.h"
 
@@ -122,86 +121,15 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     //根据indexPath获取cell的数据
-    __block PointModel * pointInfo = [self.filtedData objectAtIndex:indexPath.row];
+    PointModel * pointInfo = [self.filtedData objectAtIndex:indexPath.row];
     //设置cell的属性
     cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%@",pointInfo.pointid];
     cell.pointTimeText.text = pointInfo.pointtime;
     cell.pointAddressText.text = pointInfo.pointlocation;
-    //设置cell的deletePointBlock属性，
-    cell.deletePointBlock = ^{
-       __block BOOL result = YES;
-        /**从数据库表中删除数据**/
-        //删除宏观异常信息
-        NSMutableArray *abnor = [[AbnormalinfoTableHelper sharedInstance]selectDataByAttribute:@"pointid" value:pointInfo.pointid];
-        for (int i = 0; i<abnor.count; i++) {
-            AbnormalinfoModel *abnorModel = abnor[i];
-           BOOL res = [[PictureInfoTableHelper sharedInstance] deletePictureFromDocumentDirectoryByReleteTable:@"ABNORMALINFOTAB" Releteid:abnorModel.abnormalid];
-            if (!res) {
-                result = NO;
-                break;
-            }
-            BOOL res1 = [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"ABNORMALINFOTAB" Releteid:abnorModel.abnormalid];
-            if (!res1) {
-                result = NO;
-                break;
-            }
-        }
-        if (result) {
-          result = [[AbnormalinfoTableHelper sharedInstance] deleteDataByAttribute:@"pointid" value:pointInfo.pointid];
-        }
-        
-        //删除人物反应数据
-        if (result) {
-            NSMutableArray *react = [[ReactioninfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:pointInfo.pointid];
-            for (int i = 0; i<react.count; i++) {
-                ReactionModel *reactModel = react[i];
-                BOOL res = [[PictureInfoTableHelper sharedInstance] deletePictureFromDocumentDirectoryByReleteTable:@"REACTIONINFOTAB" Releteid:reactModel.reactionid];
-                if (!res) {
-                    result = NO;
-                    break;
-                }
-                BOOL res1 = [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"REACTIONINFOTAB" Releteid:reactModel.reactionid];
-                if (!res1) {
-                    result = NO;
-                    break;
-                }
-            }
-            if (result) {
-               result = [[ReactioninfoTableHelper sharedInstance] deleteDataByAttribute:@"pointid" value:pointInfo.pointid];
-            }
-            
-            //删除房屋震害数据
-            if (result) {
-                NSMutableArray *damage = [[DamageinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:pointInfo.pointid];
-                for (int i = 0; i<damage.count; i++) {
-                    DamageModel *damageModel = damage[i];
-                    BOOL res = [[PictureInfoTableHelper sharedInstance] deletePictureFromDocumentDirectoryByReleteTable:@"DAMAGEINFOTAB" Releteid:damageModel.damageid];
-                    if (!res) {
-                        result = NO;
-                        break;
-                    }
-                    BOOL res1 = [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"DAMAGEINFOTAB" Releteid:damageModel.damageid];
-                    if (!res1) {
-                        result = NO;
-                        break;
-                    }
-                }
-                if (result) {
-                   result = [[DamageinfoTableHelper sharedInstance] deleteDataByAttribute:@"pointid" value:pointInfo.pointid];
-                }
-                //删除调查点数据
-                if (result) {
-                    result = [[PointinfoTableHelper sharedInstance] deleteDataByAttribute:@"pointid" value:pointInfo.pointid];
-                }
-            }
-        }
-        if (result) {
-            //数据库中删除成功，则重新获取数据刷新界面
-            [self getDataProvider];
-        }else{
-            [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-        }
-    };
+    
+    cell.indexPath = indexPath;
+    cell.delegate = self;
+
     return  cell;
 }
 
@@ -252,6 +180,59 @@
 -(void)updatePointinfo:(NSNotification *)notification
 {
     [self.tableView.header beginRefreshing];
+}
+
+#pragma mark - InfoCellDelegate
+//删除cell
+-(void)infoCell:(InfoCell *)cell didClickDeleteBtnAtIndexPath:(NSIndexPath *)indexPath
+{
+    //根据indexPath获取cell的数据
+    PointModel * pointInfo = [self.filtedData objectAtIndex:indexPath.row];
+    
+    BOOL result = YES;
+    /**从数据库表中删除数据**/
+    //删除宏观异常信息
+    NSMutableArray *abnor = [[AbnormalinfoTableHelper sharedInstance]selectDataByAttribute:@"pointid" value:pointInfo.pointid];
+    for (int i = 0; i<abnor.count; i++) {
+        AbnormalinfoModel *abnorModel = abnor[i];
+        result = [[PictureInfoTableHelper sharedInstance] deleteImageByReleteTable:@"ABNORMALINFOTAB" Releteid:abnorModel.abnormalid];
+        if (result) {
+            result =[[AbnormalinfoTableHelper sharedInstance] deleteDataByAttribute:@"abnormalid" value:abnorModel.abnormalid];
+        }
+    }
+    
+    //删除人物反应数据
+    NSMutableArray *react = [[ReactioninfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:pointInfo.pointid];
+    for (int i = 0; i<react.count; i++) {
+        ReactionModel *reactModel = react[i];
+        result = [[PictureInfoTableHelper sharedInstance] deleteImageByReleteTable:@"REACTIONINFOTAB" Releteid:reactModel.reactionid];
+        if (result) {
+            result = [[ReactioninfoTableHelper sharedInstance] deleteDataByAttribute:@"reactionid" value:reactModel.reactionid];
+        }
+    }
+    
+    //删除房屋震害数据
+    NSMutableArray *damage = [[DamageinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:pointInfo.pointid];
+    for (int i = 0; i<damage.count; i++) {
+        DamageModel *damageModel = damage[i];
+        result = [[PictureInfoTableHelper sharedInstance] deleteImageByReleteTable:@"DAMAGEINFOTAB" Releteid:damageModel.damageid];
+        if (result) {
+            result = [[DamageinfoTableHelper sharedInstance] deleteDataByAttribute:@"damageid" value:damageModel.damageid];
+        }
+    }
+    
+    //删除调查点数据
+    if (result) {
+        result = [[PointinfoTableHelper sharedInstance] deleteDataByAttribute:@"pointid" value:pointInfo.pointid];
+    }
+    
+    if (result) {
+        //数据库中删除成功，则重新获取数据刷新界面
+        [self getDataProvider];
+    }else{
+        [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }
+
 }
 
 @end

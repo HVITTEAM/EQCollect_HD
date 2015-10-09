@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ReactioninfoCell.h"
 @class ReactioninfoViewController;
 
-@interface ReactioninfoListController : UITableViewController
+@interface ReactioninfoListController : UITableViewController<InfoCellDelegate>
 @property (strong,nonatomic)UINavigationController *nav;
 @property (strong,nonatomic) ReactioninfoViewController *reactionVC;
 

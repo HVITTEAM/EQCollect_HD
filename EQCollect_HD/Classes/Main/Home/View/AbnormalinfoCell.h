@@ -7,16 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void (^deleteAbnormalinfo)();
+#import "InfoCell.h"
 
-@interface AbnormalinfoCell : UITableViewCell<UIAlertViewDelegate>
+@interface AbnormalinfoCell : InfoCell<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *abnormalTitleText;
 @property (weak, nonatomic) IBOutlet UILabel *abnormaltimeText;
 @property (weak, nonatomic) IBOutlet UILabel *intensityText;
 @property (weak, nonatomic) IBOutlet UILabel *crediblyText;
 @property (weak, nonatomic) IBOutlet UILabel *analysisText;
 
-@property (copy)deleteAbnormalinfo deleteAbnormalinfoBlock;
 - (IBAction)deleteAbnormalinfo:(id)sender;
 
 @end

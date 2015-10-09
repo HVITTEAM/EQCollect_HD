@@ -447,17 +447,11 @@
         [self.view endEditing:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
         
-        for (id vo in imgview.dataProvider)
-        {
-            if ([vo isKindOfClass:[PictureVO class]]){
-                [[PictureInfoTableHelper sharedInstance] deleteDataByAttribute:@"pictureName" value:((PictureVO *)vo).name];
-            }
-        }
+        [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"ABNORMALINFOTAB" Releteid:self.abnormalinfo.abnormalid];
         [self saveImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
 
     }
 }
-
 
 -(void)setTextinputViewsNil
 {

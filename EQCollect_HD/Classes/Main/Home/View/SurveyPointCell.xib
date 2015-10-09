@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -11,11 +12,12 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO.1  古荡新村调查点" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0k-7s-Hvk">
                         <rect key="frame" x="10" y="5" width="150" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="150" id="Nki-Th-1h0"/>
                             <constraint firstAttribute="height" constant="21" id="wYh-X9-F1E"/>
@@ -26,6 +28,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015-09-01  14:23:10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZK-k2-mne">
                         <rect key="frame" x="442" y="5" width="150" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="150" id="4Cc-1k-gT0"/>
                             <constraint firstAttribute="height" constant="21" id="xNU-Og-xyi"/>
@@ -36,6 +39,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地址：杭州市西湖区文三西路12号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v2R-Z4-ohB">
                         <rect key="frame" x="10" y="50" width="221" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="fQK-1k-yta"/>
                             <constraint firstAttribute="width" constant="221" id="qp7-wB-v4V"/>
@@ -46,6 +50,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiF-bf-Ihw">
                         <rect key="frame" x="10" y="28" width="68" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="68" id="Cby-We-4vM"/>
                             <constraint firstAttribute="height" constant="21" id="kAC-90-aw8"/>
@@ -56,6 +61,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJt-9k-Lci">
                         <rect key="frame" x="177" y="28" width="68" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="68" id="baV-I0-azV"/>
                             <constraint firstAttribute="height" constant="21" id="kFh-8A-Mcy"/>
@@ -66,6 +72,7 @@
                     </label>
                     <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fE9-Ew-Gh8">
                         <rect key="frame" x="464" y="41" width="50" height="30"/>
+                        <animations/>
                         <color key="backgroundColor" red="0.17254902422428131" green="0.9490196704864502" blue="0.97254908084869385" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="N7c-fe-tpH"/>
@@ -78,6 +85,7 @@
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zU3-Be-SCA">
                         <rect key="frame" x="542" y="41" width="50" height="30"/>
+                        <animations/>
                         <color key="backgroundColor" red="0.95294123888015747" green="0.14509804546833038" blue="0.12549020349979401" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="8Z4-qc-W2s"/>
@@ -93,6 +101,7 @@
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eo-T4-NBg">
                         <rect key="frame" x="92" y="28" width="68" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="68" id="L81-Ds-zU6"/>
                             <constraint firstAttribute="height" constant="21" id="wVu-A3-EZR"/>
@@ -102,6 +111,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottomMargin" secondItem="v2R-Z4-ohB" secondAttribute="bottom" constant="0.5" id="1DT-7F-hGg"/>
                     <constraint firstItem="2eo-T4-NBg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="20" id="42v-Al-CRn"/>
@@ -121,6 +131,7 @@
                     <constraint firstItem="2eo-T4-NBg" firstAttribute="leading" secondItem="EiF-bf-Ihw" secondAttribute="trailing" constant="14" id="qDO-fD-d6T"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="pointAddressText" destination="v2R-Z4-ohB" id="f9e-2X-rsK"/>
                 <outlet property="pointTimeText" destination="CZK-k2-mne" id="1T6-gg-O9O"/>

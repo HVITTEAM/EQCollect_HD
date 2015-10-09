@@ -76,34 +76,6 @@
     return result;
 }
 
-/**
- *  根据releteid，reletetable 字段删除相应的记录
- *
- *  @param reletetable 关联的表名
- *  @param releteid    关联表中某条记录的id
- */
--(BOOL) deleteDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
-{
-    BOOL result = NO;
-    if ([db open])
-    {
-
-        NSString *deleteSql = [NSString stringWithFormat:
-                               @"delete from %@ where %@ = '%@' AND %@ = '%@'",
-                               TABLENAME,RELETETABLE,reltable,RELETEID, relid];
-        BOOL res = [db executeUpdate:deleteSql];
-
-        if (!res) {
-            NSLog(@"error when delete db table");
-            result = NO;
-        } else {
-            NSLog(@"success to delete db table");
-            result = YES;
-        }
-        [db close];
-    }
-    return result;
-}
 
 /**
  *  根据releteid，reletetable 字段查询相应的图片
@@ -140,41 +112,57 @@
 }
 
 /**
- *  从沙盒目录中删除图片
+ *  从沙盒目录中删除图片并删除数据表中的记录
  *
  *  @param reltable 关联的表
  *  @param relid    关联记录的 ID
  *
  *  @return  成功返回 yes，失败返回 no
  */
--(BOOL)deletePictureFromDocumentDirectoryByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
+-(BOOL)deleteImageByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
 {
-    NSMutableArray *parhs = [[NSMutableArray alloc] init];
+    BOOL result = NO;
+    NSMutableArray *picResultSet = [[NSMutableArray alloc] init];
+    
     if ([db open]) {
-        NSString * sql = [NSString stringWithFormat: @"SELECT %@ FROM %@ where %@ = '%@' AND %@ = '%@'",PICTUREPATH,TABLENAME,RELETETABLE,reltable,RELETEID,relid];
+        //从数据库中找出所有对应的图片记录，并取出图片名字和图片路径这两个字段
+        NSString * sql = [NSString stringWithFormat: @"SELECT %@,%@ FROM %@ WHERE %@ = '%@' AND %@ = '%@'",PICTUREPATH,PICTUREID,TABLENAME,RELETETABLE,reltable,RELETEID,relid];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next]) {
-            NSString *picturePath = [rs stringForColumnIndex:0];
-            [parhs addObject:picturePath];
+            NSString *pPath = [rs stringForColumnIndex:0];
+            NSString *pId = [rs stringForColumnIndex:1];
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            [dict setObject:pPath forKey:@"pPath"];
+            [dict setObject:pId forKey:@"pId"];
+            [picResultSet addObject:dict];
         }
-        [db close];
-    }
-    for (int i=0; i<parhs.count; i++) {
-       BOOL result = [[NSFileManager defaultManager]removeItemAtPath:parhs[i] error:nil];
-       if (!result) {
-           return result;
+        
+        for (int i=0; i<picResultSet.count; i++) {
+            result = [[NSFileManager defaultManager]removeItemAtPath:picResultSet[i][@"pPath"] error:nil];
+            if (!result) {
+                [db close];
+                return result;
+            }
+            NSString *deleteSql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@' ",TABLENAME,PICTUREID,picResultSet[i][@"pId"]];
+            result = [db executeUpdate:deleteSql];
+            if (!result) {
+                NSLog(@"error when delete db table");
+            } else {
+                NSLog(@"success to delete db table");
+            }
         }
     }
-    return YES;
+    [db close];
+    return result;
 }
 
 /**
+ *  从沙盒目录中删除图片并删除数据表中的记录，通常是根据图片名来删除
  *
+ *  @param attribute 属性名
+ *  @param value     属性值
  *
- *  @param attribute <#attribute description#>
- *  @param value     <#value description#>
- *
- *  @return <#return value description#>
+ *  @return   成功返回 yes，失败返回 no
  */
 -(BOOL) deleteImageByAttribute:(NSString *)attribute value:(NSString *)value
 {
@@ -190,7 +178,6 @@
         }
         
         if (picFilepath!=nil) {
-            NSLog(@"%@",picFilepath);
            BOOL re = [[NSFileManager defaultManager] removeItemAtPath:picFilepath error:nil];
             if (re) {
                 BOOL res = [db executeUpdate:deleteSql];
@@ -209,16 +196,21 @@
     return result;
 }
 
-
--(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
+/**
+ *  根据releteid，reletetable 字段删除相应的记录,不删除沙盒中的图片
+ *
+ *  @param reletetable 关联的表名
+ *  @param releteid    关联表中某条记录的id
+ */
+-(BOOL) deleteDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
 {
     BOOL result = NO;
     if ([db open])
     {
         
         NSString *deleteSql = [NSString stringWithFormat:
-                               @"delete from %@ where %@ = '%@'",
-                               TABLENAME, attribute, value];
+                               @"delete from %@ where %@ = '%@' AND %@ = '%@'",
+                               TABLENAME,RELETETABLE,reltable,RELETEID, relid];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {

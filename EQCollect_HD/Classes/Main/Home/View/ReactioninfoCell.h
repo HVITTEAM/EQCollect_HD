@@ -7,17 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void (^deleteReactioninfo)();
+#import "InfoCell.h"
 
-@interface ReactioninfoCell : UITableViewCell<UIAlertViewDelegate>
+@interface ReactioninfoCell : InfoCell<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *reactionTittle;
 @property (weak, nonatomic) IBOutlet UILabel *informantname;
 @property (weak, nonatomic) IBOutlet UILabel *informantage;
 @property (weak, nonatomic) IBOutlet UILabel *informanteducation;
 @property (weak, nonatomic) IBOutlet UILabel *reactionaddress;
 @property (weak, nonatomic) IBOutlet UILabel *reactiontime;
-
-@property (copy)deleteReactioninfo deleteReactioninfoBlock;
 
 - (IBAction)deleteReactioninfo:(id)sender;
 

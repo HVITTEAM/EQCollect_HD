@@ -85,7 +85,6 @@
     self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];
     self.abnormalinfoListVC.title = @"宏观异常";
     self.abnormalinfoListVC.nav = self.navigationController;
-
     [self.vcArray addObject:self.abnormalinfoListVC];
     
     self.reactioninfoListVC = [[ReactioninfoListController alloc] initWithNibName:@"ReactioninfoListController" bundle:nil];
@@ -165,6 +164,7 @@
             self.pointinfoVC.actionType = kActionTypeShow;
             _rightItem.title = @"编辑";
             //更新数据
+//            [self.pointinfoVC showMBProgressHUDWithSel:@selector(updatePointinfo)];
             [self.pointinfoVC updatePointinfo];
         }
     }else if (_currentIndex == 1) {

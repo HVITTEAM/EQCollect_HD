@@ -240,7 +240,6 @@
 
 -(void)addAbnormalinfo
 {
-
     //NSString *abnormalid = self.abnormalidTextF.text;
     NSString *abnormaltime = self.abnormaltimeTextF.text;
     NSString *informant = self.informantTextF.text;
@@ -282,21 +281,35 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        [self setTextinputViewsNil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
         NSInteger maxid=[[AbnormalinfoTableHelper sharedInstance] getMaxIdOfRecords];
         if (maxid!=0 ) {
             [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"ABNORMALINFOTAB"];
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //self.abnormalidTextF.text = nil;
+            self.abnormaltimeTextF.text = nil;
+            self.informantTextF.text = nil;
+            self.abnormalintensityTextF.text = nil;
+            self.groundwaterTextF.text = nil;
+            self.abnormalhabitTextF.text = nil;
+            self.abnormalphenomenonTextF.text = nil;
+            self.otherTextF.text = nil;
+            self.implementationTextF.text = nil;
+            self.abnormalanalysisTextF.text = nil;
+            self.crediblyTextF.text =nil;
+
+            [self.view endEditing:YES];
+            //清空imageCollectionView的数据
+            imgview.dataProvider = [[NSMutableArray alloc] init];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
+        });
     }
-    //清空imageCollectionView的数据
-    imgview.dataProvider = [[NSMutableArray alloc] init];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)back
 {
-    [self setTextinputViewsNil];
+    //清空imageCollectionView的数据
     imgview.dataProvider = [[NSMutableArray alloc] init];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -346,14 +359,12 @@
             BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
             if (result)
             {
-                NSLog(@"success to writeFile");
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                       v.name,@"pictureName",
                                       filePath,@"picturePath",
                                       releteID,@"releteid",
                                       releteTable,@"reletetable",
                                       nil];
-                NSLog(@"%@",filePath);
                 //保存数据库
                 [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
             }
@@ -391,9 +402,11 @@
         self.navigationItem.rightBarButtonItem.title = @"确定";
     }else{
         if (self.actionType == kActionTypeAdd) {
-            [self addAbnormalinfo];
+            [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
+            //[self addAbnormalinfo];
         }else{
-            [self updateAbnormalinfo];
+            [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
+//            [self updateAbnormalinfo];
             [self.view endEditing:YES];
             self.actionType = kActionTypeShow;
             self.navigationItem.rightBarButtonItem.title = @"编辑";
@@ -442,10 +455,9 @@
     
     BOOL result = [[AbnormalinfoTableHelper sharedInstance] updateDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        [self.view endEditing:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
         
         [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"ABNORMALINFOTAB" Releteid:self.abnormalinfo.abnormalid];
         [self saveImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
@@ -453,19 +465,4 @@
     }
 }
 
--(void)setTextinputViewsNil
-{
-    //self.abnormalidTextF.text = nil;
-    self.abnormaltimeTextF.text = nil;
-    self.informantTextF.text = nil;
-    self.abnormalintensityTextF.text = nil;
-    self.groundwaterTextF.text = nil;
-    self.abnormalhabitTextF.text = nil;
-    self.abnormalphenomenonTextF.text = nil;
-    self.otherTextF.text = nil;
-    self.implementationTextF.text = nil;
-    self.abnormalanalysisTextF.text = nil;
-    self.crediblyTextF.text =nil;
-    [self.view endEditing:YES];
-}
 @end

@@ -287,33 +287,37 @@
     
     BOOL result = [[DamageinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }else{
-        self.damageidTextF.text = nil;
-        self.damagetimeTextF.text = nil;
-        self.damageaddressTextF.text = nil;
-        self.damageintensityTextF.text = nil;
-        self.zrcorxqTextF.text = nil;
-        self.dworzhTextF.text = nil;
-        self.fortificationintensityTextF.text = nil;
-        self.damagesituationTextF.text = nil;
-        self.damageindexTextF.text = nil;
-
-        [self.view endEditing:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
+        
         NSInteger maxid=[[DamageinfoTableHelper sharedInstance] getMaxIdOfRecords];
         if (maxid!=0 ) {
-           
             [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"DAMAGEINFOTAB"];
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.damageidTextF.text = nil;
+            self.damagetimeTextF.text = nil;
+            self.damageaddressTextF.text = nil;
+            self.damageintensityTextF.text = nil;
+            self.zrcorxqTextF.text = nil;
+            self.dworzhTextF.text = nil;
+            self.fortificationintensityTextF.text = nil;
+            self.damagesituationTextF.text = nil;
+            self.damageindexTextF.text = nil;
+            
+            [self.view endEditing:YES];
+            //清空imageCollectionView的数据
+            imgview.dataProvider = [[NSMutableArray alloc] init];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
+        });
     }
-    //清空imageCollectionView的数据
-    imgview.dataProvider = [[NSMutableArray alloc] init];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)back
 {
+    //清空imageCollectionView的数据
     imgview.dataProvider = [[NSMutableArray alloc] init];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -362,14 +366,12 @@
             BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
             if (result)
             {
-                NSLog(@"success to writeFile");
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                       v.name,@"pictureName",
                                       filePath,@"picturePath",
                                       releteID,@"releteid",
                                       releteTable,@"reletetable",
                                       nil];
-                NSLog(@"%@",filePath);
                 //保存数据库
                 [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
             }
@@ -396,15 +398,10 @@
         UIImage *img = [UIImage imageWithContentsOfFile:filePath];
         vo.image = img;
         [dataProvider addObject:vo];
-        NSLog(@"%@",vo.name);
     }
-    //imgview.showType = YES;
 
     imgview.dataProvider = dataProvider;
 }
-
-
-
 
 -(void)rightItemTap:(UIBarButtonItem *)sender
 {
@@ -413,9 +410,9 @@
         self.navigationItem.rightBarButtonItem.title = @"确定";
     }else{
         if (self.actionType == kActionTypeAdd) {
-            [self addDamageinfo];
+            [self showMBProgressHUDWithSel:@selector(addDamageinfo)];
         }else{
-            [self updateAbnormalinfo];
+            [self showMBProgressHUDWithSel:@selector(updateDamageinfo)];
             [self.view endEditing:YES];
             self.actionType = kActionTypeShow;
             self.navigationItem.rightBarButtonItem.title = @"编辑";
@@ -423,8 +420,9 @@
     }
 }
 
--(void)updateAbnormalinfo
+-(void)updateDamageinfo
 {
+    [NSThread sleepForTimeInterval:6];
    // NSString *damageid = self.damageidTextF.text;
     NSString *damagetime = self.damagetimeTextF.text;
     NSString *damageaddress = self.damageaddressTextF.text;
@@ -434,7 +432,6 @@
     NSString *fortificationintensity = self.fortificationintensityTextF.text;
     NSString *damagesituation = self.damagesituationTextF.text;
     NSString *damageindex = self.damageindexTextF.text;
-    
     
     //判断文本输入框是否为空，如果为空则提示并返回
     for (int i=0; i<self.textInputViews.count; i++) {
@@ -461,10 +458,9 @@
     
     BOOL result = [[DamageinfoTableHelper sharedInstance] updateDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        [self.view endEditing:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
         
         [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
         [self saveImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];

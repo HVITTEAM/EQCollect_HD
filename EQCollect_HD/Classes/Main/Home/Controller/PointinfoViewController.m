@@ -170,132 +170,157 @@
 
 -(void)addPointinfo
 {
-    //NSString *pointid = self.pointidTextF.text;
-    NSString *earthid = self.earthidTextF.text;
-    NSString *pointlocation = self.pointlocationTextF.text;
-    NSString *pointlon = self.pointlonTextF.text;
-    NSString *pointlat = self.pointlatTextF.text;
-    NSString *pointname = self.pointnameTextF.text;
-    NSString *pointtime = self.pointtimeTextF.text;
-    NSString *pointgroup = self.pointgroupTextF.text;
-    NSString *pointperson1 = @"person1";
-    NSString *pointperson2 = @"person2";
-    NSString *pointintensity = self.pointintensityTextF.text;
-    NSString *pointcontent = self.pointcontentTextV.text;
-    NSString *upload = @"0";
-    
-    
-    //判断文本输入框是否为空，如果为空则提示并返回
-    for (int i=0; i<self.textInputViews.count; i++) {
-        if (i!=self.textInputViews.count-1) {
-            UITextField *textF = (UITextField *)self.textInputViews[i];
-            if (textF.text ==nil || textF.text.length <=0) {
-                [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                return;
-            }
-        }else{
-            UITextView *textV = (UITextView *)self.textInputViews[i];
-            if (textV.text ==nil || textV.text.length <=0) {
-                [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                return;
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:hud];
+    hud.labelText = @"请等待...";
+
+    [hud showAnimated:YES whileExecutingBlock:^{
+        
+        //NSString *pointid = self.pointidTextF.text;
+        NSString *earthid = self.earthidTextF.text;
+        NSString *pointlocation = self.pointlocationTextF.text;
+        NSString *pointlon = self.pointlonTextF.text;
+        NSString *pointlat = self.pointlatTextF.text;
+        NSString *pointname = self.pointnameTextF.text;
+        NSString *pointtime = self.pointtimeTextF.text;
+        NSString *pointgroup = self.pointgroupTextF.text;
+        NSString *pointperson1 = @"person1";
+        NSString *pointperson2 = @"person2";
+        NSString *pointintensity = self.pointintensityTextF.text;
+        NSString *pointcontent = self.pointcontentTextV.text;
+        NSString *upload = @"0";
+        
+        //判断文本输入框是否为空，如果为空则提示并返回
+        for (int i=0; i<self.textInputViews.count; i++) {
+            if (i!=self.textInputViews.count-1) {
+                UITextField *textF = (UITextField *)self.textInputViews[i];
+                if (textF.text ==nil || textF.text.length <=0) {
+                    [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                    return;
+                }
+            }else{
+                UITextView *textV = (UITextView *)self.textInputViews[i];
+                if (textV.text ==nil || textV.text.length <=0) {
+                    [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                    return;
+                }
             }
         }
-    }
-    //创建字典对象并向表中插和数据
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                          pointid,@"pointid",
-                          earthid,@"earthid",
-                          pointlocation,@"pointlocation",
-                          pointlon, @"pointlon",
-                          pointlat, @"pointlat",
-                          pointname,@"pointname",
-                          pointtime,@"pointtime",
-                          pointgroup,@"pointgroup",
-                          pointperson1,@"pointperson1",
-                          pointperson2,@"pointperson2",
-                          pointintensity,@"pointintensity",
-                          pointcontent,@"pointcontent",
-                          upload,@"upload",nil];
+        //创建字典对象并向表中插和数据
+        NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                              //                          pointid,@"pointid",
+                              earthid,@"earthid",
+                              pointlocation,@"pointlocation",
+                              pointlon, @"pointlon",
+                              pointlat, @"pointlat",
+                              pointname,@"pointname",
+                              pointtime,@"pointtime",
+                              pointgroup,@"pointgroup",
+                              pointperson1,@"pointperson1",
+                              pointperson2,@"pointperson2",
+                              pointintensity,@"pointintensity",
+                              pointcontent,@"pointcontent",
+                              upload,@"upload",nil];
+        
+        BOOL result = [[PointinfoTableHelper sharedInstance] insertDataWith:dict];
+        if (!result) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.pointidTextF.text = nil;
+                self.earthidTextF.text = nil;
+                self.pointlocationTextF.text = nil;
+                self.pointlonTextF.text = nil;
+                self.pointlatTextF.text = nil;
+                self.pointnameTextF.text = nil;
+                self.pointtimeTextF.text = nil;
+                self.pointgroupTextF.text = nil;
+                self.pointintensityTextF.text = nil;
+                self.pointcontentTextV.text = nil;
+                
+                [self.view endEditing:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
+            });
+        }
+
+    } completionBlock:^{
+        [hud removeFromSuperview];
+        //[hud release];
+    }];
+
     
-    BOOL result = [[PointinfoTableHelper sharedInstance] insertDataWith:dict];
-    if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-    }else{
-        self.pointidTextF.text = nil;
-        self.earthidTextF.text = nil;
-        self.pointlocationTextF.text = nil;
-        self.pointlonTextF.text = nil;
-        self.pointlatTextF.text = nil;
-        self.pointnameTextF.text = nil;
-        self.pointtimeTextF.text = nil;
-        self.pointgroupTextF.text = nil;
-        self.pointintensityTextF.text = nil;
-        self.pointcontentTextV.text = nil;
-        [self.view endEditing:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 -(void)updatePointinfo
 {
-    NSLog(@"更新数据");
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"请等待...";
     
-    NSString *pointid = self.pointinfo.pointid;
-    NSString *earthid = self.earthidTextF.text;
-    NSString *pointlocation = self.pointlocationTextF.text;
-    NSString *pointlon = self.pointlonTextF.text;
-    NSString *pointlat = self.pointlatTextF.text;
-    NSString *pointname = self.pointnameTextF.text;
-    NSString *pointtime = self.pointtimeTextF.text;
-    NSString *pointgroup = self.pointgroupTextF.text;
-    NSString *pointperson1 = @"person1";
-    NSString *pointperson2 = @"person2";
-    NSString *pointintensity = self.pointintensityTextF.text;
-    NSString *pointcontent = self.pointcontentTextV.text;
-    NSString *upload = @"0";
-    
-    
-    //判断文本输入框是否为空，如果为空则提示并返回
-    for (int i=0; i<self.textInputViews.count; i++) {
-        if (i!=self.textInputViews.count-1) {
-            UITextField *textF = (UITextField *)self.textInputViews[i];
-            if (textF.text ==nil || textF.text.length <=0) {
-                [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                return;
-            }
-        }else{
-            UITextView *textV = (UITextView *)self.textInputViews[i];
-            if (textV.text ==nil || textV.text.length <=0) {
-                [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                return;
+    [hud showAnimated:YES whileExecutingBlock:^{
+        
+        NSString *pointid = self.pointinfo.pointid;
+        NSString *earthid = self.earthidTextF.text;
+        NSString *pointlocation = self.pointlocationTextF.text;
+        NSString *pointlon = self.pointlonTextF.text;
+        NSString *pointlat = self.pointlatTextF.text;
+        NSString *pointname = self.pointnameTextF.text;
+        NSString *pointtime = self.pointtimeTextF.text;
+        NSString *pointgroup = self.pointgroupTextF.text;
+        NSString *pointperson1 = @"person1";
+        NSString *pointperson2 = @"person2";
+        NSString *pointintensity = self.pointintensityTextF.text;
+        NSString *pointcontent = self.pointcontentTextV.text;
+        NSString *upload = @"0";
+        
+        //判断文本输入框是否为空，如果为空则提示并返回
+        for (int i=0; i<self.textInputViews.count; i++) {
+            if (i!=self.textInputViews.count-1) {
+                UITextField *textF = (UITextField *)self.textInputViews[i];
+                if (textF.text ==nil || textF.text.length <=0) {
+                    [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                    return;
+                }
+            }else{
+                UITextView *textV = (UITextView *)self.textInputViews[i];
+                if (textV.text ==nil || textV.text.length <=0) {
+                    [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                    return;
+                }
             }
         }
-    }
-    //创建字典对象并向表中插和数据
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          pointid,@"pointid",
-                          earthid,@"earthid",
-                          pointlocation,@"pointlocation",
-                          pointlon, @"pointlon",
-                          pointlat, @"pointlat",
-                          pointname,@"pointname",
-                          pointtime,@"pointtime",
-                          pointgroup,@"pointgroup",
-                          pointperson1,@"pointperson1",
-                          pointperson2,@"pointperson2",
-                          pointintensity,@"pointintensity",
-                          pointcontent,@"pointcontent",
-                          upload,@"upload",nil];
-    
-    BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:dict];
-    if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-    }else{
-        [self.view endEditing:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+        //创建字典对象并向表中插和数据
+        NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                              pointid,@"pointid",
+                              earthid,@"earthid",
+                              pointlocation,@"pointlocation",
+                              pointlon, @"pointlon",
+                              pointlat, @"pointlat",
+                              pointname,@"pointname",
+                              pointtime,@"pointtime",
+                              pointgroup,@"pointgroup",
+                              pointperson1,@"pointperson1",
+                              pointperson2,@"pointperson2",
+                              pointintensity,@"pointintensity",
+                              pointcontent,@"pointcontent",
+                              upload,@"upload",nil];
+        
+        BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:dict];
+        if (!result) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.view endEditing:YES];
+             });
+
+            //[[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
+        }
+    } completionBlock:^{
+        [hud removeFromSuperview];
+        //[hud release];
+    }];
 }
 
 @end

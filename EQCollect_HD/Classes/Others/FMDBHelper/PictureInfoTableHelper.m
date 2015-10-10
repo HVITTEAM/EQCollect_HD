@@ -48,9 +48,9 @@
         NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,PICTUREID,PICTURENAME,PICTUREPATH,RELETEID,RELETETABLE];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
-            NSLog(@"error when creating imgaedb table");
+            //NSLog(@"error when creating imgaedb table");
         } else {
-            NSLog(@"success to creating imgaedb table");
+           // NSLog(@"success to creating imgaedb table");
         }
         [db close];
     }
@@ -65,10 +65,10 @@
                                TABLENAME,PICTURENAME,PICTUREPATH,RELETEID,RELETETABLE,dict[@"pictureName"], dict[@"picturePath"],dict[@"releteid"],dict[@"reletetable"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
-            NSLog(@"error when insert db Imgtable");
+           // NSLog(@"error when insert db Imgtable");
             result = NO;
         } else {
-            NSLog(@"success to insert db Imgtable");
+            //NSLog(@"success to insert db Imgtable");
             result = YES;
         }
         [db close];
@@ -146,9 +146,9 @@
             NSString *deleteSql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@' ",TABLENAME,PICTUREID,picResultSet[i][@"pId"]];
             result = [db executeUpdate:deleteSql];
             if (!result) {
-                NSLog(@"error when delete db table");
+                //NSLog(@"error when delete db table");
             } else {
-                NSLog(@"success to delete db table");
+                //NSLog(@"success to delete db table");
             }
         }
     }
@@ -182,10 +182,10 @@
             if (re) {
                 BOOL res = [db executeUpdate:deleteSql];
                 if (!res) {
-                    NSLog(@"error when delete db table");
+                    //NSLog(@"error when delete db table");
                     result = NO;
                 } else {
-                    NSLog(@"success to delete db table");
+                    //NSLog(@"success to delete db table");
                     result = YES;
                 }
 
@@ -214,10 +214,10 @@
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
-            NSLog(@"error when delete db table");
+            //NSLog(@"error when delete db table");
             result = NO;
         } else {
-            NSLog(@"success to delete db table");
+            //NSLog(@"success to delete db table");
             result = YES;
         }
         [db close];

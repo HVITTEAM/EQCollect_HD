@@ -68,9 +68,9 @@
         NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
-            NSLog(@"error when creating db table");
+            //NSLog(@"error when creating db table");
         } else {
-            NSLog(@"success to creating db table");
+            //NSLog(@"success to creating db table");
         }
         [db close];
     }
@@ -85,10 +85,10 @@
                                TABLENAME, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT,UPLOAD,dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson1"], dict[@"pointperson2"], dict[@"pointintensity"], dict[@"pointcontent"],dict[@"upload"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
-            NSLog(@"error when insert db table");
+            //NSLog(@"error when insert db table");
             result = NO;
         } else {
-            NSLog(@"success to insert db table");
+            //NSLog(@"success to insert db table");
             result = YES;
         }
         [db close];
@@ -103,13 +103,12 @@
     {
         NSString *updateSql = [NSString stringWithFormat:
                                @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@' WHERE %@ = %@  ",TABLENAME,EARTHID,dict[@"earthid"],POINTLOCATION,dict[@"pointlocation"],POINTLON,dict[@"pointlon"],POINTLAT,dict[@"pointlat"],POINTNAME,dict[@"pointname"],POINTTIME,dict[@"pointtime"],POINTGROUP,dict[@"pointgroup"],POINTPERSON1,dict[@"pointperson1"],POINTPERSON2,dict[@"pointperson2"],POINTINTENSITY,dict[@"pointintensity"],POINTCONTENT,dict[@"pointcontent"],UPLOAD,dict[@"upload"],POINTID,dict[@"pointid"]];
-        NSLog(@"%@",updateSql);
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
-            NSLog(@"error when update db table");
+            //NSLog(@"error when update db table");
             result = NO;
         } else {
-            NSLog(@"success to update db table");
+            //NSLog(@"success to update db table");
             result = YES;
         }
         [db close];
@@ -131,10 +130,10 @@
         BOOL res = [db executeUpdate:deleteSql];
 
         if (!res) {
-            NSLog(@"error when delete db table");
+            //NSLog(@"error when delete db table");
             result = NO;
         } else {
-            NSLog(@"success to delete db table");
+            //NSLog(@"success to delete db table");
             result = YES;
         }
         [db close];

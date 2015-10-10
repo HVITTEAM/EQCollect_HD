@@ -273,7 +273,6 @@ static NSString *kcellIdentifier = @"collectionCellID";
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    NSLog(@"您取消了选择图片");
     [picker dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -302,8 +301,6 @@ static NSString *kcellIdentifier = @"collectionCellID";
 #pragma mark - 浏览图片
 -(void)showImageWhthCurrentIdx:(NSInteger)idx
 {
-    NSLog(@"显示采集图片");
-    
     // Browser
     NSMutableArray *photos = [[NSMutableArray alloc] init];
     NSMutableArray *thumbs = [[NSMutableArray alloc] init];

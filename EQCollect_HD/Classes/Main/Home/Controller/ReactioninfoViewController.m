@@ -341,40 +341,45 @@
     
     BOOL result = [[ReactioninfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        //self.reactionidTextF.text = nil;
-        self.reactiontimeTextF.text = nil;
-        self.informantnameTextF.text = nil;
-        self.informantageTextF.text = nil;
-        self.informanteducationTextF.text = nil;
-        self.informantjobTextF.text = nil;
-        self.reactionaddressTextF.text = nil;
-        self.rockfeelingTextF.text = nil;
-        self.throwfeelingTextF.text = nil;
-        self.throwtingsTextF.text = nil;
-        self.throwdistanceTextF.text = nil;
-        self.fallTextF.text = nil;
-        self.hangTextF.text = nil;
-        self.furnituresoundTextF.text = nil;
-        self.furnituredumpTextF.text = nil;
-        self.soundsizeTextF.text = nil;
-        self.sounddirectionTextF.text = nil;
-
-        [self.view endEditing:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
+        
         NSInteger maxid=[[ReactioninfoTableHelper sharedInstance] getMaxIdOfRecords];
         if (maxid!=0 ) {
             [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"REACTIONINFOTAB"];
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //self.reactionidTextF.text = nil;
+            self.reactiontimeTextF.text = nil;
+            self.informantnameTextF.text = nil;
+            self.informantageTextF.text = nil;
+            self.informanteducationTextF.text = nil;
+            self.informantjobTextF.text = nil;
+            self.reactionaddressTextF.text = nil;
+            self.rockfeelingTextF.text = nil;
+            self.throwfeelingTextF.text = nil;
+            self.throwtingsTextF.text = nil;
+            self.throwdistanceTextF.text = nil;
+            self.fallTextF.text = nil;
+            self.hangTextF.text = nil;
+            self.furnituresoundTextF.text = nil;
+            self.furnituredumpTextF.text = nil;
+            self.soundsizeTextF.text = nil;
+            self.sounddirectionTextF.text = nil;
+            
+            [self.view endEditing:YES];
+            //清空imageCollectionView的数据
+            imgview.dataProvider = [[NSMutableArray alloc] init];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
+        });
     }
-    //清空imageCollectionView的数据
-    imgview.dataProvider = [[NSMutableArray alloc] init];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)back
 {
+    //清空imageCollectionView的数据
+    imgview.dataProvider = [[NSMutableArray alloc] init];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -423,14 +428,12 @@
             BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
             if (result)
             {
-                NSLog(@"success to writeFile");
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                       v.name,@"pictureName",
                                       filePath,@"picturePath",
                                       releteID,@"releteid",
                                       releteTable,@"reletetable",
                                       nil];
-                NSLog(@"%@",filePath);
                 //保存数据库
                 [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
             }
@@ -468,9 +471,11 @@
         self.navigationItem.rightBarButtonItem.title = @"确定";
     }else{
         if (self.actionType == kActionTypeAdd) {
-            [self addReactioninfo];
+            [self showMBProgressHUDWithSel:@selector(addReactioninfo)];
+            //[self addReactioninfo];
         }else{
-            [self updateAbnormalinfo];
+            [self showMBProgressHUDWithSel:@selector(updateReactioninfo)];
+            //[self updateAbnormalinfo];
             [self.view endEditing:YES];
             self.actionType = kActionTypeShow;
             self.navigationItem.rightBarButtonItem.title = @"编辑";
@@ -478,7 +483,7 @@
     }
 }
 
--(void)updateAbnormalinfo
+-(void)updateReactioninfo
 {
     //NSString *reactionid = self.reactionidTextF.text;
     NSString *reactiontime = self.reactiontimeTextF.text;
@@ -531,11 +536,10 @@
     
     BOOL result = [[ReactioninfoTableHelper sharedInstance] updateDataWith:dict];
     if (!result) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错,请确定编号唯一" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
 
-        [self.view endEditing:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
         [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"REACTIONINFOTAB" Releteid:self.reactioninfo.reactionid];
         [self saveImagesWithReleteId:self.reactioninfo.reactionid releteTable:@"REACTIONINFOTAB"];
     }

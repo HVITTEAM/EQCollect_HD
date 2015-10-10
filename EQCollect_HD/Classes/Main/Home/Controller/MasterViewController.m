@@ -20,7 +20,6 @@
     self.title = @"浙江省地震灾害现场采集";
     
     //设置表头视图
-    
     AdminTableHead *headView  = [[[NSBundle mainBundle] loadNibNamed:@"AdminTableHead" owner:self options:nil] lastObject];
     
     headView.useridLabel.text = [NSString stringWithFormat:@"%ld",(long)[SharedAppUtil defaultCommonUtil].userInfor.userid];

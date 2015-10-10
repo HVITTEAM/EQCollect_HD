@@ -67,9 +67,9 @@
                                      DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
-            NSLog(@"error when creating db table");
+            //NSLog(@"error when creating db table");
         } else {
-            NSLog(@"success to creating db table");
+            //NSLog(@"success to creating db table");
         }
         [db close];
     }
@@ -84,10 +84,10 @@
                                TABLENAME,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID,UPLOAD,dict[@"damagetime"], dict[@"damageaddress"],dict[@"damageintensity"], dict[@"zrcorxq"], dict[@"dworzh"],dict[@"fortificationintensity"], dict[@"damagesituation"], dict[@"damageindex"],dict[@"pointid"],dict[@"upload"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
-            NSLog(@"error when insert db table");
+           // NSLog(@"error when insert db table");
             result = NO;
         } else {
-            NSLog(@"success to insert db table");
+            //NSLog(@"success to insert db table");
             result = YES;
         }
         [db close];
@@ -104,10 +104,10 @@
                                @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = %@  ",TABLENAME,DAMAGETIME,dict[@"damagetime"],DAMAGEADDRESS,dict[@"damageaddress"],DAMAGEINTENSITY,dict[@"damageintensity"],ZRCORXQ,dict[@"zrcorxq"],DWORZH,dict[@"dworzh"],FORTIFICATIONINTENSITY,dict[@"fortificationintensity"],DAMAGESITUATION,dict[@"damagesituation"],DAMAGEINDEX,dict[@"damageindex"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],DAMAGEID,dict[@"damageid"]];
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
-            NSLog(@"error when update db table");
+            //NSLog(@"error when update db table");
             result = NO;
         } else {
-            NSLog(@"success to update db table");
+            //NSLog(@"success to update db table");
             result = YES;
         }
         [db close];
@@ -128,10 +128,10 @@
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {
-            NSLog(@"error when delete db table");
+            //NSLog(@"error when delete db table");
             result = NO;
         } else {
-            NSLog(@"success to delete db table");
+            //NSLog(@"success to delete db table");
             result = YES;
         }
         [db close];

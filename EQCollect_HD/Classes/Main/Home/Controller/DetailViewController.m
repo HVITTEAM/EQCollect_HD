@@ -34,13 +34,20 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self getDataProvider];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePointinfo:) name:kAddPointinfoSucceedNotification object:nil];
 }
 
--(void)dealloc
+-(void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+//-(void)dealloc
+//{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 
 -(void)initNavgation
 {
@@ -172,9 +179,9 @@
         self.pointinfoVC = [[PointinfoViewController alloc] init];
     }
     self.pointinfoVC.actionType = kActionTypeAdd;
-    self.nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
-    self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:self.nav animated:YES completion:nil];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
+    nav.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 -(void)updatePointinfo:(NSNotification *)notification

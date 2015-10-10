@@ -12,6 +12,8 @@
 {
     NSNotification *_currentKeyboardNotification;   //保存键盘通知对象，键盘隐藏时为nil
     NSInteger _lastDistance;                        //键盘遮挡文本时前一次向上移动的距离
+    
+    MBProgressHUD *HUD;
 }
 
 @end
@@ -142,5 +144,24 @@
     _lastDistance = 0;
 }
 
+
+//显示等待动画MBProgressHUD
+-(void)showMBProgressHUDWithSel:(SEL)method
+{
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:HUD];
+    
+    HUD.delegate = self;
+    HUD.labelText = @"请稍等...";
+    
+    [HUD showWhileExecuting:method onTarget:self withObject:nil animated:YES];
+}
+
+#pragma mark - MBProgressHUDDelegate
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [HUD removeFromSuperview];
+    //[HUD release];
+    HUD = nil;
+}
 
 @end

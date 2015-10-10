@@ -385,22 +385,27 @@
  **/
 -(void)getimage
 {
-    NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
-    NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
-    //循环添加图片
-    for(PictureMode* pic in imageArr)
-    {
-        PictureVO *vo = [[PictureVO alloc] init];
-        vo.name = pic.pictureName;
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", pic.pictureName]];
-        UIImage *img = [UIImage imageWithContentsOfFile:filePath];
-        vo.image = img;
-        [dataProvider addObject:vo];
-    }
-
-    imgview.dataProvider = dataProvider;
+        NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
+        NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
+        //循环添加图片
+        for(PictureMode* pic in imageArr)
+        {
+            PictureVO *vo = [[PictureVO alloc] init];
+            vo.name = pic.pictureName;
+            
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", pic.pictureName]];
+            UIImage *img = [UIImage imageWithContentsOfFile:filePath];
+            vo.image = img;
+            [dataProvider addObject:vo];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imgview.dataProvider = dataProvider;
+        });
+    });
 }
 
 -(void)rightItemTap:(UIBarButtonItem *)sender

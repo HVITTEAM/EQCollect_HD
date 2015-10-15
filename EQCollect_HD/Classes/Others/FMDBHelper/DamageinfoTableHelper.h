@@ -31,4 +31,6 @@
 -(NSInteger)getMaxIdOfRecords;
 /**更新数据**/
 -(BOOL) updateDataWith:(NSDictionary *)dict;
+/**更新上传标识**/
+-(BOOL)updateUploadFlag:(NSString *)uploadFlag ID:(NSString *)idString;
 @end

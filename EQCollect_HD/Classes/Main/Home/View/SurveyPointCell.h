@@ -14,6 +14,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *pointTitleText;
 @property (strong, nonatomic) IBOutlet UILabel *pointAddressText;
 @property (strong, nonatomic) IBOutlet UILabel *pointTimeText;
+@property (weak, nonatomic) IBOutlet UIButton *uploadBtn;
+@property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
 
 - (IBAction)deleteSurveyPoint:(id)sender;
 @end

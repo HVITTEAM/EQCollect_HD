@@ -5,14 +5,18 @@
 //
 
 #import "DetailViewController.h"
-#import "MasterViewController.h"
+//#import "MasterViewController.h"
 #import "SurveyPointDetailViewController.h"
 #import "PointinfoViewController.h"
+#import "SurveyPointCell.h"
 
-@interface DetailViewController ()
-{
-    SurveyPointDetailViewController *detailview;
-}
+@interface DetailViewController ()<UISplitViewControllerDelegate,UISearchBarDelegate,InfoCellDelegate>
+@property (nonatomic, retain) SurveyPointDetailViewController *detailview;
+//@property (nonatomic, retain) UINavigationController *nav;
+@property (nonatomic, retain) PointinfoViewController *pointinfoVC;
+@property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
+@property (nonatomic, retain) NSArray *filtedData;        //需要显示的调查点信息
+
 @end
 
 @implementation DetailViewController
@@ -27,8 +31,6 @@
     
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reflesh)];
-
-    [self getDataProvider];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -38,16 +40,17 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePointinfo:) name:kAddPointinfoSucceedNotification object:nil];
 }
 
+//-(void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//    self.detailview = nil;
+//}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-//-(void)dealloc
-//{
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//}
 
 -(void)initNavgation
 {
@@ -61,11 +64,10 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
     
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width
-                                                                           , 44)];
+    //搜索框
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     searchBar.placeholder = @"搜索";
     searchBar.delegate = self;
-    
     // 添加 searchbar 到 headerview
     self.tableView.tableHeaderView = searchBar;
 }
@@ -89,6 +91,14 @@
     self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
     self.filtedData = self.dataProvider;
     [self.tableView reloadData];
+}
+
+/**
+ *  新增调查点成功后调用
+ */
+-(void)updatePointinfo:(NSNotification *)notification
+{
+    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark 分割控制器代理方法
@@ -134,6 +144,16 @@
     cell.pointTimeText.text = pointInfo.pointtime;
     cell.pointAddressText.text = pointInfo.pointlocation;
     
+    if ([pointInfo.upload isEqualToString:@"1"]) {
+        cell.uploadBtn.selected = YES;
+        [cell.uploadBtn setTitle:@"已上传" forState:UIControlStateNormal];
+        [cell.uploadBtn setBackgroundColor:HMColor(0, 160, 70)];
+    }else{
+        cell.uploadBtn.selected = NO;
+        [cell.uploadBtn setTitle:@"上传" forState:UIControlStateNormal];
+        [cell.uploadBtn setBackgroundColor:HMColor(102, 147, 255)];
+    }
+    
     cell.indexPath = indexPath;
     cell.delegate = self;
 
@@ -148,12 +168,15 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!detailview)
-        detailview = [[SurveyPointDetailViewController alloc] init];
-    detailview.pointinfo = self.filtedData[indexPath.row];
-    [self.navigationController pushViewController:detailview animated:YES];
+    if (!self.detailview)
+        self.detailview = [[SurveyPointDetailViewController alloc] init];
+    self.detailview.pointinfo = self.filtedData[indexPath.row];
+    [self.navigationController pushViewController:self.detailview animated:YES];
+    
+//    SurveyPointDetailViewController *detailview = [[SurveyPointDetailViewController alloc] init];
+//    detailview.pointinfo = self.filtedData[indexPath.row];
+//    [self.navigationController pushViewController:detailview animated:YES];
 }
-
 
 #pragma mark UISearchBar delegate
 /**
@@ -173,6 +196,7 @@
 }
 
 #pragma mark addView
+
 -(void)addSurveyPointClickHandler
 {
     if (!self.pointinfoVC) {
@@ -182,11 +206,6 @@
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
     nav.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:nav animated:YES completion:nil];
-}
-
--(void)updatePointinfo:(NSNotification *)notification
-{
-    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark - InfoCellDelegate
@@ -235,11 +254,26 @@
     
     if (result) {
         //数据库中删除成功，则重新获取数据刷新界面
-        [self getDataProvider];
+        [self.dataProvider removeObject:pointInfo];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
     }else{
         [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }
 
+}
+
+//上传数据
+-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+{
+    PointModel *pointInfo = [self.filtedData objectAtIndex:indexPath.row];
+    //上传数据 。。。。
+    //上传数据成功则更新本地数据
+    BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:pointInfo.pointid];
+    if (result) {
+        pointInfo.upload = @"1";
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }
 }
 
 @end

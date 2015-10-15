@@ -15,7 +15,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *intensityText;
 @property (weak, nonatomic) IBOutlet UILabel *crediblyText;
 @property (weak, nonatomic) IBOutlet UILabel *analysisText;
+@property (weak, nonatomic) IBOutlet UIButton *uploadBtn;
+@property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
 
-- (IBAction)deleteAbnormalinfo:(id)sender;
+- (IBAction)deleteAbnormalinfo:(UIButton *)sender;
+- (IBAction)upLoadAbnormalinfo:(id)sender;
 
 @end

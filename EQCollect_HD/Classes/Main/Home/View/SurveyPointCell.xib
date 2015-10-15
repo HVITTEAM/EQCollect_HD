@@ -71,22 +71,26 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fE9-Ew-Gh8">
-                        <rect key="frame" x="464" y="41" width="50" height="30"/>
+                        <rect key="frame" x="444" y="41" width="70" height="30"/>
                         <animations/>
-                        <color key="backgroundColor" red="0.17254902422428131" green="0.9490196704864502" blue="0.97254908084869385" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.57647058823529407" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="N7c-fe-tpH"/>
-                            <constraint firstAttribute="width" constant="50" id="rdZ-mh-Lia"/>
+                            <constraint firstAttribute="width" constant="70" id="rdZ-mh-Lia"/>
                         </constraints>
-                        <state key="normal" title="编辑">
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <state key="normal" title="上传">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="upLoadSurveyPoint:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="AxG-En-Gzd"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zU3-Be-SCA">
                         <rect key="frame" x="542" y="41" width="50" height="30"/>
                         <animations/>
-                        <color key="backgroundColor" red="0.95294123888015747" green="0.14509804546833038" blue="0.12549020349979401" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="backgroundColor" red="0.8725585938" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="8Z4-qc-W2s"/>
                             <constraint firstAttribute="height" constant="30" id="kH0-Bx-pFD"/>
@@ -133,9 +137,11 @@
             </tableViewCellContentView>
             <animations/>
             <connections>
+                <outlet property="deleteBtn" destination="zU3-Be-SCA" id="ON4-Nj-vxc"/>
                 <outlet property="pointAddressText" destination="v2R-Z4-ohB" id="f9e-2X-rsK"/>
                 <outlet property="pointTimeText" destination="CZK-k2-mne" id="1T6-gg-O9O"/>
                 <outlet property="pointTitleText" destination="K0k-7s-Hvk" id="wo8-5S-rte"/>
+                <outlet property="uploadBtn" destination="fE9-Ew-Gh8" id="mX7-io-vYd"/>
             </connections>
         </tableViewCell>
     </objects>

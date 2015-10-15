@@ -16,7 +16,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *informanteducation;
 @property (weak, nonatomic) IBOutlet UILabel *reactionaddress;
 @property (weak, nonatomic) IBOutlet UILabel *reactiontime;
+@property (weak, nonatomic) IBOutlet UIButton *uploadBtn;
+@property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
 
+- (IBAction)upLoadreactioninfo:(UIButton *)sender;
 - (IBAction)deleteReactioninfo:(id)sender;
 
 @end

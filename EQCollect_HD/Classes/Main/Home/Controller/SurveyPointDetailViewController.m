@@ -17,8 +17,8 @@
 
 @interface SurveyPointDetailViewController ()
 {
-    NSUInteger _currentIndex;
-    UIBarButtonItem *_rightItem;
+    NSUInteger _currentIndex;         //当前页面的索引号
+    UIBarButtonItem *_rightItem;      //导航条上的右侧按钮，当页面为调查点详情时有“编辑”，“完成”两种状态，其它页面都为“新增”
 }
 @end
 
@@ -26,7 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     //初始化调查点详情界面
     [self initSurveyPointDetail];
 }
@@ -42,13 +42,19 @@
 {
     [super viewWillAppear:animated];
     
-    /*下面三行代码防止在另外界面进行旋转，返回此界面时调查点信息界面不更新*/
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
     //将UIDeviceOrientation类型转为UIInterfaceOrientation
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
     //根据屏幕方向设置调查点信息视图的约束
     [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
+    
+    //根据是否上传确定显示或隐藏导航栏右侧按钮
+    if ([self.pointinfo.upload isEqualToString:@"0"]) {
+        self.navigationItem.rightBarButtonItem = _rightItem;
+    }else {
+        self.navigationItem.rightBarButtonItem = _rightItem;
+    }
     
     //更新数据
     self.pointinfoVC.pointinfo = self.pointinfo;
@@ -69,9 +75,6 @@
     self.title = @"调查点详情";
     
     _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rigthItemTap:)];
-    if ([self.pointinfo.upload isEqualToString:@"0"]) {
-        self.navigationItem.rightBarButtonItem = _rightItem;
-    }
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -134,7 +137,6 @@
 
 - (void)slideSwitchView:(QCSlideSwitchView *)view didselectTab:(NSUInteger)number
 {
-    _currentIndex = number;
     if (number == 0) {
         
         if ([self.pointinfo.upload isEqualToString:@"0"]) {
@@ -145,6 +147,7 @@
          _rightItem.title = @"新增";
         self.navigationItem.rightBarButtonItem = _rightItem;
     }
+    _currentIndex = number;
 }
 
 //处理屏幕旋转
@@ -158,13 +161,12 @@
 {
     if (_currentIndex == 0) {
         if ([_rightItem.title isEqualToString:@"编辑"]) {
-            self.pointinfoVC.actionType = kactionTypeEdit;
             _rightItem.title = @"确定";
+            self.pointinfoVC.actionType = kactionTypeEdit;
         }else{
-            self.pointinfoVC.actionType = kActionTypeShow;
             _rightItem.title = @"编辑";
+            self.pointinfoVC.actionType = kActionTypeShow;
             //更新数据
-//            [self.pointinfoVC showMBProgressHUDWithSel:@selector(updatePointinfo)];
             [self.pointinfoVC updatePointinfo];
         }
     }else if (_currentIndex == 1) {

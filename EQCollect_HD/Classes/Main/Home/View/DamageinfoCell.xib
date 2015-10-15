@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,42 +11,51 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gg3-cm-aAK" id="lPe-DX-12p">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="109.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房屋震害编号:888888" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQ6-23-7fi">
-                        <rect key="frame" x="20" y="15" width="136" height="17"/>
+                        <rect key="frame" x="20" y="15" width="141" height="17"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015-09-01  14:23:10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAw-Df-a6e">
-                        <rect key="frame" x="450" y="15" width="130" height="16"/>
+                        <rect key="frame" x="448" y="15" width="131.5" height="16"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="烈度:3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nnk-7p-UQQ">
-                        <rect key="frame" x="20" y="54" width="43" height="18"/>
+                        <rect key="frame" x="20" y="54" width="43.5" height="18"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FqY-ru-Dbn">
-                        <rect key="frame" x="456" y="69" width="50" height="30"/>
-                        <color key="backgroundColor" red="0.17254902420000001" green="0.94901967050000002" blue="0.97254908080000002" alpha="1" colorSpace="deviceRGB"/>
+                        <rect key="frame" x="436" y="69" width="70" height="30"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.57647058819999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="50" id="Kea-KZ-fRe"/>
+                            <constraint firstAttribute="width" constant="70" id="Kea-KZ-fRe"/>
                             <constraint firstAttribute="height" constant="30" id="OTF-ul-wSW"/>
                         </constraints>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <state key="normal" title="编辑">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="upLoadDamageinfo:" destination="gg3-cm-aAK" eventType="touchUpInside" id="5Tt-CV-heT"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cHP-U8-OsU">
                         <rect key="frame" x="530" y="69" width="50" height="30"/>
-                        <color key="backgroundColor" red="0.95294123890000004" green="0.14509804549999999" blue="0.12549020350000001" alpha="1" colorSpace="deviceRGB"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.8725585938" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="Bk8-de-cMF"/>
                             <constraint firstAttribute="height" constant="30" id="IsY-Ya-REO"/>
@@ -59,24 +69,28 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设防烈度:6" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sc-5E-mjN">
-                        <rect key="frame" x="78" y="54" width="73" height="18"/>
+                        <rect key="frame" x="78" y="54" width="74" height="18"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="所在地:杭州市文三西路888号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ven-L2-iyO">
-                        <rect key="frame" x="20" y="82" width="401.5" height="17"/>
+                        <rect key="frame" x="20" y="82" width="381.5" height="17"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="破坏情况:轻微" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UhT-ZL-hqR">
-                        <rect key="frame" x="166" y="54" width="94.5" height="18"/>
+                        <rect key="frame" x="167" y="54" width="94.5" height="18"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="DAw-Df-a6e" firstAttribute="top" secondItem="lPe-DX-12p" secondAttribute="top" constant="15" id="2ZP-Xw-u0A"/>
                     <constraint firstItem="aQ6-23-7fi" firstAttribute="leading" secondItem="ven-L2-iyO" secondAttribute="leading" id="56D-I7-jkt"/>
@@ -97,13 +111,16 @@
                     <constraint firstAttribute="bottom" secondItem="ven-L2-iyO" secondAttribute="bottom" constant="10" id="wri-ls-AZr"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="damageaddress" destination="ven-L2-iyO" id="ifX-fX-5nz"/>
                 <outlet property="damageid" destination="aQ6-23-7fi" id="wY7-g6-IFv"/>
                 <outlet property="damageintensity" destination="Nnk-7p-UQQ" id="q5A-6B-pOo"/>
                 <outlet property="damagesituation" destination="UhT-ZL-hqR" id="FHP-4B-2NZ"/>
                 <outlet property="damagetime" destination="DAw-Df-a6e" id="vly-w6-wcQ"/>
+                <outlet property="deleteBtn" destination="cHP-U8-OsU" id="7zC-mi-05l"/>
                 <outlet property="fortificationintensity" destination="5sc-5E-mjN" id="hmd-3w-YUc"/>
+                <outlet property="uploadBtn" destination="FqY-ru-Dbn" id="xjs-CT-6HR"/>
             </connections>
             <point key="canvasLocation" x="312" y="322"/>
         </tableViewCell>

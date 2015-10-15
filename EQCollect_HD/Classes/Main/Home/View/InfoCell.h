@@ -11,9 +11,11 @@
 @class  InfoCell;
 
 @protocol InfoCellDelegate <NSObject>
-@required
+@optional
 //删除cell时调用
 - (void)infoCell:(InfoCell *)cell didClickDeleteBtnAtIndexPath:(NSIndexPath *)indexPath;
+//上传 cell 时调用
+-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @interface InfoCell : UITableViewCell

@@ -15,6 +15,7 @@
 @interface DamageinfoViewController ()
 {
     CGFloat _navHeight;              // 导航栏与状态栏总的高度
+    UIBarButtonItem *_rigthItem;      //导航栏右侧按钮
 }
 @end
 
@@ -42,6 +43,19 @@
         [self getimage];
     }
     imgview.nav = self.navigationController;
+    
+    if ([self.damageinfo.upload isEqualToString:@"1"]) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }else{
+        self.navigationItem.rightBarButtonItem = _rigthItem;
+    }
+    
+    //获取设备当前方向
+    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
+    //将UIDeviceOrientation类型转为UIInterfaceOrientation
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
+    //根据屏幕方向设置视图的约束
+    [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -59,30 +73,22 @@
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     
-    UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    self.navigationItem.rightBarButtonItem = rigthItem;
+    _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
+    self.navigationItem.rightBarButtonItem = _rigthItem;
 
     if (self.actionType == kActionTypeAdd) {
         //设置导航栏按钮
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         self.navigationItem.leftBarButtonItem = leftItem;
         
-        rigthItem.title = @"确定";
+        _rigthItem.title = @"确定";
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
         //启用交互
         [self.view setUserInteractionEnabled:YES];
     }
-    
-    //获取设备当前方向
-    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
-    //将UIDeviceOrientation类型转为UIInterfaceOrientation
-    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
-    //根据屏幕方向设置视图的约束
-    [self rotationToInterfaceOrientation:interfaceOrientation];
-    
-    self.textInputViews = @[
+     self.textInputViews = @[
                             self.damageidTextF,
                             self.damagetimeTextF,
                             self.zrcorxqTextF,
@@ -262,14 +268,6 @@
     NSString *damagesituation = self.damagesituationTextF.text;
     NSString *damageindex = self.damageindexTextF.text;
     
-    //判断文本输入框是否为空，如果为空则提示并返回
-    for (int i=0; i<self.textInputViews.count; i++) {
-        UITextField *textF = (UITextField *)self.textInputViews[i];
-        if (textF.text ==nil || textF.text.length <=0) {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-            return;
-        }
-    }
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           damageid,@"damageid",
@@ -379,13 +377,13 @@
     }
 }
 
-
 /**
  * 获取图片
  **/
 -(void)getimage
 {
-    imgview.dataProvider = [[NSMutableArray alloc] init];
+    //imgview.dataProvider = [[NSMutableArray alloc] init];
+    [imgview.dataProvider removeAllObjects];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
@@ -411,16 +409,22 @@
 -(void)rightItemTap:(UIBarButtonItem *)sender
 {
     if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
-        self.actionType = kactionTypeEdit;
         self.navigationItem.rightBarButtonItem.title = @"确定";
+        self.actionType = kactionTypeEdit;
     }else{
         if (self.actionType == kActionTypeAdd) {
-            [self showMBProgressHUDWithSel:@selector(addDamageinfo)];
+            //判断是否有文本框为空，有空则返回并提示
+            if (![self hasTextBeNull]) {
+                [self showMBProgressHUDWithSel:@selector(addDamageinfo)];
+            }
         }else{
-            [self showMBProgressHUDWithSel:@selector(updateDamageinfo)];
-            [self.view endEditing:YES];
-            self.actionType = kActionTypeShow;
-            self.navigationItem.rightBarButtonItem.title = @"编辑";
+            //判断是否有文本框为空，有空则返回并提示
+            if (![self hasTextBeNull]) {
+                [self showMBProgressHUDWithSel:@selector(updateDamageinfo)];
+                [self.view endEditing:YES];
+                self.navigationItem.rightBarButtonItem.title = @"编辑";
+                self.actionType = kActionTypeShow;
+            }
         }
     }
 }
@@ -438,14 +442,6 @@
     NSString *damagesituation = self.damagesituationTextF.text;
     NSString *damageindex = self.damageindexTextF.text;
     
-    //判断文本输入框是否为空，如果为空则提示并返回
-    for (int i=0; i<self.textInputViews.count; i++) {
-        UITextField *textF = (UITextField *)self.textInputViews[i];
-        if (textF.text ==nil || textF.text.length <=0) {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-            return;
-        }
-    }
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           self.damageinfo.damageid,@"damageid",
@@ -472,5 +468,18 @@
     }
 }
 
+//判断是否有文本框为空
+-(BOOL)hasTextBeNull
+{
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        UITextField *textF = (UITextField *)self.textInputViews[i];
+        if (textF.text ==nil || textF.text.length <=0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            return YES;
+        }
+    }
+    return NO;
+}
 
 @end

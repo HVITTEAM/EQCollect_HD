@@ -16,7 +16,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *damagesituation;
 @property (weak, nonatomic) IBOutlet UILabel *damageaddress;
 @property (weak, nonatomic) IBOutlet UILabel *damagetime;
+@property (weak, nonatomic) IBOutlet UIButton *uploadBtn;
+@property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
 
+- (IBAction)upLoadDamageinfo:(UIButton *)sender;
 - (IBAction)deleteDamageinfo:(id)sender;
 
 @end

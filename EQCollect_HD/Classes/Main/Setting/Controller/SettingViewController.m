@@ -26,6 +26,8 @@
     [self initNavigation];
     
     [self setupGroups];
+    
+    self.tableView.rowHeight = 50;
 }
 
 /**
@@ -51,11 +53,13 @@
     
     //重置数据源
     [self setupGroup0];
+    [self setupGroup1];
+    
+    [self setupFooter];
     
     //刷新表格
     [self.tableView reloadData];
 }
-
 - (void)setupGroup0
 {
     // 1.创建组
@@ -63,17 +67,53 @@
     [self.groups addObject:group];
     
     // 设置组的所有行数据
-    HMCommonArrowItem *version = [HMCommonArrowItem itemWithTitle:@"设置" icon:@"pc_accout.png"];
+    HMCommonArrowItem *account = [HMCommonArrowItem itemWithTitle:@"帐号管理" icon:nil];
+    // newFriend.destVcClass = [MyAccountViewController class];
+    account.operation = ^{
+    };
+    group.items = @[account];
+}
+
+- (void)setupGroup1
+{
+    // 1.创建组
+    HMCommonGroup *group = [HMCommonGroup group];
+    [self.groups addObject:group];
+    
+    // 设置组的所有行数据
+    HMCommonArrowItem *version = [HMCommonArrowItem itemWithTitle:@"版本更新" icon:nil];
     // newFriend.destVcClass = [MyAccountViewController class];
     version.operation = ^{
     };
     
-    HMCommonArrowItem *help = [HMCommonArrowItem itemWithTitle:@"设置" icon:@"app.png"];
+    HMCommonArrowItem *help = [HMCommonArrowItem itemWithTitle:@"使用帮助" icon:nil];
     
-    HMCommonArrowItem *advice = [HMCommonArrowItem itemWithTitle:@"设置" icon:@"app.png"];
+    HMCommonArrowItem *advice = [HMCommonArrowItem itemWithTitle:@"意见反馈" icon:nil];
     
     group.items = @[version,help,advice];
 }
+
+
+- (void)setupFooter
+{
+    // 1.创建按钮
+    UIButton *logout = [[UIButton alloc] init];
+    
+    // 2.设置属性
+    logout.titleLabel.font = [UIFont systemFontOfSize:16];
+    [logout setTitle:@"退出当前帐号" forState:UIControlStateNormal];
+    [logout setTitleColor:HMColor(255, 10, 10) forState:UIControlStateNormal];
+    [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background"] forState:UIControlStateNormal];
+    [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background_highlighted"] forState:UIControlStateHighlighted];
+    //[logout addTarget:self action:@selector(loginOut) forControlEvents:UIControlEventTouchUpInside];
+    
+    // 3.设置尺寸(tableFooterView和tableHeaderView的宽度跟tableView的宽度一样)
+    logout.height = 60;
+    
+    self.tableView.tableFooterView = logout;
+    
+}
+
 
 -(void)back
 {

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PersonCenterController : UIViewController
+@interface PersonCenterController : HMCommonViewController
 
 @end

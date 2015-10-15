@@ -115,6 +115,23 @@
     return result;
 }
 
+-(BOOL)updateUploadFlag:(NSString *)uploadFlag ID:(NSString *)idString
+{
+    BOOL result = NO;
+    if ([db open]) {
+        NSString *updateSql = [NSString stringWithFormat:
+                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = %@ ",TABLENAME,UPLOAD,uploadFlag,DAMAGEID,idString];
+        NSLog(@"%@",updateSql);
+        result = [db executeUpdate:updateSql];
+        if (!result) {
+            NSLog(@"error when update db table");
+        }else{
+            NSLog(@"success to update db table");
+        }
+        [db close];
+    }
+    return result;
+}
 
 -(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {

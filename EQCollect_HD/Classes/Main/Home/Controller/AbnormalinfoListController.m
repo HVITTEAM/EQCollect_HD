@@ -82,6 +82,16 @@
     cell.analysisText.text = abnormalInfo.abnormalanalysis;
     cell.crediblyText.text = abnormalInfo.credibly;
     
+    if ([abnormalInfo.upload isEqualToString:@"1"]) {
+        cell.uploadBtn.selected = YES;
+        [cell.uploadBtn setBackgroundColor:HMColor(0, 160, 70)];
+        [cell.uploadBtn setTitle:@"已上传" forState:UIControlStateNormal];
+    }else{
+        cell.uploadBtn.selected = NO;
+        [cell.uploadBtn setBackgroundColor:HMColor(102, 147, 255)];
+        [cell.uploadBtn setTitle:@"上传" forState:UIControlStateNormal];
+    }
+    
     cell.indexPath = indexPath;
     cell.delegate = self;
 
@@ -125,9 +135,24 @@
     
     if (result) {
         //删除成功，则重新获取数据并刷新界面
-        [self getDataProvider];
+        [self.dataProvider removeObject:abnormalInfo];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
     }else{
         [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+    }
+}
+
+//上传数据
+-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+{
+    AbnormalinfoModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+    //上传数据 。。。。
+    //上传数据成功则更新本地数据
+    BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.abnormalid];
+    if (result) {
+        model.upload = @"1";
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     }
 }
 @end

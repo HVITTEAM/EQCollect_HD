@@ -34,6 +34,13 @@
     [super viewWillAppear:animated];
     
     [self showPointinfoData];
+    
+    //获取设备当前方向
+    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
+    //将UIDeviceOrientation类型转为UIInterfaceOrientation
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
+    //根据屏幕方向设置视图的约束
+    [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -56,14 +63,7 @@
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
-    }
-    //获取设备当前方向
-    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
-    //将UIDeviceOrientation类型转为UIInterfaceOrientation
-    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
-    //根据屏幕方向设置视图的约束
-    [self rotationToInterfaceOrientation:interfaceOrientation];
-    
+    }    
     self.textInputViews = @[
                             self.pointidTextF,
                             self.pointlocationTextF,
@@ -170,42 +170,29 @@
 
 -(void)addPointinfo
 {
+    if ([self hasTextBeNull]) {
+        return;
+    }
+    //NSString *pointid = self.pointidTextF.text;
+    NSString *earthid = self.earthidTextF.text;
+    NSString *pointlocation = self.pointlocationTextF.text;
+    NSString *pointlon = self.pointlonTextF.text;
+    NSString *pointlat = self.pointlatTextF.text;
+    NSString *pointname = self.pointnameTextF.text;
+    NSString *pointtime = self.pointtimeTextF.text;
+    NSString *pointgroup = self.pointgroupTextF.text;
+    NSString *pointperson1 = @"person1";
+    NSString *pointperson2 = @"person2";
+    NSString *pointintensity = self.pointintensityTextF.text;
+    NSString *pointcontent = self.pointcontentTextV.text;
+    NSString *upload = @"0";
+
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:hud];
     hud.labelText = @"请等待...";
 
     [hud showAnimated:YES whileExecutingBlock:^{
         
-        //NSString *pointid = self.pointidTextF.text;
-        NSString *earthid = self.earthidTextF.text;
-        NSString *pointlocation = self.pointlocationTextF.text;
-        NSString *pointlon = self.pointlonTextF.text;
-        NSString *pointlat = self.pointlatTextF.text;
-        NSString *pointname = self.pointnameTextF.text;
-        NSString *pointtime = self.pointtimeTextF.text;
-        NSString *pointgroup = self.pointgroupTextF.text;
-        NSString *pointperson1 = @"person1";
-        NSString *pointperson2 = @"person2";
-        NSString *pointintensity = self.pointintensityTextF.text;
-        NSString *pointcontent = self.pointcontentTextV.text;
-        NSString *upload = @"0";
-        
-        //判断文本输入框是否为空，如果为空则提示并返回
-        for (int i=0; i<self.textInputViews.count; i++) {
-            if (i!=self.textInputViews.count-1) {
-                UITextField *textF = (UITextField *)self.textInputViews[i];
-                if (textF.text ==nil || textF.text.length <=0) {
-                    [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                    return;
-                }
-            }else{
-                UITextView *textV = (UITextView *)self.textInputViews[i];
-                if (textV.text ==nil || textV.text.length <=0) {
-                    [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                    return;
-                }
-            }
-        }
         //创建字典对象并向表中插和数据
         NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                               //                          pointid,@"pointid",
@@ -255,42 +242,30 @@
 
 -(void)updatePointinfo
 {
+    if ([self hasTextBeNull]) {
+        return;
+    }
+    
+    NSString *pointid = self.pointinfo.pointid;
+    NSString *earthid = self.earthidTextF.text;
+    NSString *pointlocation = self.pointlocationTextF.text;
+    NSString *pointlon = self.pointlonTextF.text;
+    NSString *pointlat = self.pointlatTextF.text;
+    NSString *pointname = self.pointnameTextF.text;
+    NSString *pointtime = self.pointtimeTextF.text;
+    NSString *pointgroup = self.pointgroupTextF.text;
+    NSString *pointperson1 = @"person1";
+    NSString *pointperson2 = @"person2";
+    NSString *pointintensity = self.pointintensityTextF.text;
+    NSString *pointcontent = self.pointcontentTextV.text;
+    NSString *upload = self.pointinfo.upload;
+
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"请等待...";
     
     [hud showAnimated:YES whileExecutingBlock:^{
         
-        NSString *pointid = self.pointinfo.pointid;
-        NSString *earthid = self.earthidTextF.text;
-        NSString *pointlocation = self.pointlocationTextF.text;
-        NSString *pointlon = self.pointlonTextF.text;
-        NSString *pointlat = self.pointlatTextF.text;
-        NSString *pointname = self.pointnameTextF.text;
-        NSString *pointtime = self.pointtimeTextF.text;
-        NSString *pointgroup = self.pointgroupTextF.text;
-        NSString *pointperson1 = @"person1";
-        NSString *pointperson2 = @"person2";
-        NSString *pointintensity = self.pointintensityTextF.text;
-        NSString *pointcontent = self.pointcontentTextV.text;
-        NSString *upload = @"0";
-        
-        //判断文本输入框是否为空，如果为空则提示并返回
-        for (int i=0; i<self.textInputViews.count; i++) {
-            if (i!=self.textInputViews.count-1) {
-                UITextField *textF = (UITextField *)self.textInputViews[i];
-                if (textF.text ==nil || textF.text.length <=0) {
-                    [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                    return;
-                }
-            }else{
-                UITextView *textV = (UITextView *)self.textInputViews[i];
-                if (textV.text ==nil || textV.text.length <=0) {
-                    [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-                    return;
-                }
-            }
-        }
         //创建字典对象并向表中插和数据
         NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                               pointid,@"pointid",
@@ -323,5 +298,26 @@
     }];
 }
 
+//判断是否有文本框为空
+-(BOOL)hasTextBeNull
+{
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<self.textInputViews.count; i++) {
+        if (i!=self.textInputViews.count-1) {
+            UITextField *textF = (UITextField *)self.textInputViews[i];
+            if (textF.text ==nil || textF.text.length <=0) {
+                [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                return YES;
+            }
+        }else{
+            UITextView *textV = (UITextView *)self.textInputViews[i];
+            if (textV.text ==nil || textV.text.length <=0) {
+                [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
 @end
 

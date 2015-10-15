@@ -5,6 +5,7 @@
 //
 
 #import "MasterViewController.h"
+#import "AdminTableHead.h"
 
 @interface MasterViewController ()
 {
@@ -51,6 +52,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.backgroundColor = [UIColor colorWithRed:236/255.0f green:240/255.0f blue:241/255.0f alpha:1.0f];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     if (indexPath.section ==0) {

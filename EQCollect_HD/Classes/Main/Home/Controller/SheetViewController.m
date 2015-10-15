@@ -13,7 +13,7 @@
     NSNotification *_currentKeyboardNotification;   //保存键盘通知对象，键盘隐藏时为nil
     NSInteger _lastDistance;                        //键盘遮挡文本时前一次向上移动的距离
     
-    MBProgressHUD *HUD;
+    MBProgressHUD *_HUD;
 }
 
 @end
@@ -37,7 +37,9 @@
 {
     [super viewWillDisappear:animated];
     //取消监听键盘事件
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark UITextFieldDelegate方法
@@ -94,7 +96,6 @@
  */
 -(void)keyboardWillShow:(NSNotification *)notification
 {
-    
     _currentKeyboardNotification = notification;
     UIWindow *keyWin = [[UIApplication sharedApplication] keyWindow];
     //获取键盘属性字典
@@ -127,7 +128,6 @@
  */
 -(void)keyboardWillHide:(NSNotification *)notification
 {
-    
     //获取键盘属性字典
     NSDictionary *keyboardDict = [notification userInfo];
     //获取键盘动画时间
@@ -144,24 +144,23 @@
     _lastDistance = 0;
 }
 
-
 //显示等待动画MBProgressHUD
 -(void)showMBProgressHUDWithSel:(SEL)method
 {
-    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:HUD];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:_HUD];
     
-    HUD.delegate = self;
-    HUD.labelText = @"请稍等...";
+    _HUD.delegate = self;
+    _HUD.labelText = @"请稍等...";
     
-    [HUD showWhileExecuting:method onTarget:self withObject:nil animated:YES];
+    [_HUD showWhileExecuting:method onTarget:self withObject:nil animated:YES];
 }
 
 #pragma mark - MBProgressHUDDelegate
 - (void)hudWasHidden:(MBProgressHUD *)hud {
-    [HUD removeFromSuperview];
+    [_HUD removeFromSuperview];
     //[HUD release];
-    HUD = nil;
+    _HUD = nil;
 }
 
 @end

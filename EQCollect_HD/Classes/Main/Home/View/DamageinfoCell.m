@@ -12,12 +12,27 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    self.uploadBtn.layer.cornerRadius = 7.0f;
+    self.uploadBtn.layer.masksToBounds = YES;
+    self.deleteBtn.layer.cornerRadius = 7.0f;
+    self.deleteBtn.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (IBAction)upLoadDamageinfo:(UIButton *)sender {
+    //如果上传按钮处于选中状态，表示已经上传
+    if (!sender.selected) {
+        if ([self.delegate respondsToSelector:@selector(infocell:didClickUpLoadBtnAtIndexPath:)]) {
+            [self.delegate infocell:self didClickUpLoadBtnAtIndexPath:self.indexPath];
+        }
+    } else{
+        [[[UIAlertView alloc] initWithTitle:nil message:@"您已经上传过了" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+    }
 }
 
 - (IBAction)deleteDamageinfo:(id)sender {

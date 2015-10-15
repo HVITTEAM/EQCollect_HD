@@ -15,6 +15,6 @@
 
 -(void)showMBProgressHUDWithSel:(SEL)method;
 
-//-(void)keyboardWillShow:(NSNotification *)notification;
-//-(void)keyboardWillHide:(NSNotification *)notification;
+-(void)keyboardWillShow:(NSNotification *)notification;
+-(void)keyboardWillHide:(NSNotification *)notification;
 @end

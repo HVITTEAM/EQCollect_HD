@@ -54,7 +54,6 @@
 		0177A0DA1B968496003199F4 /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0D51B968496003199F4 /* UINavigationBar+Awesome.m */; };
 		0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0D71B968496003199F4 /* UIView+Extension.m */; };
 		0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177A0E31B968A18003199F4 /* PersonCenterController.m */; };
-		0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0177A0E41B968A18003199F4 /* PersonCenterController.xib */; };
 		018A1D8B1B9D2EC000C97B48 /* AbnormalinfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 018A1D8A1B9D2EC000C97B48 /* AbnormalinfoTableHelper.m */; };
 		018A1D8E1B9D314200C97B48 /* ReactioninfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 018A1D8D1B9D314200C97B48 /* ReactioninfoTableHelper.m */; };
 		018A1D911B9D316400C97B48 /* DamageinfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 018A1D901B9D316400C97B48 /* DamageinfoTableHelper.m */; };
@@ -150,6 +149,8 @@
 		D2C189651BA94D0F00312EBA /* PictureInfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */; };
 		D2C189681BA9510100312EBA /* PictureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189671BA9510100312EBA /* PictureMode.m */; };
 		D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */; };
+		D2D80A5C1BCE3CFA00666750 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D80A5A1BCE3CFA00666750 /* AboutViewController.m */; settings = {ASSET_TAGS = (); }; };
+		D2D80A5D1BCE3CFA00666750 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2D80A5B1BCE3CFA00666750 /* AboutViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		D2DCDE621BBD66020085CC25 /* SheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DCDE611BBD66020085CC25 /* SheetViewController.m */; };
 		D2DDCDE51BB92B1000A14147 /* UzysAssetPickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D2DDCDD61BB92B1000A14147 /* UzysAssetPickerController.bundle */; };
 		D2DDCDE61BB92B1000A14147 /* UzysAssetsPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DDCDD81BB92B1000A14147 /* UzysAssetsPickerController.m */; };
@@ -297,7 +298,6 @@
 		0177A0DC1B9684C9003199F4 /* EQCollect_HD.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EQCollect_HD.pch; sourceTree = "<group>"; };
 		0177A0E21B968A18003199F4 /* PersonCenterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonCenterController.h; sourceTree = "<group>"; };
 		0177A0E31B968A18003199F4 /* PersonCenterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCenterController.m; sourceTree = "<group>"; };
-		0177A0E41B968A18003199F4 /* PersonCenterController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonCenterController.xib; sourceTree = "<group>"; };
 		018A1D891B9D2EC000C97B48 /* AbnormalinfoTableHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbnormalinfoTableHelper.h; sourceTree = "<group>"; };
 		018A1D8A1B9D2EC000C97B48 /* AbnormalinfoTableHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbnormalinfoTableHelper.m; sourceTree = "<group>"; };
 		018A1D8C1B9D314200C97B48 /* ReactioninfoTableHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactioninfoTableHelper.h; sourceTree = "<group>"; };
@@ -475,6 +475,9 @@
 		D2C189671BA9510100312EBA /* PictureMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureMode.m; sourceTree = "<group>"; };
 		D2C207F71B9D264A00454591 /* QCSlideSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QCSlideSwitchView.h; sourceTree = "<group>"; };
 		D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QCSlideSwitchView.m; sourceTree = "<group>"; };
+		D2D80A591BCE3CFA00666750 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		D2D80A5A1BCE3CFA00666750 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		D2D80A5B1BCE3CFA00666750 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		D2DCDE601BBD66020085CC25 /* SheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SheetViewController.h; sourceTree = "<group>"; };
 		D2DCDE611BBD66020085CC25 /* SheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SheetViewController.m; sourceTree = "<group>"; };
 		D2DDCDD61BB92B1000A14147 /* UzysAssetPickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UzysAssetPickerController.bundle; sourceTree = "<group>"; };
@@ -667,6 +670,9 @@
 				0177A0A81B9683C3003199F4 /* HMCommonViewController.m */,
 				0177A0AD1B9683F6003199F4 /* SettingViewController.h */,
 				0177A0AE1B9683F6003199F4 /* SettingViewController.m */,
+				D2D80A591BCE3CFA00666750 /* AboutViewController.h */,
+				D2D80A5A1BCE3CFA00666750 /* AboutViewController.m */,
+				D2D80A5B1BCE3CFA00666750 /* AboutViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -743,7 +749,6 @@
 			children = (
 				0177A0E21B968A18003199F4 /* PersonCenterController.h */,
 				0177A0E31B968A18003199F4 /* PersonCenterController.m */,
-				0177A0E41B968A18003199F4 /* PersonCenterController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1338,6 +1343,7 @@
 				TargetAttributes = {
 					01EDAD551B8EF22200C1CF21 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = G688QXM6YK;
 					};
 					01EDAD6E1B8EF22200C1CF21 = {
 						CreatedOnToolsVersion = 6.4;
@@ -1391,6 +1397,7 @@
 				D2DDCDE71BB92B1000A14147 /* UzysAssetsPickerController.xib in Resources */,
 				D23A1A431B9E613C00758DDD /* PointinfoViewController.xib in Resources */,
 				013CD4231BA9574E00470284 /* MWPhotoBrowser.bundle in Resources */,
+				D2D80A5D1BCE3CFA00666750 /* AboutViewController.xib in Resources */,
 				D23A1AAA1B9EE3C500758DDD /* DamageinfoListController.xib in Resources */,
 				01EDAD651B8EF22200C1CF21 /* Main.storyboard in Resources */,
 				D23A1AAF1B9EE3F900758DDD /* DamageinfoCell.xib in Resources */,
@@ -1409,7 +1416,6 @@
 				016734891BAAA358009C5620 /* ImageCollectionView.xib in Resources */,
 				D23A1AA01B9EDE5400758DDD /* ReactioninfoCell.xib in Resources */,
 				010CAB451BAB962100828EBD /* SQCollectionCell.xib in Resources */,
-				0177A0E61B968A18003199F4 /* PersonCenterController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1551,6 +1557,7 @@
 				01A26EE11BA17ED700EEB627 /* AFURLRequestSerialization.m in Sources */,
 				D28DCCAF1BC6114D004DC637 /* MJRefreshAutoFooter.m in Sources */,
 				D2F1755A1BC9097F00655EDD /* UIImageView+HighlightedWebCache.m in Sources */,
+				D2D80A5C1BCE3CFA00666750 /* AboutViewController.m in Sources */,
 				D28DCCB01BC6114D004DC637 /* MJRefreshBackFooter.m in Sources */,
 				013CD4081BA9574E00470284 /* PSTCollectionViewData.m in Sources */,
 				013CD3FE1BA9574E00470284 /* MWTapDetectingImageView.m in Sources */,
@@ -1699,9 +1706,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = EQCollect_HD/EQCollect_HD.pch;
 				INFOPLIST_FILE = EQCollect_HD/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1711,9 +1719,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = EQCollect_HD/EQCollect_HD.pch;
 				INFOPLIST_FILE = EQCollect_HD/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

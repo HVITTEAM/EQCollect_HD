@@ -46,6 +46,9 @@
  *  提醒数字
  */
 @property (strong, nonatomic) HMBadgeView *bageView;
+
+@property (strong,nonatomic) UILabel *centerlabel;
+
 @end
 
 @implementation HMCommonCell
@@ -109,6 +112,17 @@
         self.bageView = [[HMBadgeView alloc] init];
     }
     return _bageView;
+}
+
+//by swy
+-(UILabel *)centerlabel
+{
+    if (_centerlabel == nil) {
+        self.centerlabel = [[UILabel alloc] init];
+        self.centerlabel.textColor = [UIColor lightGrayColor];
+        self.centerlabel.font = [UIFont systemFontOfSize:15];
+    }
+    return _centerlabel;
 }
 
 #pragma mark - 初始化
@@ -231,6 +245,17 @@
     } else { // 取消右边的内容
         self.accessoryView = nil;
     }
+    
+    // 设置中间文本by swy
+    if ([item isKindOfClass:[HMCommonCenterItem class]]) {
+        HMCommonCenterItem *hitem = (HMCommonCenterItem *)item;
+        self.centerlabel.text = hitem.centerString;
+        self.centerlabel.x = 120;
+        self.centerlabel.width = MTScreenW - 110;
+        self.centerlabel.height = 60;
+        [self.contentView addSubview:self.centerlabel];
+    }
+    
 }
 
 /**

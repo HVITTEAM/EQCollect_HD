@@ -8,8 +8,12 @@
 
 #import "DamageinfoListController.h"
 #import "DamageinfoViewController.h"
+#import "PictureMode.h"
 
 @interface DamageinfoListController ()
+{
+    MBProgressHUD *_H ;
+}
 
 @end
 
@@ -35,7 +39,6 @@
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 
 /**
@@ -80,6 +83,16 @@
     cell.damageaddress.text = damageinfo.damageaddress;
     cell.fortificationintensity.text = damageinfo.fortificationintensity;
     
+    if ([damageinfo.upload isEqualToString:@"1"]) {
+        cell.uploadBtn.selected = YES;
+        [cell.uploadBtn setBackgroundColor:HMColor(0, 160,70)];
+        [cell.uploadBtn setTitle:@"已上传" forState:UIControlStateNormal];
+    }else{
+        cell.uploadBtn.selected = NO;
+        [cell.uploadBtn setBackgroundColor:HMColor(102, 147, 255)];
+        [cell.uploadBtn setTitle:@"上传" forState:UIControlStateNormal];
+    }
+    
     cell.indexPath = indexPath;
     cell.delegate = self;
     
@@ -121,12 +134,80 @@
     }
     if (result) {
         //如果删除成功，则把房屋震害信息从dataProvider数组中删除并刷新界面
-        [self getDataProvider];
+        [self.dataProvider removeObject:damageinfo];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
     }else{
         [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }
 }
 
+//上传数据
+-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+{
+    DamageModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+    //上传数据 。。。。
+ /*   _H = [MBProgressHUD showHUDAddedTo:self.nav.view animated:YES];
+    [NSThread sleepForTimeInterval:1.0f];
 
+
+    //获取要上传的图片
+    NSArray *imgs = [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:model.damageid];
+    //创建字典对象作为上传参数
+    NSDictionary *parameters1 = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         // model.damageid,@"damageid",
+                          model.damagetime,@"damagetime",
+                          model.damageaddress,@"damageaddress",
+                          model.damageintensity, @"damageintensity",
+                          model.zrcorxq, @"zrcorxq",
+                          model.dworzh,@"dworzh",
+                          model.fortificationintensity,@"fortificationintensity",
+                          model.damagesituation,@"damagesituation",
+                          model.damageindex,@"damageindex",
+                          //self.pointid,@"pointid",
+                          //@"0",@"upload",
+                          nil];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:@"http://192.168.1.116:3000/login" parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"数据上传成功: %@", responseObject);
+        //信息上传成功后上传对应的图片
+        NSDictionary *parameters2 = @{@"v": @"参数"};
+        [manager POST:@"http://192.168.1.116:3000/login" parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            //循环添加要上传的图片
+            for (PictureMode *picmodel in imgs) {
+                NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
+                [formData appendPartWithFileURL:filePath name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png" error:nil];
+            }
+        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [HUD removeFromSuperview];
+            NSLog(@"图片上传成功: %@", responseObject);
+            //上传数据成功则更新本地数据
+            BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
+            if (result) {
+                model.upload = @"1";
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                });
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [HUD removeFromSuperview];
+            NSLog(@"图片上传失败: %@", error);
+        }];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [HUD removeFromSuperview];
+        NSLog(@"数据上传失败: %@", error);
+        
+    }];
+    */
+
+    //上传数据成功则更新本地数据
+    BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
+    if (result) {
+        model.upload = @"1";
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+}
 
 @end

@@ -121,7 +121,7 @@
  */
 -(BOOL)deleteImageByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
 {
-    BOOL result = NO;
+    BOOL result = YES;
     NSMutableArray *picResultSet = [[NSMutableArray alloc] init];
     
     if ([db open]) {

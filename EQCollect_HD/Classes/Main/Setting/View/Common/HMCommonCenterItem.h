@@ -7,6 +7,6 @@
 
 #import "HMCommonItem.h"
 
-@interface HMCommonCenterItem : HMCommonItem
-
+@interface HMCommonCenterItem : HMCommonArrowItem
+@property (nonatomic,copy)NSString *centerString;
 @end

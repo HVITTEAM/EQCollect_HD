@@ -7,15 +7,11 @@
 #import <UIKit/UIKit.h>
 #import "SettingViewController.h"
 #import "PersonCenterController.h"
-#import "AdminTableHead.h"
 
 @interface MasterViewController : UITableViewController
-//@property (nonatomic, copy) void (^selectedType)(NSDictionary *type);
 
 @property (nonatomic, retain) SettingViewController *settingView;
 @property (nonatomic, retain) PersonCenterController *personView;
 
 @property (nonatomic, retain) UINavigationController *nav;
-
-
 @end

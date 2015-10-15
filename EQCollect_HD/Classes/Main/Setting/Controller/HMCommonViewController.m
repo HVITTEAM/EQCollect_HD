@@ -64,7 +64,7 @@
     HMCommonGroup *group = self.groups[indexPath.section];
     cell.item = group.items[indexPath.row];
     // 设置cell所处的行号 和 所处组的总行数
-    [cell setIndexPath:indexPath rowsInSection:group.items.count];
+    [cell setIndexPath:indexPath rowsInSection:(int)group.items.count];
     return cell;
 }
 

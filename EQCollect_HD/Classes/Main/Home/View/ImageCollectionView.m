@@ -19,7 +19,7 @@ static NSString *kcellIdentifier = @"collectionCellID";
 @implementation ImageCollectionView
 {
     BOOL isFull;//是否已经选择十张
-    
+    MWPhotoBrowser *_browser;
 
 }
 
@@ -326,23 +326,23 @@ static NSString *kcellIdentifier = @"collectionCellID";
     self.photos = photos;
     self.thumbs = thumbs;
     // Create browser
-    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-    browser.displayActionButton = displayActionButton;//分享按钮,默认是
-    browser.displayNavArrows = displayNavArrows;//左右分页切换,默认否
-    browser.displaySelectionButtons = displaySelectionButtons;//是否显示选择按钮在图片上,默认否
-    browser.alwaysShowControls = displaySelectionButtons;//控制条件控件 是否显示,默认否
-    browser.zoomPhotosToFill = NO;//是否全屏,默认是
+    _browser= [[MWPhotoBrowser alloc] initWithDelegate:self];
+    _browser.displayActionButton = displayActionButton;//分享按钮,默认是
+    _browser.displayNavArrows = displayNavArrows;//左右分页切换,默认否
+    _browser.displaySelectionButtons = displaySelectionButtons;//是否显示选择按钮在图片上,默认否
+    _browser.alwaysShowControls = displaySelectionButtons;//控制条件控件 是否显示,默认否
+    _browser.zoomPhotosToFill = NO;//是否全屏,默认是
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
     browser.wantsFullScreenLayout = YES;//是否全屏
 #endif
-    browser.enableGrid = enableGrid;//是否允许用网格查看所有图片,默认是
-    browser.startOnGrid = startOnGrid;//是否第一张,默认否
-    browser.enableSwipeToDismiss = YES;
-    [browser showNextPhotoAnimated:YES];
-    [browser showPreviousPhotoAnimated:YES];
-    [browser setCurrentPhotoIndex:idx];
+    _browser.enableGrid = enableGrid;//是否允许用网格查看所有图片,默认是
+    _browser.startOnGrid = startOnGrid;//是否第一张,默认否
+    _browser.enableSwipeToDismiss = YES;
+    [_browser showNextPhotoAnimated:YES];
+    [_browser showPreviousPhotoAnimated:YES];
+    [_browser setCurrentPhotoIndex:idx];
     
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:browser];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_browser];
     nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
 }
@@ -359,6 +359,15 @@ static NSString *kcellIdentifier = @"collectionCellID";
     if (index < _photos.count)
         return [_photos objectAtIndex:index];
     return nil;
+}
+
+
+-(void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser
+{
+    [photoBrowser dismissViewControllerAnimated:YES completion:nil];
+    _browser = nil;
+    self.photos = nil;
+    self.thumbs = nil;
 }
 
 #pragma mark - UzysAssetsPickerControllerDelegate
@@ -380,6 +389,8 @@ static NSString *kcellIdentifier = @"collectionCellID";
             NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
 
             NSData *data;
+            NSData *data1;
+            data1 = UIImageJPEGRepresentation(img, 1);//压缩图片
             data = UIImageJPEGRepresentation(img, 0.000005);//压缩图片
             PictureVO *imgVo = [[PictureVO alloc] init];
             imgVo.name = [currentDateStr stringByAppendingFormat:@"_%lu",(unsigned long)idx];

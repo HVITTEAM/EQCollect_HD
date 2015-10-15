@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,54 +11,65 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="109.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="宏观异常信息编号:888888" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewC-Yw-pk6">
-                        <rect key="frame" x="20" y="15" width="164" height="17"/>
+                        <rect key="frame" x="20" y="15" width="169" height="17"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015-09-01  14:23:10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vmO-Jw-qIO">
-                        <rect key="frame" x="450" y="15" width="130" height="16"/>
+                        <rect key="frame" x="448.5" y="15" width="131.5" height="16"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="烈度:8" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zab-tu-N7I">
-                        <rect key="frame" x="20" y="54" width="43" height="18"/>
+                        <rect key="frame" x="20" y="54" width="44" height="18"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahf-9S-PKQ">
-                        <rect key="frame" x="456" y="69" width="50" height="30"/>
-                        <color key="backgroundColor" red="0.17254902420000001" green="0.94901967050000002" blue="0.97254908080000002" alpha="1" colorSpace="deviceRGB"/>
+                        <rect key="frame" x="436" y="69" width="70" height="30"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.57647058819999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="50" id="LLM-yq-wsx"/>
+                            <constraint firstAttribute="width" constant="70" id="LLM-yq-wsx"/>
                             <constraint firstAttribute="height" constant="30" id="e2S-i7-aQr"/>
                         </constraints>
-                        <state key="normal" title="编辑">
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <state key="normal" title="上传">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="upLoadAbnormalinfo:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zvg-E3-4n9"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可信度:5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWg-jW-M6X">
-                        <rect key="frame" x="78" y="54" width="58" height="18"/>
+                        <rect key="frame" x="79" y="54" width="58.5" height="18"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="初步分析:各类地震监测数 据的汇集、处理与服务；地震信息网络和通讯服务" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vPG-cX-KOR">
-                        <rect key="frame" x="20" y="82.5" width="401.5" height="17"/>
+                        <rect key="frame" x="20" y="82" width="381.5" height="17"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftf-x3-0tw">
                         <rect key="frame" x="530" y="69" width="50" height="30"/>
-                        <color key="backgroundColor" red="0.95294123890000004" green="0.14509804549999999" blue="0.12549020350000001" alpha="1" colorSpace="deviceRGB"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.8725585938" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="Nbd-s5-L7N"/>
                             <constraint firstAttribute="width" constant="50" id="dqG-2Q-g9k"/>
@@ -71,6 +83,7 @@
                         </connections>
                     </button>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="ewC-Yw-pk6" firstAttribute="leading" secondItem="Zab-tu-N7I" secondAttribute="leading" id="Bhx-B9-4g4"/>
                     <constraint firstAttribute="trailing" secondItem="ftf-x3-0tw" secondAttribute="trailing" constant="20" id="DXW-vo-MAZ"/>
@@ -89,12 +102,15 @@
                     <constraint firstAttribute="bottom" secondItem="ftf-x3-0tw" secondAttribute="bottom" constant="10.5" id="xWc-hM-a5f"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="abnormalTitleText" destination="ewC-Yw-pk6" id="fWP-Am-ZWm"/>
                 <outlet property="abnormaltimeText" destination="vmO-Jw-qIO" id="frm-fs-ory"/>
                 <outlet property="analysisText" destination="vPG-cX-KOR" id="f9g-jC-HhA"/>
                 <outlet property="crediblyText" destination="hWg-jW-M6X" id="Per-Z1-flY"/>
+                <outlet property="deleteBtn" destination="ftf-x3-0tw" id="Ldo-gC-E9M"/>
                 <outlet property="intensityText" destination="Zab-tu-N7I" id="yFW-0N-1ht"/>
+                <outlet property="uploadBtn" destination="ahf-9S-PKQ" id="zt7-bM-971"/>
             </connections>
             <point key="canvasLocation" x="312" y="322"/>
         </tableViewCell>

@@ -53,9 +53,8 @@
     if ([self.pointinfo.upload isEqualToString:@"0"]) {
         self.navigationItem.rightBarButtonItem = _rightItem;
     }else {
-        self.navigationItem.rightBarButtonItem = _rightItem;
+        self.navigationItem.rightBarButtonItem = nil;
     }
-    
     //更新数据
     self.pointinfoVC.pointinfo = self.pointinfo;
     [self.pointinfoVC viewWillAppear:YES];
@@ -138,14 +137,10 @@
 - (void)slideSwitchView:(QCSlideSwitchView *)view didselectTab:(NSUInteger)number
 {
     if (number == 0) {
-        
-        if ([self.pointinfo.upload isEqualToString:@"0"]) {
-            _rightItem.title = @"编辑";
-            self.navigationItem.rightBarButtonItem = _rightItem;
-        }else self.navigationItem.rightBarButtonItem = nil;
+        _rightItem.title = @"编辑";
+        self.pointinfoVC.actionType = kActionTypeShow;
     }else {
          _rightItem.title = @"新增";
-        self.navigationItem.rightBarButtonItem = _rightItem;
     }
     _currentIndex = number;
 }

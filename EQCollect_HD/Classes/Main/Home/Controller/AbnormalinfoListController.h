@@ -12,9 +12,10 @@
 
 @interface AbnormalinfoListController : UITableViewController<InfoCellDelegate>
 @property (strong,nonatomic)UINavigationController *nav;
-@property (strong,nonatomic)AbnormalinfoViewController *abnormalinfoVC;
+//@property (strong,nonatomic)AbnormalinfoViewController *abnormalinfoVC;
 
 @property (nonatomic, retain) NSMutableArray *dataProvider;
 @property (copy,nonatomic)NSString *pointid;
+@property (copy,nonatomic)NSString *pointUploadFlag;
 
 @end

@@ -106,12 +106,17 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.damageinfoVC) {
-        self.damageinfoVC = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
-    }
-    self.damageinfoVC.damageinfo = self.dataProvider[indexPath.row];
-    self.damageinfoVC.actionType = kActionTypeShow;
-    [self.nav pushViewController:self.damageinfoVC animated:YES];
+//    if (!self.damageinfoVC) {
+//        self.damageinfoVC = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
+//    }
+//    self.damageinfoVC.damageinfo = self.dataProvider[indexPath.row];
+//    self.damageinfoVC.actionType = kActionTypeShow;
+//    [self.nav pushViewController:self.damageinfoVC animated:YES];
+    
+    DamageinfoViewController *damageinfoVC1 = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
+    damageinfoVC1.damageinfo = self.dataProvider[indexPath.row];
+    damageinfoVC1.actionType = kActionTypeShow;
+    [self.nav pushViewController:damageinfoVC1 animated:YES];
 }
 
 -(void)updateDamageinfo:(NSNotification *)notification
@@ -145,18 +150,20 @@
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self.pointUploadFlag isEqualToString:@"0"]) {
+        [[[UIAlertView alloc] initWithTitle:@"警告" message:@"请先上传调查点数据表信息" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] show];
+        return;
+    }
+    
+    MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DamageModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-    //上传数据 。。。。
- /*   _H = [MBProgressHUD showHUDAddedTo:self.nav.view animated:YES];
-    [NSThread sleepForTimeInterval:1.0f];
-
-
     //获取要上传的图片
     NSArray *imgs = [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:model.damageid];
+    
     //创建字典对象作为上传参数
     NSDictionary *parameters1 = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         // model.damageid,@"damageid",
-                          model.damagetime,@"damagetime",
+                          model.damageid,@"damageid",
+                          //model.damagetime,@"damagetime",
                           model.damageaddress,@"damageaddress",
                           model.damageintensity, @"damageintensity",
                           model.zrcorxq, @"zrcorxq",
@@ -164,22 +171,23 @@
                           model.fortificationintensity,@"fortificationintensity",
                           model.damagesituation,@"damagesituation",
                           model.damageindex,@"damageindex",
-                          //self.pointid,@"pointid",
+                          model.pointid,@"pointid",
                           //@"0",@"upload",
                           nil];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:@"http://192.168.1.116:3000/login" parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:URL_adddamage parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"数据上传成功: %@", responseObject);
         //信息上传成功后上传对应的图片
-        NSDictionary *parameters2 = @{@"v": @"参数"};
-        [manager POST:@"http://192.168.1.116:3000/login" parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        //NSDictionary *parameters2 = @{@"v": @"参数"};
+        NSDictionary *parameters2 = @{@"id":model.damageid,@"from":@"damage"};
+        [manager POST:URL_addimg parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             //循环添加要上传的图片
             for (PictureMode *picmodel in imgs) {
                 NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
-                [formData appendPartWithFileURL:filePath name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png" error:nil];
+                NSData * imagedata = [NSData dataWithContentsOfURL:filePath];
+                [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png"];
             }
         } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [HUD removeFromSuperview];
             NSLog(@"图片上传成功: %@", responseObject);
             //上传数据成功则更新本地数据
             BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
@@ -188,26 +196,32 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                 });
+                 [mbprogress removeFromSuperview];
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [HUD removeFromSuperview];
-            NSLog(@"图片上传失败: %@", error);
+            NSLog(@"图片上传失败:");
+             [mbprogress removeFromSuperview];
         }];
-        
+        //[mbprogress removeFromSuperview];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HUD removeFromSuperview];
-        NSLog(@"数据上传失败: %@", error);
+        NSLog(@"数据上传失败:");
+         [mbprogress removeFromSuperview];
         
     }];
-    */
+    
+//    //上传数据成功则更新本地数据
+//    BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
+//    if (result) {
+//        model.upload = @"1";
+//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//    }
+}
 
-    //上传数据成功则更新本地数据
-    BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
-    if (result) {
-        model.upload = @"1";
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    }
+-(void)dealloc
+{
+    
+    NSLog(@"DamageinfoListController释放了吗。。。。。。。。。。。。。");
 }
 
 @end

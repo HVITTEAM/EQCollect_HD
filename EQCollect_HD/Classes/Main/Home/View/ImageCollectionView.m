@@ -136,7 +136,8 @@ static NSString *kcellIdentifier = @"collectionCellID";
         
         PictureVO *vo = self.dataProvider[index];
         //创建缩略图来显示
-        imageV.image = [vo.image scaleImageToSize:CGSizeMake(cellWidth,cellHeight)];
+        UIImage *img = [[UIImage alloc] initWithData:vo.imageData];
+        imageV.image = [img scaleImageToSize:CGSizeMake(cellWidth,cellHeight)];
     }
     return cell;
 }
@@ -253,7 +254,7 @@ static NSString *kcellIdentifier = @"collectionCellID";
         [picker dismissViewControllerAnimated:NO completion:nil];
         PictureVO *imgVo = [[PictureVO alloc] init];
         imgVo.name = currentDateStr;
-        imgVo.image = [UIImage imageWithData:data];
+        imgVo.imageData = data;
         
         if (self.dataProvider.count < 10) {
             [self.dataProvider addObject:imgVo];
@@ -316,7 +317,7 @@ static NSString *kcellIdentifier = @"collectionCellID";
 //        NSUInteger idx = [self.dataProvider indexOfObject:vo];
 //        if (idx == self.dataProvider.count - 1)
 //            break;
-        UIImage *img = vo.image;
+        UIImage *img = [[UIImage alloc] initWithData:vo.imageData];
         photo = [MWPhoto photoWithImage:img];
         photo.caption = vo.name;
         [photos addObject:photo];
@@ -342,9 +343,9 @@ static NSString *kcellIdentifier = @"collectionCellID";
     [_browser showPreviousPhotoAnimated:YES];
     [_browser setCurrentPhotoIndex:idx];
     
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_browser];
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
+    UINavigationController *nav0 = [[UINavigationController alloc] initWithRootViewController:_browser];
+    nav0.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav0 animated:YES completion:nil];
 }
 
 #pragma mark - MWPhotoBrowserDelegate
@@ -373,38 +374,40 @@ static NSString *kcellIdentifier = @"collectionCellID";
 #pragma mark - UzysAssetsPickerControllerDelegate
 - (void)UzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    if([[assets[0] valueForProperty:@"ALAssetPropertyType"] isEqualToString:@"ALAssetTypePhoto"]) //Photo
-    {
-        [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            ALAsset *representation = obj;
-            
-            UIImage *img = [UIImage imageWithCGImage:representation.defaultRepresentation.fullResolutionImage
-                                               scale:representation.defaultRepresentation.scale
-                                         orientation:(UIImageOrientation)representation.defaultRepresentation.orientation];
-            //实例化一个NSDateFormatter对象
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            //设定时间格式,这里可以设置成自己需要的格式
-            [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-            //用[NSDate date]可以获取系统当前时间
-            NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if([[assets[0] valueForProperty:@"ALAssetPropertyType"] isEqualToString:@"ALAssetTypePhoto"]) //Photo
+        {
+            [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                ALAsset *representation = obj;
+                
+                UIImage *img = [UIImage imageWithCGImage:representation.defaultRepresentation.fullResolutionImage
+                                                   scale:representation.defaultRepresentation.scale
+                                             orientation:(UIImageOrientation)representation.defaultRepresentation.orientation];
+                //实例化一个NSDateFormatter对象
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                //设定时间格式,这里可以设置成自己需要的格式
+                [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+                //用[NSDate date]可以获取系统当前时间
+                NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+                
+                NSData *data;
+                data = UIImageJPEGRepresentation(img, 0.000005);//压缩图片
+                PictureVO *imgVo = [[PictureVO alloc] init];
+                imgVo.name = [currentDateStr stringByAppendingFormat:@"_%lu",(unsigned long)idx];
+                imgVo.imageData = data;
 
-            NSData *data;
-            NSData *data1;
-            data1 = UIImageJPEGRepresentation(img, 1);//压缩图片
-            data = UIImageJPEGRepresentation(img, 0.000005);//压缩图片
-            PictureVO *imgVo = [[PictureVO alloc] init];
-            imgVo.name = [currentDateStr stringByAppendingFormat:@"_%lu",(unsigned long)idx];
-            imgVo.image = [UIImage imageWithData:data];
-       
-            if (self.dataProvider.count < 10) {
-                [self.dataProvider addObject:imgVo];
-            }
-        }];
-    }
-    [self setAddBtn];
-    //调整view高度
-    [self changeViewHeight];
-    
+                if (self.dataProvider.count < 10) {
+                    [self.dataProvider addObject:imgVo];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self setAddBtn];
+                    //调整view高度
+                    [self changeViewHeight];
+                });
+
+            }];
+        }
+    });
 }
 
 /**

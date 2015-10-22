@@ -31,7 +31,8 @@
     [self setTitle:badgeValue forState:UIControlStateNormal];
     
     // 根据文字计算自己的尺寸
-    CGSize titleSize = [badgeValue sizeWithFont:self.titleLabel.font];
+    //CGSize titleSize = [badgeValue sizeWithFont:self.titleLabel.font];
+    CGSize titleSize = [badgeValue sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}];
     CGFloat bgW = self.currentBackgroundImage.size.width;
     if (titleSize.width < bgW) {
         self.width = bgW;

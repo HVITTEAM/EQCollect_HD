@@ -7,9 +7,31 @@
 //
 #define kNormalNavHeight 64
 #define kAddNavheight 44
-#import "PointinfoViewController.h"
 
-@interface PointinfoViewController ()
+#import "PointinfoViewController.h"
+#import "PictureInfoTableHelper.h"
+#import "PictureMode.h"
+#import "LocationHelper.h"
+
+@interface PointinfoViewController ()<UIAlertViewDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+
+@property (weak, nonatomic) IBOutlet UITextField *pointidTextF;                 //调查点编号
+@property (weak, nonatomic) IBOutlet UITextField *earthidTextF;                 //地震编号
+@property (weak, nonatomic) IBOutlet UITextField *pointlocationTextF;           //调查点地点
+@property (weak, nonatomic) IBOutlet UITextField *pointlonTextF;                //调查点经度
+@property (weak, nonatomic) IBOutlet UITextField *pointlatTextF;                //调查点纬度
+@property (weak, nonatomic) IBOutlet UITextField *pointnameTextF;               //调查点名称
+@property (weak, nonatomic) IBOutlet UITextField *pointtimeTextF;               //生成时间
+@property (weak, nonatomic) IBOutlet UITextField *pointgroupTextF;              //小组名称
+@property (weak, nonatomic) IBOutlet UITextField *pointPersonTextF;             //小组成员
+@property (weak, nonatomic) IBOutlet UITextField *pointintensityTextF;          //评定烈度
+@property (weak, nonatomic) IBOutlet UITextView *pointcontentTextV;             //调查简述
+
+@property (strong,nonatomic)NSArray *textInputViews;               //所有的文本输入框      
 
 @end
 
@@ -27,6 +49,11 @@
     self.containerV = self.containerView;
     
     [self initPointinfoVC];
+        UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
+        //将UIDeviceOrientation类型转为UIInterfaceOrientation
+        UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
+        //根据屏幕方向设置视图的约束
+        [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -35,19 +62,23 @@
     
     [self showPointinfoData];
     
-    //获取设备当前方向
-    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
-    //将UIDeviceOrientation类型转为UIInterfaceOrientation
-    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
-    //根据屏幕方向设置视图的约束
-    [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 }
-
+//-(void)viewDidLayoutSubviews
+//{
+//    [super viewDidLayoutSubviews];
+//    //获取设备当前方向
+//    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
+//    //将UIDeviceOrientation类型转为UIInterfaceOrientation
+//    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
+//    //根据屏幕方向设置视图的约束
+//    [self rotationToInterfaceOrientation:interfaceOrientation];
+//
+//}
 /**
  *  初始化调查点信息控制器
  */
@@ -73,6 +104,7 @@
                             self.pointlonTextF,
                             self.pointlatTextF,
                             self.pointgroupTextF,
+                            self.pointPersonTextF,
                             self.pointintensityTextF,
                             self.pointcontentTextV
                             ];
@@ -87,6 +119,9 @@
     self.pointcontentTextV.tag = 1000 + self.textInputViews.count-1;
 }
 
+/**
+ *  显示页面数据
+ */
 -(void)showPointinfoData
 {
     if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit)
@@ -99,16 +134,45 @@
         self.pointnameTextF.text = self.pointinfo.pointname;
         self.pointtimeTextF.text = self.pointinfo.pointtime;
         self.pointgroupTextF.text = self.pointinfo.pointgroup;
+        self.pointPersonTextF.text = self.pointinfo.pointperson;
         self.pointintensityTextF.text = self.pointinfo.pointintensity;
         self.pointcontentTextV.text = self.pointinfo.pointcontent;
     }else
     {
+        self.pointidTextF.text = [self createUniqueIdWithAbbreTableName:@"DC"];
+        
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"MM-dd HH:mm"];
         self.pointtimeTextF.text = [formatter stringFromDate:date];
+        
+        LocationHelper *lHelper = [LocationHelper sharedLocationHelper];
+        self.pointlatTextF.text = [NSString stringWithFormat:@"%f",lHelper.currentLocation.coordinate.latitude];
+        self.pointlonTextF.text = [NSString stringWithFormat:@"%f",lHelper.currentLocation.coordinate.longitude];
+        __weak typeof(self) weakSelf = self;
+        [lHelper reverseGeocodeWithSuccess:^(NSString *address) {
+            weakSelf.pointlocationTextF.text = address;
+        } failure:^{
+            [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"无法解析当前地址，您可手动输入地址" delegate:nil
+                              cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
+        }];
     }
 }
+
+///**
+// *  重写pointinfo的 setter 方法，当更新pointinfo时，更新页面数据
+// */
+//-(void)setPointinfo:(PointModel *)pointinfo
+//{
+//    _pointinfo = pointinfo;
+//    [self showPointinfoData];
+//}
+
+//-(void)setActionType:(ActionType)actionType
+//{
+//    _actionType = actionType;
+//    [self showPointinfoData];
+//}
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 {
@@ -173,7 +237,7 @@
     if ([self hasTextBeNull]) {
         return;
     }
-    //NSString *pointid = self.pointidTextF.text;
+    NSString *pointid = self.pointidTextF.text;
     NSString *earthid = self.earthidTextF.text;
     NSString *pointlocation = self.pointlocationTextF.text;
     NSString *pointlon = self.pointlonTextF.text;
@@ -181,8 +245,7 @@
     NSString *pointname = self.pointnameTextF.text;
     NSString *pointtime = self.pointtimeTextF.text;
     NSString *pointgroup = self.pointgroupTextF.text;
-    NSString *pointperson1 = @"person1";
-    NSString *pointperson2 = @"person2";
+    NSString *pointperson = self.pointPersonTextF.text;
     NSString *pointintensity = self.pointintensityTextF.text;
     NSString *pointcontent = self.pointcontentTextV.text;
     NSString *upload = @"0";
@@ -195,7 +258,7 @@
         
         //创建字典对象并向表中插和数据
         NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                              //                          pointid,@"pointid",
+                              pointid,@"pointid",
                               earthid,@"earthid",
                               pointlocation,@"pointlocation",
                               pointlon, @"pointlon",
@@ -203,8 +266,7 @@
                               pointname,@"pointname",
                               pointtime,@"pointtime",
                               pointgroup,@"pointgroup",
-                              pointperson1,@"pointperson1",
-                              pointperson2,@"pointperson2",
+                              pointperson,@"pointperson",
                               pointintensity,@"pointintensity",
                               pointcontent,@"pointcontent",
                               upload,@"upload",nil];
@@ -222,6 +284,7 @@
                 self.pointnameTextF.text = nil;
                 self.pointtimeTextF.text = nil;
                 self.pointgroupTextF.text = nil;
+                self.pointPersonTextF.text = nil;
                 self.pointintensityTextF.text = nil;
                 self.pointcontentTextV.text = nil;
                 
@@ -246,19 +309,18 @@
         return;
     }
     
-    NSString *pointid = self.pointinfo.pointid;
+    //NSString *pointid = self.pointinfo.pointid;
     NSString *earthid = self.earthidTextF.text;
     NSString *pointlocation = self.pointlocationTextF.text;
     NSString *pointlon = self.pointlonTextF.text;
     NSString *pointlat = self.pointlatTextF.text;
     NSString *pointname = self.pointnameTextF.text;
-    NSString *pointtime = self.pointtimeTextF.text;
+    //NSString *pointtime = self.pointtimeTextF.text;
     NSString *pointgroup = self.pointgroupTextF.text;
-    NSString *pointperson1 = @"person1";
-    NSString *pointperson2 = @"person2";
+    NSString *pointperson = self.pointPersonTextF.text;
     NSString *pointintensity = self.pointintensityTextF.text;
     NSString *pointcontent = self.pointcontentTextV.text;
-    NSString *upload = self.pointinfo.upload;
+    //NSString *upload = self.pointinfo.upload;
 
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
@@ -268,19 +330,19 @@
         
         //创建字典对象并向表中插和数据
         NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                              pointid,@"pointid",
+                              self.pointinfo.pointid,@"pointid",
                               earthid,@"earthid",
                               pointlocation,@"pointlocation",
                               pointlon, @"pointlon",
                               pointlat, @"pointlat",
                               pointname,@"pointname",
-                              pointtime,@"pointtime",
+                              self.pointinfo.pointtime,@"pointtime",
                               pointgroup,@"pointgroup",
-                              pointperson1,@"pointperson1",
-                              pointperson2,@"pointperson2",
+                              pointperson,@"pointperson",
                               pointintensity,@"pointintensity",
                               pointcontent,@"pointcontent",
-                              upload,@"upload",nil];
+                              self.pointinfo.upload,@"upload",
+                              nil];
         
         BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:dict];
         if (!result) {
@@ -318,6 +380,32 @@
         }
     }
     return NO;
+}
+
+-(void)dealloc
+{
+    _pointidTopCons = nil;
+    _pointidWidthCons = nil;
+    _rootScrollView = nil;
+    _containerView = nil;
+    
+    _pointidTextF = nil;
+    _earthidTextF = nil;
+    _pointlocationTextF = nil;
+    
+    _pointlonTextF = nil;
+    _pointlatTextF = nil;
+    _pointnameTextF = nil;
+    _pointtimeTextF = nil;
+    _pointgroupTextF = nil;
+    _pointintensityTextF = nil;
+    _pointcontentTextV = nil;
+    _pointPersonTextF = nil;
+    
+    _pointinfo = nil;
+    
+    _textInputViews = nil;
+    NSLog(@"PointinfoViewController释放了吗。。。。。。。。。。。。。");
 }
 @end
 

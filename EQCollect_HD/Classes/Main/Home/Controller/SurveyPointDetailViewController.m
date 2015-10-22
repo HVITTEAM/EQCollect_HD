@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 董徐维. All rights reserved.
 //
 #import "SurveyPointDetailViewController.h"
+#import "QCSlideSwitchView.h"
 
 #import "PointinfoViewController.h"
 #import "AbnormalinfoListController.h"
@@ -15,11 +16,23 @@
 #import "ReactioninfoViewController.h"
 #import "DamageinfoViewController.h"
 
-@interface SurveyPointDetailViewController ()
+@interface SurveyPointDetailViewController ()<QCSlideSwitchViewDelegate>
 {
     NSUInteger _currentIndex;         //当前页面的索引号
     UIBarButtonItem *_rightItem;      //导航条上的右侧按钮，当页面为调查点详情时有“编辑”，“完成”两种状态，其它页面都为“新增”
 }
+@property (strong,nonatomic)QCSlideSwitchView *slideSwitchView;  //滑动视图
+@property (strong,nonatomic)NSMutableArray *vcArray;            //存放控制器的数组
+
+@property (strong,nonatomic)AbnormalinfoListController *abnormalinfoListVC;
+@property (strong,nonatomic)ReactioninfoListController *reactioninfoListVC;
+@property (strong,nonatomic)DamageinfoListController   *damageinfoListVC;
+
+@property (strong,nonatomic)PointinfoViewController *pointinfoVC;
+//@property (strong,nonatomic)AbnormalinfoViewController *abnormalVC;
+//@property (strong,nonatomic)ReactioninfoViewController *reactionifoVC;
+//@property (strong,nonatomic)DamageinfoViewController *damageinfoVC;
+
 @end
 
 @implementation SurveyPointDetailViewController
@@ -29,6 +42,8 @@
 
     //初始化调查点详情界面
     [self initSurveyPointDetail];
+    
+    NSLog(@"++++++++++++++++++++++++++++++++%@",self.pointinfo);
 }
 
 -(void)viewDidLayoutSubviews
@@ -36,18 +51,17 @@
     [super viewDidLayoutSubviews];
     //初始化slideSwitchView
     [self initView];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
     //将UIDeviceOrientation类型转为UIInterfaceOrientation
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
     //根据屏幕方向设置调查点信息视图的约束
     [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     //根据是否上传确定显示或隐藏导航栏右侧按钮
     if ([self.pointinfo.upload isEqualToString:@"0"]) {
@@ -55,18 +69,33 @@
     }else {
         self.navigationItem.rightBarButtonItem = nil;
     }
-    //更新数据
-    self.pointinfoVC.pointinfo = self.pointinfo;
-    [self.pointinfoVC viewWillAppear:YES];
-    
-    self.abnormalinfoListVC.pointid = self.pointinfo.pointid;
-    [self.abnormalinfoListVC viewWillAppear:YES];
-    
-    self.reactioninfoListVC.pointid = self.pointinfo.pointid;
-    [self.reactioninfoListVC viewWillAppear:YES];
-    
-     self.damageinfoListVC.pointid = self.pointinfo.pointid;
-    [self.damageinfoListVC viewWillAppear:YES];
+//    //更新数据
+//    self.pointinfoVC.pointinfo = self.pointinfo;
+//    [self.pointinfoVC viewWillAppear:YES];
+//    
+//    self.abnormalinfoListVC.pointid = self.pointinfo.pointid;
+//    self.abnormalinfoListVC.pointUploadFlag = self.pointinfo.upload;
+//    [self.abnormalinfoListVC viewWillAppear:YES];
+//    
+//    self.reactioninfoListVC.pointid = self.pointinfo.pointid;
+//    self.reactioninfoListVC.pointUploadFlag = self.pointinfo.upload;
+//    [self.reactioninfoListVC viewWillAppear:YES];
+//    
+//     self.damageinfoListVC.pointid = self.pointinfo.pointid;
+//     self.damageinfoListVC.pointUploadFlag = self.pointinfo.upload;
+//    [self.damageinfoListVC viewWillAppear:YES];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+//    _rightItem.title = @"编辑";
+//    self.pointinfoVC.actionType = kActionTypeShow;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 -(void)initSurveyPointDetail
@@ -165,33 +194,59 @@
             [self.pointinfoVC updatePointinfo];
         }
     }else if (_currentIndex == 1) {
-        if (!self.abnormalVC) {
-            self.abnormalVC = [[AbnormalinfoViewController alloc] init];
-        }
-        self.abnormalVC.actionType = kActionTypeAdd;
-        self.abnormalVC.pointid = self.pointinfo.pointid;
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.abnormalVC];
+//        if (!self.abnormalVC) {
+//            self.abnormalVC = [[AbnormalinfoViewController alloc] init];
+//        }
+//        self.abnormalVC.actionType = kActionTypeAdd;
+//        self.abnormalVC.pointid = self.pointinfo.pointid;
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.abnormalVC];
+//        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+//        [self presentViewController:nav animated:YES completion:nil];
+        AbnormalinfoViewController *abnormalVC1 = [[AbnormalinfoViewController alloc] init];
+        abnormalVC1.actionType = kActionTypeAdd;
+        abnormalVC1.pointid = self.pointinfo.pointid;
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:abnormalVC1];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
+
     }else if (_currentIndex == 2){
-        if (!self.reactionifoVC) {
-            self.reactionifoVC = [[ReactioninfoViewController alloc] init];
-        }
-        self.reactionifoVC.actionType = kActionTypeAdd;
-        self.reactionifoVC.pointid = self.pointinfo.pointid;
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.reactionifoVC];
+//        if (!self.reactionifoVC) {
+//            self.reactionifoVC = [[ReactioninfoViewController alloc] init];
+//        }
+//        self.reactionifoVC.actionType = kActionTypeAdd;
+//        self.reactionifoVC.pointid = self.pointinfo.pointid;
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.reactionifoVC];
+//        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+//        [self presentViewController:nav animated:YES completion:nil];
+        ReactioninfoViewController *reactionifoVC1 = [[ReactioninfoViewController alloc] init];
+        reactionifoVC1.actionType = kActionTypeAdd;
+        reactionifoVC1.pointid = self.pointinfo.pointid;
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:reactionifoVC1];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
+
     }else if (_currentIndex ==3){
-        if (!self.damageinfoVC) {
-            self.damageinfoVC = [[DamageinfoViewController alloc] init];
-        }
-        self.damageinfoVC.actionType = kActionTypeAdd;
-        self.damageinfoVC.pointid = self.pointinfo.pointid;
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.damageinfoVC];
+//        if (!self.damageinfoVC) {
+//            self.damageinfoVC = [[DamageinfoViewController alloc] init];
+//        }
+//        self.damageinfoVC.actionType = kActionTypeAdd;
+//        self.damageinfoVC.pointid = self.pointinfo.pointid;
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.damageinfoVC];
+//        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+//        [self presentViewController:nav animated:YES completion:nil];
+        DamageinfoViewController *damageinfoVC1 = [[DamageinfoViewController alloc] init];
+        damageinfoVC1.actionType = kActionTypeAdd;
+        damageinfoVC1.pointid = self.pointinfo.pointid;
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:damageinfoVC1];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
     }
 }
+
+-(void)dealloc
+{
+    NSLog(@"SurveyPointDetailViewController释放了吗。。。。。。。。。。。。。");
+}
+
 
 @end

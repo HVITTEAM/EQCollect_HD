@@ -29,8 +29,9 @@
 #define POINTNAME      @"pointname"
 #define POINTTIME      @"pointtime"
 #define POINTGROUP     @"pointgroup"
-#define POINTPERSON1   @"pointperson1"
-#define POINTPERSON2   @"pointperson2"
+#define POINTPERSON    @"pointperson"
+//#define POINTPERSON1   @"pointperson1"
+//#define POINTPERSON2   @"pointperson2"
 #define POINTINTENSITY @"pointintensity"
 #define POINTCONTENT   @"pointcontent"
 #define UPLOAD         @"upload"
@@ -65,7 +66,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT,UPLOAD];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,POINTID,EARTHID,POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON,POINTINTENSITY,POINTCONTENT,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             //NSLog(@"error when creating db table");
@@ -81,8 +82,9 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON1,POINTPERSON2,POINTINTENSITY,POINTCONTENT,UPLOAD,dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson1"], dict[@"pointperson2"], dict[@"pointintensity"], dict[@"pointcontent"],dict[@"upload"]];
+                               @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@',  '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME,POINTID, EARTHID, POINTLOCATION,POINTLON,POINTLAT,POINTNAME,POINTTIME,POINTGROUP,POINTPERSON,POINTINTENSITY,POINTCONTENT,UPLOAD,dict[@"pointid"],dict[@"earthid"],dict[@"pointlocation"], dict[@"pointlon"], dict[@"pointlat"],dict[@"pointname"], dict[@"pointtime"], dict[@"pointgroup"],dict[@"pointperson"], dict[@"pointintensity"], dict[@"pointcontent"],dict[@"upload"]];
+        //NSLog(@"=========%@",insertSql1);
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             //NSLog(@"error when insert db table");
@@ -102,7 +104,7 @@
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@' WHERE %@ = %@  ",TABLENAME,EARTHID,dict[@"earthid"],POINTLOCATION,dict[@"pointlocation"],POINTLON,dict[@"pointlon"],POINTLAT,dict[@"pointlat"],POINTNAME,dict[@"pointname"],POINTTIME,dict[@"pointtime"],POINTGROUP,dict[@"pointgroup"],POINTPERSON1,dict[@"pointperson1"],POINTPERSON2,dict[@"pointperson2"],POINTINTENSITY,dict[@"pointintensity"],POINTCONTENT,dict[@"pointcontent"],UPLOAD,dict[@"upload"],POINTID,dict[@"pointid"]];
+                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,POINTID,dict[@"pointid"],EARTHID,dict[@"earthid"],POINTLOCATION,dict[@"pointlocation"],POINTLON,dict[@"pointlon"],POINTLAT,dict[@"pointlat"],POINTNAME,dict[@"pointname"],POINTTIME,dict[@"pointtime"],POINTGROUP,dict[@"pointgroup"],POINTPERSON,dict[@"pointperson"],POINTINTENSITY,dict[@"pointintensity"],POINTCONTENT,dict[@"pointcontent"],UPLOAD,dict[@"upload"],POINTID,dict[@"pointid"]];
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
             //NSLog(@"error when update db table");
@@ -121,13 +123,12 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *updateSql = [NSString stringWithFormat:
-                            @"UPDATE %@ SET %@ = '%@' WHERE %@ = %@ ",TABLENAME,UPLOAD,uploadFlag,POINTID,idString];
-        NSLog(@"%@",updateSql);
+                            @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,UPLOAD,uploadFlag,POINTID,idString];
         result = [db executeUpdate:updateSql];
         if (!result) {
-            NSLog(@"error when update db table");
+            //NSLog(@"error when update db table");
         }else{
-            NSLog(@"success to update db table");
+            //NSLog(@"success to update db table");
         }
       [db close];
     }
@@ -174,8 +175,7 @@
             NSString * pointname = [rs stringForColumn:POINTNAME];
             NSString * pointtime = [rs stringForColumn:POINTTIME];
             NSString * pointgroup = [rs stringForColumn:POINTGROUP];
-            NSString * pointperson1 = [rs stringForColumn:POINTPERSON1];
-            NSString * pointperson2 = [rs stringForColumn:POINTPERSON2];
+            NSString * pointperson = [rs stringForColumn:POINTPERSON];
             NSString * pointintensity = [rs stringForColumn:POINTINTENSITY];
             NSString * pointcontent = [rs stringForColumn:POINTCONTENT];
             NSString * upload = [rs stringForColumn:UPLOAD];
@@ -189,8 +189,7 @@
             [dict setObject:pointname forKey:@"pointname"];
             [dict setObject:pointtime forKey:@"pointtime"];
             [dict setObject:pointgroup forKey:@"pointgroup"];
-            [dict setObject:pointperson1 forKey:@"pointperson1"];
-            [dict setObject:pointperson2 forKey:@"pointperson2"];
+            [dict setObject:pointperson forKey:@"pointperson"];
             [dict setObject:pointintensity forKey:@"pointintensity"];
             [dict setObject:pointcontent forKey:@"pointcontent"];
             [dict setObject:upload forKey:@"upload"];

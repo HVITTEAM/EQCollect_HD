@@ -17,4 +17,6 @@
 
 -(void)keyboardWillShow:(NSNotification *)notification;
 -(void)keyboardWillHide:(NSNotification *)notification;
+
+-(NSString *)createUniqueIdWithAbbreTableName:(NSString *)name;
 @end

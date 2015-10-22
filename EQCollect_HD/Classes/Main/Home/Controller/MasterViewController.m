@@ -74,19 +74,29 @@
 {
     if (indexPath.section == 0)
     {
-        if (!self.personView)
-            self.personView = [[PersonCenterController alloc] init];
-        self.nav = [[UINavigationController alloc] initWithRootViewController:self.personView];
-        self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:self.nav animated:YES completion:nil];
+//        if (!self.personView)
+//            self.personView = [[PersonCenterController alloc] init];
+//        self.nav = [[UINavigationController alloc] initWithRootViewController:self.personView];
+//        self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
+//        [self presentViewController:self.nav animated:YES completion:nil];
+        
+        PersonCenterController *personView = [[PersonCenterController alloc] init];
+        UINavigationController  *nav = [[UINavigationController alloc] initWithRootViewController:personView];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:nav animated:YES completion:nil];
+
     }
     else if (indexPath.section == 2)
     {
-        if (!self.settingView)
-            self.settingView = [[SettingViewController alloc] init];
-        self.nav = [[UINavigationController alloc] initWithRootViewController:self.settingView];
-        self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:self.nav animated:YES completion:nil];
+//        if (!self.settingView)
+//            self.settingView = [[SettingViewController alloc] init];
+//        self.nav = [[UINavigationController alloc] initWithRootViewController:self.settingView];
+//        self.nav.modalPresentationStyle = UIModalPresentationFormSheet;
+//        [self presentViewController:self.nav animated:YES completion:nil];
+        SettingViewController *settingView = [[SettingViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingView];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:nav animated:YES completion:nil];
     }
 }
 

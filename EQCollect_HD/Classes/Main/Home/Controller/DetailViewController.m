@@ -5,15 +5,14 @@
 //
 
 #import "DetailViewController.h"
-//#import "MasterViewController.h"
 #import "SurveyPointDetailViewController.h"
 #import "PointinfoViewController.h"
 #import "SurveyPointCell.h"
 
 @interface DetailViewController ()<UISplitViewControllerDelegate,UISearchBarDelegate,InfoCellDelegate>
-@property (nonatomic, retain) SurveyPointDetailViewController *detailview;
+//@property (nonatomic, retain) SurveyPointDetailViewController *detailview;
 //@property (nonatomic, retain) UINavigationController *nav;
-@property (nonatomic, retain) PointinfoViewController *pointinfoVC;
+//@property (nonatomic, retain) PointinfoViewController *pointinfoVC;
 @property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
 @property (nonatomic, retain) NSArray *filtedData;        //需要显示的调查点信息
 
@@ -26,11 +25,8 @@
     [super viewDidLoad];
     
     [self initNavgation];
-    
+    [self initTableView];
     self.title = @"调查点管理";
-    
-    self.tableView.backgroundColor = HMGlobalBg;
-    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reflesh)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -63,13 +59,19 @@
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
-    
+}
+
+-(void)initTableView
+{
     //搜索框
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     searchBar.placeholder = @"搜索";
     searchBar.delegate = self;
     // 添加 searchbar 到 headerview
     self.tableView.tableHeaderView = searchBar;
+    
+    self.tableView.backgroundColor = HMGlobalBg;
+    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reflesh)];
 }
 
 #pragma mark 集成刷新控件
@@ -130,8 +132,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellstr = @"cell";
-    SurveyPointCell *cell = [tableView dequeueReusableCellWithIdentifier:cellstr];
+    NSString *cellId = @"cell";
+    SurveyPointCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil) {
         NSArray *nibs = [[NSBundle mainBundle]loadNibNamed:@"SurveyPointCell" owner:nil options:nil];
         cell = [nibs lastObject];
@@ -144,6 +146,7 @@
     cell.pointTimeText.text = pointInfo.pointtime;
     cell.pointAddressText.text = pointInfo.pointlocation;
     
+    //上传按钮处于选中状态，表示已经上传
     if ([pointInfo.upload isEqualToString:@"1"]) {
         cell.uploadBtn.selected = YES;
         [cell.uploadBtn setTitle:@"已上传" forState:UIControlStateNormal];
@@ -168,14 +171,13 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.detailview)
-        self.detailview = [[SurveyPointDetailViewController alloc] init];
-    self.detailview.pointinfo = self.filtedData[indexPath.row];
-    [self.navigationController pushViewController:self.detailview animated:YES];
-    
-//    SurveyPointDetailViewController *detailview = [[SurveyPointDetailViewController alloc] init];
-//    detailview.pointinfo = self.filtedData[indexPath.row];
-//    [self.navigationController pushViewController:detailview animated:YES];
+//    if (!self.detailview)
+//        self.detailview = [[SurveyPointDetailViewController alloc] init];
+//    self.detailview.pointinfo = self.filtedData[indexPath.row];
+//    [self.navigationController pushViewController:self.detailview animated:YES];
+    SurveyPointDetailViewController *detailview1 = [[SurveyPointDetailViewController alloc] init];
+    detailview1.pointinfo = self.filtedData[indexPath.row];
+    [self.navigationController pushViewController:detailview1 animated:YES];
 }
 
 #pragma mark UISearchBar delegate
@@ -188,8 +190,8 @@
         self.filtedData = self.dataProvider;
     }else{
          //使用谓词来过虑，只要调查点信息中有一个属性包含用户输入的字符串，这个调查点就会显示。
-        NSPredicate* pred = [NSPredicate predicateWithFormat:@"SELF.pointid CONTAINS[c]%@  OR  SELF.earthid CONTAINS[c]%@  OR  SELF.pointlocation CONTAINS[c]%@  OR  SELF.pointlon CONTAINS[c]%@  OR  SELF.pointlat CONTAINS[c]%@  OR  SELF.pointname CONTAINS[c]%@  OR  SELF.pointtime CONTAINS[c]%@  OR  SELF.pointgroup CONTAINS[c]%@  OR  SELF.pointintensity CONTAINS[c]%@  OR  SELF.pointcontent CONTAINS[c]%@" ,searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText];
-        
+//        NSPredicate* pred = [NSPredicate predicateWithFormat:@"SELF.pointid CONTAINS[c]%@  OR  SELF.earthid CONTAINS[c]%@  OR  SELF.pointlocation CONTAINS[c]%@  OR  SELF.pointlon CONTAINS[c]%@  OR  SELF.pointlat CONTAINS[c]%@  OR  SELF.pointname CONTAINS[c]%@  OR  SELF.pointtime CONTAINS[c]%@  OR  SELF.pointgroup CONTAINS[c]%@  OR  SELF.pointintensity CONTAINS[c]%@  OR  SELF.pointcontent CONTAINS[c]%@" ,searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText];
+        NSPredicate* pred = [NSPredicate predicateWithFormat:@"pointid CONTAINS[c]%@  OR earthid CONTAINS[c]%@  OR pointlocation CONTAINS[c]%@  OR pointlon CONTAINS[c]%@  OR pointlat CONTAINS[c]%@  OR pointname CONTAINS[c]%@  OR pointtime CONTAINS[c]%@  OR pointgroup CONTAINS[c]%@  OR pointintensity CONTAINS[c]%@  OR pointcontent CONTAINS[c]%@" ,searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText];
         self.filtedData = [self.dataProvider filteredArrayUsingPredicate:pred];
     }
     [self.tableView reloadData];
@@ -199,13 +201,20 @@
 
 -(void)addSurveyPointClickHandler
 {
-    if (!self.pointinfoVC) {
-        self.pointinfoVC = [[PointinfoViewController alloc] init];
-    }
-    self.pointinfoVC.actionType = kActionTypeAdd;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
-    nav.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:nav animated:YES completion:nil];
+//    if (!self.pointinfoVC) {
+//        self.pointinfoVC = [[PointinfoViewController alloc] init];
+//    }
+//    self.pointinfoVC.actionType = kActionTypeAdd;
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
+//    nav.modalPresentationStyle = UIModalPresentationFormSheet;
+//    [self presentViewController:nav animated:YES completion:nil];
+    
+    PointinfoViewController *pointinfoVC = [[PointinfoViewController alloc] init];
+    pointinfoVC.actionType = kActionTypeAdd;
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:pointinfoVC];
+    navi.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navi animated:YES completion:nil];
+
 }
 
 #pragma mark - InfoCellDelegate
@@ -263,17 +272,62 @@
 
 }
 
+////上传数据
+//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    PointModel *pointInfo = [self.filtedData objectAtIndex:indexPath.row];
+//    //上传数据 。。。。
+//    //上传数据成功则更新本地数据
+//    BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:pointInfo.pointid];
+//    if (result) {
+//        pointInfo.upload = @"1";
+//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//    }
+//}
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
-    PointModel *pointInfo = [self.filtedData objectAtIndex:indexPath.row];
-    //上传数据 。。。。
-    //上传数据成功则更新本地数据
-    BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:pointInfo.pointid];
-    if (result) {
-        pointInfo.upload = @"1";
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    }
+     MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+    //创建字典对象作为上传参数
+    NSDictionary *parameters1 = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          model.pointid,@"pointid",
+                          //model.earthid,@"earthid",
+                          model.pointlocation,@"location",
+                          model.pointlon, @"lon",
+                          model.pointlat, @"lat",
+                          model.pointname,@"name",
+                          //model.pointtime,@"pointtime",
+                          model.pointgroup,@"group",
+                          model.pointperson,@"person",
+//                          model.pointperson2,@"pointperson2",
+                          model.pointintensity,@"intensity",
+                          model.pointcontent,@"content",
+                          //upload,@"upload",
+                          nil];
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"数据上传成功: %@", responseObject);
+        //上传数据成功则更新本地数据
+        BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
+        if (result) {
+            model.upload = @"1";
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            });
+        }
+
+         [mbprogress removeFromSuperview];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"数据上传失败:");
+         [mbprogress removeFromSuperview];
+    }];
+    
 }
 
+-(void)dealloc
+{
+    NSLog(@"DetailViewController 释放了吗");
+}
 @end

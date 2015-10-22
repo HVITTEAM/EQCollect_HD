@@ -40,7 +40,7 @@
     //归档一个对象时 会为他提供一个名词  键
     [archiver encodeObject:saveObj forKey:key];
     [archiver finishEncoding];
-    
+    NSLog(@"--------------------归档路径------------------------%@",fileSource);
     [data writeToFile:fileSource atomically:YES];
     
     NSLog(@"归档成功");

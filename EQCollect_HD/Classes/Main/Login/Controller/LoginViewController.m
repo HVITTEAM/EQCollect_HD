@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "LocationHelper.h"
 
 @interface LoginViewController ()
 {
@@ -116,6 +117,7 @@
  */
 - (IBAction)loginNow:(id)sender
 {
+    /*
     NSString *account = self.accountTextF.text;
     NSString *passwd = self.passwdTextF.text;
     if (account!=nil && account.length>0 && passwd!=nil && passwd.length>0)
@@ -127,9 +129,14 @@
                                          
                                          [HUD removeFromSuperview];
                                          UserModel *usermd = [UserModel objectWithKeyValues:dict];
+                                         NSLog(@"------------LoginViewController--------------%@",dict);
                                          [SharedAppUtil defaultCommonUtil].userInfor = usermd;
-                                        // [HMControllerTool setRootViewController];
+                                         [HMControllerTool setRootViewController];
                                          [ArchiverCacheHelper saveObjectToLoacl:usermd key:User_Archiver_Key filePath:User_Archiver_Path];
+                                         //开启定时发送位置信息功能
+                                          [[LocationHelper sharedLocationHelper] addTimer];
+                                         [[LocationHelper sharedLocationHelper] performSelector:@selector(uploadUserinfo) withObject:nil afterDelay:3];
+
                                          
                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                          NSLog(@"发生错误！%@",error);
@@ -142,6 +149,7 @@
         UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alertV show];
     }
+     */
     [HMControllerTool setRootViewController];
 }
 @end

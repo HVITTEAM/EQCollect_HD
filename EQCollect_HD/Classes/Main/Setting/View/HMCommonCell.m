@@ -150,6 +150,8 @@
         // 设置背景view
         self.backgroundView = [[UIImageView alloc] init];
         self.selectedBackgroundView = [[UIImageView alloc] init];
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -196,7 +198,9 @@
     _item = item;
     
     // 1.设置基本数据
-    self.imageView.image = [UIImage imageWithName:item.icon];
+    if (item.icon) {
+        self.imageView.image = [UIImage imageWithName:item.icon];
+    }
     self.textLabel.text = item.title;
     self.detailTextLabel.text = item.subtitle;
     self.imageView.width = self.imageView.height = 24;
@@ -213,9 +217,9 @@
         [self.contentView addSubview:self.rightText];
         HMCommonTextfieldItem *hitem = (HMCommonTextfieldItem *)item;
         self.rightText.placeholder = hitem.placeholder;
-        self.rightText.x = 110;
+        self.rightText.x = 120;
         self.rightText.y = (self.height - 21)/ 2;
-        self.rightText.width = MTScreenW - 120;
+        self.rightText.width = MTScreenW - 100;
         self.rightText.height = 21;
         self.rightText.clearButtonMode = UITextFieldViewModeAlways;
         self.rightText.adjustsFontSizeToFitWidth = YES;

@@ -12,6 +12,7 @@
 
 /** placeholder */
 @property (nonatomic, copy) NSString *placeholder;
+@property (nonatomic, copy) NSString *textString;
 
 
 @end

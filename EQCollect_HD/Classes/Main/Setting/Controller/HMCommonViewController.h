@@ -21,4 +21,5 @@
 
 @interface HMCommonViewController : UITableViewController
 - (NSMutableArray *)groups;
+
 @end

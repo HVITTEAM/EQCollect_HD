@@ -8,11 +8,18 @@
 
 #import "PersonCenterController.h"
 #import "HMCommonCenterItem.h"
+#import "HMCommonTextfieldItem.h"
+
 @interface SettingViewController ()
+
 
 @end
 
 @implementation PersonCenterController
+{
+    NSIndexPath *_cIndexPath;
+    UserModel *_userinfo;
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -22,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _userinfo = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
     
     [self initNavigation];
     
@@ -53,6 +62,8 @@
     
     //重置数据源
     [self setupGroup0];
+    [self setupGroup1];
+    [self setupFooter];
     
     //刷新表格
     [self.tableView reloadData];
@@ -64,52 +75,82 @@
     [self.groups addObject:group];
     
     // 设置组的所有行数据
-    HMCommonCenterItem *userccount = [HMCommonCenterItem itemWithTitle:@"帐号" icon:nil];
-    userccount.centerString = @"1234567890";
+    HMCommonTextfieldItem *userccount = [HMCommonTextfieldItem itemWithTitle:@"用户名"];
+    userccount.placeholder = _userinfo.userccount;
     
-    HMCommonCenterItem * username = [HMCommonCenterItem itemWithTitle:@"用户名" icon:nil];
-    username.centerString = @"大猫";
-    username.operation = ^{
-        
-    };
+    HMCommonTextfieldItem *username = [HMCommonTextfieldItem itemWithTitle:@"用户名"];
+    username.placeholder = _userinfo.username;
 
-    HMCommonCenterItem *useraddress = [HMCommonCenterItem itemWithTitle:@"地址" icon:nil];
-    useraddress.centerString = @"浙江省杭州市建德市建德村";
+    HMCommonTextfieldItem *userpwd = [HMCommonTextfieldItem itemWithTitle:@"密码"];
+    userpwd.placeholder = _userinfo.userpwd;
 
-    HMCommonCenterItem *userlon = [HMCommonCenterItem itemWithTitle:@"当前经度" icon:nil];
-    userlon.centerString = @"120.000";
-    
-    HMCommonCenterItem *userlat = [HMCommonCenterItem itemWithTitle:@"当前纬度" icon:nil];
-    userlat.centerString = @"31.00";
+    HMCommonTextfieldItem *usertel = [HMCommonTextfieldItem itemWithTitle:@"电话"];
+    usertel.placeholder = _userinfo.usertel;
 
-    HMCommonCenterItem *usertel = [HMCommonCenterItem itemWithTitle:@"电话" icon:nil];
-    usertel.centerString = @"12788888888";
+//    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];
+//    groupname.centerString = @"第一组";
     
-    HMCommonCenterItem *jobname = [HMCommonCenterItem itemWithTitle:@"工作" icon:nil];
-    jobname.centerString = @"当官的";
-    
-    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];
-    groupname.centerString = @"第一组";
-    
-    group.items = @[userccount,username,useraddress,userlon,userlat,usertel,jobname,groupname];
+    group.items = @[userccount,username,userpwd,usertel];
 }
+
+- (void)setupGroup1
+{
+    // 1.创建组
+    HMCommonGroup *group = [HMCommonGroup group];
+    [self.groups addObject:group];
+    
+    // 设置组的所有行数据
+    HMCommonTextfieldItem *useraddress = [HMCommonTextfieldItem itemWithTitle:@"地址"];
+    useraddress.placeholder = _userinfo.useraddress;
+    
+    HMCommonTextfieldItem *userlon = [HMCommonTextfieldItem itemWithTitle:@"经度"];
+    userlon.placeholder = _userinfo.userlon;
+    
+    HMCommonTextfieldItem *userlat = [HMCommonTextfieldItem itemWithTitle:@"纬度"];
+    userlat.placeholder = _userinfo.userlat;
+    
+    HMCommonTextfieldItem *jobname = [HMCommonTextfieldItem itemWithTitle:@"工作名称"];
+    jobname.placeholder = _userinfo.jobname;
+    
+    
+    HMCommonTextfieldItem *groupname = [HMCommonTextfieldItem itemWithTitle:@"所在分组"];
+    groupname.placeholder = _userinfo.groupname;
+    //    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];
+    //    groupname.centerString = @"第一组";
+    
+    group.items = @[useraddress,userlon,userlat,jobname,groupname];
+}
+
+- (void)setupFooter
+{
+    // 1.创建按钮
+    UIButton *logout = [[UIButton alloc] init];
+    
+    // 2.设置属性
+    logout.titleLabel.font = [UIFont systemFontOfSize:16];
+    [logout setTitle:@"确定修改" forState:UIControlStateNormal];
+    [logout setTitleColor:HMColor(255, 10, 10) forState:UIControlStateNormal];
+    [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background"] forState:UIControlStateNormal];
+    [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background_highlighted"] forState:UIControlStateHighlighted];
+    [logout addTarget:self action:@selector(updateuserInfo) forControlEvents:UIControlEventTouchUpInside];
+    
+    // 3.设置尺寸(tableFooterView和tableHeaderView的宽度跟tableView的宽度一样)
+    logout.height = 60;
+    
+    self.tableView.tableFooterView = logout;
+    
+}
+
 
 -(void)back
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+-(void)updateuserInfo
 {
-    HMCommonCell *cell = [HMCommonCell cellWithTableView:tableView];
-    HMCommonGroup *group = self.groups[indexPath.section];
-    cell.item = group.items[indexPath.row];
-    // 设置cell所处的行号 和 所处组的总行数
-    [cell setIndexPath:indexPath rowsInSection:(int)group.items.count];
-    if (indexPath.row == 0) {
-        cell.accessoryView = nil;
-    }
-    return cell;
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

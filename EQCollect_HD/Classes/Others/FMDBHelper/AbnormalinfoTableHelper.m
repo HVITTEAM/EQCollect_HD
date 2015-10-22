@@ -64,7 +64,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,ABNORMALID,ABNORMALTIME,
                                      INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY,POINTID,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
@@ -81,8 +81,8 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,ABNORMALTIME,INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY, POINTID,UPLOAD,dict[@"abnormaltime"], dict[@"informant"],dict[@"abnormalintensity"], dict[@"groundwater"], dict[@"abnormalhabit"],dict[@"abnormalphenomenon"], dict[@"other"], dict[@"implementation"],dict[@"abnormalanalysis"], dict[@"credibly"],dict[@"pointid"],dict[@"upload"]];
+                               @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
+                               TABLENAME,ABNORMALID,ABNORMALTIME,INFORMANT,ABNORMALINTENSITY,GROUPDWATER,ABNORMALHABIT,ABNORMALPHENOMENON,OTHER,IMPLEMENTATION,ABNORMALANALYSIS,CREDIBLY, POINTID,UPLOAD,dict[@"abnormalid"],dict[@"abnormaltime"], dict[@"informant"],dict[@"abnormalintensity"], dict[@"groundwater"], dict[@"abnormalhabit"],dict[@"abnormalphenomenon"], dict[@"other"], dict[@"implementation"],dict[@"abnormalanalysis"], dict[@"credibly"],dict[@"pointid"],dict[@"upload"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             //NSLog(@"error when insert db table");
@@ -102,7 +102,7 @@
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@' WHERE %@ = %@  ",TABLENAME,ABNORMALTIME,dict[@"abnormaltime"],INFORMANT,dict[@"informant"],ABNORMALINTENSITY,dict[@"abnormalintensity"],GROUPDWATER,dict[@"groundwater"],ABNORMALHABIT,dict[@"abnormalhabit"],ABNORMALPHENOMENON,dict[@"abnormalphenomenon"],OTHER,dict[@"other"],IMPLEMENTATION,dict[@"implementation"],ABNORMALANALYSIS,dict[@"abnormalanalysis"],CREDIBLY,dict[@"credibly"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],ABNORMALID,dict[@"abnormalid"]];
+                               @"UPDATE %@ SET %@ = '%@', %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@' WHERE %@ = '%@'  ",TABLENAME,ABNORMALID,dict[@"abnormalid"],ABNORMALTIME,dict[@"abnormaltime"],INFORMANT,dict[@"informant"],ABNORMALINTENSITY,dict[@"abnormalintensity"],GROUPDWATER,dict[@"groundwater"],ABNORMALHABIT,dict[@"abnormalhabit"],ABNORMALPHENOMENON,dict[@"abnormalphenomenon"],OTHER,dict[@"other"],IMPLEMENTATION,dict[@"implementation"],ABNORMALANALYSIS,dict[@"abnormalanalysis"],CREDIBLY,dict[@"credibly"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],ABNORMALID,dict[@"abnormalid"]];
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
             //NSLog(@"error when update db table");
@@ -121,7 +121,7 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = %@ ",TABLENAME,UPLOAD,uploadFlag,ABNORMALID,idString];
+                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,UPLOAD,uploadFlag,ABNORMALID,idString];
         NSLog(@"%@",updateSql);
         result = [db executeUpdate:updateSql];
         if (!result) {

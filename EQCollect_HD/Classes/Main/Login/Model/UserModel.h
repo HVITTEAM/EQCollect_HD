@@ -13,7 +13,7 @@
 
 @interface UserModel : NSObject
 
-@property (nonatomic, assign) NSInteger userid;
+@property (nonatomic, retain) NSString *userid;
 @property (nonatomic, retain) NSString *jobid;
 @property (nonatomic, retain) NSString *groupid;
 @property (nonatomic, retain) NSString *roleid;

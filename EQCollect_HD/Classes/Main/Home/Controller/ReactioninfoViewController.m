@@ -168,6 +168,7 @@
 -(void)showReactioninfoData
 {
     if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit) {
+        self.reactionidTextF.text = self.reactioninfo.reactionid;
         self.reactiontimeTextF.text= self.reactioninfo.reactiontime;
         self.informantnameTextF.text= self.reactioninfo.informantname;
         self.informantageTextF.text= self.reactioninfo.informantage;
@@ -186,6 +187,9 @@
         self.sounddirectionTextF.text= self.reactioninfo.sounddirection;
         
     }else {
+        
+        self.reactionidTextF.text = [self createUniqueIdWithAbbreTableName:@"FY"];
+        
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"MM-dd HH:mm"];
@@ -297,7 +301,7 @@
 
 -(void)addReactioninfo
 {
-    //NSString *reactionid = self.reactionidTextF.text;
+    NSString *reactionid = self.reactionidTextF.text;
     NSString *reactiontime = self.reactiontimeTextF.text;
     NSString *informantname = self.informantnameTextF.text;
     NSString *informantage = self.informantageTextF.text;
@@ -317,7 +321,7 @@
 
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          //reactionid,@"reactionid",
+                          reactionid,@"reactionid",
                           reactiontime,@"reactiontime",
                           informantname,@"informantname",
                           informantage, @"informantage",
@@ -343,10 +347,11 @@
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
         
-        NSInteger maxid=[[ReactioninfoTableHelper sharedInstance] getMaxIdOfRecords];
-        if (maxid!=0 ) {
-            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"REACTIONINFOTAB"];
-        }
+//        NSInteger maxid=[[ReactioninfoTableHelper sharedInstance] getMaxIdOfRecords];
+//        if (maxid!=0 ) {
+//            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"REACTIONINFOTAB"];
+//        }
+        [self saveImagesWithReleteId:reactionid releteTable:@"REACTIONINFOTAB"];
         dispatch_async(dispatch_get_main_queue(), ^{
             //self.reactionidTextF.text = nil;
             self.reactiontimeTextF.text = nil;
@@ -369,6 +374,8 @@
             [self.view endEditing:YES];
             //清空imageCollectionView的数据
             imgview.dataProvider = [[NSMutableArray alloc] init];
+            //防止循环引用导致无法释放当前这个控制器
+            imgview.nav = nil;
             [self dismissViewControllerAnimated:YES completion:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kAddReactioninfoSucceedNotification object:nil];
         });
@@ -379,6 +386,8 @@
 {
     //清空imageCollectionView的数据
     imgview.dataProvider = [[NSMutableArray alloc] init];
+    //防止循环引用导致无法释放当前这个控制器
+    imgview.nav = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -423,8 +432,9 @@
         {
             PictureVO *v = (PictureVO*)imgview.dataProvider[i];
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", v.name]];
-            BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", v.name]];
+            // BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+            BOOL result = [v.imageData writeToFile: filePath    atomically:YES]; // 写入本地沙盒
             if (result)
             {
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -458,9 +468,8 @@
             vo.name = pic.pictureName;
             
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", pic.pictureName]];
-            UIImage *img = [UIImage imageWithContentsOfFile:filePath];
-            vo.image = img;
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", pic.pictureName]];
+            vo.imageData = [NSData dataWithContentsOfFile:filePath];
             [dataProvider addObject:vo];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -493,7 +502,7 @@
 -(void)updateReactioninfo
 {
     //NSString *reactionid = self.reactionidTextF.text;
-    NSString *reactiontime = self.reactiontimeTextF.text;
+    //NSString *reactiontime = self.reactiontimeTextF.text;
     NSString *informantname = self.informantnameTextF.text;
     NSString *informantage = self.informantageTextF.text;
     NSString *informanteducation = self.informanteducationTextF.text;
@@ -513,7 +522,7 @@
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           self.reactioninfo.reactionid,@"reactionid",
-                          reactiontime,@"reactiontime",
+                          self.reactioninfo.reactiontime,@"reactiontime",
                           informantname,@"informantname",
                           informantage, @"informantage",
                           informanteducation, @"informanteducation",
@@ -530,6 +539,7 @@
                           soundsize,@"soundsize",
                           sounddirection,@"sounddirection",
                           self.reactioninfo.pointid,@"pointid",
+                          self.reactioninfo.upload,@"upload",
                           nil];
     
     BOOL result = [[ReactioninfoTableHelper sharedInstance] updateDataWith:dict];
@@ -557,5 +567,11 @@
         }
     }
     return NO;
+}
+
+
+-(void)dealloc
+{
+    NSLog(@"ReactioninfoViewController 释放了吗");
 }
 @end

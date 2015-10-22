@@ -23,6 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    NSLog(@"-------------%@",[NSDate date]);
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -162,5 +163,13 @@
     //[HUD release];
     _HUD = nil;
 }
+
+-(NSString *)createUniqueIdWithAbbreTableName:(NSString *)name
+{
+   NSDate *datenow = [NSDate date];
+   NSString *timeSp = [NSString stringWithFormat:@"%@%ld", name,(long)[datenow timeIntervalSince1970]];
+   return timeSp;
+}
+
 
 @end

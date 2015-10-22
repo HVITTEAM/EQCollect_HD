@@ -7,23 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QCSlideSwitchView.h"
+//@class AbnormalinfoListController,ReactioninfoListController,DamageinfoListController;
+//@class PointinfoViewController,AbnormalinfoViewController,ReactioninfoViewController,DamageinfoViewController;
 
-@class AbnormalinfoListController,ReactioninfoListController,DamageinfoListController;
-@class PointinfoViewController,AbnormalinfoViewController,ReactioninfoViewController,DamageinfoViewController;
-
-@interface SurveyPointDetailViewController : UIViewController<QCSlideSwitchViewDelegate>
-@property (strong,nonatomic)QCSlideSwitchView *slideSwitchView;
-@property (strong,nonatomic)NSMutableArray *vcArray;            //存放控制器的数组
-
-@property (strong,nonatomic)AbnormalinfoListController *abnormalinfoListVC;
-@property (strong,nonatomic)ReactioninfoListController *reactioninfoListVC;
-@property (strong,nonatomic)DamageinfoListController   *damageinfoListVC;
-
-@property (strong,nonatomic)PointinfoViewController *pointinfoVC;
-@property (strong,nonatomic)AbnormalinfoViewController *abnormalVC;
-@property (strong,nonatomic)ReactioninfoViewController *reactionifoVC;
-@property (strong,nonatomic)DamageinfoViewController *damageinfoVC;
+@interface SurveyPointDetailViewController : UIViewController
 
 @property (strong,nonatomic)PointModel *pointinfo;           //选中的调查点信息
+
 @end

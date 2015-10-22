@@ -171,7 +171,7 @@
             self.maximumNumberOfSelection = self.maximumNumberOfSelectionPhoto;
             self.segmentedControl.hidden = YES;
             self.labelSelectedMedia.hidden = NO;
-            self.labelSelectedMedia.text = [NSString stringWithFormat:@"最多选%ld张",self.maximumNumberOfSelectionPhoto];
+            self.labelSelectedMedia.text = [NSString stringWithFormat:@"最多选%d张",(int)self.maximumNumberOfSelectionPhoto];
         }
         else
         {

@@ -10,13 +10,14 @@
 #import "MasterViewController.h"
 #import "DetailViewController.h"
 #import "LoginViewController.h"
+#import "LocationHelper.h"
+#import "ArchiverCacheHelper.h"
 
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // 1.创建窗口
@@ -25,10 +26,14 @@
     
     // 2.显示窗口(成为主窗口)
     [self.window makeKeyAndVisible];
+    //开启定位
+    [[LocationHelper sharedLocationHelper] setupLocationManager];
     
     if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
     {
         [HMControllerTool setRootViewController];
+        [[LocationHelper sharedLocationHelper] addTimer];
+        [[LocationHelper sharedLocationHelper] performSelector:@selector(uploadUserinfo) withObject:nil afterDelay:3];
     }
     else
     {
@@ -57,6 +62,10 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+   [[LocationHelper sharedLocationHelper] removeTimer];
+    //[self removeTimer];
 }
+
+
 
 @end

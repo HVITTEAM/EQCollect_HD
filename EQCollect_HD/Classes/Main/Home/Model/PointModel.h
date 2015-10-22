@@ -31,8 +31,9 @@
 @property (nonatomic, copy) NSString *pointname;
 @property (nonatomic, copy) NSString *pointtime;
 @property (nonatomic, copy) NSString *pointgroup;
-@property (nonatomic, copy) NSString *pointperson1;
-@property (nonatomic, copy) NSString *pointperson2;
+@property (nonatomic, copy) NSString *pointperson;
+//@property (nonatomic, copy) NSString *pointperson1;
+//@property (nonatomic, copy) NSString *pointperson2;
 @property (nonatomic, copy) NSString *pointintensity;
 @property (nonatomic, copy) NSString *pointcontent;
 @property (nonatomic, copy) NSString *upload;

@@ -77,7 +77,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,
                                      REACTIONID,REACTIONTIME,INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
@@ -94,9 +94,9 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@','%@')  VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@','%@')",
-                               TABLENAME,REACTIONTIME,
-                               INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID,UPLOAD,dict[@"reactiontime"], dict[@"informantname"],dict[@"informantage"], dict[@"informanteducation"], dict[@"informantjob"],dict[@"reactionaddress"], dict[@"rockfeeling"],dict[@"throwfeeling"],dict[@"throwtings"],dict[@"throwdistance"],dict[@"fall"],dict[@"hang"], dict[@"furnituresound"],dict[@"furnituredump"], dict[@"soundsize"],dict[@"sounddirection"],dict[@"pointid"],dict[@"upload"]];
+                               @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@','%@')",
+                               TABLENAME,REACTIONID,REACTIONTIME,
+                               INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID,UPLOAD,dict[@"reactionid"],dict[@"reactiontime"], dict[@"informantname"],dict[@"informantage"], dict[@"informanteducation"], dict[@"informantjob"],dict[@"reactionaddress"], dict[@"rockfeeling"],dict[@"throwfeeling"],dict[@"throwtings"],dict[@"throwdistance"],dict[@"fall"],dict[@"hang"], dict[@"furnituresound"],dict[@"furnituredump"], dict[@"soundsize"],dict[@"sounddirection"],dict[@"pointid"],dict[@"upload"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
             //NSLog(@"error when insert db table");
@@ -116,7 +116,7 @@
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = %@  ",TABLENAME,REACTIONTIME,dict[@"reactiontime"],INFORMANTNAME,dict[@"informantname"],INFORMANTAGE,dict[@"informantage"],INFORMANTEDUCATION,dict[@"informanteducation"],INFORMANTJOB,dict[@"informantjob"],REACTIONADDRESS,dict[@"reactionaddress"],ROCKFEELING,dict[@"rockfeeling"],THROWFEELING,dict[@"throwfeeling"],THROWTINGS,dict[@"throwtings"],THROWDISTANCE,dict[@"throwdistance"],FALL,dict[@"fall"],HANG,dict[@"hang"],FURNITURESOUND,dict[@"furnituresound"],FURNITUREDUMP,dict[@"furnituredump"],SOUNDSIZE,dict[@"soundsize"],SOUNDDIRECTION,dict[@"sounddirection"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],REACTIONID,dict[@"reactionid"]];
+                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@'  ",TABLENAME,REACTIONID,dict[@"reactionid"],REACTIONTIME,dict[@"reactiontime"],INFORMANTNAME,dict[@"informantname"],INFORMANTAGE,dict[@"informantage"],INFORMANTEDUCATION,dict[@"informanteducation"],INFORMANTJOB,dict[@"informantjob"],REACTIONADDRESS,dict[@"reactionaddress"],ROCKFEELING,dict[@"rockfeeling"],THROWFEELING,dict[@"throwfeeling"],THROWTINGS,dict[@"throwtings"],THROWDISTANCE,dict[@"throwdistance"],FALL,dict[@"fall"],HANG,dict[@"hang"],FURNITURESOUND,dict[@"furnituresound"],FURNITUREDUMP,dict[@"furnituredump"],SOUNDSIZE,dict[@"soundsize"],SOUNDDIRECTION,dict[@"sounddirection"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],REACTIONID,dict[@"reactionid"]];
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
             //NSLog(@"error when update db table");
@@ -135,7 +135,7 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = %@ ",TABLENAME,UPLOAD,uploadFlag,REACTIONID,idString];
+                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,UPLOAD,uploadFlag,REACTIONID,idString];
         NSLog(@"%@",updateSql);
         result = [db executeUpdate:updateSql];
         if (!result) {

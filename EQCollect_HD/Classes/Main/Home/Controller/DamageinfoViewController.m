@@ -106,10 +106,10 @@
         textF.tag = 1000+i;
     }
 
-    self.intensityItems = @[@"1级",@"2级",@"3级",@"4级",@"5级",@"6级",@"7级",@"8级",@"9级",@"10级"];
-    self.fortificationintensityItems = @[@"1级",@"2级",@"3级",@"4级",@"5级",@"6级",@"7级",@"8级",@"9级",@"10级"];
+    self.intensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6级",@"7",@"8",@"9",@"10"];
+    self.fortificationintensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     self.damagesituationItems = @[@"严重",@"中等",@"轻微"];
-    self.damageindexItems = @[@"1级",@"2级",@"3级",@"4级",@"5级",@"6级",@"7级",@"8级",@"9级",@"10级"];
+    self.damageindexItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     
     [self setActionType:self.actionType];
 }
@@ -154,7 +154,7 @@
 -(void)showDamageinfoData
 {
     if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit) {
-        //self.damageidTextF.text = self.damageinfo.damageid;
+        self.damageidTextF.text = self.damageinfo.damageid;
         self.damagetimeTextF.text = self.damageinfo.damagetime;
         self.damageaddressTextF.text = self.damageinfo.damageaddress;
         self.damageintensityTextF.text = self.damageinfo.damageintensity;
@@ -164,6 +164,9 @@
         self.damagesituationTextF.text = self.damageinfo.damagesituation;
         self.damageindexTextF.text = self.damageinfo.damageindex;
     }else {
+        
+        self.damageidTextF.text = [self createUniqueIdWithAbbreTableName:@"ZH"];
+        
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"MM-dd HH:mm"];
@@ -289,10 +292,12 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         
-        NSInteger maxid=[[DamageinfoTableHelper sharedInstance] getMaxIdOfRecords];
-        if (maxid!=0 ) {
-            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"DAMAGEINFOTAB"];
-        }
+//        NSInteger maxid=[[DamageinfoTableHelper sharedInstance] getMaxIdOfRecords];
+//        if (maxid!=0 ) {
+//            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"DAMAGEINFOTAB"];
+//        }
+        [self saveImagesWithReleteId:damageid releteTable:@"DAMAGEINFOTAB"];
+
         dispatch_async(dispatch_get_main_queue(), ^{
             self.damageidTextF.text = nil;
             self.damagetimeTextF.text = nil;
@@ -307,6 +312,8 @@
             [self.view endEditing:YES];
             //清空imageCollectionView的数据
             imgview.dataProvider = [[NSMutableArray alloc] init];
+            //防止循环引用导致无法释放当前这个控制器
+            imgview.nav = nil;
             [self dismissViewControllerAnimated:YES completion:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
         });
@@ -317,6 +324,8 @@
 {
     //清空imageCollectionView的数据
     imgview.dataProvider = [[NSMutableArray alloc] init];
+    //防止循环引用导致无法释放当前这个控制器
+    imgview.nav = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -360,8 +369,9 @@
         {
             PictureVO *v = (PictureVO*)imgview.dataProvider[i];
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", v.name]];
-            BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", v.name]];
+           // BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+            BOOL result = [v.imageData writeToFile: filePath    atomically:YES]; // 写入本地沙盒
             if (result)
             {
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -395,9 +405,8 @@
             vo.name = pic.pictureName;
             
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", pic.pictureName]];
-            UIImage *img = [UIImage imageWithContentsOfFile:filePath];
-            vo.image = img;
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", pic.pictureName]];
+            vo.imageData = [NSData dataWithContentsOfFile:filePath];
             [dataProvider addObject:vo];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -431,9 +440,8 @@
 
 -(void)updateDamageinfo
 {
-    [NSThread sleepForTimeInterval:6];
    // NSString *damageid = self.damageidTextF.text;
-    NSString *damagetime = self.damagetimeTextF.text;
+    //NSString *damagetime = self.damagetimeTextF.text;
     NSString *damageaddress = self.damageaddressTextF.text;
     NSString *damageintensity = self.damageintensityTextF.text;
     NSString *zrcorxq = self.zrcorxqTextF.text;
@@ -445,7 +453,7 @@
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           self.damageinfo.damageid,@"damageid",
-                          damagetime,@"damagetime",
+                          self.damageinfo.damagetime,@"damagetime",
                           damageaddress,@"damageaddress",
                           damageintensity, @"damageintensity",
                           zrcorxq, @"zrcorxq",
@@ -481,5 +489,9 @@
     }
     return NO;
 }
+-(void)dealloc
+{
 
+    NSLog(@"DamageinfoViewController释放了吗。。。。。。。。。。。。。");
+}
 @end

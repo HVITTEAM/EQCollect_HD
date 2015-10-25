@@ -9,11 +9,11 @@
 #import "DamageinfoListController.h"
 #import "DamageinfoViewController.h"
 #import "PictureMode.h"
+#import "DamageinfoCell.h"
 
-@interface DamageinfoListController ()
-{
-    MBProgressHUD *_H ;
-}
+@interface DamageinfoListController ()<InfoCellDelegate,DamageinfoDelegate>
+
+@property (nonatomic, retain) NSMutableArray *dataProvider;
 
 @end
 
@@ -26,37 +26,8 @@
 
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.tableFooterView = [[UIView alloc] init];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self getDataProvider];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDamageinfo:) name:kAddDamageinfoSucceedNotification object:nil];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-/**
- *  刷新数据
- */
--(void)rereshing
-{
-    [self getDataProvider];
-    [self.tableView.header endRefreshing];
-}
-
-/**
- *  获取数据
- */
--(void)getDataProvider
-{
-    self.dataProvider = [[DamageinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
-    [self.tableView reloadData];
+    
+    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark - Table view data source
@@ -76,7 +47,7 @@
     //获取cell的数据
     DamageModel * damageinfo = [self.dataProvider objectAtIndex:indexPath.row];
     //设置cell的属性
-    cell.damageid.text = [NSString stringWithFormat:@"NO.%lu   %@",indexPath.row,damageinfo.damageid];
+    cell.damageid.text = [NSString stringWithFormat:@"NO.%@",damageinfo.damageid];
     cell.damagetime.text = damageinfo.damagetime;
     cell.damageintensity.text = damageinfo.damageintensity;
     cell.damagesituation.text = damageinfo.damagesituation;
@@ -106,22 +77,11 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (!self.damageinfoVC) {
-//        self.damageinfoVC = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
-//    }
-//    self.damageinfoVC.damageinfo = self.dataProvider[indexPath.row];
-//    self.damageinfoVC.actionType = kActionTypeShow;
-//    [self.nav pushViewController:self.damageinfoVC animated:YES];
-    
     DamageinfoViewController *damageinfoVC1 = [[DamageinfoViewController alloc] initWithNibName:@"DamageinfoViewController" bundle:nil];
     damageinfoVC1.damageinfo = self.dataProvider[indexPath.row];
     damageinfoVC1.actionType = kActionTypeShow;
+    damageinfoVC1.delegate = self;
     [self.nav pushViewController:damageinfoVC1 animated:YES];
-}
-
--(void)updateDamageinfo:(NSNotification *)notification
-{
-    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark - InfoCellDelegate
@@ -209,13 +169,42 @@
          [mbprogress removeFromSuperview];
         
     }];
-    
-//    //上传数据成功则更新本地数据
-//    BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
-//    if (result) {
-//        model.upload = @"1";
-//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//    }
+}
+
+
+/**
+ *  刷新数据
+ */
+-(void)rereshing
+{
+    [self getDataProvider];
+    [self.tableView.header endRefreshing];
+}
+
+/**
+ *  获取数据
+ */
+-(void)getDataProvider
+{
+    self.dataProvider = [[DamageinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
+    [self.tableView reloadData];
+}
+
+-(void)updateDamageinfo:(NSNotification *)notification
+{
+    [self.tableView.header beginRefreshing];
+}
+
+
+-(void)addDamageinfoSuccess:(DamageinfoViewController *)damageinfoVC
+{
+    [damageinfoVC dismissViewControllerAnimated:YES completion:nil];
+    [self updateDamageinfo:nil];
+}
+
+-(void)updateDamageinfoSuccess:(DamageinfoViewController *)damageinfoVC
+{
+     [self updateDamageinfo:nil];
 }
 
 -(void)dealloc

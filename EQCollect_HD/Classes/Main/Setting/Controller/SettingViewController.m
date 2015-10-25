@@ -8,6 +8,9 @@
 
 #import "SettingViewController.h"
 #import "LocationHelper.h"
+#import "VersionViewController.h"
+#import "UseHelpViewController.h"
+#import "FeedbackViewController.h"
 
 @interface SettingViewController ()
 
@@ -53,7 +56,7 @@
     [self.groups removeAllObjects];
     
     //重置数据源
-    [self setupGroup0];
+    //[self setupGroup0];
     [self setupGroup1];
     
     [self setupFooter];
@@ -61,19 +64,19 @@
     //刷新表格
     [self.tableView reloadData];
 }
-- (void)setupGroup0
-{
-    // 1.创建组
-    HMCommonGroup *group = [HMCommonGroup group];
-    [self.groups addObject:group];
-    
-    // 设置组的所有行数据
-    HMCommonArrowItem *account = [HMCommonArrowItem itemWithTitle:@"帐号管理" icon:nil];
-    // newFriend.destVcClass = [MyAccountViewController class];
-    account.operation = ^{
-    };
-    group.items = @[account];
-}
+//- (void)setupGroup0
+//{
+//    // 1.创建组
+//    HMCommonGroup *group = [HMCommonGroup group];
+//    [self.groups addObject:group];
+//    
+//    // 设置组的所有行数据
+//    HMCommonArrowItem *account = [HMCommonArrowItem itemWithTitle:@"帐号管理" icon:nil];
+//    // newFriend.destVcClass = [MyAccountViewController class];
+//    account.operation = ^{
+//    };
+//    group.items = @[account];
+//}
 
 - (void)setupGroup1
 {
@@ -82,14 +85,16 @@
     [self.groups addObject:group];
     
     // 设置组的所有行数据
-    HMCommonArrowItem *version = [HMCommonArrowItem itemWithTitle:@"版本更新" icon:nil];
-    // newFriend.destVcClass = [MyAccountViewController class];
+    HMCommonArrowItem *version = [HMCommonArrowItem itemWithTitle:@"版本信息" icon:nil];
+    version.destVcClass = [VersionViewController class];
     version.operation = ^{
     };
     
     HMCommonArrowItem *help = [HMCommonArrowItem itemWithTitle:@"使用帮助" icon:nil];
+    help.destVcClass = [UseHelpViewController class];
     
     HMCommonArrowItem *advice = [HMCommonArrowItem itemWithTitle:@"意见反馈" icon:nil];
+    advice.destVcClass = [FeedbackViewController class];
     
     group.items = @[version,help,advice];
 }
@@ -124,6 +129,7 @@
 -(void)loginOut
 {
     [[LocationHelper sharedLocationHelper] removeTimer];
+    [ArchiverCacheHelper removeLocaldataByFilePath:User_Archiver_Path];
     [HMControllerTool setLoginViewController];
 }
 

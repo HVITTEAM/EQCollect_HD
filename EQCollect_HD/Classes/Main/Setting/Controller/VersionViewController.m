@@ -1,22 +1,23 @@
 //
-//  AboutViewController.m
+//  VersionViewController.m
 //  EQCollect_HD
 //
-//  Created by shi on 15/10/14.
+//  Created by shi on 15/10/23.
 //  Copyright © 2015年 董徐维. All rights reserved.
 //
 
-#import "AboutViewController.h"
+#import "VersionViewController.h"
 
-@interface AboutViewController ()
+@interface VersionViewController ()
 
 @end
 
-@implementation AboutViewController
+@implementation VersionViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.view.backgroundColor = HMGlobalBg;
 }
 
 - (void)didReceiveMemoryWarning {

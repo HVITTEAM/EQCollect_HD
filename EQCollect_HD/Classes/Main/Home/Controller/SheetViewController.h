@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PictureVO.h"
+#import "PictureMode.h"
 
 @interface SheetViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,MBProgressHUDDelegate>
 @property (weak, nonatomic) UIScrollView *rootScrollV;  //用于滚动的scrollView;
@@ -15,8 +17,26 @@
 
 -(void)showMBProgressHUDWithSel:(SEL)method;
 
--(void)keyboardWillShow:(NSNotification *)notification;
--(void)keyboardWillHide:(NSNotification *)notification;
+//-(void)keyboardWillShow:(NSNotification *)notification;
+//-(void)keyboardWillHide:(NSNotification *)notification;
 
+/**
+ * 创建唯一标识号
+ **/
 -(NSString *)createUniqueIdWithAbbreTableName:(NSString *)name;
+
+/**
+ * 保存图片
+ **/
+-(void)saveImages:(NSArray *)images releteId:(NSString *)releteID releteTable:(NSString *)releteTable;
+
+/**
+ * 获取图片
+ **/
+-(NSMutableArray *)getImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable;
+
+/**
+ *  判断是否有文本框为空
+ */
+-(BOOL)hasTextBeNullInTextInputViews:(NSArray *)textInputViews;
 @end

@@ -39,4 +39,11 @@
  */
 +(id)getLocaldataBykey:(NSString *)key filePath:(NSString *)filePath;
 
+/**
+ *  删除归档文件
+ *
+ *  @param filePath 保存路径
+ */
++(void)removeLocaldataByFilePath:(NSString *)filePath;
+
 @end

@@ -12,17 +12,39 @@
 #import "ImageCollectionView.h"
 #import "PictureMode.h"
 
-@interface AbnormalinfoViewController ()
+@interface AbnormalinfoViewController ()<UIAlertViewDelegate>
 {
     CGFloat _navHeight;              // 导航栏与状态栏总的高度
     UIBarButtonItem *_rigthItem;      //导航栏右侧按钮
+    ImageCollectionView *imgview;
 }
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidTopCons;        //宏观异常编号TextField顶部约束
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidWidthCons;      //宏观异常编号TextField宽约束
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+
+@property (weak, nonatomic) IBOutlet UITextField *abnormalidTextF;                 //宏观异常编号
+@property (weak, nonatomic) IBOutlet UITextField *abnormaltimeTextF;               //调查时间
+@property (weak, nonatomic) IBOutlet UITextField *informantTextF;                  //被调查者
+@property (weak, nonatomic) IBOutlet UITextField *abnormalintensityTextF;          //烈度
+@property (weak, nonatomic) IBOutlet UITextField *groundwaterTextF;                //地下水
+@property (weak, nonatomic) IBOutlet UITextField *abnormalhabitTextF;              //动植物习性
+@property (weak, nonatomic) IBOutlet UITextField *abnormalphenomenonTextF;         //物化现象
+@property (weak, nonatomic) IBOutlet UITextField *otherTextF;                      //其他
+@property (weak, nonatomic) IBOutlet UITextField *implementationTextF;             //落实情况
+@property (weak, nonatomic) IBOutlet UITextField *abnormalanalysisTextF;           //初步分析
+@property (weak, nonatomic) IBOutlet UITextField *crediblyTextF;                   //可信度
+
+@property (strong,nonatomic)NSArray *textInputViews;           //所有的文本输入框
+@property (strong,nonatomic)NSArray *intensityItems;           //烈度选项
+@property (strong,nonatomic)NSArray *groundwaterItems;         //地下水选项
+@property (strong,nonatomic)NSArray *habitItems;               //动植物习性选项
+@property (strong,nonatomic)NSArray *phenomenonItems;          //物化现象选项
+
 @end
 
 @implementation AbnormalinfoViewController
-{
-    ImageCollectionView *imgview;
-}
 
 - (void)viewDidLoad
 {
@@ -34,37 +56,18 @@
 
     [self initAbnormalinfoVC];
     [self initImageCollectionView];
+    [self showAbnormalinfoData];
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self showAbnormalinfoData];
-    //获取图片数据
-    if (imgview.showType==kActionTypeShow) {
-        [self getimage];
-    }
-    imgview.nav = self.navigationController;
-    
-    
-    if ([self.abnormalinfo.upload isEqualToString:@"1"]) {
-        self.navigationItem.rightBarButtonItem = nil;
-    }else{
-        self.navigationItem.rightBarButtonItem = _rigthItem;
-    }
-    
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
     //将UIDeviceOrientation类型转为UIInterfaceOrientation
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
     //根据屏幕方向设置视图的约束
     [self rotationToInterfaceOrientation:interfaceOrientation];
-
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 /**
@@ -77,7 +80,10 @@
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    self.navigationItem.rightBarButtonItem = _rigthItem;
+    
+    if (![self.abnormalinfo.upload isEqualToString:@"1"]) {
+        self.navigationItem.rightBarButtonItem = _rigthItem;
+    }
     
     if (self.actionType == kActionTypeAdd){
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
@@ -115,13 +121,18 @@
     [self setActionType:self.actionType];
 }
 
+/**
+ *  初始化ImageCollectionView
+ */
 -(void)initImageCollectionView
 {
     //创建图片视图
     UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
     imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
-    imgview.nav = self.navigationController;
+    
     imgview.showType = self.actionType;
+    imgview.nav = self.navigationController;
+    
     [self addChildViewController:imgview];
     [self.containerView addSubview:imgview.collectionView];
     
@@ -145,6 +156,9 @@
     [imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
 
+/**
+ *  显示数据
+ */
 -(void)showAbnormalinfoData
 {
     if (self.actionType == kActionTypeShow  || self.actionType == kactionTypeEdit) {
@@ -160,6 +174,14 @@
         self.abnormalanalysisTextF.text = self.abnormalinfo.abnormalanalysis;
         self.crediblyTextF.text = self.abnormalinfo.credibly;
         
+        //[self getimage];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSMutableArray *images = [self getImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                imgview.dataProvider = images;
+            });
+        });
+
     }else {
         
         self.abnormalidTextF.text = [self createUniqueIdWithAbbreTableName:@"HG"];
@@ -177,7 +199,6 @@
 -(void)setActionType:(ActionType)actionType
 {
      _actionType = actionType;
-    
      //根据当前选择设置文本框能否编辑
     if (actionType == kActionTypeShow) {
         for (UITextField *txt in self.textInputViews) {
@@ -191,7 +212,9 @@
     imgview.showType = actionType;
 }
 
-//处理屏幕旋转
+/**
+ *  处理屏幕旋转
+ */
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
     [self rotationToInterfaceOrientation:interfaceOrientation];
@@ -251,6 +274,119 @@
     return canEdit;
 }
 
+/**
+ *  使用UIAlertView向文本框输入内容
+ *
+ *  @param textField 需要输入内容的文本框
+ *  @param items     选项数组
+ */
+-(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
+{
+    [self.view endEditing:YES];
+    //创建UIAlertView并设置标题
+    NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    //添加AlertView控件上的按钮
+    for (NSString *buttonTitle in items) {
+        [alert addButtonWithTitle:buttonTitle];
+    }
+    //显示AlertView控件
+    [alert show];
+}
+
+#pragma mark UIAlertViewDelegate方法
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
+    //将选中的按钮标题设为当前文本框的内容
+    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
+    inputView.text = itemStr;
+}
+//
+///**
+// * 保存图片
+// **/
+//-(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
+//{
+//    //保存图片
+//    for (int i = 0; i < imgview.dataProvider.count ; i++)
+//    {
+//        if ([imgview.dataProvider[i] isKindOfClass:[PictureVO class]])
+//        {
+//            PictureVO *v = (PictureVO*)imgview.dataProvider[i];
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", v.name]];
+//            // BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+//            BOOL result = [v.imageData writeToFile: filePath    atomically:YES]; // 写入本地沙盒
+//            if (result)
+//            {
+//                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                                      v.name,@"pictureName",
+//                                      filePath,@"picturePath",
+//                                      releteID,@"releteid",
+//                                      releteTable,@"reletetable",
+//                                      nil];
+//                //保存数据库
+//                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+//            }
+//        }
+//    }
+//}
+//
+///**
+// * 获取图片
+// **/
+//-(void)getimage
+//{
+//    //imgview.dataProvider = [[NSMutableArray alloc] init];
+//    [imgview.dataProvider removeAllObjects];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
+//        NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"ABNORMALINFOTAB" Releteid:self.abnormalinfo.abnormalid];
+//        //循环添加图片
+//        for(PictureMode* pic in imageArr)
+//        {
+//            PictureVO *vo = [[PictureVO alloc] init];
+//            vo.name = pic.pictureName;
+//            
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", pic.pictureName]];
+//            vo.imageData = [NSData dataWithContentsOfFile:filePath];
+//            [dataProvider addObject:vo];
+//        }
+//         dispatch_async(dispatch_get_main_queue(), ^{
+//            imgview.dataProvider = dataProvider;
+//        });
+//    });
+//}
+
+/**
+ *  导航栏右侧按钮点击调用
+ */
+-(void)rightItemTap:(UIBarButtonItem *)sender
+{
+    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
+        self.navigationItem.rightBarButtonItem.title = @"确定";
+        self.actionType = kactionTypeEdit;
+    }else{
+        if (self.actionType == kActionTypeAdd) {
+            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
+            }
+        }else{
+            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+                self.navigationItem.rightBarButtonItem.title = @"编辑";
+                [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
+                [self.view endEditing:YES];
+                self.actionType = kActionTypeShow;
+            }
+        }
+    }
+}
+
+/**
+ * 新增宏观异常
+ **/
 -(void)addAbnormalinfo
 {
     NSString *abnormalid = self.abnormalidTextF.text;
@@ -286,11 +422,9 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-//        NSInteger maxid=[[AbnormalinfoTableHelper sharedInstance] getMaxIdOfRecords];
-//        if (maxid!=0 ) {
-//            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"ABNORMALINFOTAB"];
-//        }
-        [self saveImagesWithReleteId:abnormalid releteTable:@"ABNORMALINFOTAB"];
+        
+        //[self saveImagesWithReleteId:abnormalid releteTable:@"ABNORMALINFOTAB"];
+        [self saveImages:imgview.dataProvider releteId:abnormalid releteTable:@"ABNORMALINFOTAB"];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.abnormalidTextF.text = nil;
             self.abnormaltimeTextF.text = nil;
@@ -303,134 +437,22 @@
             self.implementationTextF.text = nil;
             self.abnormalanalysisTextF.text = nil;
             self.crediblyTextF.text =nil;
-
+            
             [self.view endEditing:YES];
             //清空imageCollectionView的数据
             imgview.dataProvider = [[NSMutableArray alloc] init];
             //防止循环引用导致无法释放当前这个控制器
             imgview.nav = nil;
-            [self dismissViewControllerAnimated:YES completion:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
+            if ([self.delegate respondsToSelector:@selector(addAbnormalinfoSuccess:)]) {
+                [self.delegate addAbnormalinfoSuccess:self];
+            }
         });
     }
 }
 
--(void)back
-{
-    //清空imageCollectionView的数据
-    imgview.dataProvider = [[NSMutableArray alloc] init];
-    //防止循环引用导致无法释放当前这个控制器
-    imgview.nav = nil;
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 /**
- *  使用UIAlertView向文本框输入内容
- *
- *  @param textField 需要输入内容的文本框
- *  @param items     选项数组
- */
--(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
-{
-    [self.view endEditing:YES];
-    //创建UIAlertView并设置标题
-    NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
-    //添加AlertView控件上的按钮
-    for (NSString *buttonTitle in items) {
-        [alert addButtonWithTitle:buttonTitle];
-    }
-    //显示AlertView控件
-    [alert show];
-}
-
-#pragma mark UIAlertViewDelegate方法
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
-    //将选中的按钮标题设为当前文本框的内容
-    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
-    inputView.text = itemStr;
-}
-
-/**
- * 保存图片
+ * 更新宏观异常
  **/
--(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
-{
-    //保存图片
-    for (int i = 0; i < imgview.dataProvider.count ; i++)
-    {
-        if ([imgview.dataProvider[i] isKindOfClass:[PictureVO class]])
-        {
-            PictureVO *v = (PictureVO*)imgview.dataProvider[i];
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", v.name]];
-            // BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
-            BOOL result = [v.imageData writeToFile: filePath    atomically:YES]; // 写入本地沙盒
-            if (result)
-            {
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                      v.name,@"pictureName",
-                                      filePath,@"picturePath",
-                                      releteID,@"releteid",
-                                      releteTable,@"reletetable",
-                                      nil];
-                //保存数据库
-                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
-            }
-        }
-    }
-}
-
-/**
- * 获取图片
- **/
--(void)getimage
-{
-    //imgview.dataProvider = [[NSMutableArray alloc] init];
-    [imgview.dataProvider removeAllObjects];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
-        NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"ABNORMALINFOTAB" Releteid:self.abnormalinfo.abnormalid];
-        //循环添加图片
-        for(PictureMode* pic in imageArr)
-        {
-            PictureVO *vo = [[PictureVO alloc] init];
-            vo.name = pic.pictureName;
-            
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", pic.pictureName]];
-            vo.imageData = [NSData dataWithContentsOfFile:filePath];
-            [dataProvider addObject:vo];
-        }
-         dispatch_async(dispatch_get_main_queue(), ^{
-            imgview.dataProvider = dataProvider;
-        });
-    });
-}
-
--(void)rightItemTap:(UIBarButtonItem *)sender
-{
-    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
-        self.navigationItem.rightBarButtonItem.title = @"确定";
-        self.actionType = kactionTypeEdit;
-    }else{
-        if (self.actionType == kActionTypeAdd) {
-            if (![self hasTextBeNull]) {
-            [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
-            }
-        }else{
-            if (![self hasTextBeNull]) {
-                self.navigationItem.rightBarButtonItem.title = @"编辑";
-                [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
-                [self.view endEditing:YES];
-                self.actionType = kActionTypeShow;
-            }
-        }
-    }
-}
-
 -(void)updateAbnormalinfo
 {
     //NSString *abnormalid = self.abnormalidTextF.text;
@@ -466,26 +488,22 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        //[[NSNotificationCenter defaultCenter] postNotificationName:kAddAbnormalinfoSucceedNotification object:nil];
-        
         [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"ABNORMALINFOTAB" Releteid:self.abnormalinfo.abnormalid];
-        [self saveImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
-
+        //[self saveImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
+        [self saveImages:imgview.dataProvider releteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
+        if ([self.delegate respondsToSelector:@selector(updateAbnormalinfoSuccess:)]) {
+            [self.delegate updateAbnormalinfoSuccess:self];
+        }
     }
 }
 
-//判断是否有文本框为空
--(BOOL)hasTextBeNull
+-(void)back
 {
-    //判断文本输入框是否为空，如果为空则提示并返回
-    for (int i=0; i<self.textInputViews.count; i++) {
-        UITextField *textF = (UITextField *)self.textInputViews[i];
-        if (textF.text ==nil || textF.text.length <=0) {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-            return YES;
-        }
-    }
-    return NO;
+    //清空imageCollectionView的数据
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    //防止循环引用导致无法释放当前这个控制器
+    imgview.nav = nil;
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)dealloc

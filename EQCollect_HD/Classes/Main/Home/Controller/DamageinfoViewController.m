@@ -12,17 +12,37 @@
 #import "ImageCollectionView.h"
 #import "PictureMode.h"
 
-@interface DamageinfoViewController ()
+@interface DamageinfoViewController ()<UIAlertViewDelegate>
 {
     CGFloat _navHeight;              // 导航栏与状态栏总的高度
     UIBarButtonItem *_rigthItem;      //导航栏右侧按钮
+    ImageCollectionView *imgview;
 }
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidTopCons;         //房屋震害编号TextField顶部约束
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidWidthCons;        //房屋震害编号TextField宽约束
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+
+@property (weak, nonatomic) IBOutlet UITextField *damageidTextF;                   //房屋震害编号
+@property (weak, nonatomic) IBOutlet UITextField *damagetimeTextF;                 //调查时间
+@property (weak, nonatomic) IBOutlet UITextField *damageaddressTextF;              //地址
+@property (weak, nonatomic) IBOutlet UITextField *damageintensityTextF;            //烈度
+@property (weak, nonatomic) IBOutlet UITextField *zrcorxqTextF;                    //自然村或小区
+@property (weak, nonatomic) IBOutlet UITextField *dworzhTextF;                     //单位或住户
+@property (weak, nonatomic) IBOutlet UITextField *fortificationintensityTextF;     //设防烈度
+@property (weak, nonatomic) IBOutlet UITextField *damagesituationTextF;            //破坏情况
+@property (weak, nonatomic) IBOutlet UITextField *damageindexTextF;                //震害指数
+
+@property (strong,nonatomic)NSArray *textInputViews;                //所有的文本输入框
+@property (strong,nonatomic)NSArray *intensityItems;                //烈度选项
+@property (strong,nonatomic)NSArray *fortificationintensityItems;   //设防烈度选项
+@property (strong,nonatomic)NSArray *damagesituationItems;          //破坏情况选项
+@property (strong,nonatomic)NSArray *damageindexItems;              //震害指数选项
+
 @end
 
 @implementation DamageinfoViewController
-{
-    ImageCollectionView *imgview;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,35 +52,18 @@
 
     [self initDamageinfo];
     [self initImageCollectionView];
+    [self showDamageinfoData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self showDamageinfoData];
-    if (imgview.showType == kActionTypeShow) {
-        [self getimage];
-    }
-    imgview.nav = self.navigationController;
-    
-    if ([self.damageinfo.upload isEqualToString:@"1"]) {
-        self.navigationItem.rightBarButtonItem = nil;
-    }else{
-        self.navigationItem.rightBarButtonItem = _rigthItem;
-    }
-    
     //获取设备当前方向
     UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
     //将UIDeviceOrientation类型转为UIInterfaceOrientation
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
     //根据屏幕方向设置视图的约束
     [self rotationToInterfaceOrientation:interfaceOrientation];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 /**
@@ -74,8 +77,10 @@
     _navHeight = kNormalNavHeight;
     
     _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    self.navigationItem.rightBarButtonItem = _rigthItem;
-
+    if (![self.damageinfo.upload isEqualToString:@"1"]) {
+        self.navigationItem.rightBarButtonItem = _rigthItem;
+    }
+    
     if (self.actionType == kActionTypeAdd) {
         //设置导航栏按钮
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
@@ -106,7 +111,7 @@
         textF.tag = 1000+i;
     }
 
-    self.intensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6级",@"7",@"8",@"9",@"10"];
+    self.intensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     self.fortificationintensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     self.damagesituationItems = @[@"严重",@"中等",@"轻微"];
     self.damageindexItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
@@ -114,19 +119,17 @@
     [self setActionType:self.actionType];
 }
 
+/**
+ *  初始化ImageCollectionView
+ */
 -(void)initImageCollectionView
 {
     //创建图片视图
     UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
     imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
-
-    if (self.actionType == kActionTypeShow ) {
-        imgview.showType= kActionTypeShow;
-    }else if (self.actionType == kactionTypeEdit){
-        imgview.showType = kactionTypeEdit;
-    }else
-        imgview.showType = kActionTypeAdd;
-
+    
+    imgview.showType = self.actionType;
+    imgview.nav = self.navigationController;
 
     [self addChildViewController:imgview];
     [self.containerView addSubview:imgview.collectionView];
@@ -151,6 +154,9 @@
     [imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
 
+/**
+ *  显示数据
+ */
 -(void)showDamageinfoData
 {
     if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit) {
@@ -163,6 +169,15 @@
         self.fortificationintensityTextF.text = self.damageinfo.fortificationintensity;
         self.damagesituationTextF.text = self.damageinfo.damagesituation;
         self.damageindexTextF.text = self.damageinfo.damageindex;
+        
+        //[self getimage];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSMutableArray *images = [self getImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                imgview.dataProvider = images;
+            });
+        });
+        
     }else {
         
         self.damageidTextF.text = [self createUniqueIdWithAbbreTableName:@"ZH"];
@@ -174,6 +189,9 @@
     }
 }
 
+/**
+ *  ActionType属性的 setter 方法
+ */
 -(void)setActionType:(ActionType)actionType
 {
     _actionType = actionType;
@@ -181,22 +199,17 @@
         for (UITextField *txt in self.textInputViews) {
             txt.userInteractionEnabled = NO;
         }
-    }
-    if (actionType == kActionTypeAdd || actionType == kactionTypeEdit) {
+    }else{
         for (UITextField *txt in self.textInputViews) {
             txt.userInteractionEnabled = YES;
         }
     }
-    
-    if (self.actionType == kActionTypeShow ) {
-        imgview.showType= kActionTypeShow;
-    }else if (self.actionType == kactionTypeEdit){
-        imgview.showType = kactionTypeEdit;
-    }else
-        imgview.showType = kActionTypeAdd;
+    imgview.showType = self.actionType;
 }
 
-//处理屏幕旋转
+/**
+ *  处理屏幕旋转
+ */
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
     [self rotationToInterfaceOrientation:interfaceOrientation];
@@ -257,7 +270,119 @@
 }
 
 /**
- *  新增房屋震害信息
+ *  使用UIAlertView向文本框输入内容
+ *
+ *  @param textField 需要输入内容的文本框
+ *  @param items     选项数组
+ */
+-(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
+{
+    //创建UIAlertView并设置标题
+    NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    //添加AlertView控件上的按钮
+    for (NSString *buttonTitle in items) {
+        [alert addButtonWithTitle:buttonTitle];
+    }
+    //显示AlertView控件
+    [alert show];
+}
+
+#pragma mark UIAlertViewDelegate方法
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
+    //将选中的按钮标题设为当前文本框的内容
+    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
+    inputView.text = itemStr;
+}
+//
+///**
+// * 保存图片
+// **/
+//-(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
+//{
+//    //保存图片
+//    for (int i = 0; i < imgview.dataProvider.count ; i++)
+//    {
+//        if ([imgview.dataProvider[i] isKindOfClass:[PictureVO class]])
+//        {
+//            PictureVO *v = (PictureVO*)imgview.dataProvider[i];
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", v.name]];
+//           // BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
+//            BOOL result = [v.imageData writeToFile: filePath    atomically:YES]; // 写入本地沙盒
+//            if (result)
+//            {
+//                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                                      v.name,@"pictureName",
+//                                      filePath,@"picturePath",
+//                                      releteID,@"releteid",
+//                                      releteTable,@"reletetable",
+//                                      nil];
+//                //保存数据库
+//                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+//            }
+//        }
+//    }
+//}
+//
+///**
+// * 获取图片
+// **/
+//-(void)getimage
+//{
+//    //imgview.dataProvider = [[NSMutableArray alloc] init];
+//    [imgview.dataProvider removeAllObjects];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        
+//        NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
+//        NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
+//        //循环添加图片
+//        for(PictureMode* pic in imageArr)
+//        {
+//            PictureVO *vo = [[PictureVO alloc] init];
+//            vo.name = pic.pictureName;
+//            
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", pic.pictureName]];
+//            vo.imageData = [NSData dataWithContentsOfFile:filePath];
+//            [dataProvider addObject:vo];
+//        }
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            imgview.dataProvider = dataProvider;
+//        });
+//    });
+//}
+
+/**
+ *  导航栏右侧按钮点击调用
+ */
+-(void)rightItemTap:(UIBarButtonItem *)sender
+{
+    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
+        self.navigationItem.rightBarButtonItem.title = @"确定";
+        self.actionType = kactionTypeEdit;
+    }else{
+        if (self.actionType == kActionTypeAdd) {
+            //判断是否有文本框为空，有空则返回并提示
+            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+                [self showMBProgressHUDWithSel:@selector(addDamageinfo)];
+            }
+        }else{
+            //判断是否有文本框为空，有空则返回并提示
+            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+                [self showMBProgressHUDWithSel:@selector(updateDamageinfo)];
+                [self.view endEditing:YES];
+                self.navigationItem.rightBarButtonItem.title = @"编辑";
+                self.actionType = kActionTypeShow;
+            }
+        }
+    }
+}
+
+/**
+ *  新增房屋震害
  */
 -(void)addDamageinfo
 {
@@ -292,12 +417,9 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         
-//        NSInteger maxid=[[DamageinfoTableHelper sharedInstance] getMaxIdOfRecords];
-//        if (maxid!=0 ) {
-//            [self saveImagesWithReleteId:[NSString stringWithFormat:@"%ld",(long)maxid] releteTable:@"DAMAGEINFOTAB"];
-//        }
-        [self saveImagesWithReleteId:damageid releteTable:@"DAMAGEINFOTAB"];
-
+        //        [self saveImagesWithReleteId:damageid releteTable:@"DAMAGEINFOTAB"];
+        [self saveImages:imgview.dataProvider releteId:damageid releteTable:@"DAMAGEINFOTAB"];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.damageidTextF.text = nil;
             self.damagetimeTextF.text = nil;
@@ -314,130 +436,16 @@
             imgview.dataProvider = [[NSMutableArray alloc] init];
             //防止循环引用导致无法释放当前这个控制器
             imgview.nav = nil;
-            [self dismissViewControllerAnimated:YES completion:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
+            if ([self.delegate respondsToSelector:@selector(addDamageinfoSuccess:)]) {
+                [self.delegate addDamageinfoSuccess:self];
+            }
         });
     }
 }
 
--(void)back
-{
-    //清空imageCollectionView的数据
-    imgview.dataProvider = [[NSMutableArray alloc] init];
-    //防止循环引用导致无法释放当前这个控制器
-    imgview.nav = nil;
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 /**
- *  使用UIAlertView向文本框输入内容
- *
- *  @param textField 需要输入内容的文本框
- *  @param items     选项数组
- */
--(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
-{
-    //创建UIAlertView并设置标题
-    NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
-    //添加AlertView控件上的按钮
-    for (NSString *buttonTitle in items) {
-        [alert addButtonWithTitle:buttonTitle];
-    }
-    //显示AlertView控件
-    [alert show];
-}
-
-#pragma mark UIAlertViewDelegate方法
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
-    //将选中的按钮标题设为当前文本框的内容
-    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
-    inputView.text = itemStr;
-}
-
-/**
- * 保存图片
+ * 更新房屋震害
  **/
--(void)saveImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
-{
-    //保存图片
-    for (int i = 0; i < imgview.dataProvider.count ; i++)
-    {
-        if ([imgview.dataProvider[i] isKindOfClass:[PictureVO class]])
-        {
-            PictureVO *v = (PictureVO*)imgview.dataProvider[i];
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", v.name]];
-           // BOOL result = [UIImagePNGRepresentation(v.image)writeToFile: filePath    atomically:YES];  // 写入本地沙盒
-            BOOL result = [v.imageData writeToFile: filePath    atomically:YES]; // 写入本地沙盒
-            if (result)
-            {
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                      v.name,@"pictureName",
-                                      filePath,@"picturePath",
-                                      releteID,@"releteid",
-                                      releteTable,@"reletetable",
-                                      nil];
-                //保存数据库
-                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
-            }
-        }
-    }
-}
-
-/**
- * 获取图片
- **/
--(void)getimage
-{
-    //imgview.dataProvider = [[NSMutableArray alloc] init];
-    [imgview.dataProvider removeAllObjects];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        NSMutableArray *dataProvider = [[NSMutableArray alloc] init];
-        NSMutableArray * imageArr= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
-        //循环添加图片
-        for(PictureMode* pic in imageArr)
-        {
-            PictureVO *vo = [[PictureVO alloc] init];
-            vo.name = pic.pictureName;
-            
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", pic.pictureName]];
-            vo.imageData = [NSData dataWithContentsOfFile:filePath];
-            [dataProvider addObject:vo];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            imgview.dataProvider = dataProvider;
-        });
-    });
-}
-
--(void)rightItemTap:(UIBarButtonItem *)sender
-{
-    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
-        self.navigationItem.rightBarButtonItem.title = @"确定";
-        self.actionType = kactionTypeEdit;
-    }else{
-        if (self.actionType == kActionTypeAdd) {
-            //判断是否有文本框为空，有空则返回并提示
-            if (![self hasTextBeNull]) {
-                [self showMBProgressHUDWithSel:@selector(addDamageinfo)];
-            }
-        }else{
-            //判断是否有文本框为空，有空则返回并提示
-            if (![self hasTextBeNull]) {
-                [self showMBProgressHUDWithSel:@selector(updateDamageinfo)];
-                [self.view endEditing:YES];
-                self.navigationItem.rightBarButtonItem.title = @"编辑";
-                self.actionType = kActionTypeShow;
-            }
-        }
-    }
-}
-
 -(void)updateDamageinfo
 {
    // NSString *damageid = self.damageidTextF.text;
@@ -469,26 +477,25 @@
     if (!result) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }else{
-        //[[NSNotificationCenter defaultCenter] postNotificationName:kAddDamageinfoSucceedNotification object:nil];
-        
         [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
-        [self saveImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
+        //[self saveImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
+        [self saveImages:imgview.dataProvider releteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
+        
+        if ([self.delegate respondsToSelector:@selector(updateDamageinfoSuccess:)]) {
+            [self.delegate updateDamageinfoSuccess:self];
+        }
     }
 }
 
-//判断是否有文本框为空
--(BOOL)hasTextBeNull
+-(void)back
 {
-    //判断文本输入框是否为空，如果为空则提示并返回
-    for (int i=0; i<self.textInputViews.count; i++) {
-        UITextField *textF = (UITextField *)self.textInputViews[i];
-        if (textF.text ==nil || textF.text.length <=0) {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-            return YES;
-        }
-    }
-    return NO;
+    //清空imageCollectionView的数据
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    //防止循环引用导致无法释放当前这个控制器
+    imgview.nav = nil;
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 -(void)dealloc
 {
 

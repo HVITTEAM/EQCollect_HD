@@ -7,9 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "MasterViewController.h"
-#import "DetailViewController.h"
-#import "LoginViewController.h"
 #import "LocationHelper.h"
 #import "ArchiverCacheHelper.h"
 
@@ -31,12 +28,12 @@
     
     if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
     {
+        NSLog(@"已经存在用户");
         [HMControllerTool setRootViewController];
-        [[LocationHelper sharedLocationHelper] addTimer];
-        [[LocationHelper sharedLocationHelper] performSelector:@selector(uploadUserinfo) withObject:nil afterDelay:3];
     }
     else
     {
+        NSLog(@"新登录用户");
         [HMControllerTool setLoginViewController];
     }
     return YES;
@@ -63,7 +60,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
    [[LocationHelper sharedLocationHelper] removeTimer];
-    //[self removeTimer];
 }
 
 

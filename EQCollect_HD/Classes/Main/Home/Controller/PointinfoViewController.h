@@ -9,9 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "SheetViewController.h"
 
+@class PointinfoViewController;
+@protocol PointinfoDelegate <NSObject>
+-(void)addPointinfoSuccess:(PointinfoViewController *)pointinfoVC;
+-(void)updatePointinfoSuccess:(PointinfoViewController *)pointinfoVC;
+@end
+
 @interface PointinfoViewController : SheetViewController
+
 @property (assign,nonatomic)ActionType actionType;             //操作类型
 @property (strong,nonatomic)PointModel *pointinfo;             //选中的调查点信息
+@property (weak , nonatomic)id<PointinfoDelegate>delegate;
+
 //旋转屏幕时更改约束
 -(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 //更新当前界面数据

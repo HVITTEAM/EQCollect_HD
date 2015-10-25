@@ -49,36 +49,19 @@
     self.containerV = self.containerView;
     
     [self initPointinfoVC];
-        UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
-        //将UIDeviceOrientation类型转为UIInterfaceOrientation
-        UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
-        //根据屏幕方向设置视图的约束
-        [self rotationToInterfaceOrientation:interfaceOrientation];
+    [self showPointinfoData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self showPointinfoData];
-    
+    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
+    //将UIDeviceOrientation类型转为UIInterfaceOrientation
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
+    //根据屏幕方向设置视图的约束
+    [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-//-(void)viewDidLayoutSubviews
-//{
-//    [super viewDidLayoutSubviews];
-//    //获取设备当前方向
-//    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
-//    //将UIDeviceOrientation类型转为UIInterfaceOrientation
-//    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
-//    //根据屏幕方向设置视图的约束
-//    [self rotationToInterfaceOrientation:interfaceOrientation];
-//
-//}
 /**
  *  初始化调查点信息控制器
  */
@@ -120,7 +103,7 @@
 }
 
 /**
- *  显示页面数据
+ *  显示数据
  */
 -(void)showPointinfoData
 {
@@ -159,21 +142,9 @@
     }
 }
 
-///**
-// *  重写pointinfo的 setter 方法，当更新pointinfo时，更新页面数据
-// */
-//-(void)setPointinfo:(PointModel *)pointinfo
-//{
-//    _pointinfo = pointinfo;
-//    [self showPointinfoData];
-//}
-
-//-(void)setActionType:(ActionType)actionType
-//{
-//    _actionType = actionType;
-//    [self showPointinfoData];
-//}
-
+/**
+ *  处理屏幕旋转
+ */
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 {
     [self rotationToInterfaceOrientation:interfaceOrientation];
@@ -227,14 +198,12 @@
     }else return NO;
 }
 
--(void)back
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
+/**
+ * 新增调查点信息
+ **/
 -(void)addPointinfo
 {
-    if ([self hasTextBeNull]) {
+    if ([self hasTextBeNullInTextInputViews:self.textInputViews]) {
         return;
     }
     NSString *pointid = self.pointidTextF.text;
@@ -289,8 +258,10 @@
                 self.pointcontentTextV.text = nil;
                 
                 [self.view endEditing:YES];
-                [self dismissViewControllerAnimated:YES completion:nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
+                
+                if ([self.delegate respondsToSelector:@selector(addPointinfoSuccess:)]) {
+                    [self.delegate addPointinfoSuccess:self];
+                }
             });
         }
 
@@ -298,14 +269,14 @@
         [hud removeFromSuperview];
         //[hud release];
     }];
-
-    
-    
 }
 
+/**
+ * 更新调查点信息
+ **/
 -(void)updatePointinfo
 {
-    if ([self hasTextBeNull]) {
+    if ([self  hasTextBeNullInTextInputViews:self.textInputViews]) {
         return;
     }
     
@@ -350,29 +321,32 @@
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.view endEditing:YES];
+                if ([self.delegate respondsToSelector:@selector(updatePointinfoSuccess:)]) {
+                    [self.delegate updatePointinfoSuccess:self];
+                }
              });
-
-            //[[NSNotificationCenter defaultCenter] postNotificationName:kAddPointinfoSucceedNotification object:nil];
-        }
+                   }
     } completionBlock:^{
         [hud removeFromSuperview];
         //[hud release];
     }];
 }
 
-//判断是否有文本框为空
--(BOOL)hasTextBeNull
+/**
+ *  重写父类方法
+ */
+-(BOOL)hasTextBeNullInTextInputViews:(NSArray *)textInputViews
 {
     //判断文本输入框是否为空，如果为空则提示并返回
-    for (int i=0; i<self.textInputViews.count; i++) {
-        if (i!=self.textInputViews.count-1) {
-            UITextField *textF = (UITextField *)self.textInputViews[i];
+    for (int i=0; i<textInputViews.count; i++) {
+        if (i!=textInputViews.count-1) {
+            UITextField *textF = (UITextField *)textInputViews[i];
             if (textF.text ==nil || textF.text.length <=0) {
                 [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
                 return YES;
             }
         }else{
-            UITextView *textV = (UITextView *)self.textInputViews[i];
+            UITextView *textV = (UITextView *)textInputViews[i];
             if (textV.text ==nil || textV.text.length <=0) {
                 [[[UIAlertView alloc] initWithTitle:nil message:@"数据不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
                 return YES;
@@ -382,29 +356,13 @@
     return NO;
 }
 
+-(void)back
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 -(void)dealloc
 {
-    _pointidTopCons = nil;
-    _pointidWidthCons = nil;
-    _rootScrollView = nil;
-    _containerView = nil;
-    
-    _pointidTextF = nil;
-    _earthidTextF = nil;
-    _pointlocationTextF = nil;
-    
-    _pointlonTextF = nil;
-    _pointlatTextF = nil;
-    _pointnameTextF = nil;
-    _pointtimeTextF = nil;
-    _pointgroupTextF = nil;
-    _pointintensityTextF = nil;
-    _pointcontentTextV = nil;
-    _pointPersonTextF = nil;
-    
-    _pointinfo = nil;
-    
-    _textInputViews = nil;
     NSLog(@"PointinfoViewController释放了吗。。。。。。。。。。。。。");
 }
 @end

@@ -63,7 +63,7 @@
     //重置数据源
     [self setupGroup0];
     [self setupGroup1];
-    [self setupFooter];
+    //[self setupFooter];
     
     //刷新表格
     [self.tableView reloadData];
@@ -75,10 +75,10 @@
     [self.groups addObject:group];
     
     // 设置组的所有行数据
-    HMCommonTextfieldItem *userccount = [HMCommonTextfieldItem itemWithTitle:@"用户名"];
+    HMCommonTextfieldItem *userccount = [HMCommonTextfieldItem itemWithTitle:@"帐号"];
     userccount.placeholder = _userinfo.userccount;
     
-    HMCommonTextfieldItem *username = [HMCommonTextfieldItem itemWithTitle:@"用户名"];
+    HMCommonTextfieldItem *username = [HMCommonTextfieldItem itemWithTitle:@"昵称"];
     username.placeholder = _userinfo.username;
 
     HMCommonTextfieldItem *userpwd = [HMCommonTextfieldItem itemWithTitle:@"密码"];
@@ -112,45 +112,24 @@
     HMCommonTextfieldItem *jobname = [HMCommonTextfieldItem itemWithTitle:@"工作名称"];
     jobname.placeholder = _userinfo.jobname;
     
-    
     HMCommonTextfieldItem *groupname = [HMCommonTextfieldItem itemWithTitle:@"所在分组"];
     groupname.placeholder = _userinfo.groupname;
-    //    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];
-    //    groupname.centerString = @"第一组";
     
     group.items = @[useraddress,userlon,userlat,jobname,groupname];
 }
 
-- (void)setupFooter
-{
-    // 1.创建按钮
-    UIButton *logout = [[UIButton alloc] init];
-    
-    // 2.设置属性
-    logout.titleLabel.font = [UIFont systemFontOfSize:16];
-    [logout setTitle:@"确定修改" forState:UIControlStateNormal];
-    [logout setTitleColor:HMColor(255, 10, 10) forState:UIControlStateNormal];
-    [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background"] forState:UIControlStateNormal];
-    [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background_highlighted"] forState:UIControlStateHighlighted];
-    [logout addTarget:self action:@selector(updateuserInfo) forControlEvents:UIControlEventTouchUpInside];
-    
-    // 3.设置尺寸(tableFooterView和tableHeaderView的宽度跟tableView的宽度一样)
-    logout.height = 60;
-    
-    self.tableView.tableFooterView = logout;
-    
-}
 
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    HMCommonCell *cell = (HMCommonCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
+    cell.item.rightText.userInteractionEnabled = NO;
+    return cell;
+}
 
 -(void)back
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
--(void)updateuserInfo
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 @end

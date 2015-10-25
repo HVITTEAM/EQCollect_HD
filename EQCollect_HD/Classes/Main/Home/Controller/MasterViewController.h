@@ -9,9 +9,5 @@
 #import "PersonCenterController.h"
 
 @interface MasterViewController : UITableViewController
-
-@property (nonatomic, retain) SettingViewController *settingView;
-@property (nonatomic, retain) PersonCenterController *personView;
-
-@property (nonatomic, retain) UINavigationController *nav;
+//@property (nonatomic, retain) UINavigationController *nav;
 @end

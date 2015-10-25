@@ -23,7 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSLog(@"-------------%@",[NSDate date]);
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -164,6 +163,77 @@
     _HUD = nil;
 }
 
+
+
+/**
+ * 保存图片
+ **/
+-(void)saveImages:(NSArray *)images releteId:(NSString *)releteID releteTable:(NSString *)releteTable
+{
+    //保存图片
+    for (int i = 0; i < images.count ; i++)
+    {
+        if ([images[i] isKindOfClass:[PictureVO class]])
+        {
+            PictureVO *v = (PictureVO*)images[i];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", v.name]];
+            BOOL result = [v.imageData writeToFile: filePath atomically:YES]; // 写入本地沙盒
+            if (result)
+            {
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                      v.name,@"pictureName",
+                                      filePath,@"picturePath",
+                                      releteID,@"releteid",
+                                      releteTable,@"reletetable",
+                                      nil];
+                //保存数据库
+                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+            }
+        }
+    }
+}
+
+/**
+ * 获取图片
+ **/
+-(NSMutableArray *)getImagesWithReleteId:(NSString *)releteID releteTable:(NSString *)releteTable
+{
+    NSMutableArray *images = [[NSMutableArray alloc] init];
+    NSMutableArray * pictureModes= [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:releteTable Releteid:releteID];
+    //循环添加图片
+    for(PictureMode* pic in pictureModes)
+    {
+        PictureVO *vo = [[PictureVO alloc] init];
+        vo.name = pic.pictureName;
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", pic.pictureName]];
+        vo.imageData = [NSData dataWithContentsOfFile:filePath];
+        [images addObject:vo];
+    }
+    return images;
+}
+
+/**
+ *  判断是否有文本框为空
+ */
+-(BOOL)hasTextBeNullInTextInputViews:(NSArray *)textInputViews
+{
+    //判断文本输入框是否为空，如果为空则提示并返回
+    for (int i=0; i<textInputViews.count; i++) {
+        UITextField *textF = (UITextField *)textInputViews[i];
+        if (textF.text ==nil || textF.text.length <=0) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"所填项目不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            return YES;
+        }
+    }
+    return NO;
+}
+
+/**
+ * 创建唯一标识号
+ **/
 -(NSString *)createUniqueIdWithAbbreTableName:(NSString *)name
 {
    NSDate *datenow = [NSDate date];

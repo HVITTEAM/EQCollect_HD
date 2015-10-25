@@ -14,7 +14,7 @@
 
 +(SharedAppUtil *)defaultCommonUtil;
 
-@property (retain, nonatomic) UserModel *userInfor;
+//@property (retain, nonatomic) UserModel *userInfor;
 
 
 @end

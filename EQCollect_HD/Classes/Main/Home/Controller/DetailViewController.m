@@ -9,10 +9,7 @@
 #import "PointinfoViewController.h"
 #import "SurveyPointCell.h"
 
-@interface DetailViewController ()<UISplitViewControllerDelegate,UISearchBarDelegate,InfoCellDelegate>
-//@property (nonatomic, retain) SurveyPointDetailViewController *detailview;
-//@property (nonatomic, retain) UINavigationController *nav;
-//@property (nonatomic, retain) PointinfoViewController *pointinfoVC;
+@interface DetailViewController ()<UISplitViewControllerDelegate,UISearchBarDelegate,InfoCellDelegate,PointinfoDelegate>
 @property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
 @property (nonatomic, retain) NSArray *filtedData;        //需要显示的调查点信息
 
@@ -27,25 +24,6 @@
     [self initNavgation];
     [self initTableView];
     self.title = @"调查点管理";
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self getDataProvider];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePointinfo:) name:kAddPointinfoSucceedNotification object:nil];
-}
-
-//-(void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//    self.detailview = nil;
-//}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)initNavgation
@@ -72,35 +50,10 @@
     
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reflesh)];
-}
-
-#pragma mark 集成刷新控件
-
-/**
- *  集成刷新控件
- */
--(void)reflesh
-{
-    [self getDataProvider];
-    [self.tableView.header endRefreshing];
-}
-
-/**
- *  获取数据
- */
--(void)getDataProvider
-{
-    self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
-    self.filtedData = self.dataProvider;
-    [self.tableView reloadData];
-}
-
-/**
- *  新增调查点成功后调用
- */
--(void)updatePointinfo:(NSNotification *)notification
-{
+    
     [self.tableView.header beginRefreshing];
+    
+    self.tableView.tableFooterView = [[UITableView alloc] init];
 }
 
 #pragma mark 分割控制器代理方法
@@ -171,10 +124,6 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (!self.detailview)
-//        self.detailview = [[SurveyPointDetailViewController alloc] init];
-//    self.detailview.pointinfo = self.filtedData[indexPath.row];
-//    [self.navigationController pushViewController:self.detailview animated:YES];
     SurveyPointDetailViewController *detailview1 = [[SurveyPointDetailViewController alloc] init];
     detailview1.pointinfo = self.filtedData[indexPath.row];
     [self.navigationController pushViewController:detailview1 animated:YES];
@@ -190,7 +139,6 @@
         self.filtedData = self.dataProvider;
     }else{
          //使用谓词来过虑，只要调查点信息中有一个属性包含用户输入的字符串，这个调查点就会显示。
-//        NSPredicate* pred = [NSPredicate predicateWithFormat:@"SELF.pointid CONTAINS[c]%@  OR  SELF.earthid CONTAINS[c]%@  OR  SELF.pointlocation CONTAINS[c]%@  OR  SELF.pointlon CONTAINS[c]%@  OR  SELF.pointlat CONTAINS[c]%@  OR  SELF.pointname CONTAINS[c]%@  OR  SELF.pointtime CONTAINS[c]%@  OR  SELF.pointgroup CONTAINS[c]%@  OR  SELF.pointintensity CONTAINS[c]%@  OR  SELF.pointcontent CONTAINS[c]%@" ,searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText];
         NSPredicate* pred = [NSPredicate predicateWithFormat:@"pointid CONTAINS[c]%@  OR earthid CONTAINS[c]%@  OR pointlocation CONTAINS[c]%@  OR pointlon CONTAINS[c]%@  OR pointlat CONTAINS[c]%@  OR pointname CONTAINS[c]%@  OR pointtime CONTAINS[c]%@  OR pointgroup CONTAINS[c]%@  OR pointintensity CONTAINS[c]%@  OR pointcontent CONTAINS[c]%@" ,searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText, searchText];
         self.filtedData = [self.dataProvider filteredArrayUsingPredicate:pred];
     }
@@ -201,16 +149,9 @@
 
 -(void)addSurveyPointClickHandler
 {
-//    if (!self.pointinfoVC) {
-//        self.pointinfoVC = [[PointinfoViewController alloc] init];
-//    }
-//    self.pointinfoVC.actionType = kActionTypeAdd;
-//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.pointinfoVC];
-//    nav.modalPresentationStyle = UIModalPresentationFormSheet;
-//    [self presentViewController:nav animated:YES completion:nil];
-    
     PointinfoViewController *pointinfoVC = [[PointinfoViewController alloc] init];
     pointinfoVC.actionType = kActionTypeAdd;
+    pointinfoVC.delegate = self;
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:pointinfoVC];
     navi.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navi animated:YES completion:nil];
@@ -272,18 +213,6 @@
 
 }
 
-////上传数据
-//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    PointModel *pointInfo = [self.filtedData objectAtIndex:indexPath.row];
-//    //上传数据 。。。。
-//    //上传数据成功则更新本地数据
-//    BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:pointInfo.pointid];
-//    if (result) {
-//        pointInfo.upload = @"1";
-//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//    }
-//}
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -324,6 +253,45 @@
          [mbprogress removeFromSuperview];
     }];
     
+}
+
+#pragma mark 集成刷新控件
+/**
+ *  集成刷新控件
+ */
+-(void)reflesh
+{
+    [self getDataProvider];
+    [self.tableView.header endRefreshing];
+}
+
+/**
+ *  获取数据
+ */
+-(void)getDataProvider
+{
+    self.dataProvider = [[PointinfoTableHelper sharedInstance] selectData];
+    self.filtedData = self.dataProvider;
+    [self.tableView reloadData];
+}
+
+/**
+ *  新增调查点成功后调用
+ */
+-(void)updatePointinfo:(NSNotification *)notification
+{
+    [self.tableView.header beginRefreshing];
+}
+
+-(void)addPointinfoSuccess:(PointinfoViewController *)pointinfoVC
+{
+    [pointinfoVC dismissViewControllerAnimated:YES completion:nil];
+    [self updatePointinfo:nil];
+}
+
+-(void)updatePointinfoSuccess:(PointinfoViewController *)pointinfoVC
+{
+    [self updatePointinfo:nil];
 }
 
 -(void)dealloc

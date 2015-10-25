@@ -8,10 +8,12 @@
 
 #import "AbnormalinfoListController.h"
 #import "AbnormalinfoViewController.h"
-#import "AbnormalinfoCell.h"
 #import "PictureMode.h"
+#import "AbnormalinfoCell.h"
 
-@interface AbnormalinfoListController ()
+@interface AbnormalinfoListController ()<InfoCellDelegate,AbnormalinfoDelegate>
+
+@property (nonatomic, retain) NSMutableArray *dataProvider;
 
 @end
 
@@ -26,37 +28,8 @@
 
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.tableFooterView = [[UIView alloc] init];
-}
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self getDataProvider];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAbnormalinfo:) name:kAddAbnormalinfoSucceedNotification object:nil];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-/**
- *  刷新数据
- */
--(void)rereshing
-{
-    [self getDataProvider];
-    [self.tableView.header endRefreshing];
-}
-
-/**
- *  获取数据
- */
--(void)getDataProvider
-{
-    self.dataProvider = [[AbnormalinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
-    [self.tableView reloadData];
+    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark - Table view data source
@@ -106,22 +79,11 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (!self.abnormalinfoVC) {
-//        self.abnormalinfoVC = [[AbnormalinfoViewController alloc] initWithNibName:@"AbnormalinfoViewController" bundle:nil];
-//    }
-//    self.abnormalinfoVC.abnormalinfo = self.dataProvider[indexPath.row];
-//    self.abnormalinfoVC.actionType = kActionTypeShow;
-//    [self.nav pushViewController:self.abnormalinfoVC animated:YES];
     AbnormalinfoViewController *abnormalinfoVC1 = [[AbnormalinfoViewController alloc] initWithNibName:@"AbnormalinfoViewController" bundle:nil];
     abnormalinfoVC1.abnormalinfo = self.dataProvider[indexPath.row];
     abnormalinfoVC1.actionType = kActionTypeShow;
+    abnormalinfoVC1.delegate = self;
     [self.nav pushViewController:abnormalinfoVC1 animated:YES];
-}
-
-
--(void)updateAbnormalinfo:(NSNotification *)notification
-{
-    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark - InfoCellDelegate
@@ -147,20 +109,6 @@
         [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }
 }
-
-////上传数据
-//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    AbnormalinfoModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-//    //上传数据 。。。。
-//    //上传数据成功则更新本地数据
-//    BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.abnormalid];
-//    if (result) {
-//        model.upload = @"1";
-//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//    }
-//}
-
 
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
@@ -230,9 +178,43 @@
     }];
     
 }
+
+/**
+ *  刷新数据
+ */
+-(void)rereshing
+{
+    [self getDataProvider];
+    [self.tableView.header endRefreshing];
+}
+
+/**
+ *  获取数据
+ */
+-(void)getDataProvider
+{
+    self.dataProvider = [[AbnormalinfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
+    [self.tableView reloadData];
+}
+
+-(void)updateAbnormalinfo:(NSNotification *)notification
+{
+    [self.tableView.header beginRefreshing];
+}
+
+-(void)addAbnormalinfoSuccess:(id)abnormalinfoVC
+{
+    [abnormalinfoVC dismissViewControllerAnimated:YES completion:nil];
+    [self updateAbnormalinfo:nil];
+}
+
+-(void)updateAbnormalinfoSuccess:(AbnormalinfoViewController *)abnormalinfoVC
+{
+    [self updateAbnormalinfo:nil];
+}
+
 -(void)dealloc
 {
-
     NSLog(@"AbnormalinfoListController释放了吗。。。。。。。。。。。。。");
 }
 

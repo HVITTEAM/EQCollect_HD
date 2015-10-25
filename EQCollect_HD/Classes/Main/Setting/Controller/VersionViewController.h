@@ -1,13 +1,13 @@
 //
-//  AboutViewController.h
+//  VersionViewController.h
 //  EQCollect_HD
 //
-//  Created by shi on 15/10/14.
+//  Created by shi on 15/10/23.
 //  Copyright © 2015年 董徐维. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface AboutViewController : UIViewController
+@interface VersionViewController : UIViewController
 
 @end

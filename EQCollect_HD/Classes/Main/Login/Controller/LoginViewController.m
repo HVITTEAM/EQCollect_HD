@@ -124,22 +124,19 @@
     {
         MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : account,
-                                                                  @"pwd" : passwd}
+                                                                  @"pwd" : passwd,@"from":@"app"}
                                      type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {
                                          
-                                         [HUD removeFromSuperview];
+     
                                          UserModel *usermd = [UserModel objectWithKeyValues:dict];
-                                         NSLog(@"------------LoginViewController--------------%@",dict);
-                                         [SharedAppUtil defaultCommonUtil].userInfor = usermd;
-                                         [HMControllerTool setRootViewController];
                                          [ArchiverCacheHelper saveObjectToLoacl:usermd key:User_Archiver_Key filePath:User_Archiver_Path];
-                                         //开启定时发送位置信息功能
-                                          [[LocationHelper sharedLocationHelper] addTimer];
-                                         [[LocationHelper sharedLocationHelper] performSelector:@selector(uploadUserinfo) withObject:nil afterDelay:3];
-
-                                         
+                                         NSLog(@"------------LoginViewController--------------%@",dict);
+                                         //[SharedAppUtil defaultCommonUtil].userInfor = usermd;
+                                         [HUD removeFromSuperview];
+                                         [HMControllerTool setRootViewController];
+                                              
                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                         NSLog(@"发生错误！%@",error);
+                                         NSLog(@"发生错误");
                                          [HUD removeFromSuperview];
                                          [NoticeHelper AlertShow:@"登陆失败！请重试！" view:self.view];
                                      }];
@@ -151,5 +148,10 @@
     }
      */
     [HMControllerTool setRootViewController];
+}
+
+-(void)dealloc
+{
+    NSLog(@"LoginViewController释放了吗");
 }
 @end

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UseHelpViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.无法定位怎么办?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHw-ZO-6w9">
+                    <rect key="frame" x="20" y="98" width="123.5" height="18"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJC-Hw-A9n">
+                    <rect key="frame" x="0.0" y="126" width="600" height="125"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4E-XZ-UdN">
+                            <rect key="frame" x="30" y="21" width="540" height="39.5"/>
+                            <animations/>
+                            <attributedString key="attributedText">
+                                <fragment content="如果老师是从网页上给您发送的短信息，那么您再使用">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="app">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="的过程中，可能会收不到推送消息。">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u2a-ty-jhK">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="q3q-lW-0r3"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5oh-pK-xOM">
+                            <rect key="frame" x="30" y="70" width="540" height="39.5"/>
+                            <animations/>
+                            <attributedString key="attributedText">
+                                <fragment content="如果老师是从网页上给您发送的短信息，那么您再使用">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="app">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="的过程中，可能会收不到推送消息。">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jt-Cj-T7d">
+                            <rect key="frame" x="0.0" y="124" width="600" height="1"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="vEG-d9-Vhj"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="u2a-ty-jhK" firstAttribute="top" secondItem="pJC-Hw-A9n" secondAttribute="top" id="3Gt-qP-lJA"/>
+                        <constraint firstAttribute="bottom" secondItem="2jt-Cj-T7d" secondAttribute="bottom" id="7Pf-w5-8Xy"/>
+                        <constraint firstAttribute="trailing" secondItem="u2a-ty-jhK" secondAttribute="trailing" id="7Sw-wO-z5u"/>
+                        <constraint firstItem="u2a-ty-jhK" firstAttribute="leading" secondItem="pJC-Hw-A9n" secondAttribute="leading" id="8Xp-nZ-Fq3"/>
+                        <constraint firstItem="c4E-XZ-UdN" firstAttribute="leading" secondItem="pJC-Hw-A9n" secondAttribute="leading" constant="30" id="Aml-hf-Roz"/>
+                        <constraint firstAttribute="trailing" secondItem="5oh-pK-xOM" secondAttribute="trailing" constant="30" id="Bs8-a0-JV9"/>
+                        <constraint firstItem="5oh-pK-xOM" firstAttribute="top" secondItem="c4E-XZ-UdN" secondAttribute="bottom" constant="10" id="DhO-4l-RcB"/>
+                        <constraint firstAttribute="trailing" secondItem="c4E-XZ-UdN" secondAttribute="trailing" constant="30" id="Nao-YG-1oi"/>
+                        <constraint firstItem="5oh-pK-xOM" firstAttribute="leading" secondItem="pJC-Hw-A9n" secondAttribute="leading" constant="30" id="Orw-ye-HXt"/>
+                        <constraint firstItem="c4E-XZ-UdN" firstAttribute="top" secondItem="u2a-ty-jhK" secondAttribute="bottom" constant="20" id="lFw-Ia-vce"/>
+                        <constraint firstItem="2jt-Cj-T7d" firstAttribute="leading" secondItem="pJC-Hw-A9n" secondAttribute="leading" id="qqD-4Y-Mle"/>
+                        <constraint firstAttribute="bottom" secondItem="5oh-pK-xOM" secondAttribute="bottom" constant="15" id="yLk-Vt-gqT"/>
+                        <constraint firstAttribute="trailing" secondItem="2jt-Cj-T7d" secondAttribute="trailing" id="z0T-B7-QDd"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wc9-fY-mGN">
+                    <rect key="frame" x="0.0" y="299" width="600" height="125"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIh-JB-Uot">
+                            <rect key="frame" x="30" y="21" width="540" height="39.5"/>
+                            <animations/>
+                            <attributedString key="attributedText">
+                                <fragment content="如果老师是从网页上给您发送的短信息，那么您再使用">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="app">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="的过程中，可能会收不到推送消息。">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Sk-Bo-QJe">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="fGv-h3-srm"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqQ-eg-dkA">
+                            <rect key="frame" x="30" y="70" width="540" height="39.5"/>
+                            <animations/>
+                            <attributedString key="attributedText">
+                                <fragment content="如果老师是从网页上给您发送的短信息，那么您再使用">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="app">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="的过程中，可能会收不到推送消息。">
+                                    <attributes>
+                                        <color key="NSColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <font key="NSFont" size="13" name="PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxo-YS-UFn">
+                            <rect key="frame" x="0.0" y="124" width="600" height="1"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.86274509799999999" green="0.86274509799999999" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="7qM-2I-6Ni"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="4Sk-Bo-QJe" firstAttribute="leading" secondItem="Wc9-fY-mGN" secondAttribute="leading" id="7AF-ce-mzU"/>
+                        <constraint firstAttribute="trailing" secondItem="4Sk-Bo-QJe" secondAttribute="trailing" id="91H-ZF-CP0"/>
+                        <constraint firstAttribute="bottom" secondItem="nxo-YS-UFn" secondAttribute="bottom" id="ECJ-e7-Qmo"/>
+                        <constraint firstItem="nxo-YS-UFn" firstAttribute="leading" secondItem="Wc9-fY-mGN" secondAttribute="leading" id="HCa-Jz-cT5"/>
+                        <constraint firstItem="vIh-JB-Uot" firstAttribute="top" secondItem="4Sk-Bo-QJe" secondAttribute="bottom" constant="20" id="S6b-1a-ucK"/>
+                        <constraint firstItem="dqQ-eg-dkA" firstAttribute="leading" secondItem="Wc9-fY-mGN" secondAttribute="leading" constant="30" id="X2O-KB-vbj"/>
+                        <constraint firstAttribute="bottom" secondItem="dqQ-eg-dkA" secondAttribute="bottom" constant="15" id="XqD-3j-4vv"/>
+                        <constraint firstAttribute="trailing" secondItem="dqQ-eg-dkA" secondAttribute="trailing" constant="30" id="afj-v2-U8O"/>
+                        <constraint firstAttribute="trailing" secondItem="nxo-YS-UFn" secondAttribute="trailing" id="bKD-5a-gBK"/>
+                        <constraint firstItem="4Sk-Bo-QJe" firstAttribute="top" secondItem="Wc9-fY-mGN" secondAttribute="top" id="mmD-eE-4hR"/>
+                        <constraint firstAttribute="trailing" secondItem="vIh-JB-Uot" secondAttribute="trailing" constant="30" id="oqi-4t-UQ8"/>
+                        <constraint firstItem="dqQ-eg-dkA" firstAttribute="top" secondItem="vIh-JB-Uot" secondAttribute="bottom" constant="10" id="rM1-yv-nPb"/>
+                        <constraint firstItem="vIh-JB-Uot" firstAttribute="leading" secondItem="Wc9-fY-mGN" secondAttribute="leading" constant="30" id="v8v-Ez-pst"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.网络连接不上怎么办?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KKr-uh-xb4">
+                    <rect key="frame" x="20" y="271" width="155.5" height="18"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="常见问题" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPd-VC-eDR">
+                    <rect key="frame" x="20" y="60" width="60" height="18"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="cHw-ZO-6w9" firstAttribute="top" secondItem="DPd-VC-eDR" secondAttribute="bottom" constant="20" id="2xj-oc-hid"/>
+                <constraint firstItem="KKr-uh-xb4" firstAttribute="top" secondItem="pJC-Hw-A9n" secondAttribute="bottom" constant="20" id="CSk-Cf-UDg"/>
+                <constraint firstItem="Wc9-fY-mGN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HkT-9G-qY7"/>
+                <constraint firstItem="cHw-ZO-6w9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="UP3-Q3-9AB"/>
+                <constraint firstItem="pJC-Hw-A9n" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dxW-PP-QE4"/>
+                <constraint firstItem="KKr-uh-xb4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="g8P-IO-THZ"/>
+                <constraint firstAttribute="trailing" secondItem="pJC-Hw-A9n" secondAttribute="trailing" id="gew-lf-Fku"/>
+                <constraint firstItem="Wc9-fY-mGN" firstAttribute="top" secondItem="KKr-uh-xb4" secondAttribute="bottom" constant="10" id="jbJ-AP-LyB"/>
+                <constraint firstItem="pJC-Hw-A9n" firstAttribute="top" secondItem="cHw-ZO-6w9" secondAttribute="bottom" constant="10" id="kvq-bd-7FL"/>
+                <constraint firstItem="DPd-VC-eDR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="m7f-Th-l7D"/>
+                <constraint firstAttribute="trailing" secondItem="Wc9-fY-mGN" secondAttribute="trailing" id="pRl-1b-Lk7"/>
+                <constraint firstItem="DPd-VC-eDR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="60" id="qIb-Uv-6zc"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

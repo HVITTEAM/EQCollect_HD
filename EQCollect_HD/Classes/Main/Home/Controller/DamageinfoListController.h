@@ -7,15 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DamageinfoCell.h"
-@class DamageinfoViewController;
 
-@interface DamageinfoListController : UITableViewController<InfoCellDelegate>
+@interface DamageinfoListController : UITableViewController
 
 @property (strong,nonatomic)UINavigationController *nav;
-//@property (strong,nonatomic)DamageinfoViewController *damageinfoVC;
-
-@property (nonatomic, retain) NSMutableArray *dataProvider;
 @property (copy,nonatomic)NSString *pointid;
 @property (copy,nonatomic)NSString *pointUploadFlag;
+
 @end

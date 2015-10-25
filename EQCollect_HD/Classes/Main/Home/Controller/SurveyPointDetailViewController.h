@@ -7,9 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-//@class AbnormalinfoListController,ReactioninfoListController,DamageinfoListController;
-//@class PointinfoViewController,AbnormalinfoViewController,ReactioninfoViewController,DamageinfoViewController;
-
 @interface SurveyPointDetailViewController : UIViewController
 
 @property (strong,nonatomic)PointModel *pointinfo;           //选中的调查点信息

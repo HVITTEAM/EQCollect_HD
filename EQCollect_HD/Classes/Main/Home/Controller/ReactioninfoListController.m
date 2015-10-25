@@ -9,8 +9,11 @@
 #import "ReactioninfoListController.h"
 #import "ReactioninfoViewController.h"
 #import "PictureMode.h"
+#import "ReactioninfoCell.h"
 
-@interface ReactioninfoListController ()
+@interface ReactioninfoListController ()<InfoCellDelegate,ReactioninfoDelegate>
+
+@property (nonatomic, retain) NSMutableArray *dataProvider;
 
 @end
 
@@ -24,39 +27,8 @@
     
     self.tableView.backgroundColor = HMGlobalBg;
     self.tableView.tableFooterView = [[UIView alloc] init];
-
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self getDataProvider];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateReactioninfo:) name:kAddReactioninfoSucceedNotification object:nil];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-/**
- *  刷新数据
- */
--(void)rereshing
-{
-    [self getDataProvider];
-    [self.tableView.header endRefreshing];
-}
-
-/**
- *  获取数据
- */
--(void)getDataProvider
-{
-    self.dataProvider = [[ReactioninfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
-    [self.tableView reloadData];
+    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark - Table view data source
@@ -106,21 +78,11 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (!self.reactionVC) {
-//       self.reactionVC = [[ReactioninfoViewController alloc]initWithNibName:@"ReactioninfoViewController" bundle:nil];
-//    }
-//    self.reactionVC.reactioninfo = self.dataProvider[indexPath.row];
-//    self.reactionVC.actionType = kActionTypeShow;
-//    [self.nav pushViewController:self.reactionVC animated:YES];
     ReactioninfoViewController *reactionVC1 = [[ReactioninfoViewController alloc]initWithNibName:@"ReactioninfoViewController" bundle:nil];
     reactionVC1.reactioninfo = self.dataProvider[indexPath.row];
     reactionVC1.actionType = kActionTypeShow;
+    reactionVC1.delegate = self;
     [self.nav pushViewController:reactionVC1 animated:YES];
-}
-
--(void)updateReactioninfo:(NSNotification *)notification
-{
-    [self.tableView.header beginRefreshing];
 }
 
 #pragma mark - InfoCellDelegate
@@ -145,19 +107,6 @@
         [[[UIAlertView alloc] initWithTitle:nil message:@"删除数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
     }
 }
-
-////上传数据
-//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    ReactionModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-//    //上传数据 。。。。
-//    //上传数据成功则更新本地数据
-//    BOOL result = [[ReactioninfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.reactionid];
-//    if (result) {
-//        model.upload = @"1";
-//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//    }
-//}
 
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
@@ -230,6 +179,41 @@
     }];
     
 }
+
+/**
+ *  刷新数据
+ */
+-(void)rereshing
+{
+    [self getDataProvider];
+    [self.tableView.header endRefreshing];
+}
+
+/**
+ *  获取数据
+ */
+-(void)getDataProvider
+{
+    self.dataProvider = [[ReactioninfoTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:self.pointid];
+    [self.tableView reloadData];
+}
+
+-(void)updateReactioninfo:(NSNotification *)notification
+{
+    [self.tableView.header beginRefreshing];
+}
+
+-(void)addReactioninfoSuccess:(ReactioninfoViewController *)reactioninfoVC
+{
+    [reactioninfoVC dismissViewControllerAnimated:YES completion:nil];
+    [self updateReactioninfo:nil];
+}
+
+-(void)updateReactioninfoSuccess:(ReactioninfoViewController *)reactioninfoVC
+{
+    [self updateReactioninfo:nil];
+}
+
 -(void)dealloc
 {
     

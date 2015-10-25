@@ -61,4 +61,18 @@
     }
     return obj;
 }
+
++(void)removeLocaldataByFilePath:(NSString *)filePath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *fileSource = [documentDirectory stringByAppendingPathComponent:filePath];
+    
+    NSFileManager *filemanager = [NSFileManager defaultManager];
+    if ([filemanager fileExistsAtPath:fileSource])
+    {
+        [filemanager removeItemAtPath:fileSource error:nil];
+        NSLog(@"删除用户信息成功,路径：%@",fileSource);
+    }
+}
 @end

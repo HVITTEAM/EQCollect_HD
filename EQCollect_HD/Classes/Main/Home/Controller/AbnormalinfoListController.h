@@ -7,14 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AbnormalinfoCell.h"
-@class AbnormalinfoViewController;
 
-@interface AbnormalinfoListController : UITableViewController<InfoCellDelegate>
+@interface AbnormalinfoListController : UITableViewController
+
 @property (strong,nonatomic)UINavigationController *nav;
-//@property (strong,nonatomic)AbnormalinfoViewController *abnormalinfoVC;
-
-@property (nonatomic, retain) NSMutableArray *dataProvider;
 @property (copy,nonatomic)NSString *pointid;
 @property (copy,nonatomic)NSString *pointUploadFlag;
 

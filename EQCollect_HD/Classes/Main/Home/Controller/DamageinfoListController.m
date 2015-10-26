@@ -7,11 +7,9 @@
 //
 
 #import "DamageinfoListController.h"
-#import "DamageinfoViewController.h"
 #import "PictureMode.h"
-#import "DamageinfoCell.h"
 
-@interface DamageinfoListController ()<InfoCellDelegate,DamageinfoDelegate>
+@interface DamageinfoListController ()
 
 @property (nonatomic, retain) NSMutableArray *dataProvider;
 
@@ -137,33 +135,46 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:URL_adddamage parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"数据上传成功: %@", responseObject);
-        //信息上传成功后上传对应的图片
-        //NSDictionary *parameters2 = @{@"v": @"参数"};
-        NSDictionary *parameters2 = @{@"id":model.damageid,@"from":@"damage"};
-        [manager POST:URL_addimg parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            //循环添加要上传的图片
-            for (PictureMode *picmodel in imgs) {
-                NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
-                NSData * imagedata = [NSData dataWithContentsOfURL:filePath];
-                [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png"];
-            }
-        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"图片上传成功: %@", responseObject);
+        if (imgs.count > 0) {
+            //信息上传成功后上传对应的图片
+            //NSDictionary *parameters2 = @{@"v": @"参数"};
+            NSDictionary *parameters2 = @{@"id":model.damageid,@"from":@"damage"};
+            [manager POST:URL_addimg parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                //循环添加要上传的图片
+                for (PictureMode *picmodel in imgs) {
+                    NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
+                    NSData * imagedata = [NSData dataWithContentsOfURL:filePath];
+                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png"];
+                }
+            } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"图片上传成功: %@", responseObject);
+                //上传数据成功则更新本地数据
+                BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
+                if (result) {
+                    model.upload = @"1";
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                    });
+                    [mbprogress removeFromSuperview];
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"图片上传失败:");
+                [mbprogress removeFromSuperview];
+            }];
+
+        }else{
+            NSLog(@"不用上传图片图片");
             //上传数据成功则更新本地数据
             BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
             if (result) {
                 model.upload = @"1";
                 dispatch_async(dispatch_get_main_queue(), ^{
-                   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                 });
-                 [mbprogress removeFromSuperview];
+                [mbprogress removeFromSuperview];
             }
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"图片上传失败:");
-             [mbprogress removeFromSuperview];
-        }];
-        //[mbprogress removeFromSuperview];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"数据上传失败:");
          [mbprogress removeFromSuperview];

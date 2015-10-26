@@ -8,10 +8,11 @@
 #import "SurveyPointDetailViewController.h"
 #import "QCSlideSwitchView.h"
 
-#import "PointinfoViewController.h"
 #import "AbnormalinfoListController.h"
 #import "ReactioninfoListController.h"
 #import "DamageinfoListController.h"
+
+#import "PointinfoViewController.h"
 #import "AbnormalinfoViewController.h"
 #import "ReactioninfoViewController.h"
 #import "DamageinfoViewController.h"
@@ -45,12 +46,6 @@
     [super viewDidLayoutSubviews];
     //初始化slideSwitchView
     [self initView];
-    //获取设备当前方向
-    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
-    //将UIDeviceOrientation类型转为UIInterfaceOrientation
-    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
-    //根据屏幕方向设置调查点信息视图的约束
-    [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 -(void)initSurveyPointDetail
@@ -141,13 +136,6 @@
          _rightItem.title = @"新增";
     }
     _currentIndex = number;
-}
-
-//处理屏幕旋转
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
-{
-    //旋转调查点信息界面
-    [self.pointinfoVC rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 -(void)rigthItemTap:(id)sender

@@ -7,15 +7,15 @@
 //
 #define kNormalNavHeight 64
 #define kAddNavheight 44
-
 #import "PointinfoViewController.h"
 #import "PictureInfoTableHelper.h"
 #import "PictureMode.h"
 #import "LocationHelper.h"
 
+
 @interface PointinfoViewController ()<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 @property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
 
@@ -31,7 +31,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *pointintensityTextF;          //评定烈度
 @property (weak, nonatomic) IBOutlet UITextView *pointcontentTextV;             //调查简述
 
-@property (strong,nonatomic)NSArray *textInputViews;               //所有的文本输入框      
+@property (strong,nonatomic)NSArray *textInputViews;               //所有的文本输入框
+
+@property (strong,nonatomic)NSArray *pointintensityItems;   //评定烈度选项
 
 @end
 
@@ -50,16 +52,6 @@
     
     [self initPointinfoVC];
     [self showPointinfoData];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    UIDeviceOrientation devOrientation = [[UIDevice currentDevice] orientation];
-    //将UIDeviceOrientation类型转为UIInterfaceOrientation
-    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)devOrientation;
-    //根据屏幕方向设置视图的约束
-    [self rotationToInterfaceOrientation:interfaceOrientation];
 }
 
 /**
@@ -100,6 +92,11 @@
     //pointcontentTextV类型是UITextView单独处理
     self.pointcontentTextV.delegate = self;
     self.pointcontentTextV.tag = 1000 + self.textInputViews.count-1;
+    
+    self.pointintensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
+    //设置顶部高约束
+    self.pointidTopCons.constant = 20+_navHeight;
+
 }
 
 /**
@@ -143,31 +140,21 @@
 }
 
 /**
- *  处理屏幕旋转
+ *  ActionType属性的 setter 方法
  */
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
+-(void)setActionType:(ActionType)actionType
 {
-    [self rotationToInterfaceOrientation:interfaceOrientation];
-}
-
-/**
- *  旋转屏幕时更改约束
- *
- *  @param interfaceOrientation 要旋转的方向
- */
--(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    if(UIInterfaceOrientationIsLandscape(interfaceOrientation)&&self.actionType == kActionTypeShow)
-    {
-        //设备为横屏且不是新增界面，设置为横屏约束
-        self.pointidWidthCons.constant = 180;
+    _actionType = actionType;
+    //根据当前选择设置文本框能否编辑
+    if (actionType == kActionTypeShow) {
+        for (UIView *txt in self.textInputViews) {
+            txt.userInteractionEnabled = NO;
+        }
     }else{
-        //设备为竖屏或新增界面，设置为竖屏约束
-        self.pointidWidthCons.constant = 100;
+        for (UIView *txt in self.textInputViews) {
+            txt.userInteractionEnabled = YES;
+        }
     }
-    self.pointidTopCons.constant = 20+_navHeight;
-    //更新约束
-    [self.view updateConstraintsIfNeeded];
 }
 
 #pragma mark UITextFieldDelegate方法
@@ -175,28 +162,48 @@
 {
     [super textFieldShouldBeginEditing:textField];
     BOOL canEdit;
-    if (self.actionType == kActionTypeAdd || self.actionType == kactionTypeEdit) {
-        switch (textField.tag) {
-            case 1003:
-                canEdit = NO;
-                break;
-            default:
-                canEdit = YES;
-                break;
-        }
-    }else canEdit = NO;
+    switch (textField.tag) {
+        case 1009:
+            canEdit = NO;
+            [self showAlertViewWithTextField:textField items:self.pointintensityItems];
+            break;
+        default:
+            canEdit = YES;
+            break;
+    }
     
     return canEdit;
 }
 
-#pragma mark UITextViewDelegate方法
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+/**
+ *  使用UIAlertView向文本框输入内容
+ *
+ *  @param textField 需要输入内容的文本框
+ *  @param items     选项数组
+ */
+-(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
 {
-    [super textViewShouldBeginEditing:textView];
-    if (self.actionType == kActionTypeAdd || self.actionType == kactionTypeEdit) {
-        return YES;
-    }else return NO;
+    [self.view endEditing:YES];
+    //创建UIAlertView并设置标题
+    NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    //添加AlertView控件上的按钮
+    for (NSString *buttonTitle in items) {
+        [alert addButtonWithTitle:buttonTitle];
+    }
+    //显示AlertView控件
+    [alert show];
 }
+
+#pragma mark UIAlertViewDelegate方法
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
+    //将选中的按钮标题设为当前文本框的内容
+    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
+    inputView.text = itemStr;
+}
+
 
 /**
  * 新增调查点信息
@@ -242,20 +249,11 @@
         
         BOOL result = [[PointinfoTableHelper sharedInstance] insertDataWith:dict];
         if (!result) {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-        }else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.pointidTextF.text = nil;
-                self.earthidTextF.text = nil;
-                self.pointlocationTextF.text = nil;
-                self.pointlonTextF.text = nil;
-                self.pointlatTextF.text = nil;
-                self.pointnameTextF.text = nil;
-                self.pointtimeTextF.text = nil;
-                self.pointgroupTextF.text = nil;
-                self.pointPersonTextF.text = nil;
-                self.pointintensityTextF.text = nil;
-                self.pointcontentTextV.text = nil;
+                [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            });
+          }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
                 
                 [self.view endEditing:YES];
                 
@@ -317,7 +315,9 @@
         
         BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:dict];
         if (!result) {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+            });
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.view endEditing:YES];

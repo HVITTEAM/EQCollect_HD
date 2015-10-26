@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface ReactioninfoListController : UITableViewController
+#import "ReactioninfoCell.h"
+#import "ReactioninfoViewController.h"
+
+@interface ReactioninfoListController : UITableViewController<InfoCellDelegate,ReactioninfoDelegate>
 
 @property (strong,nonatomic)UINavigationController *nav;
 @property (copy,nonatomic)NSString *pointid;

@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AbnormalinfoCell.h"
+#import "AbnormalinfoViewController.h"
 
-@interface AbnormalinfoListController : UITableViewController
+@interface AbnormalinfoListController : UITableViewController<InfoCellDelegate,AbnormalinfoDelegate>
 
 @property (strong,nonatomic)UINavigationController *nav;
 @property (copy,nonatomic)NSString *pointid;

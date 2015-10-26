@@ -21,8 +21,6 @@
 @property (strong,nonatomic)PointModel *pointinfo;             //选中的调查点信息
 @property (weak , nonatomic)id<PointinfoDelegate>delegate;
 
-//旋转屏幕时更改约束
--(void)rotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 //更新当前界面数据
 -(void)updatePointinfo;
 @end

@@ -46,14 +46,13 @@
     }
     //获取Cell的数据
     AbnormalinfoModel * abnormalInfo = [self.dataProvider objectAtIndex:indexPath.row];
-    
     //设置cell的属性
-    cell.abnormalTitleText.text = [NSString stringWithFormat:@"NO.%@",abnormalInfo.abnormalid];
+    cell.abnormalIdText.text = [NSString stringWithFormat:@"编号:%@",abnormalInfo.abnormalid];
     cell.abnormaltimeText.text = abnormalInfo.abnormaltime;
-    cell.intensityText.text = abnormalInfo.abnormalintensity;
-    cell.analysisText.text = abnormalInfo.abnormalanalysis;
-    cell.crediblyText.text = abnormalInfo.credibly;
-    
+    cell.intensityText.text = [NSString stringWithFormat:@"烈度:%@",abnormalInfo.abnormalintensity];
+    cell.crediblyText.text = [NSString stringWithFormat:@"可信度:%@",abnormalInfo.credibly];
+    cell.informantText.text = [NSString stringWithFormat:@"被调查者:%@",abnormalInfo.informant];
+        
     if ([abnormalInfo.upload isEqualToString:@"1"]) {
         cell.uploadBtn.selected = YES;
         [cell.uploadBtn setBackgroundColor:HMColor(0, 160, 70)];
@@ -72,7 +71,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 110;
+    return 80;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -149,7 +148,7 @@
                 for (PictureMode *picmodel in imgs) {
                     NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
                     NSData * imagedata = [NSData dataWithContentsOfURL:filePath];
-                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png"];
+                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.jpg",picmodel.pictureName] mimeType:@"image/jpeg"];
                 }
             } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"图片上传成功: %@", responseObject);

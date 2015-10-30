@@ -56,6 +56,8 @@
     //根据是否上传确定显示或隐藏导航栏右侧按钮
     if (![self.pointinfo.upload isEqualToString:@"1"]) {
         self.navigationItem.rightBarButtonItem = _rightItem;
+    }else {
+        self.navigationItem.rightBarButtonItem = nil;
     }
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -129,11 +131,19 @@
 
 - (void)slideSwitchView:(QCSlideSwitchView *)view didselectTab:(NSUInteger)number
 {
+    
     if (number == 0) {
+        //根据是否上传确定显示或隐藏导航栏右侧按钮
+        if (![self.pointinfo.upload isEqualToString:@"1"]) {
+            self.navigationItem.rightBarButtonItem = _rightItem;
+        }else {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
         _rightItem.title = @"编辑";
         self.pointinfoVC.actionType = kActionTypeShow;
     }else {
          _rightItem.title = @"新增";
+        self.navigationItem.rightBarButtonItem = _rightItem;
     }
     _currentIndex = number;
 }

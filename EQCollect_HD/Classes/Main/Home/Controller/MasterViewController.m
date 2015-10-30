@@ -10,7 +10,7 @@
 
 @interface MasterViewController ()
 {
-    //NSArray *_types;
+    LocationHelper *_locationHelp;
 }
 @property (nonatomic, retain) SettingViewController *settingView;
 @property (nonatomic, retain) PersonCenterController *personView;
@@ -38,8 +38,11 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //开启定时发送位置信息功能
-    [[LocationHelper sharedLocationHelper] addTimer];
-    [[LocationHelper sharedLocationHelper] performSelector:@selector(uploadUserinfo) withObject:nil afterDelay:0.3];
+    AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appdl addTimer];
+    _locationHelp = [[LocationHelper alloc] init];
+    [_locationHelp uploadUserinfo];
+
 }
 
 #pragma mark - Table view data source

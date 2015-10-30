@@ -128,7 +128,8 @@
 
 -(void)loginOut
 {
-    [[LocationHelper sharedLocationHelper] removeTimer];
+    AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appdl removeTimer];
     [ArchiverCacheHelper removeLocaldataByFilePath:User_Archiver_Path];
     [HMControllerTool setLoginViewController];
 }

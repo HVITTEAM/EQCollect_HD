@@ -61,7 +61,7 @@
     if (textField.returnKeyType == UIReturnKeyNext) {
         _currentInputViewTag +=1;
         //根据tag获取下一个文本框
-        UITextField *textF =(UITextField *)[self.view viewWithTag:_currentInputViewTag];
+        UIView *textF =[self.view viewWithTag:_currentInputViewTag];
         [textF becomeFirstResponder];
     }
     if (textField.returnKeyType == UIReturnKeyDone) {
@@ -98,19 +98,54 @@
 {
     _currentKeyboardNotification = notification;
     UIWindow *keyWin = [[UIApplication sharedApplication] keyWindow];
+    
+    //键盘最大 Y 值
+    CGFloat keyboardY;
+    //当前文本框最大 y 值
+    CGFloat currentTextFieldMaxY;
+    
     //获取键盘属性字典
     NSDictionary *keyboardDict = [notification userInfo];
-    //获取键盘y值
-    CGRect keyboardFrame = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGFloat keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
     //获取键盘动画时间
     CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     //获取动画曲线
     NSInteger curve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    //获取当前文本框中window中的最大Y值
+    //获取键盘frame值
+    CGRect keyboardFrame = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    //获取当前文本框在window中的frame
     UITextField *currentTextField = (UITextField *)[self.view viewWithTag:_currentInputViewTag];
     CGRect frameInWindow = [keyWin convertRect:currentTextField.frame fromView:self.containerV];
-    CGFloat currentTextFieldMaxY = CGRectGetMaxY(frameInWindow)+_lastDistance;  //加_lastDistance消除偏移
+    
+    if (IOS_VERSION < 8.0) {
+        UIDeviceOrientation devOrientation = (UIDeviceOrientation)self.interfaceOrientation;
+        switch (devOrientation) {
+            case UIDeviceOrientationPortrait:
+                keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+                currentTextFieldMaxY = CGRectGetMaxY(frameInWindow);
+                break;
+            case UIDeviceOrientationLandscapeLeft:
+                keyboardY = keyWin.frame.size.width - keyboardFrame.size.width;
+                currentTextFieldMaxY = keyWin.frame.size.width - frameInWindow.origin.x;
+                break;
+            case UIDeviceOrientationPortraitUpsideDown:
+                keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+                currentTextFieldMaxY = keyWin.frame.size.height - frameInWindow.origin.y;
+                break;
+            case UIDeviceOrientationLandscapeRight:
+                keyboardY = keyWin.frame.size.width - keyboardFrame.size.width;
+                currentTextFieldMaxY = CGRectGetMaxX(frameInWindow);
+                break;
+            default:
+                break;
+        }
+    }else{
+        keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+        currentTextFieldMaxY = CGRectGetMaxY(frameInWindow);
+    }
+    
+    //加_lastDistance消除偏移
+    currentTextFieldMaxY = currentTextFieldMaxY + _lastDistance;
     
     //当键盘被遮挡时view上移
     if (currentTextFieldMaxY > keyboardY-60) {
@@ -162,8 +197,6 @@
     //[HUD release];
     _HUD = nil;
 }
-
-
 
 /**
  * 保存图片

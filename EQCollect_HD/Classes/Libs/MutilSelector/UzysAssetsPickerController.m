@@ -761,4 +761,15 @@
     return YES;
 }
 
+//by swy  解决旋转问题
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (self.groupPicker.frame.origin.y >= 0) {
+        self.groupPicker.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+        //self.groupPicker.tableView.frame = CGRectMake(0, 64,self.groupPicker.bounds.size.width, self.groupPicker.bounds.size.height - 64);
+        //[self.groupPicker.tableView reloadData];
+    }
+    
+}
+
 @end

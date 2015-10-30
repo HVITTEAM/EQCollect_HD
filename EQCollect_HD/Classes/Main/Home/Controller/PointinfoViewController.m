@@ -40,6 +40,7 @@
 @implementation PointinfoViewController
 {
     CGFloat _navHeight;       // 导航栏与状态栏总的高度
+    LocationHelper *_locationHelp;
 }
 
 - (void)viewDidLoad
@@ -72,10 +73,10 @@
     }    
     self.textInputViews = @[
                             self.pointidTextF,
-                            self.pointlocationTextF,
-                            self.pointnameTextF,
                             self.pointtimeTextF,
+                            self.pointnameTextF,
                             self.earthidTextF,
+                            self.pointlocationTextF,
                             self.pointlonTextF,
                             self.pointlatTextF,
                             self.pointgroupTextF,
@@ -126,12 +127,13 @@
         [formatter setDateFormat:@"MM-dd HH:mm"];
         self.pointtimeTextF.text = [formatter stringFromDate:date];
         
-        LocationHelper *lHelper = [LocationHelper sharedLocationHelper];
-        self.pointlatTextF.text = [NSString stringWithFormat:@"%f",lHelper.currentLocation.coordinate.latitude];
-        self.pointlonTextF.text = [NSString stringWithFormat:@"%f",lHelper.currentLocation.coordinate.longitude];
-        __weak typeof(self) weakSelf = self;
-        [lHelper reverseGeocodeWithSuccess:^(NSString *address) {
-            weakSelf.pointlocationTextF.text = address;
+        _locationHelp = [[LocationHelper alloc] init];
+        AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        self.pointlatTextF.text = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.latitude];
+        self.pointlonTextF.text = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.longitude];
+        // __weak typeof(self) weakSelf = self;
+        [_locationHelp reverseGeocodeWithSuccess:^(NSString *address) {
+            self.pointlocationTextF.text = address;
         } failure:^{
             [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"无法解析当前地址，您可手动输入地址" delegate:nil
                               cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
@@ -163,6 +165,10 @@
     [super textFieldShouldBeginEditing:textField];
     BOOL canEdit;
     switch (textField.tag) {
+        case 1000:
+        case 1001:
+            canEdit = NO;
+            break;
         case 1009:
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.pointintensityItems];

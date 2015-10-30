@@ -10,11 +10,12 @@
 #import "InfoCell.h"
 
 @interface AbnormalinfoCell : InfoCell<UIAlertViewDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *abnormalTitleText;
+@property (weak, nonatomic) IBOutlet UILabel *abnormalIdText;
 @property (weak, nonatomic) IBOutlet UILabel *abnormaltimeText;
 @property (weak, nonatomic) IBOutlet UILabel *intensityText;
 @property (weak, nonatomic) IBOutlet UILabel *crediblyText;
-@property (weak, nonatomic) IBOutlet UILabel *analysisText;
+@property (weak, nonatomic) IBOutlet UILabel *informantText;
+
 @property (weak, nonatomic) IBOutlet UIButton *uploadBtn;
 @property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
 

@@ -206,6 +206,7 @@
     BOOL canEdit;
     //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
     switch (textField.tag) {
+        case 1000:
         case 1001:
             canEdit = NO;
             break;
@@ -291,6 +292,9 @@
  */
 -(void)addDamageinfo
 {
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+    
     NSString *damageid = self.damageidTextF.text;
     NSString *damagetime = self.damagetimeTextF.text;
     NSString *damageaddress = self.damageaddressTextF.text;
@@ -345,6 +349,9 @@
  **/
 -(void)updateDamageinfo
 {
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+
    // NSString *damageid = self.damageidTextF.text;
     //NSString *damagetime = self.damagetimeTextF.text;
     NSString *damageaddress = self.damageaddressTextF.text;
@@ -392,6 +399,9 @@
     imgview.dataProvider = [[NSMutableArray alloc] init];
     //防止循环引用导致无法释放当前这个控制器
     imgview.nav = nil;
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

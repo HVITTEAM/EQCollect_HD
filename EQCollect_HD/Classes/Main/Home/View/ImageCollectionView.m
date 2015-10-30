@@ -380,6 +380,10 @@ static NSString *kcellIdentifier = @"collectionCellID";
             [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 ALAsset *representation = obj;
                 
+                if (self.isExitThread) {
+                    return ;
+                }
+                
                 UIImage *img = [UIImage imageWithCGImage:representation.defaultRepresentation.fullResolutionImage
                                                    scale:representation.defaultRepresentation.scale
                                              orientation:(UIImageOrientation)representation.defaultRepresentation.orientation];

@@ -46,12 +46,10 @@
     //获取cell的数据
     ReactionModel * reactioninfo = [self.dataProvider objectAtIndex:indexPath.row];
     //设置cell的属性
-    cell.reactionTittle.text = [NSString stringWithFormat:@"NO.%@",reactioninfo.reactionid];
+    cell.reactionTittle.text = [NSString stringWithFormat:@"编号:%@",reactioninfo.reactionid];
     cell.reactiontime.text = reactioninfo.reactiontime;
-    cell.reactionaddress.text = reactioninfo.reactionaddress;
-    cell.informantname.text = reactioninfo.informantname;
-    cell.informantage.text = reactioninfo.informantage;
-    cell.informanteducation.text = reactioninfo.informanteducation;
+    cell.reactionaddress.text = [NSString stringWithFormat:@"地址:%@",reactioninfo.reactionaddress];
+    cell.informantname.text = [NSString stringWithFormat:@"被调查者:%@",reactioninfo.informantname];
     
     if ([reactioninfo.upload isEqualToString:@"1"]) {
         cell.uploadBtn.selected = YES;
@@ -71,7 +69,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 110;
+    return 80;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -154,7 +152,7 @@
                 for (PictureMode *picmodel in imgs) {
                     NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
                     NSData * imagedata = [NSData dataWithContentsOfURL:filePath];
-                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png"];
+                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.jpg",picmodel.pictureName] mimeType:@"image/jpeg"];
                 }
             } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"图片上传成功: %@", responseObject);

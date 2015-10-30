@@ -47,7 +47,7 @@
 - (void)setupTableView
 {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavigationHeight, self.bounds.size.width, self.bounds.size.height -NavigationHeight) style:UITableViewStylePlain];
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;//by swy 解决旋转问题
     self.tableView.contentInset = UIEdgeInsetsMake(1, 0, 0, 0);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.dataSource = self;

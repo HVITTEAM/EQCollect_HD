@@ -95,10 +95,11 @@
     //根据indexPath获取cell的数据
     PointModel * pointInfo = [self.filtedData objectAtIndex:indexPath.row];
     //设置cell的属性
-    cell.pointTitleText.text =[NSString stringWithFormat:@"NO.%@",pointInfo.pointid];
+    cell.pointTitleText.text =[NSString stringWithFormat:@"名称:%@",pointInfo.pointname];
+    cell.pointIdText.text = [NSString stringWithFormat:@"编号:%@",pointInfo.pointid];
     cell.pointTimeText.text = pointInfo.pointtime;
-    cell.pointAddressText.text = pointInfo.pointlocation;
-    
+    cell.pointAddressText.text = [NSString stringWithFormat:@"调查地址:%@",pointInfo.pointlocation];
+        
     //上传按钮处于选中状态，表示已经上传
     if ([pointInfo.upload isEqualToString:@"1"]) {
         cell.uploadBtn.selected = YES;
@@ -212,6 +213,21 @@
     }
 
 }
+
+////上传数据
+//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+//{
+//          //上传数据成功则更新本地数据
+//    PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+//        BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
+//        if (result) {
+//            model.upload = @"1";
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//            });
+//        }
+//    
+//}
 
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath

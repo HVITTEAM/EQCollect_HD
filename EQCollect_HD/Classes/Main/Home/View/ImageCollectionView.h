@@ -28,6 +28,8 @@ typedef void(^changeHeight)(CGFloat);
 
 @property (nonatomic,assign)BOOL isShowAddBtn;
 
+@property (nonatomic ,assign)BOOL isExitThread;
+
 /**根据图片的数改变view的高度**/
 @property (nonatomic,copy)changeHeight changeHeightBlock;
 @end

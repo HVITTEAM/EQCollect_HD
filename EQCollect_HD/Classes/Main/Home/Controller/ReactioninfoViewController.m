@@ -101,17 +101,17 @@
                             self.informantageTextF,
                             self.informanteducationTextF,
                             self.informantjobTextF,
-                            self.reactionaddressTextF,
                             self.rockfeelingTextF,
                             self.throwfeelingTextF,
-                            self.throwtingsTextF,
                             self.throwdistanceTextF,
-                            self.fallTextF,
+                            self.throwtingsTextF,
                             self.hangTextF,
-                            self.furnituresoundTextF,
+                            self.fallTextF,
                             self.furnituredumpTextF,
+                            self.furnituresoundTextF,
+                            self.sounddirectionTextF,
                             self.soundsizeTextF,
-                            self.sounddirectionTextF
+                            self.reactionaddressTextF
                             ];
     for (int i = 0;i<self.textInputViews.count;i++) {
         UITextField *textF = self.textInputViews[i];
@@ -162,11 +162,11 @@
     //设置视图约束
     imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *dictViews = @{
-                                @"sounddirectionTextF":self.sounddirectionTextF,
+                                @"reactionaddressTextF":self.reactionaddressTextF,
                                 @"imgview":imgview.collectionView,
                                 };
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[sounddirectionTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[reactionaddressTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
     self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
     [imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
@@ -238,6 +238,7 @@
     BOOL canEdit;
     //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
     switch (textField.tag) {
+        case 1000:
         case 1001:
             canEdit = NO;
             break;
@@ -245,11 +246,11 @@
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.educationItems];
             break;
-        case 1007:
+        case 1006:
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.rockfeelingItems];
             break;
-        case 1008:
+        case 1007:
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.throwfeelingItems];
             break;
@@ -257,25 +258,25 @@
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.throwtingsItems];
             break;
+        case 1010:
+            canEdit = NO;
+            [self showAlertViewWithTextField:textField items:self.hangItems];
+            break;
         case 1011:
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.fallItems];
-            break;
-        case 1012:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.hangItems];
             break;
         case 1013:
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.furnituresoundItems];
             break;
+        case 1014:
+            canEdit = NO;
+            [self showAlertViewWithTextField:textField items:self.sounddirectionItems];
+            break;
         case 1015:
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.soundsizeItems];
-            break;
-        case 1016:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.sounddirectionItems];
             break;
         default:
             canEdit = YES;
@@ -342,6 +343,9 @@
  **/
 -(void)addReactioninfo
 {
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+
     NSString *reactionid = self.reactionidTextF.text;
     NSString *reactiontime = self.reactiontimeTextF.text;
     NSString *informantname = self.informantnameTextF.text;
@@ -410,6 +414,9 @@
  **/
 -(void)updateReactioninfo
 {
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+
     //NSString *reactionid = self.reactionidTextF.text;
     //NSString *reactiontime = self.reactiontimeTextF.text;
     NSString *informantname = self.informantnameTextF.text;
@@ -473,6 +480,9 @@
     imgview.dataProvider = [[NSMutableArray alloc] init];
     //防止循环引用导致无法释放当前这个控制器
     imgview.nav = nil;
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -117,7 +117,6 @@
  */
 - (IBAction)loginNow:(id)sender
 {
-    /*
     NSString *account = self.accountTextF.text;
     NSString *passwd = self.passwdTextF.text;
     if (account!=nil && account.length>0 && passwd!=nil && passwd.length>0)
@@ -146,8 +145,7 @@
         UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alertV show];
     }
-     */
-    [HMControllerTool setRootViewController];
+//    [HMControllerTool setRootViewController];
 }
 
 -(void)dealloc

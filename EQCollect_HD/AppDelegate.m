@@ -11,7 +11,12 @@
 #import "ArchiverCacheHelper.h"
 
 @interface AppDelegate ()
-
+{
+    CLLocationManager *_locationManager;
+    NSTimer *_timer;
+    LocationHelper *_locationHelp;
+}
+-(void)setupLocationManager;
 @end
 
 @implementation AppDelegate
@@ -24,7 +29,7 @@
     // 2.显示窗口(成为主窗口)
     [self.window makeKeyAndVisible];
     //开启定位
-    [[LocationHelper sharedLocationHelper] setupLocationManager];
+    [self setupLocationManager];
     
     if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
     {
@@ -59,9 +64,48 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-   [[LocationHelper sharedLocationHelper] removeTimer];
+   [self removeTimer];
 }
 
 
+-(void)setupLocationManager{
+    _locationManager = [[CLLocationManager alloc] init];
+    if ([CLLocationManager locationServicesEnabled]) {
+        NSLog(@"开始定位");
+        _locationManager.delegate = self;
+        _locationManager.distanceFilter = 200.0;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        //ios8以上要授权
+        if (IOS_VERSION >=8.0) {
+            [_locationManager requestWhenInUseAuthorization];//使用中授权
+            [_locationManager requestAlwaysAuthorization];
+        }
+        [_locationManager startUpdatingLocation];
+    }else{
+        //失败
+        [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"定位失败，请确定是否开启定位功能" delegate:nil
+                          cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
+    }
+}
+
+#pragma mark - CLLocationManagerDelegate
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    NSLog(@"定位成功");
+    self.currentLocation = [locations lastObject];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"定位失败");
+}
+
+-(void)addTimer{
+    _locationHelp = [[LocationHelper alloc] init];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:300 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
+    //[[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)removeTimer{
+    [_timer invalidate];
+}
 
 @end

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reactioninfoCell" rowHeight="106" id="ac0-DM-jTc" customClass="ReactioninfoCell">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reactioninfoCell" rowHeight="80" id="ac0-DM-jTc" customClass="ReactioninfoCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ac0-DM-jTc" id="zEK-Yj-q4h">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="109.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="人物反应编号:888888" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vLP-ji-RXC">
-                        <rect key="frame" x="20" y="15" width="141" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="编号:888888" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vLP-ji-RXC">
+                        <rect key="frame" x="20" y="15" width="85" height="17"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -28,15 +28,8 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="姓名:王大锤" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPl-eI-Rqr">
-                        <rect key="frame" x="20" y="54" width="79.5" height="18"/>
-                        <animations/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LSR-Tn-XXs">
-                        <rect key="frame" x="436" y="69" width="70" height="30"/>
+                        <rect key="frame" x="436" y="39.5" width="70" height="30"/>
                         <animations/>
                         <color key="backgroundColor" red="0.40000000000000002" green="0.57647058819999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -52,29 +45,15 @@
                             <action selector="upLoadreactioninfo:" destination="ac0-DM-jTc" eventType="touchUpInside" id="rpf-sn-dS2"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="年龄:25" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfQ-Qh-LJi">
-                        <rect key="frame" x="114" y="54" width="52.5" height="18"/>
-                        <animations/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="所在地:杭州市文三西路888号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0Z-t0-YRk">
-                        <rect key="frame" x="20" y="82" width="381.5" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地址:杭州市文三西路888号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0Z-t0-YRk">
+                        <rect key="frame" x="20" y="52.5" width="381.5" height="17"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="学历:本科" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3h-q0-lhS">
-                        <rect key="frame" x="181" y="54" width="64.5" height="18"/>
-                        <animations/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdi-g3-Yng">
-                        <rect key="frame" x="530" y="69" width="50" height="30"/>
+                        <rect key="frame" x="530" y="39" width="50" height="30"/>
                         <animations/>
                         <color key="backgroundColor" red="0.8725585938" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -89,40 +68,41 @@
                             <action selector="deleteReactioninfo:" destination="ac0-DM-jTc" eventType="touchUpInside" id="Vxn-s4-iVY"/>
                         </connections>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="被调查者:王大锤" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPl-eI-Rqr">
+                        <rect key="frame" x="245.5" y="14" width="109.5" height="18"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <animations/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="rdi-g3-Yng" secondAttribute="trailing" constant="20" id="1kY-T4-ppk"/>
-                    <constraint firstItem="H3h-q0-lhS" firstAttribute="centerY" secondItem="nfQ-Qh-LJi" secondAttribute="centerY" id="3aL-U3-djS"/>
                     <constraint firstItem="LSR-Tn-XXs" firstAttribute="leading" secondItem="a0Z-t0-YRk" secondAttribute="trailing" constant="35" id="Jh9-Ga-jC5"/>
-                    <constraint firstItem="GPl-eI-Rqr" firstAttribute="centerY" secondItem="nfQ-Qh-LJi" secondAttribute="centerY" id="KdD-WN-q1F"/>
                     <constraint firstAttribute="trailing" secondItem="IvX-9S-pD1" secondAttribute="trailing" constant="20" id="KmA-w0-Kb5"/>
                     <constraint firstAttribute="bottom" secondItem="rdi-g3-Yng" secondAttribute="bottom" constant="10.5" id="Q1i-hg-AEP"/>
                     <constraint firstItem="vLP-ji-RXC" firstAttribute="leading" secondItem="zEK-Yj-q4h" secondAttribute="leading" constant="20" id="RSH-jq-9bP"/>
                     <constraint firstItem="IvX-9S-pD1" firstAttribute="top" secondItem="zEK-Yj-q4h" secondAttribute="top" constant="15" id="Rfv-z4-TrK"/>
                     <constraint firstItem="vLP-ji-RXC" firstAttribute="leading" secondItem="a0Z-t0-YRk" secondAttribute="leading" id="TFw-rm-dDQ"/>
+                    <constraint firstItem="GPl-eI-Rqr" firstAttribute="centerX" secondItem="zEK-Yj-q4h" secondAttribute="centerX" id="Uve-B6-dVf"/>
                     <constraint firstItem="vLP-ji-RXC" firstAttribute="top" secondItem="zEK-Yj-q4h" secondAttribute="top" constant="15" id="ZxD-ew-DM2"/>
                     <constraint firstAttribute="bottom" secondItem="a0Z-t0-YRk" secondAttribute="bottom" constant="10" id="dkD-Pz-OFR"/>
-                    <constraint firstItem="vLP-ji-RXC" firstAttribute="leading" secondItem="GPl-eI-Rqr" secondAttribute="leading" id="eFB-9M-nbb"/>
-                    <constraint firstItem="a0Z-t0-YRk" firstAttribute="top" secondItem="nfQ-Qh-LJi" secondAttribute="bottom" constant="10" id="gaA-T7-5PT"/>
+                    <constraint firstItem="GPl-eI-Rqr" firstAttribute="centerY" secondItem="vLP-ji-RXC" secondAttribute="centerY" id="gCj-ie-nf3"/>
                     <constraint firstItem="rdi-g3-Yng" firstAttribute="leading" secondItem="LSR-Tn-XXs" secondAttribute="trailing" constant="24" id="mUG-iv-mK9"/>
-                    <constraint firstItem="nfQ-Qh-LJi" firstAttribute="leading" secondItem="GPl-eI-Rqr" secondAttribute="trailing" constant="15" id="qyy-T0-NTW"/>
-                    <constraint firstItem="H3h-q0-lhS" firstAttribute="leading" secondItem="nfQ-Qh-LJi" secondAttribute="trailing" constant="15" id="uSH-Ra-NPB"/>
                     <constraint firstAttribute="bottom" secondItem="LSR-Tn-XXs" secondAttribute="bottom" constant="10" id="yAY-Lr-GWs"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
             <connections>
                 <outlet property="deleteBtn" destination="rdi-g3-Yng" id="mxM-dx-VrJ"/>
-                <outlet property="informantage" destination="nfQ-Qh-LJi" id="VYk-W7-3JR"/>
-                <outlet property="informanteducation" destination="H3h-q0-lhS" id="2Ur-bb-ZYY"/>
                 <outlet property="informantname" destination="GPl-eI-Rqr" id="KxX-z8-tRz"/>
                 <outlet property="reactionTittle" destination="vLP-ji-RXC" id="v4W-md-jtz"/>
                 <outlet property="reactionaddress" destination="a0Z-t0-YRk" id="nCB-62-e0v"/>
                 <outlet property="reactiontime" destination="IvX-9S-pD1" id="V0P-bk-de6"/>
                 <outlet property="uploadBtn" destination="LSR-Tn-XXs" id="V8m-xq-mfH"/>
             </connections>
-            <point key="canvasLocation" x="312" y="322"/>
+            <point key="canvasLocation" x="312" y="305.5"/>
         </tableViewCell>
     </objects>
 </document>

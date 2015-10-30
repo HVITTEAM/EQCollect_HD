@@ -12,8 +12,6 @@
 @interface ReactioninfoCell : InfoCell<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *reactionTittle;
 @property (weak, nonatomic) IBOutlet UILabel *informantname;
-@property (weak, nonatomic) IBOutlet UILabel *informantage;
-@property (weak, nonatomic) IBOutlet UILabel *informanteducation;
 @property (weak, nonatomic) IBOutlet UILabel *reactionaddress;
 @property (weak, nonatomic) IBOutlet UILabel *reactiontime;
 @property (weak, nonatomic) IBOutlet UIButton *uploadBtn;

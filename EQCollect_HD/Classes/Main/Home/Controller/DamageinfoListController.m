@@ -45,12 +45,10 @@
     //获取cell的数据
     DamageModel * damageinfo = [self.dataProvider objectAtIndex:indexPath.row];
     //设置cell的属性
-    cell.damageid.text = [NSString stringWithFormat:@"NO.%@",damageinfo.damageid];
+    cell.damageid.text = [NSString stringWithFormat:@"编号:%@",damageinfo.damageid];
     cell.damagetime.text = damageinfo.damagetime;
-    cell.damageintensity.text = damageinfo.damageintensity;
-    cell.damagesituation.text = damageinfo.damagesituation;
-    cell.damageaddress.text = damageinfo.damageaddress;
-    cell.fortificationintensity.text = damageinfo.fortificationintensity;
+    cell.damageintensity.text = [NSString stringWithFormat:@"烈度:%@",damageinfo.damageintensity];
+    cell.damageaddress.text = [NSString stringWithFormat:@"地址:%@",damageinfo.damageaddress];
     
     if ([damageinfo.upload isEqualToString:@"1"]) {
         cell.uploadBtn.selected = YES;
@@ -70,7 +68,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 110;
+    return 80;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,7 +142,7 @@
                 for (PictureMode *picmodel in imgs) {
                     NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
                     NSData * imagedata = [NSData dataWithContentsOfURL:filePath];
-                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.png",picmodel.pictureName] mimeType:@"image/png"];
+                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.jpg",picmodel.pictureName] mimeType:@"image/jpeg"];
                 }
             } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"图片上传成功: %@", responseObject);

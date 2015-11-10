@@ -103,6 +103,19 @@
     }
 }
 
+
+////上传数据
+//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    DamageModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+//    //上传数据成功则更新本地数据
+//    BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
+//    if (result) {
+//        model.upload = @"1";
+//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//    }
+//}
+
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -110,7 +123,7 @@
         [[[UIAlertView alloc] initWithTitle:@"警告" message:@"请先上传调查点数据表信息" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil] show];
         return;
     }
-    
+
     MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DamageModel *model = [self.dataProvider objectAtIndex:indexPath.row];
     //获取要上传的图片

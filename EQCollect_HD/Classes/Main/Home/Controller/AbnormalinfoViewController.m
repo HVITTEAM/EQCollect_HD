@@ -104,9 +104,9 @@
     }
     
     self.intensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
-    self.groundwaterItems = @[@"地下水1",@"地下水2",@"地下水3",@"地下水4"];
-    self.habitItems = @[@"习性1",@"习性2",@"习性3",@"习性4"];
-    self.phenomenonItems = @[@"物化1",@"物化2",@"物化3",@"物化4",@"物化5"];
+//    self.groundwaterItems = @[@"地下水1",@"地下水2",@"地下水3",@"地下水4"];
+//    self.habitItems = @[@"习性1",@"习性2",@"习性3",@"习性4"];
+//    self.phenomenonItems = @[@"物化1",@"物化2",@"物化3",@"物化4",@"物化5"];
     self.crediblyItems = @[@"1",@"2",@"3",@"4",@"5"];
     
     //设置顶部高约束
@@ -221,18 +221,18 @@
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.intensityItems];
             break;
-        case 1004:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.groundwaterItems];
-            break;
-        case 1005:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.habitItems];
-            break;
-        case 1006:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.phenomenonItems];
-            break;
+//        case 1004:
+//            canEdit = NO;
+//            [self showAlertViewWithTextField:textField items:self.groundwaterItems];
+//            break;
+//        case 1005:
+//            canEdit = NO;
+//            [self showAlertViewWithTextField:textField items:self.habitItems];
+//            break;
+//        case 1006:
+//            canEdit = NO;
+//            [self showAlertViewWithTextField:textField items:self.phenomenonItems];
+//            break;
         case 1010:
             canEdit = NO;
             [self showAlertViewWithTextField:textField items:self.crediblyItems];

@@ -30,6 +30,11 @@
     headView.usernameLabel.text = userInfor.username;
     //headView.useridLabel.text = [NSString stringWithFormat:@"%ld",(long)[SharedAppUtil defaultCommonUtil].userInfor.userid];
     //headView.usernameLabel.text = [SharedAppUtil defaultCommonUtil].userInfor.username;
+    
+    //为了截图
+    headView.useridLabel.text = @"12345";
+    headView.usernameLabel.text = @"admin";
+    
     self.tableView.tableHeaderView = headView;
     
     //设置导航栏颜色
@@ -70,13 +75,14 @@
     if (indexPath.section ==0) {
         cell.textLabel.text = @"个人中心";
         cell.imageView.image = [UIImage imageNamed:@"personCenter"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else if (indexPath.section ==1){
         cell.textLabel.text = @"调查点管理";
         cell.imageView.image = [UIImage imageNamed:@"surveyPoints"];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else{
         cell.textLabel.text = @"系统设置";
         cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
 }

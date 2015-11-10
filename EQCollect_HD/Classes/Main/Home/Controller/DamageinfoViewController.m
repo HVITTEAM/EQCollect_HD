@@ -241,6 +241,7 @@
  */
 -(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
 {
+    [self.view endEditing:YES];
     //创建UIAlertView并设置标题
     NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];

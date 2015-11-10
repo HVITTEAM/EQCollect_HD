@@ -229,28 +229,92 @@
 //    
 //}
 
+
+//
+////上传数据
+//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    
+//    //创建字典对象作为上传参数
+//    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+//                                 model.pointid,@"pointid",
+//                                 //model.earthid,@"earthid",
+//                                 model.pointlocation,@"location",
+//                                 model.pointlon, @"lon",
+//                                 model.pointlat, @"lat",
+//                                 model.pointname,@"name",
+//                                 //model.pointtime,@"pointtime",
+//                                 model.pointgroup,@"group",
+//                                 model.pointperson,@"person",
+//                                 model.pointintensity,@"intensity",
+//                                 model.pointcontent,@"content",
+//                                 //upload,@"upload",
+//                                 nil];
+//    
+//    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//       parameters1[@"earthid"] = @"123";
+//      [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            NSLog(@"数据上传成功: %@", responseObject);
+//            //上传数据成功则更新本地数据
+//            BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
+//            if (result) {
+//                model.upload = @"1";
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//                });
+//            }
+//            [mbprogress removeFromSuperview];
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"数据上传失败:");
+//            [mbprogress removeFromSuperview];
+//        }];
+//
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            NSLog(@"数据上传成功: %@", responseObject);
+//            //上传数据成功则更新本地数据
+//            BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
+//            if (result) {
+//                model.upload = @"1";
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//                });
+//            }
+//            [mbprogress removeFromSuperview];
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"数据上传失败:");
+//            [mbprogress removeFromSuperview];
+//        }];
+//
+//    }];
+//}
+
+
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
-     MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-    //创建字典对象作为上传参数
-    NSDictionary *parameters1 = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          model.pointid,@"pointid",
-                          //model.earthid,@"earthid",
-                          model.pointlocation,@"location",
-                          model.pointlon, @"lon",
-                          model.pointlat, @"lat",
-                          model.pointname,@"name",
-                          //model.pointtime,@"pointtime",
-                          model.pointgroup,@"group",
-                          model.pointperson,@"person",
-//                          model.pointperson2,@"pointperson2",
-                          model.pointintensity,@"intensity",
-                          model.pointcontent,@"content",
-                          //upload,@"upload",
-                          nil];
-
+        //创建字典对象作为上传参数
+        NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                     model.pointid,@"pointid",
+                                     //model.earthid,@"earthid",
+                                     model.pointlocation,@"location",
+                                     model.pointlon, @"lon",
+                                     model.pointlat, @"lat",
+                                     model.pointname,@"name",
+                                     //model.pointtime,@"pointtime",
+                                     model.pointgroup,@"group",
+                                     model.pointperson,@"person",
+                                     model.pointintensity,@"intensity",
+                                     model.pointcontent,@"content",
+                                     //upload,@"upload",
+                                     nil];
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"数据上传成功: %@", responseObject);
@@ -262,13 +326,15 @@
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
             });
         }
-         [mbprogress removeFromSuperview];
+        
+        [mbprogress removeFromSuperview];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"数据上传失败:");
-         [mbprogress removeFromSuperview];
+        [mbprogress removeFromSuperview];
     }];
     
 }
+
 
 #pragma mark 集成刷新控件
 /**

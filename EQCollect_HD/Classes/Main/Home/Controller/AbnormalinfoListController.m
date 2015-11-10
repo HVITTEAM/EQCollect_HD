@@ -107,6 +107,21 @@
     }
 }
 
+
+
+////上传数据
+//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    AbnormalinfoModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+//    //上传数据 。。。。
+//    //上传数据成功则更新本地数据
+//    BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.abnormalid];
+//    if (result) {
+//        model.upload = @"1";
+//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//    }
+//}
+
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {

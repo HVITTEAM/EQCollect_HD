@@ -11,8 +11,9 @@
 #import "AbnormalinfoViewController.h"
 #import "ImageCollectionView.h"
 #import "PictureMode.h"
+#import "ChooseIntensityViewController.h"
 
-@interface AbnormalinfoViewController ()<UIAlertViewDelegate>
+@interface AbnormalinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate>
 {
     CGFloat _navHeight;              // 导航栏与状态栏总的高度
     UIBarButtonItem *_rigthItem;      //导航栏右侧按钮
@@ -70,10 +71,10 @@
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    
-    if (![self.abnormalinfo.upload isEqualToString:@"1"]) {
-        self.navigationItem.rightBarButtonItem = _rigthItem;
-    }
+    self.navigationItem.rightBarButtonItem = _rigthItem;
+//    if (![self.abnormalinfo.upload isEqualToString:@"1"]) {
+//
+//    }
     
     if (self.actionType == kActionTypeAdd){
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
@@ -199,50 +200,86 @@
             txt.userInteractionEnabled = NO;
         }
     }else{
-        for (UITextField *txt in self.textInputViews) {
-            txt.userInteractionEnabled = YES;
+        
+        if ([self.abnormalinfo.upload isEqualToString:@"1"]) {
+            self.abnormalintensityTextF.userInteractionEnabled = YES;
+        }else{
+            for (UITextField *txt in self.textInputViews) {
+                txt.userInteractionEnabled = YES;
+            }
         }
     }
     imgview.showType = actionType;
 }
 
 #pragma mark UITextFieldDelegate方法
+//-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+//{
+//    [super textFieldShouldBeginEditing:textField];
+//    BOOL canEdit;
+//    //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
+//    switch (textField.tag) {
+//        case 1000:
+//        case 1001:
+//            canEdit = NO;
+//            break;
+//        case 1003:
+//            canEdit = NO;
+//            [self showAlertViewWithTextField:textField items:self.intensityItems];
+//            break;
+////        case 1004:
+////            canEdit = NO;
+////            [self showAlertViewWithTextField:textField items:self.groundwaterItems];
+////            break;
+////        case 1005:
+////            canEdit = NO;
+////            [self showAlertViewWithTextField:textField items:self.habitItems];
+////            break;
+////        case 1006:
+////            canEdit = NO;
+////            [self showAlertViewWithTextField:textField items:self.phenomenonItems];
+////            break;
+//        case 1010:
+//            canEdit = NO;
+//            [self showAlertViewWithTextField:textField items:self.crediblyItems];
+//            break;
+//        default:
+//            canEdit = YES;
+//            break;
+//    }
+//    return canEdit;
+//}
+
+
+
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [super textFieldShouldBeginEditing:textField];
     BOOL canEdit;
     //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
-    switch (textField.tag) {
-        case 1000:
-        case 1001:
-            canEdit = NO;
-            break;
-        case 1003:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.intensityItems];
-            break;
-//        case 1004:
-//            canEdit = NO;
-//            [self showAlertViewWithTextField:textField items:self.groundwaterItems];
-//            break;
-//        case 1005:
-//            canEdit = NO;
-//            [self showAlertViewWithTextField:textField items:self.habitItems];
-//            break;
-//        case 1006:
-//            canEdit = NO;
-//            [self showAlertViewWithTextField:textField items:self.phenomenonItems];
-//            break;
-        case 1010:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.crediblyItems];
-            break;
-        default:
-            canEdit = YES;
-            break;
+    if (textField.tag == 1000 || textField.tag == 1001) {
+        canEdit = NO;
+    }else if (textField.tag == 1003){
+        canEdit = NO;
+        ChooseIntensityViewController *intensityVC = [ChooseIntensityViewController sharedInstance];
+        intensityVC.delegate = self;
+        UINavigationController *naviga = [[UINavigationController alloc] initWithRootViewController:intensityVC];
+        naviga.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:naviga animated:YES completion:nil];
+    }else if (textField.tag == 1010){
+        canEdit = NO;
+        [self showAlertViewWithTextField:textField items:self.crediblyItems];
+    }else{
+        canEdit = YES;
     }
     return canEdit;
 }
+
+-(void)viewController:(ChooseIntensityViewController *)chooseIntensityVC selectedIntensity:(NSString *)intensity
+{
+    self.abnormalintensityTextF.text = intensity;
+}
+
 
 /**
  *  使用UIAlertView向文本框输入内容
@@ -278,23 +315,50 @@
  */
 -(void)rightItemTap:(UIBarButtonItem *)sender
 {
-    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
+    if (self.actionType == kActionTypeShow) {
         self.navigationItem.rightBarButtonItem.title = @"确定";
         self.actionType = kactionTypeEdit;
     }else{
         if (self.actionType == kActionTypeAdd) {
+            //判断是否有文本框为空，有空则返回并提示
             if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-            [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
+                [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
             }
         }else{
+            //判断是否有文本框为空，有空则返回并提示
             if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+                
+                if ([self.abnormalinfo.upload isEqualToString:kdidUpload]) {
+                    [self showMBProgressHUDWithSel:@selector(updateNetWorkAbnormalinfo)];
+                }else{
+                    [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
+                    self.actionType = kActionTypeShow;
+                }
+                
+                //[self.view endEditing:YES];
                 self.navigationItem.rightBarButtonItem.title = @"编辑";
-                [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
-                [self.view endEditing:YES];
-                self.actionType = kActionTypeShow;
+                
             }
         }
     }
+    
+//    if (self.actionType == kActionTypeShow) {
+//        self.navigationItem.rightBarButtonItem.title = @"确定";
+//        self.actionType = kactionTypeEdit;
+//    }else{
+//        if (self.actionType == kActionTypeAdd) {
+//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+//                [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
+//            }
+//        }else{
+//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+//                self.navigationItem.rightBarButtonItem.title = @"编辑";
+//                [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
+//                [self.view endEditing:YES];
+//                self.actionType = kActionTypeShow;
+//            }
+//        }
+//    }
 }
 
 /**
@@ -318,7 +382,7 @@
     NSString *credibly = self.crediblyTextF.text;
     
     //创建字典对象并向表中插和数据
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                           abnormalid,@"abnormalid",
                           abnormaltime,@"abnormaltime",
                           informant,@"informant",
@@ -331,7 +395,7 @@
                           abnormalanalysis,@"abnormalanalysis",
                           credibly,@"credibly",
                           self.pointid,@"pointid",
-                          @"0",@"upload",
+                          kdidNotUpload,@"upload",
                           nil];
     
     BOOL result = [[AbnormalinfoTableHelper sharedInstance] insertDataWith:dict];
@@ -407,6 +471,68 @@
             [self.delegate updateAbnormalinfoSuccess:self];
         }
     }
+}
+
+
+-(void)updateNetWorkAbnormalinfo
+{
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+    
+    NSString *abnormalid = self.abnormalidTextF.text;
+    NSString *abnormaltime = self.abnormaltimeTextF.text;
+    NSString *informant = self.informantTextF.text;
+    NSString *abnormalintensity0 = self.abnormalintensityTextF.text;
+    NSString *abnormalintensity = [self switchRomeNumToNum:self.abnormalintensityTextF.text];
+    NSString *groundwater = self.groundwaterTextF.text;
+    NSString *abnormalhabit = self.abnormalhabitTextF.text;
+    NSString *abnormalphenomenon = self.abnormalphenomenonTextF.text;
+    NSString *other = self.otherTextF.text;
+    NSString *implementation = self.implementationTextF.text;
+    NSString *abnormalanalysis = self.abnormalanalysisTextF.text;
+    NSString *credibly = self.crediblyTextF.text;
+    NSString *pointid = self.abnormalinfo.pointid;
+    NSString *upload = self.abnormalinfo.upload;
+    
+    //创建字典对象作为上传参数
+    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                 abnormalid,@"abnormalid",
+                                 //model.abnormaltime,@"abnormaltime",
+                                 informant,@"informant",
+                                 abnormalintensity, @"abnormalintensity",
+                                 groundwater, @"groundwater",
+                                 abnormalhabit,@"abnormalhabit",
+                                 abnormalphenomenon,@"abnormalphenomenon",
+                                 other,@"other",
+                                 implementation,@"implementation",
+                                 abnormalanalysis,@"abnormalanalysis",
+                                 credibly,@"credibly",
+                                 pointid,@"pointid",
+                                 // @"0",@"upload",
+                                 nil];
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:URL_updatedamage parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"数据上传成功: %@", responseObject);
+        parameters1[@"abnormaltime"] = abnormaltime;
+        parameters1[@"upload"] = upload;
+        parameters1[@"abnormalintensity"] = abnormalintensity0;
+
+        //上传数据成功则更新本地数
+        BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateDataWith:parameters1];
+        if (result) {
+            self.actionType = kActionTypeShow;
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"数据上传失败:");
+    }];
+}
+
+-(NSString *)switchRomeNumToNum:(NSString *)romeNum
+{
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    NSUInteger num = [romes indexOfObject:romeNum];
+    return [NSString stringWithFormat:@"%d",(int)(num+1)];
 }
 
 -(void)back

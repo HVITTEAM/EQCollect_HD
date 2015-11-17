@@ -29,6 +29,7 @@
 @property (nonatomic, copy) NSString *fortificationintensity;
 @property (nonatomic, copy) NSString *damagesituation;
 @property (nonatomic, copy) NSString *damageindex;
+@property (nonatomic, copy) NSString *housetype;
 @property (nonatomic, copy) NSString *pointid;
 @property (nonatomic, copy) NSString *upload;
 @end

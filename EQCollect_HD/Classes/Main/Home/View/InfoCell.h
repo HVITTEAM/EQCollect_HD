@@ -16,6 +16,10 @@
 - (void)infoCell:(InfoCell *)cell didClickDeleteBtnAtIndexPath:(NSIndexPath *)indexPath;
 //上传 cell 时调用
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath;
+
+@optional
+//上传提示
+-(void)infocell:(InfoCell *)cell didClickMessageBtnAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @interface InfoCell : UITableViewCell

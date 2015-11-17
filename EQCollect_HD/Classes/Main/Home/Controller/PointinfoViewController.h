@@ -16,11 +16,12 @@
 @end
 
 @interface PointinfoViewController : SheetViewController
-
+@property (strong,nonatomic)UIViewController *preVc;
 @property (assign,nonatomic)ActionType actionType;             //操作类型
 @property (strong,nonatomic)PointModel *pointinfo;             //选中的调查点信息
 @property (weak , nonatomic)id<PointinfoDelegate>delegate;
 
 //更新当前界面数据
 -(void)updatePointinfo;
+-(void)updateNetWorkPointInfo;
 @end

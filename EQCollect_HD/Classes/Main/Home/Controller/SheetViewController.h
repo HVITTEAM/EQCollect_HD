@@ -15,6 +15,9 @@
 @property (weak, nonatomic) UIView *containerV;         //包裹真正内容的容器view
 @property (assign,nonatomic) NSUInteger currentInputViewTag;  //当前文本框的tag
 
+/**
+ * 显示提示图标
+ **/
 -(void)showMBProgressHUDWithSel:(SEL)method;
 
 //-(void)keyboardWillShow:(NSNotification *)notification;

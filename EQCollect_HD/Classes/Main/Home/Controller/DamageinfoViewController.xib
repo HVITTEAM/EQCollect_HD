@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DamageinfoViewController">
@@ -17,6 +17,7 @@
                 <outlet property="damagetimeTextF" destination="KvW-OI-KUG" id="eua-yi-kCH"/>
                 <outlet property="dworzhTextF" destination="N6U-5e-SXZ" id="Cht-P0-jQu"/>
                 <outlet property="fortificationintensityTextF" destination="PIX-zs-T5g" id="9DE-K5-sct"/>
+                <outlet property="houseTypeTextF" destination="ZpZ-or-HuV" id="sI0-Dq-kcU"/>
                 <outlet property="rootScrollView" destination="sWH-dY-ntc" id="hez-uU-BRd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="zrcorxqTextF" destination="aRV-Cl-zF1" id="JI8-SB-ntw"/>
@@ -39,7 +40,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="310" translatesAutoresizingMaskIntoConstraints="NO" id="L1m-5x-mUX">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="510"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="570"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="房屋震害编号:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wva-By-ai1">
                                     <rect key="frame" x="20" y="26" width="89" height="17"/>
@@ -62,14 +63,14 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="地址:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mY5-CL-joS">
-                                    <rect key="frame" x="20" y="266" width="89" height="17"/>
+                                    <rect key="frame" x="20" y="326" width="89" height="17"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="地址" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xo1-hC-N4D">
-                                    <rect key="frame" x="119" y="260" width="460.5" height="30"/>
+                                    <rect key="frame" x="119" y="320" width="460.5" height="30"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -158,6 +159,19 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="房屋类型:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XuW-eN-OmG">
+                                    <rect key="frame" x="20" y="266" width="89" height="17"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="房屋类型" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZpZ-or-HuV">
+                                    <rect key="frame" x="119" y="260" width="460.5" height="30"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                </textField>
                             </subviews>
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -179,13 +193,16 @@
                                 <constraint firstItem="AUH-Hb-sV9" firstAttribute="leading" secondItem="ebJ-6d-fWz" secondAttribute="leading" id="Fti-KE-Vv1"/>
                                 <constraint firstItem="KvW-OI-KUG" firstAttribute="trailing" secondItem="M7d-af-mnd" secondAttribute="trailing" id="IFe-DF-aQ7"/>
                                 <constraint firstItem="rET-Vz-LG1" firstAttribute="leading" secondItem="XOG-hD-hPV" secondAttribute="trailing" constant="30" id="Imn-fq-SvT"/>
+                                <constraint firstItem="xo1-hC-N4D" firstAttribute="top" secondItem="ZpZ-or-HuV" secondAttribute="bottom" constant="30" id="J2M-HB-MX3"/>
                                 <constraint firstAttribute="trailing" secondItem="KvW-OI-KUG" secondAttribute="trailing" constant="20" id="J4s-uI-vQ5"/>
                                 <constraint firstItem="KvW-OI-KUG" firstAttribute="leading" secondItem="GA2-ss-5Tj" secondAttribute="leading" id="K10-yK-FVA"/>
                                 <constraint firstItem="AUH-Hb-sV9" firstAttribute="trailing" secondItem="mY5-CL-joS" secondAttribute="trailing" id="K1E-Tm-TFi"/>
+                                <constraint firstItem="ZpZ-or-HuV" firstAttribute="top" secondItem="Wu2-5M-bf2" secondAttribute="bottom" constant="30" id="KYy-2Z-5h2"/>
                                 <constraint firstItem="KvW-OI-KUG" firstAttribute="leading" secondItem="rET-Vz-LG1" secondAttribute="trailing" constant="10" id="MZ0-x5-DjM"/>
+                                <constraint firstItem="ZpZ-or-HuV" firstAttribute="leading" secondItem="xo1-hC-N4D" secondAttribute="leading" id="MaG-dR-Yx9"/>
                                 <constraint firstItem="AUH-Hb-sV9" firstAttribute="trailing" secondItem="ebJ-6d-fWz" secondAttribute="trailing" id="NA1-vQ-W0I"/>
-                                <constraint firstItem="xo1-hC-N4D" firstAttribute="top" secondItem="Wu2-5M-bf2" secondAttribute="bottom" constant="30" id="Ndb-7o-QZO"/>
                                 <constraint firstItem="c99-wW-tA3" firstAttribute="centerY" secondItem="M7d-af-mnd" secondAttribute="centerY" constant="-0.5" id="O2K-0J-2Pf"/>
+                                <constraint firstItem="mY5-CL-joS" firstAttribute="leading" secondItem="XuW-eN-OmG" secondAttribute="leading" id="OI1-5S-5Nr"/>
                                 <constraint firstItem="AUH-Hb-sV9" firstAttribute="trailing" secondItem="Gcc-gf-S2W" secondAttribute="trailing" id="OZb-Ia-9fK"/>
                                 <constraint firstItem="xo1-hC-N4D" firstAttribute="trailing" secondItem="M7d-af-mnd" secondAttribute="trailing" id="Og7-Zw-FUZ"/>
                                 <constraint firstItem="rET-Vz-LG1" firstAttribute="trailing" secondItem="6Lr-yM-XjU" secondAttribute="trailing" id="R2m-3P-8tg"/>
@@ -194,8 +211,11 @@
                                 <constraint firstItem="XOG-hD-hPV" firstAttribute="width" secondItem="KvW-OI-KUG" secondAttribute="width" id="TE5-rW-rHd"/>
                                 <constraint firstItem="XOG-hD-hPV" firstAttribute="centerY" secondItem="KvW-OI-KUG" secondAttribute="centerY" id="ZXv-ne-EpB"/>
                                 <constraint firstItem="AUH-Hb-sV9" firstAttribute="leading" secondItem="mY5-CL-joS" secondAttribute="leading" id="ZvC-Ll-BIP"/>
+                                <constraint firstItem="ZpZ-or-HuV" firstAttribute="centerY" secondItem="XuW-eN-OmG" secondAttribute="centerY" constant="0.5" id="a7e-FP-EDl"/>
+                                <constraint firstItem="ZpZ-or-HuV" firstAttribute="trailing" secondItem="xo1-hC-N4D" secondAttribute="trailing" id="aye-23-3f4"/>
                                 <constraint firstItem="rET-Vz-LG1" firstAttribute="centerY" secondItem="KvW-OI-KUG" secondAttribute="centerY" constant="-0.5" id="ctG-DZ-IjU"/>
                                 <constraint firstItem="AUH-Hb-sV9" firstAttribute="trailing" secondItem="Wva-By-ai1" secondAttribute="trailing" id="euN-Wc-yBy"/>
+                                <constraint firstItem="mY5-CL-joS" firstAttribute="trailing" secondItem="XuW-eN-OmG" secondAttribute="trailing" id="ffJ-jo-kdu"/>
                                 <constraint firstItem="PIX-zs-T5g" firstAttribute="centerY" secondItem="ebJ-6d-fWz" secondAttribute="centerY" constant="0.5" id="ffq-NB-gfQ"/>
                                 <constraint firstItem="Wva-By-ai1" firstAttribute="leading" secondItem="L1m-5x-mUX" secondAttribute="leading" constant="20" id="fiK-nw-5Sb"/>
                                 <constraint firstItem="Wu2-5M-bf2" firstAttribute="trailing" secondItem="aRV-Cl-zF1" secondAttribute="trailing" id="hWz-2M-W6x"/>

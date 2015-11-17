@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+@class EarthInfo;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong ,nonatomic) EarthInfo *earthinfo;
 @property (strong, nonatomic) CLLocation *currentLocation;          //当前位置信息
 @property (strong, atomic) NSMutableString *currrentaddr;        //当前地址
 -(void)addTimer;

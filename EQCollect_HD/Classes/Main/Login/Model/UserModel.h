@@ -28,4 +28,8 @@
 @property (nonatomic, retain) NSString *jobname;
 @property (nonatomic, retain) NSString *groupname;
 
+@property (nonatomic, retain) NSString *pointgroup;
+@property (nonatomic, retain) NSString *pointperson;
+
 @end
+

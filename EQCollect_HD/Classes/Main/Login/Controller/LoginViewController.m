@@ -117,35 +117,33 @@
  */
 - (IBAction)loginNow:(id)sender
 {
-//    NSString *account = self.accountTextF.text;
-//    NSString *passwd = self.passwdTextF.text;
-//    if (account!=nil && account.length>0 && passwd!=nil && passwd.length>0)
-//    {
-//        MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : account,
-//                                                                  @"pwd" : passwd,@"from":@"app"}
-//                                     type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {
-//                                         
-//     
-//                                         UserModel *usermd = [UserModel objectWithKeyValues:dict];
-//                                         [ArchiverCacheHelper saveObjectToLoacl:usermd key:User_Archiver_Key filePath:User_Archiver_Path];
-//                                         NSLog(@"------------LoginViewController--------------%@",dict);
-//                                         //[SharedAppUtil defaultCommonUtil].userInfor = usermd;
-//                                         [HUD removeFromSuperview];
-//                                         [HMControllerTool setRootViewController];
-//                                              
-//                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                                         NSLog(@"发生错误");
-//                                         [HUD removeFromSuperview];
-//                                         [NoticeHelper AlertShow:@"登陆失败！请重试！" view:self.view];
-//                                     }];
-//    }
-//    else
-//    {
-//        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-//        [alertV show];
-//    }
-   [HMControllerTool setRootViewController];
+    NSString *account = self.accountTextF.text;
+    NSString *passwd = self.passwdTextF.text;
+    if (account!=nil && account.length>0 && passwd!=nil && passwd.length>0)
+    {
+        MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : account,
+                                                                  @"pwd" : passwd,@"from":@"app"}
+                                     type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {
+                                         
+     
+                                         UserModel *usermd = [UserModel objectWithKeyValues:dict];
+                                         [ArchiverCacheHelper saveObjectToLoacl:usermd key:User_Archiver_Key filePath:User_Archiver_Path];
+                                         [HUD removeFromSuperview];
+                                         [HMControllerTool setRootViewController];
+                                              
+                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                         NSLog(@"发生错误");
+                                         [HUD removeFromSuperview];
+                                         [NoticeHelper AlertShow:@"登陆失败！请重试！" view:self.view];
+                                     }];
+    }
+    else
+    {
+        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alertV show];
+    }
+   //[HMControllerTool setRootViewController];
 }
 
 -(void)dealloc

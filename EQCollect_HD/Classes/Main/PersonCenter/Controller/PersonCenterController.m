@@ -10,7 +10,7 @@
 #import "HMCommonCenterItem.h"
 #import "HMCommonTextfieldItem.h"
 
-@interface SettingViewController ()
+@interface PersonCenterController ()
 
 
 @end
@@ -31,6 +31,9 @@
     [super viewDidLoad];
     
     _userinfo = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
+    if (!_userinfo) {
+        _userinfo = [[UserModel alloc] init];
+    }
     
     [self initNavigation];
     
@@ -78,24 +81,25 @@
     
     // 设置组的所有行数据
     HMCommonTextfieldItem *userccount = [HMCommonTextfieldItem itemWithTitle:@"帐号"];
-    userccount.placeholder = @"帐号为空";
+    userccount.placeholder = @"请输入帐号";
     userccount.textString = _userinfo.userccount;
-    userccount.textString = @"admin";
+    //userccount.textString = @"123456";
     
     HMCommonTextfieldItem *username = [HMCommonTextfieldItem itemWithTitle:@"名称"];
-    username.placeholder = @"名称为空";
+    username.placeholder = @"请输入名称";
     username.textString = _userinfo.username;
-    username.textString = @"12345";
+    //username.textString = @" admin";
     
     HMCommonTextfieldItem *userpwd = [HMCommonTextfieldItem itemWithTitle:@"密码"];
-    userpwd.placeholder = @"密码为空";
+    [userpwd.rightText setSecureTextEntry:YES];
+    userpwd.placeholder = @"请输入密码";
     userpwd.textString = _userinfo.userpwd;
-    userpwd.textString = @"hvit";
+    //userpwd.textString = @"hvit";
 
     HMCommonTextfieldItem *usertel = [HMCommonTextfieldItem itemWithTitle:@"电话"];
-    usertel.placeholder = @"电话为空";
+    usertel.placeholder = @"请输入电话";
     usertel.textString = _userinfo.usertel;
-    usertel.textString = @"88888888";
+    //usertel.textString = @"88888888";
 
 //    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];
 //    groupname.centerString = @"第一组";
@@ -110,33 +114,18 @@
     [self.groups addObject:group];
     
     // 设置组的所有行数据
-//    HMCommonTextfieldItem *useraddress = [HMCommonTextfieldItem itemWithTitle:@"地址"];
-//    useraddress.placeholder = _userinfo.useraddress;
-//    
-//    HMCommonTextfieldItem *userlon = [HMCommonTextfieldItem itemWithTitle:@"经度"];
-//    userlon.placeholder = _userinfo.userlon;
-//    
-//    HMCommonTextfieldItem *userlat = [HMCommonTextfieldItem itemWithTitle:@"纬度"];
-//    userlat.placeholder = _userinfo.userlat;
-    
-    HMCommonTextfieldItem *jobname = [HMCommonTextfieldItem itemWithTitle:@"工作名称"];
-    jobname.placeholder = @"工作名称为空";
-    jobname.textString = _userinfo.jobname;
-    
+
     HMCommonTextfieldItem *groupname = [HMCommonTextfieldItem itemWithTitle:@"所在分组"];
-    groupname.placeholder = @"所在分组为空";
-    groupname.textString = _userinfo.groupname;
+    groupname.placeholder = @"输入分组名称";
+    groupname.textString = _userinfo. pointgroup;
     
-    group.items = @[jobname,groupname];
+    HMCommonTextfieldItem *persons = [HMCommonTextfieldItem itemWithTitle:@"小组成员"];
+    persons.placeholder = @"输入分组成员";
+    persons.textString = _userinfo. pointperson;
+    
+    group.items = @[groupname,persons];
 }
 
-
-//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    HMCommonCell *cell = (HMCommonCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
-//    cell.item.rightText.userInteractionEnabled = NO;
-//    return cell;
-//}
 
 - (void)setupFooter
 {
@@ -161,10 +150,26 @@
 -(void)modifyUserInfo
 {
     HMCommonGroup *group0 = self.groups[0];
-    NSString *userccount = ((HMCommonTextfieldItem *)group0.items[0]).textString;
-    NSString *username = ((HMCommonTextfieldItem *)group0.items[1]).textString;
-    NSString *userpwd = ((HMCommonTextfieldItem *)group0.items[2]).textString;
-    NSString *usertel = ((HMCommonTextfieldItem *)group0.items[3]).textString;
+    HMCommonGroup *group1 = self.groups[1];
+    
+    NSString *userccount = ((HMCommonTextfieldItem *)group0.items[0]).rightText.text;
+    NSString *username = ((HMCommonTextfieldItem *)group0.items[1]).rightText.text;
+    NSString *userpwd = ((HMCommonTextfieldItem *)group0.items[2]).rightText.text;
+    NSString *usertel = ((HMCommonTextfieldItem *)group0.items[3]).rightText.text;
+    NSString *pointgroup = ((HMCommonTextfieldItem *)group1.items[0]).rightText.text;
+    NSString *pointperson = ((HMCommonTextfieldItem *)group1.items[1]).rightText.text;
+    
+    _userinfo.userccount = userccount;
+    _userinfo.username = username;
+    _userinfo.userpwd = userpwd;
+    _userinfo.usertel = usertel;
+    _userinfo.pointgroup = pointgroup;
+    _userinfo.pointperson = pointperson;
+    
+    [ArchiverCacheHelper saveObjectToLoacl:_userinfo key:User_Archiver_Key filePath:User_Archiver_Path];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    
+
 }
 
 -(void)back

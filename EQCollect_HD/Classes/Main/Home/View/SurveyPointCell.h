@@ -11,13 +11,7 @@
 
 @interface SurveyPointCell : InfoCell<UIAlertViewDelegate>
 
-@property (strong, nonatomic) IBOutlet UILabel *pointTitleText;
-@property (strong, nonatomic) IBOutlet UILabel *pointAddressText;
-@property (strong, nonatomic) IBOutlet UILabel *pointTimeText;
-@property (weak, nonatomic) IBOutlet UIButton *uploadBtn;
-@property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
-@property (weak, nonatomic) IBOutlet UILabel *pointIdText;
+@property (strong,nonatomic)PointModel *model;
 
-- (IBAction)deleteSurveyPoint:(id)sender;
 @end
 

@@ -105,6 +105,7 @@
     {
         NSString *updateSql = [NSString stringWithFormat:
                                @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,POINTID,dict[@"pointid"],EARTHID,dict[@"earthid"],POINTLOCATION,dict[@"pointlocation"],POINTLON,dict[@"pointlon"],POINTLAT,dict[@"pointlat"],POINTNAME,dict[@"pointname"],POINTTIME,dict[@"pointtime"],POINTGROUP,dict[@"pointgroup"],POINTPERSON,dict[@"pointperson"],POINTINTENSITY,dict[@"pointintensity"],POINTCONTENT,dict[@"pointcontent"],UPLOAD,dict[@"upload"],POINTID,dict[@"pointid"]];
+        
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
             //NSLog(@"error when update db table");

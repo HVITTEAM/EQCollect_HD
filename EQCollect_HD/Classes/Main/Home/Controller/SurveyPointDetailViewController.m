@@ -53,12 +53,9 @@
     self.title = @"调查点详情";
     
     _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rigthItemTap:)];
-    //根据是否上传确定显示或隐藏导航栏右侧按钮
-    if (![self.pointinfo.upload isEqualToString:@"1"]) {
-        self.navigationItem.rightBarButtonItem = _rightItem;
-    }else {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
+    //_rightItem.barButtonItemState = BarButtonItemStateShow;   //按钮的操作
+    self.navigationItem.rightBarButtonItem = _rightItem;
+    
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -68,17 +65,20 @@
     self.pointinfoVC = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
     self.pointinfoVC.title = @"调查点";
     self.pointinfoVC.pointinfo = self.pointinfo;
+    self.pointinfoVC.preVc = self.navigationController;
     
     UISplitViewController *rootVC = (UISplitViewController *)[[UIApplication sharedApplication] keyWindow].rootViewController;
     self.pointinfoVC.delegate = ((UINavigationController *)rootVC.viewControllers[1]).viewControllers[0];
     [self.vcArray addObject:self.pointinfoVC];
     
-    self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];
-    self.abnormalinfoListVC.title = @"宏观异常";
-    self.abnormalinfoListVC.nav = self.navigationController;
-    self.abnormalinfoListVC.pointid = self.pointinfo.pointid;
-    self.abnormalinfoListVC.pointUploadFlag = self.pointinfo.upload;
-    [self.vcArray addObject:self.abnormalinfoListVC];
+    
+    self.damageinfoListVC = [[DamageinfoListController alloc] initWithNibName:@"DamageinfoListController" bundle:nil];
+    self.damageinfoListVC.title = @"房屋震害";
+    self.damageinfoListVC.nav = self.navigationController;
+    self.damageinfoListVC.pointid = self.pointinfo.pointid;
+    self.damageinfoListVC.pointUploadFlag = self.pointinfo.upload;
+    [self.vcArray addObject:self.damageinfoListVC];
+    
     
     self.reactioninfoListVC = [[ReactioninfoListController alloc] initWithNibName:@"ReactioninfoListController" bundle:nil];
     self.reactioninfoListVC.title = @"人物反应";
@@ -87,12 +87,17 @@
     self.reactioninfoListVC.pointUploadFlag = self.pointinfo.upload;
     [self.vcArray addObject:self.reactioninfoListVC];
     
-    self.damageinfoListVC = [[DamageinfoListController alloc] initWithNibName:@"DamageinfoListController" bundle:nil];
-    self.damageinfoListVC.title = @"房屋震害";
-    self.damageinfoListVC.nav = self.navigationController;
-    self.damageinfoListVC.pointid = self.pointinfo.pointid;
-    self.damageinfoListVC.pointUploadFlag = self.pointinfo.upload;
-    [self.vcArray addObject:self.damageinfoListVC];
+    
+    self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];
+    self.abnormalinfoListVC.title = @"宏观异常";
+    self.abnormalinfoListVC.nav = self.navigationController;
+    self.abnormalinfoListVC.pointid = self.pointinfo.pointid;
+    self.abnormalinfoListVC.pointUploadFlag = self.pointinfo.upload;
+    [self.vcArray addObject:self.abnormalinfoListVC];
+    
+
+    
+
 }
 
 /**
@@ -131,19 +136,13 @@
 
 - (void)slideSwitchView:(QCSlideSwitchView *)view didselectTab:(NSUInteger)number
 {
-    
     if (number == 0) {
-        //根据是否上传确定显示或隐藏导航栏右侧按钮
-        if (![self.pointinfo.upload isEqualToString:@"1"]) {
-            self.navigationItem.rightBarButtonItem = _rightItem;
-        }else {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
         _rightItem.title = @"编辑";
         self.pointinfoVC.actionType = kActionTypeShow;
+        //_rightItem.barButtonItemState = BarButtonItemStateShow;
     }else {
-         _rightItem.title = @"新增";
-        self.navigationItem.rightBarButtonItem = _rightItem;
+        _rightItem.title = @"新增";
+        //_rightItem.barButtonItemState = BarButtonItemStateAdd;
     }
     _currentIndex = number;
 }
@@ -151,27 +150,51 @@
 -(void)rigthItemTap:(id)sender
 {
     if (_currentIndex == 0) {
-        if ([_rightItem.title isEqualToString:@"编辑"]) {
+        if (self.pointinfoVC.actionType == kActionTypeShow) {
             _rightItem.title = @"确定";
             self.pointinfoVC.actionType = kactionTypeEdit;
-        }else{
+        }else if(self.pointinfoVC.actionType == kactionTypeEdit){
             _rightItem.title = @"编辑";
-            self.pointinfoVC.actionType = kActionTypeShow;
-            //更新数据
-            [self.pointinfoVC updatePointinfo];
+            if ([self.pointinfoVC.pointinfo.upload isEqualToString:kdidUpload]) {
+                [self.pointinfoVC updateNetWorkPointInfo];
+            }else{
+                //更新数据
+                [self.pointinfoVC updatePointinfo];
+                self.pointinfoVC.actionType = kActionTypeShow;
+            }
+            
         }
+
+//        if ([_rightItem.title isEqualToString:@"编辑"]) {
+//            _rightItem.title = @"确定";
+//            self.pointinfoVC.actionType = kactionTypeEdit;
+//            
+//        }else{
+//            _rightItem.title = @"编辑";
+//            
+//            if ([self.pointinfoVC.pointinfo.upload isEqualToString:@"1"]) {
+//                [self.pointinfoVC updateNetWorkPointInfo];
+//            }else{
+//                //更新数据
+//                [self.pointinfoVC updatePointinfo];
+//                self.pointinfoVC.actionType = kActionTypeShow;
+//            }
+//
+//        }
     }else if (_currentIndex == 1) {
-        AbnormalinfoViewController *abnormalVC1 = [[AbnormalinfoViewController alloc] init];
-        abnormalVC1.actionType = kActionTypeAdd;
-        abnormalVC1.pointid = self.pointinfo.pointid;
         
-        abnormalVC1.delegate = self.abnormalinfoListVC;
+        DamageinfoViewController *damageinfoVC1 = [[DamageinfoViewController alloc] init];
+        damageinfoVC1.actionType = kActionTypeAdd;
+        damageinfoVC1.pointid = self.pointinfo.pointid;
         
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:abnormalVC1];
+        damageinfoVC1.delegate = self.damageinfoListVC;
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:damageinfoVC1];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
 
     }else if (_currentIndex == 2){
+        
         ReactioninfoViewController *reactionifoVC1 = [[ReactioninfoViewController alloc] init];
         reactionifoVC1.actionType = kActionTypeAdd;
         reactionifoVC1.pointid = self.pointinfo.pointid;
@@ -183,17 +206,19 @@
         [self presentViewController:nav animated:YES completion:nil];
 
     }else if (_currentIndex ==3){
-        DamageinfoViewController *damageinfoVC1 = [[DamageinfoViewController alloc] init];
-        damageinfoVC1.actionType = kActionTypeAdd;
-        damageinfoVC1.pointid = self.pointinfo.pointid;
         
-        damageinfoVC1.delegate = self.damageinfoListVC;
+        AbnormalinfoViewController *abnormalVC1 = [[AbnormalinfoViewController alloc] init];
+        abnormalVC1.actionType = kActionTypeAdd;
+        abnormalVC1.pointid = self.pointinfo.pointid;
         
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:damageinfoVC1];
+        abnormalVC1.delegate = self.abnormalinfoListVC;
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:abnormalVC1];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
     }
 }
+
 
 -(void)dealloc
 {

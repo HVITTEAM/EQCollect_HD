@@ -179,11 +179,24 @@
     _lastDistance = 0;
 }
 
+////显示等待动画MBProgressHUD
+//-(void)showMBProgressHUDWithSel:(SEL)method
+//{
+//    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+//    [self.navigationController.view addSubview:_HUD];
+//    
+//    _HUD.delegate = self;
+//    _HUD.labelText = @"请稍等...";
+//    
+//    [_HUD showWhileExecuting:method onTarget:self withObject:nil animated:YES];
+//}
+
 //显示等待动画MBProgressHUD
 -(void)showMBProgressHUDWithSel:(SEL)method
 {
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:_HUD];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    _HUD = [[MBProgressHUD alloc] initWithWindow:window];
+    [window addSubview:_HUD];
     
     _HUD.delegate = self;
     _HUD.labelText = @"请稍等...";

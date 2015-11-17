@@ -5,15 +5,13 @@
 //
 
 #import "MasterViewController.h"
+#import "SettingViewController.h"
+#import "PersonCenterController.h"
 #import "AdminTableHead.h"
 #import "LocationHelper.h"
 
 @interface MasterViewController ()
-{
-    LocationHelper *_locationHelp;
-}
-@property (nonatomic, retain) SettingViewController *settingView;
-@property (nonatomic, retain) PersonCenterController *personView;
+
 @end
 
 @implementation MasterViewController
@@ -28,26 +26,16 @@
     UserModel *userInfor = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
     headView.useridLabel.text = userInfor.userccount;
     headView.usernameLabel.text = userInfor.username;
-    //headView.useridLabel.text = [NSString stringWithFormat:@"%ld",(long)[SharedAppUtil defaultCommonUtil].userInfor.userid];
-    //headView.usernameLabel.text = [SharedAppUtil defaultCommonUtil].userInfor.username;
-    
-    //为了截图
-    headView.useridLabel.text = @"12345";
-    headView.usernameLabel.text = @"admin";
-    
     self.tableView.tableHeaderView = headView;
     
     //设置导航栏颜色
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:102/255.0 green:147/255.0 blue:255/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = HMColor(102, 147, 255);
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //开启定时发送位置信息功能
     AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appdl addTimer];
-    _locationHelp = [[LocationHelper alloc] init];
-    [_locationHelp uploadUserinfo];
-
 }
 
 #pragma mark - Table view data source
@@ -63,12 +51,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *cellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.backgroundColor = [UIColor colorWithRed:236/255.0f green:240/255.0f blue:241/255.0f alpha:1.0f];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.backgroundColor = HMColor(236, 240, 241);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     

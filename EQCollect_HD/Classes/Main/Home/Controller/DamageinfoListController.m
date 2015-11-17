@@ -126,6 +126,9 @@
 
     MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DamageModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+    
+    NSString * damageintensity  = [self switchRomeNumToNum:model.damageintensity];
+    NSString * fortificationintensity  = [self switchRomeNumToNum:model.fortificationintensity];
     //获取要上传的图片
     NSArray *imgs = [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:model.damageid];
     
@@ -134,12 +137,13 @@
                           model.damageid,@"damageid",
                           //model.damagetime,@"damagetime",
                           model.damageaddress,@"damageaddress",
-                          model.damageintensity, @"damageintensity",
+                          damageintensity, @"damageintensity",
                           model.zrcorxq, @"zrcorxq",
                           model.dworzh,@"dworzh",
-                          model.fortificationintensity,@"fortificationintensity",
+                          fortificationintensity,@"fortificationintensity",
                           model.damagesituation,@"damagesituation",
                           model.damageindex,@"damageindex",
+                          model.housetype,@"housetype",
                           model.pointid,@"pointid",
                           //@"0",@"upload",
                           nil];
@@ -148,7 +152,6 @@
         NSLog(@"数据上传成功: %@", responseObject);
         if (imgs.count > 0) {
             //信息上传成功后上传对应的图片
-            //NSDictionary *parameters2 = @{@"v": @"参数"};
             NSDictionary *parameters2 = @{@"id":model.damageid,@"from":@"damage"};
             [manager POST:URL_addimg parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                 //循环添加要上传的图片
@@ -160,9 +163,9 @@
             } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"图片上传成功: %@", responseObject);
                 //上传数据成功则更新本地数据
-                BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
+                BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.damageid];
                 if (result) {
-                    model.upload = @"1";
+                    model.upload = kdidUpload;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                     });
@@ -177,9 +180,9 @@
         }else{
             NSLog(@"不用上传图片图片");
             //上传数据成功则更新本地数据
-            BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
+            BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.damageid];
             if (result) {
-                model.upload = @"1";
+                model.upload = kdidUpload;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                 });
@@ -227,6 +230,13 @@
 -(void)updateDamageinfoSuccess:(DamageinfoViewController *)damageinfoVC
 {
      [self updateDamageinfo:nil];
+}
+
+-(NSString *)switchRomeNumToNum:(NSString *)romeNum
+{
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    NSUInteger num = [romes indexOfObject:romeNum];
+    return [NSString stringWithFormat:@"%d",(int)(num+1)];
 }
 
 -(void)dealloc

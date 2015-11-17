@@ -319,7 +319,7 @@
  */
 -(void)rightItemTap:(UIBarButtonItem *)sender
 {
-    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
+    if (self.actionType == kActionTypeShow) {
         self.navigationItem.rightBarButtonItem.title = @"确定";
         self.actionType = kactionTypeEdit;
     }else{
@@ -336,6 +336,23 @@
             }
         }
     }
+//    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
+//        self.navigationItem.rightBarButtonItem.title = @"确定";
+//        self.actionType = kactionTypeEdit;
+//    }else{
+//        if (self.actionType == kActionTypeAdd) {
+//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+//                [self showMBProgressHUDWithSel:@selector(addReactioninfo)];
+//            }
+//        }else{
+//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+//                [self showMBProgressHUDWithSel:@selector(updateReactioninfo)];
+//                [self.view endEditing:YES];
+//                self.navigationItem.rightBarButtonItem.title = @"编辑";
+//                self.actionType = kActionTypeShow;
+//            }
+//        }
+//    }
 }
 
 /**
@@ -384,7 +401,7 @@
                           soundsize,@"soundsize",
                           sounddirection,@"sounddirection",
                           self.pointid,@"pointid",
-                          @"0",@"upload",
+                          kdidNotUpload,@"upload",
                           nil];
     
     BOOL result = [[ReactioninfoTableHelper sharedInstance] insertDataWith:dict];

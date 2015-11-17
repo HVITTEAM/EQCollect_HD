@@ -158,7 +158,6 @@
         
         if (imgs.count > 0) {
             //信息上传成功后上传对应的图片
-            //NSDictionary *parameters2 = @{@"v": @"参数"};
             NSDictionary *parameters2 = @{@"id":model.reactionid,@"from":@"reaction"};
             [manager POST:URL_addimg parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                 //循环添加要上传的图片
@@ -170,9 +169,9 @@
             } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"图片上传成功: %@", responseObject);
                 //上传数据成功则更新本地数据
-                BOOL result = [[ReactioninfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.reactionid];
+                BOOL result = [[ReactioninfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.reactionid];
                 if (result) {
-                    model.upload = @"1";
+                    model.upload = kdidUpload;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                     });
@@ -187,9 +186,9 @@
         }else{
             NSLog(@"不用上传图片");
             //上传数据成功则更新本地数据
-            BOOL result = [[ReactioninfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.reactionid];
+            BOOL result = [[ReactioninfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.reactionid];
             if (result) {
-                model.upload = @"1";
+                model.upload = kdidUpload;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                 });

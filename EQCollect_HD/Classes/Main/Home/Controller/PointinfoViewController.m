@@ -11,9 +11,11 @@
 #import "PictureInfoTableHelper.h"
 #import "PictureMode.h"
 #import "LocationHelper.h"
+#import "ChooseIntensityViewController.h"
+#import "EarthInfo.h"
 
 
-@interface PointinfoViewController ()<UIAlertViewDelegate>
+@interface PointinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 @property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
@@ -122,6 +124,18 @@
     {
         self.pointidTextF.text = [self createUniqueIdWithAbbreTableName:@"DC"];
         
+        
+        
+        UserModel *model = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
+        if (!model) {
+            model = [[UserModel alloc] init];
+        }
+        self.pointgroupTextF.text = model.pointgroup;
+        self.pointPersonTextF.text = model.pointperson;
+
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.earthidTextF.text = appDelegate.earthinfo.earthid;
+        
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"MM-dd HH:mm"];
@@ -153,32 +167,46 @@
             txt.userInteractionEnabled = NO;
         }
     }else{
-        for (UIView *txt in self.textInputViews) {
-            txt.userInteractionEnabled = YES;
+        if ([self.pointinfo.upload isEqualToString:kdidUpload]) {
+            self.pointintensityTextF.userInteractionEnabled = YES;
+        }else{
+            for (UIView *txt in self.textInputViews) {
+                txt.userInteractionEnabled = YES;
+            }
         }
     }
 }
 
 #pragma mark UITextFieldDelegate方法
+
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [super textFieldShouldBeginEditing:textField];
     BOOL canEdit;
-    switch (textField.tag) {
-        case 1000:
-        case 1001:
-            canEdit = NO;
-            break;
-        case 1009:
-            canEdit = NO;
-            [self showAlertViewWithTextField:textField items:self.pointintensityItems];
-            break;
-        default:
-            canEdit = YES;
-            break;
-    }
     
+    if (textField.tag ==1000 || textField.tag == 1001 ) {
+        canEdit = NO;
+    }else if (textField.tag == 1009){
+        canEdit = NO;
+        ChooseIntensityViewController *intensityVC = [ChooseIntensityViewController sharedInstance];
+        intensityVC.delegate = self;
+        UINavigationController *naviga = [[UINavigationController alloc] initWithRootViewController:intensityVC];
+        naviga.modalPresentationStyle = UIModalPresentationFormSheet;
+        if (self.actionType == kActionTypeAdd) {
+           [self presentViewController:naviga animated:YES completion:nil];
+        }else{
+           [self.preVc presentViewController:naviga animated:YES completion:nil];
+        }
+        
+    }else{
+    canEdit = YES;
+    }
     return canEdit;
+}
+
+-(void)viewController:(ChooseIntensityViewController *)chooseIntensityVC selectedIntensity:(NSString *)intensity
+{
+    self.pointintensityTextF.text = intensity;
 }
 
 /**
@@ -230,7 +258,7 @@
     NSString *pointperson = self.pointPersonTextF.text;
     NSString *pointintensity = self.pointintensityTextF.text;
     NSString *pointcontent = self.pointcontentTextV.text;
-    NSString *upload = @"0";
+    NSString *upload = kdidNotUpload;
 
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:hud];
@@ -284,18 +312,18 @@
         return;
     }
     
-    //NSString *pointid = self.pointinfo.pointid;
+    NSString *pointid = self.pointinfo.pointid;
     NSString *earthid = self.earthidTextF.text;
     NSString *pointlocation = self.pointlocationTextF.text;
     NSString *pointlon = self.pointlonTextF.text;
     NSString *pointlat = self.pointlatTextF.text;
     NSString *pointname = self.pointnameTextF.text;
-    //NSString *pointtime = self.pointtimeTextF.text;
+    NSString *pointtime = self.pointinfo.pointtime;
     NSString *pointgroup = self.pointgroupTextF.text;
     NSString *pointperson = self.pointPersonTextF.text;
     NSString *pointintensity = self.pointintensityTextF.text;
     NSString *pointcontent = self.pointcontentTextV.text;
-    //NSString *upload = self.pointinfo.upload;
+    NSString *upload = self.pointinfo.upload;
 
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
@@ -304,19 +332,19 @@
     [hud showAnimated:YES whileExecutingBlock:^{
         
         //创建字典对象并向表中插和数据
-        NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                              self.pointinfo.pointid,@"pointid",
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                              pointid,@"pointid",
                               earthid,@"earthid",
                               pointlocation,@"pointlocation",
                               pointlon, @"pointlon",
                               pointlat, @"pointlat",
                               pointname,@"pointname",
-                              self.pointinfo.pointtime,@"pointtime",
+                              pointtime,@"pointtime",
                               pointgroup,@"pointgroup",
                               pointperson,@"pointperson",
                               pointintensity,@"pointintensity",
                               pointcontent,@"pointcontent",
-                              self.pointinfo.upload,@"upload",
+                              upload,@"upload",
                               nil];
         
         BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:dict];
@@ -336,6 +364,81 @@
         [hud removeFromSuperview];
         //[hud release];
     }];
+}
+
+-(void)updateNetWorkPointInfo
+{
+    MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    NSString *pointid = self.pointinfo.pointid;
+    NSString *earthid = self.earthidTextF.text;
+    NSString *pointlocation = self.pointlocationTextF.text;
+    NSString *pointlon = self.pointlonTextF.text;
+    NSString *pointlat = self.pointlatTextF.text;
+    NSString *pointname = self.pointnameTextF.text;
+    NSString *pointtime = self.pointtimeTextF.text;
+    NSString *pointgroup = self.pointgroupTextF.text;
+    NSString *pointperson = self.pointPersonTextF.text;
+    
+    NSString * pointintensity0  = self.pointintensityTextF.text;
+    NSString * pointintensity  = [self switchRomeNumToNum:self.pointintensityTextF.text];
+    
+    NSString *pointcontent = self.pointcontentTextV.text;
+    NSString *upload = self.pointinfo.upload;
+
+    //创建字典对象作为上传参数
+    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                        pointid,@"pointid",
+                                        earthid,@"earthid",
+                                        pointlocation,@"location",
+                                        pointlon, @"lon",
+                                        pointlat, @"lat",
+                                        pointname,@"name",
+                                        //model.pointtime,@"pointtime",
+                                        pointgroup,@"group",
+                                        pointperson,@"person",
+                                        pointintensity,@"intensity",
+                                        pointcontent,@"content",
+                                        //upload,@"upload",
+                                        nil];
+    
+    //创建字典对象作为本地保存
+    NSMutableDictionary *parameters2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                        pointid,@"pointid",
+                                        earthid,@"earthid",
+                                        pointlocation,@"pointlocation",
+                                        pointlon, @"pointlon",
+                                        pointlat, @"pointlat",
+                                        pointname,@"pointname",
+                                        pointtime,@"pointtime",
+                                        pointgroup,@"pointgroup",
+                                        pointperson,@"pointperson",
+                                        pointintensity0,@"pointintensity",
+                                        pointcontent,@"pointcontent",
+                                        upload,@"upload",
+                                        nil];
+    
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:URL_updatepoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"数据上传成功: %@", responseObject);
+        //上传数据成功则更新本地数
+        BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:parameters2];
+        if (result) {
+            self.actionType = kActionTypeShow;
+        }
+        [mbprogress removeFromSuperview];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"数据上传失败:%@",error);
+        [mbprogress removeFromSuperview];
+    }];
+}
+
+-(NSString *)switchRomeNumToNum:(NSString *)romeNum
+{
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    NSUInteger num = [romes indexOfObject:romeNum];
+    return [NSString stringWithFormat:@"%d",(int)(num+1)];
 }
 
 /**

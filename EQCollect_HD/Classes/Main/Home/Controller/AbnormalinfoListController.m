@@ -132,6 +132,8 @@
 
     MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     AbnormalinfoModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+    
+    NSString * intensity  = [self switchRomeNumToNum:model.abnormalintensity];
     //获取要上传的图片
     NSArray *imgs = [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"ABNORMALINFOTAB" Releteid:model.abnormalid];
     
@@ -140,7 +142,7 @@
                           model.abnormalid,@"abnormalid",
                           //model.abnormaltime,@"abnormaltime",
                           model.informant,@"informant",
-                          @"123", @"abnormalintensity",
+                          intensity, @"abnormalintensity",
                           model.groundwater, @"groundwater",
                           model.abnormalhabit,@"abnormalhabit",
                           model.abnormalphenomenon,@"abnormalphenomenon",
@@ -156,7 +158,6 @@
         NSLog(@"数据上传成功: %@", responseObject);
         if (imgs.count > 0) {
             //信息上传成功后上传对应的图片
-            //NSDictionary *parameters2 = @{@"v": @"参数"};
             NSDictionary *parameters2 = @{@"id":model.abnormalid,@"from":@"abnormal"};
             [manager POST:URL_addimg parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                 //循环添加要上传的图片
@@ -168,9 +169,9 @@
             } success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"图片上传成功: %@", responseObject);
                 //上传数据成功则更新本地数据
-                BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.abnormalid];
+                BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.abnormalid];
                 if (result) {
-                    model.upload = @"1";
+                    model.upload = kdidUpload;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                     });
@@ -184,9 +185,9 @@
         }else{
             NSLog(@"不用上传图片");
             //上传数据成功则更新本地数据
-            BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.abnormalid];
+            BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.abnormalid];
             if (result) {
-                model.upload = @"1";
+                model.upload = kdidUpload;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                 });
@@ -228,6 +229,14 @@
 {
     [abnormalinfoVC dismissViewControllerAnimated:YES completion:nil];
     [self updateAbnormalinfo:nil];
+}
+
+
+-(NSString *)switchRomeNumToNum:(NSString *)romeNum
+{
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    NSUInteger num = [romes indexOfObject:romeNum];
+    return [NSString stringWithFormat:@"%d",(int)(num+1)];
 }
 
 -(void)updateAbnormalinfoSuccess:(AbnormalinfoViewController *)abnormalinfoVC

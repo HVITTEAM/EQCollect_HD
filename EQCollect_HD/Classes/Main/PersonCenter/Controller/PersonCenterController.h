@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HMCommonViewController.h"
 
 @interface PersonCenterController : HMCommonViewController
 

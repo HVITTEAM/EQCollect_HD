@@ -28,6 +28,7 @@
 #define FORTIFICATIONINTENSITY    @"fortificationintensity"
 #define DAMAGESITUATION  @"damagesituation"
 #define DAMAGEINDEX      @"damageindex"
+#define HOUSETYPE        @"housetype"
 
 #define POINTID          @"pointid"
 #define UPLOAD           @"upload"
@@ -63,8 +64,8 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
-                                     DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID,UPLOAD];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
+                                     DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,HOUSETYPE,POINTID,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             //NSLog(@"error when creating db table");
@@ -80,8 +81,8 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,DAMAGEID,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,POINTID,UPLOAD,dict[@"damageid"],dict[@"damagetime"], dict[@"damageaddress"],dict[@"damageintensity"], dict[@"zrcorxq"], dict[@"dworzh"],dict[@"fortificationintensity"], dict[@"damagesituation"], dict[@"damageindex"],dict[@"pointid"],dict[@"upload"]];
+                               @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@', '%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@', '%@')",
+                               TABLENAME,DAMAGEID,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,HOUSETYPE,POINTID,UPLOAD,dict[@"damageid"],dict[@"damagetime"], dict[@"damageaddress"],dict[@"damageintensity"], dict[@"zrcorxq"], dict[@"dworzh"],dict[@"fortificationintensity"], dict[@"damagesituation"], dict[@"damageindex"],dict[@"housetype"],dict[@"pointid"],dict[@"upload"]];
         BOOL res = [db executeUpdate:insertSql1];
         if (!res) {
            // NSLog(@"error when insert db table");
@@ -101,7 +102,7 @@
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,DAMAGEID,dict[@"damageid"],DAMAGETIME,dict[@"damagetime"],DAMAGEADDRESS,dict[@"damageaddress"],DAMAGEINTENSITY,dict[@"damageintensity"],ZRCORXQ,dict[@"zrcorxq"],DWORZH,dict[@"dworzh"],FORTIFICATIONINTENSITY,dict[@"fortificationintensity"],DAMAGESITUATION,dict[@"damagesituation"],DAMAGEINDEX,dict[@"damageindex"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],DAMAGEID,dict[@"damageid"]];
+                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,DAMAGEID,dict[@"damageid"],DAMAGETIME,dict[@"damagetime"],DAMAGEADDRESS,dict[@"damageaddress"],DAMAGEINTENSITY,dict[@"damageintensity"],ZRCORXQ,dict[@"zrcorxq"],DWORZH,dict[@"dworzh"],FORTIFICATIONINTENSITY,dict[@"fortificationintensity"],DAMAGESITUATION,dict[@"damagesituation"],DAMAGEINDEX,dict[@"damageindex"],HOUSETYPE,dict[@"housetype"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],DAMAGEID,dict[@"damageid"]];
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
             //NSLog(@"error when update db table");
@@ -175,6 +176,7 @@
             NSString * fortificationintensity = [rs stringForColumn:FORTIFICATIONINTENSITY];
             NSString * damagesituation = [rs stringForColumn:DAMAGESITUATION];
             NSString * damageindex = [rs stringForColumn:DAMAGEINDEX];
+            NSString * houseType = [rs stringForColumn:HOUSETYPE];
             NSString * pointid = [rs stringForColumn:POINTID];
             NSString * upload = [rs stringForColumn:UPLOAD];
             
@@ -188,6 +190,7 @@
             [dict setObject:fortificationintensity forKey:@"fortificationintensity"];
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
+            [dict setObject:houseType forKey:@"housetype"];
             [dict setObject:pointid forKey:@"pointid"];
             [dict setObject:upload forKey:@"upload"];
     
@@ -217,6 +220,7 @@
             NSString * fortificationintensity = [rs stringForColumn:FORTIFICATIONINTENSITY];
             NSString * damagesituation = [rs stringForColumn:DAMAGESITUATION];
             NSString * damageindex = [rs stringForColumn:DAMAGEINDEX];
+            NSString * houseType = [rs stringForColumn:HOUSETYPE];
             NSString * pointid = [rs stringForColumn:POINTID];
             NSString * upload = [rs stringForColumn:UPLOAD];
             
@@ -230,6 +234,7 @@
             [dict setObject:fortificationintensity forKey:@"fortificationintensity"];
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
+            [dict setObject:houseType forKey:@"housetype"];
             [dict setObject:pointid forKey:@"pointid"];
             [dict setObject:upload forKey:@"upload"];
             

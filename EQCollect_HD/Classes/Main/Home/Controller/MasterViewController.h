@@ -5,9 +5,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SettingViewController.h"
-#import "PersonCenterController.h"
 
 @interface MasterViewController : UITableViewController
-//@property (nonatomic, retain) UINavigationController *nav;
+
 @end

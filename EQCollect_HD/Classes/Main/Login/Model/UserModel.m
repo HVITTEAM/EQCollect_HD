@@ -26,7 +26,10 @@
     [aCoder encodeObject:_jobname forKey:@"_jobname"];
     [aCoder encodeObject:_groupname forKey:@"_groupname"];
     
+    
     [aCoder encodeObject:_userid forKey:@"_userid"];  //by swy
+    [aCoder encodeObject:_pointgroup forKey:@"_pointgroup"];  //by swy
+    [aCoder encodeObject:_pointperson forKey:@"_pointperson"];  //by swy
 }
 
 //解码
@@ -49,6 +52,8 @@
         _groupname = [aDecoder decodeObjectForKey:@"_groupname"];
         
         _userid = [aDecoder decodeObjectForKey:@"_userid"];   //by swy
+        _pointgroup = [aDecoder decodeObjectForKey:@"_pointgroup"];   //by swy
+        _pointperson = [aDecoder decodeObjectForKey:@"_pointperson"];   //by swy
     }
     return self;
 }
@@ -72,6 +77,8 @@
     vo.groupname = [self.groupname copyWithZone:zone];
     
     vo.userid = [self.userid copyWithZone:zone];    //by swy
+    vo.pointgroup = [self.pointgroup copyWithZone:zone];    //by swy
+    vo.pointperson = [self.pointperson copyWithZone:zone];    //by swy
     
     return vo;
 }

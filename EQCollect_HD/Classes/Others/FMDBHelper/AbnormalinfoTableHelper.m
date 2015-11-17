@@ -96,7 +96,7 @@
     return result;
 }
 
--(BOOL) updateDataWith:(NSDictionary *)dict
+-(BOOL) updateDataWith:(NSMutableDictionary *)dict
 {
     BOOL result = NO;
     if ([db open])

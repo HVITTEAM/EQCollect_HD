@@ -8,5 +8,4 @@
 
 @interface DetailViewController : UITableViewController 
 
-
 @end

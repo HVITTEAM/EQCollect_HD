@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "LocationHelper.h"
 #import "ArchiverCacheHelper.h"
+#import "EarthInfo.h"
 
 @interface AppDelegate ()
 {
@@ -30,6 +31,8 @@
     [self.window makeKeyAndVisible];
     //开启定位
     [self setupLocationManager];
+    //获取 earthid
+    [self getEarthid];
     
     if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
     {
@@ -77,7 +80,7 @@
         _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         //ios8以上要授权
         if (IOS_VERSION >=8.0) {
-            [_locationManager requestWhenInUseAuthorization];//使用中授权
+            //[_locationManager requestWhenInUseAuthorization];//使用中授权
             [_locationManager requestAlwaysAuthorization];
         }
         [_locationManager startUpdatingLocation];
@@ -101,11 +104,27 @@
 -(void)addTimer{
     _locationHelp = [[LocationHelper alloc] init];
     _timer = [NSTimer scheduledTimerWithTimeInterval:300 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
+    [_timer fire];
     //[[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)removeTimer{
     [_timer invalidate];
+}
+
+-(void)getEarthid
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+         NSLog(@"获取 earthid 成功");
+        
+        NSLog(@"%@",responseObject);
+        
+        self.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"获取 earthid 失败");
+    }];
 }
 
 @end

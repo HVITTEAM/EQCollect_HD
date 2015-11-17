@@ -8,6 +8,7 @@
 #import "SurveyPointDetailViewController.h"
 #import "PointinfoViewController.h"
 #import "SurveyPointCell.h"
+#import "MessageViewController.h"
 
 @interface DetailViewController ()<UISplitViewControllerDelegate,UISearchBarDelegate,InfoCellDelegate,PointinfoDelegate>
 @property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
@@ -29,7 +30,7 @@
 -(void)initNavgation
 {
     //设置导航栏颜色
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:102/255.0 green:147/255.0 blue:255/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = HMColor(102, 147, 255);
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
@@ -47,11 +48,11 @@
     searchBar.delegate = self;
     // 添加 searchbar 到 headerview
     self.tableView.tableHeaderView = searchBar;
+
+    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reflesh)];
+    [self.tableView.header beginRefreshing];
     
     self.tableView.backgroundColor = HMGlobalBg;
-    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reflesh)];
-    
-    [self.tableView.header beginRefreshing];
     
     self.tableView.tableFooterView = [[UITableView alloc] init];
 }
@@ -85,32 +86,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellId = @"cell";
+    static NSString *cellId = @"surveyPointCell";
     SurveyPointCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (cell == nil) {
-        NSArray *nibs = [[NSBundle mainBundle]loadNibNamed:@"SurveyPointCell" owner:nil options:nil];
-        cell = [nibs lastObject];
+    if (!cell) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:@"SurveyPointCell" owner:nil options:nil] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     //根据indexPath获取cell的数据
     PointModel * pointInfo = [self.filtedData objectAtIndex:indexPath.row];
-    //设置cell的属性
-    cell.pointTitleText.text =[NSString stringWithFormat:@"名称:%@",pointInfo.pointname];
-    cell.pointIdText.text = [NSString stringWithFormat:@"编号:%@",pointInfo.pointid];
-    cell.pointTimeText.text = pointInfo.pointtime;
-    cell.pointAddressText.text = [NSString stringWithFormat:@"调查地址:%@",pointInfo.pointlocation];
-        
-    //上传按钮处于选中状态，表示已经上传
-    if ([pointInfo.upload isEqualToString:@"1"]) {
-        cell.uploadBtn.selected = YES;
-        [cell.uploadBtn setTitle:@"已上传" forState:UIControlStateNormal];
-        [cell.uploadBtn setBackgroundColor:HMColor(0, 160, 70)];
-    }else{
-        cell.uploadBtn.selected = NO;
-        [cell.uploadBtn setTitle:@"上传" forState:UIControlStateNormal];
-        [cell.uploadBtn setBackgroundColor:HMColor(102, 147, 255)];
-    }
-    
+    cell.model = pointInfo;
     cell.indexPath = indexPath;
     cell.delegate = self;
 
@@ -230,79 +214,17 @@
 //}
 
 
-//
-////上传数据
-//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    
-//    //创建字典对象作为上传参数
-//    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-//                                 model.pointid,@"pointid",
-//                                 //model.earthid,@"earthid",
-//                                 model.pointlocation,@"location",
-//                                 model.pointlon, @"lon",
-//                                 model.pointlat, @"lat",
-//                                 model.pointname,@"name",
-//                                 //model.pointtime,@"pointtime",
-//                                 model.pointgroup,@"group",
-//                                 model.pointperson,@"person",
-//                                 model.pointintensity,@"intensity",
-//                                 model.pointcontent,@"content",
-//                                 //upload,@"upload",
-//                                 nil];
-//    
-//    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//       parameters1[@"earthid"] = @"123";
-//      [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            NSLog(@"数据上传成功: %@", responseObject);
-//            //上传数据成功则更新本地数据
-//            BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
-//            if (result) {
-//                model.upload = @"1";
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//                });
-//            }
-//            [mbprogress removeFromSuperview];
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            NSLog(@"数据上传失败:");
-//            [mbprogress removeFromSuperview];
-//        }];
-//
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            NSLog(@"数据上传成功: %@", responseObject);
-//            //上传数据成功则更新本地数据
-//            BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
-//            if (result) {
-//                model.upload = @"1";
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//                });
-//            }
-//            [mbprogress removeFromSuperview];
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            NSLog(@"数据上传失败:");
-//            [mbprogress removeFromSuperview];
-//        }];
-//
-//    }];
-//}
-
-
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
     MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+    
+     NSString * intensity  = [self switchRomeNumToNum:model.pointintensity];
         //创建字典对象作为上传参数
-        NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+     NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                      model.pointid,@"pointid",
-                                     //model.earthid,@"earthid",
+                                     model.earthid,@"earthid",
                                      model.pointlocation,@"location",
                                      model.pointlon, @"lon",
                                      model.pointlat, @"lat",
@@ -310,7 +232,7 @@
                                      //model.pointtime,@"pointtime",
                                      model.pointgroup,@"group",
                                      model.pointperson,@"person",
-                                     model.pointintensity,@"intensity",
+                                     intensity,@"intensity",
                                      model.pointcontent,@"content",
                                      //upload,@"upload",
                                      nil];
@@ -319,9 +241,9 @@
     [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"数据上传成功: %@", responseObject);
         //上传数据成功则更新本地数据
-        BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
+        BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.pointid];
         if (result) {
-            model.upload = @"1";
+            model.upload = kdidUpload;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
             });
@@ -335,6 +257,16 @@
     
 }
 
+//提示
+-(void)infocell:(InfoCell *)cell didClickMessageBtnAtIndexPath:(NSIndexPath *)indexPath
+{
+    PointModel *mode = self.dataProvider[indexPath.row];
+    MessageViewController *meageVC = [[MessageViewController alloc] init];
+    meageVC.pointModel = mode;
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:meageVC];
+    navi.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navi animated:YES completion:nil];
+}
 
 #pragma mark 集成刷新控件
 /**
@@ -373,6 +305,14 @@
 -(void)updatePointinfoSuccess:(PointinfoViewController *)pointinfoVC
 {
     [self updatePointinfo:nil];
+}
+
+
+-(NSString *)switchRomeNumToNum:(NSString *)romeNum
+{
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    NSUInteger num = [romes indexOfObject:romeNum];
+    return [NSString stringWithFormat:@"%d",(int)(num+1)];
 }
 
 -(void)dealloc

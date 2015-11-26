@@ -125,17 +125,22 @@
         [CommonRemoteHelper RemoteWithUrl:URL_Login parameters: @{@"loginname" : account,
                                                                   @"pwd" : passwd,@"from":@"app"}
                                      type:CommonRemoteTypePost success:^(NSDictionary *dict, id responseObject) {
+                                        Boolean loginResult = [dict[@"success"] boolValue];
+                                        NSLog(@"login-----dict%@      responseobject%@",dict,responseObject);
+                                         if (loginResult) {
+                                             UserModel *usermd = [UserModel objectWithKeyValues:dict];
+                                             [ArchiverCacheHelper saveObjectToLoacl:usermd key:User_Archiver_Key filePath:User_Archiver_Path];
+                                             [HUD removeFromSuperview];
+                                             [HMControllerTool setRootViewController];
+                                         }else{
+                                             [HUD removeFromSuperview];
+                                              [NoticeHelper AlertShow:@"登陆失败！请重试！" view:self.view];
+                                         }
                                          
-     
-                                         UserModel *usermd = [UserModel objectWithKeyValues:dict];
-                                         [ArchiverCacheHelper saveObjectToLoacl:usermd key:User_Archiver_Key filePath:User_Archiver_Path];
-                                         [HUD removeFromSuperview];
-                                         [HMControllerTool setRootViewController];
-                                              
                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                          NSLog(@"发生错误");
                                          [HUD removeFromSuperview];
-                                         [NoticeHelper AlertShow:@"登陆失败！请重试！" view:self.view];
+                                         [NoticeHelper AlertShow:@"网络联接异常" view:self.view];
                                      }];
     }
     else
@@ -143,7 +148,7 @@
         UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alertV show];
     }
-   //[HMControllerTool setRootViewController];
+  // [HMControllerTool setRootViewController];
 }
 
 -(void)dealloc

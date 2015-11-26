@@ -355,6 +355,7 @@
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.view endEditing:YES];
+                
                 if ([self.delegate respondsToSelector:@selector(updatePointinfoSuccess:)]) {
                     [self.delegate updatePointinfoSuccess:self];
                 }

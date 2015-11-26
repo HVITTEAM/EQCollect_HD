@@ -237,6 +237,8 @@
                                      //upload,@"upload",
                                      nil];
     
+    
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"数据上传成功: %@", responseObject);

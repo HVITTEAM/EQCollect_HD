@@ -163,6 +163,8 @@
 #define URL_updatepoint          @"http://61.164.34.9:3000/updatepoint"
 #define URL_updatedamage         @"http://61.164.34.9:3000/updatedamage"
 #define updateabnormal           @"http://61.164.34.9:3000/updateabnormal"
+#define URL_addmsg               @"http://61.164.34.9:3000/addmsg"
+//(ANY "/addmsg" [msgtel msgcontent pointid]
 
 #define URL_Registerfamily(telnum, pwd)  [NSString stringWithFormat:@"%@registerfamily?rtelnum=%@&rpwd=%@",URL_IP,telnum,pwd];
 

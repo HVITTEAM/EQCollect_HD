@@ -10,6 +10,7 @@
 #import "LocationHelper.h"
 #import "ArchiverCacheHelper.h"
 #import "EarthInfo.h"
+#import <MAMapKit/MAMapKit.h>
 
 @interface AppDelegate ()
 {
@@ -33,6 +34,8 @@
     [self setupLocationManager];
     //获取 earthid
     [self getEarthid];
+    
+    [MAMapServices sharedServices].apiKey = @"4e4a9f0b5e8b6511cfdb23e7fc29b421";
     
     if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
     {

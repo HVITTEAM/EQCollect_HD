@@ -62,8 +62,27 @@
                                                                                   }];
     
     if (!self.messageData) {//说明要新增加一条提示
-        dict[@"messageId"] = [NSString stringWithFormat:@"%u",arc4random()];
-        [[MessageTableHelper sharedInstance] insertDataWith:dict];
+        
+        MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
+        //创建字典对象作为上传参数
+        NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                            self.phoneNumTextField,@"msgtel",
+                                            self.contentTextView.text,@"msgcontent",
+                                            self.pointModel.pointid,@"pointid",
+                                            nil];
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager POST:URL_addmsg parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"数据上传成功: %@", responseObject);
+            //上传数据成功则更新本地数据
+            dict[@"messageId"] = [NSString stringWithFormat:@"%u",arc4random()];
+            [[MessageTableHelper sharedInstance] insertDataWith:dict];
+            [mbprogress removeFromSuperview];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"数据上传失败:");
+            [mbprogress removeFromSuperview];
+        }];
     }else{//提示已存在，所以是更新提示
         dict[@"messageId"] = self.messageData.messageId;
         [[MessageTableHelper sharedInstance] updateDataWith:dict];

@@ -10,13 +10,20 @@
 #import "LocationHelper.h"
 #import "ArchiverCacheHelper.h"
 #import "EarthInfo.h"
-#import <MAMapKit/MAMapKit.h>
+#import "iflyMSC/IFlySpeechSynthesizer.h"
+#import "iflyMSC/IFlySpeechSynthesizerDelegate.h"
+#import "iflyMSC/IFlySpeechConstant.h"
+#import "iflyMSC/IFlySpeechUtility.h"
+#import "iflyMSC/IFlySetting.h"
+#import <AMapNaviKit/AMapNaviKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
 
 @interface AppDelegate ()
 {
     CLLocationManager *_locationManager;
     NSTimer *_timer;
     LocationHelper *_locationHelp;
+    BOOL _isFirst;
 }
 -(void)setupLocationManager;
 @end
@@ -30,12 +37,19 @@
     
     // 2.显示窗口(成为主窗口)
     [self.window makeKeyAndVisible];
+    
+    _isFirst = YES;
     //开启定位
     [self setupLocationManager];
     //获取 earthid
     [self getEarthid];
     
     [MAMapServices sharedServices].apiKey = @"4e4a9f0b5e8b6511cfdb23e7fc29b421";
+    [AMapNaviServices sharedServices].apiKey = @"4e4a9f0b5e8b6511cfdb23e7fc29b421";
+    [AMapSearchServices sharedServices].apiKey = @"4e4a9f0b5e8b6511cfdb23e7fc29b421";
+    //导航语音
+    [self configIFlySpeech];
+
     
     if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
     {
@@ -47,6 +61,7 @@
         NSLog(@"新登录用户");
         [HMControllerTool setLoginViewController];
     }
+    
     return YES;
 }
 
@@ -71,6 +86,27 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
    [self removeTimer];
+}
+
+- (void)configIFlySpeech
+{
+    [IFlySpeechUtility createUtility:[NSString stringWithFormat:@"appid=%@,timeout=%@",@"5565399b",@"20000"]];
+    
+    [IFlySetting setLogFile:LVL_NONE];
+    [IFlySetting showLogcat:NO];
+    
+    // 设置语音合成的参数
+    [[IFlySpeechSynthesizer sharedInstance] setParameter:@"50" forKey:[IFlySpeechConstant SPEED]];//合成的语速,取值范围 0~100
+    [[IFlySpeechSynthesizer sharedInstance] setParameter:@"50" forKey:[IFlySpeechConstant VOLUME]];//合成的音量;取值范围 0~100
+    
+    // 发音人,默认为”xiaoyan”;可以设置的参数列表可参考个 性化发音人列表;
+    [[IFlySpeechSynthesizer sharedInstance] setParameter:@"xiaoyan" forKey:[IFlySpeechConstant VOICE_NAME]];
+    
+    // 音频采样率,目前支持的采样率有 16000 和 8000;
+    [[IFlySpeechSynthesizer sharedInstance] setParameter:@"8000" forKey:[IFlySpeechConstant SAMPLE_RATE]];
+    
+    // 当你再不需要保存音频时，请在必要的地方加上这行。
+    [[IFlySpeechSynthesizer sharedInstance] setParameter:nil forKey:[IFlySpeechConstant TTS_AUDIO_PATH]];
 }
 
 
@@ -98,6 +134,13 @@
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     NSLog(@"定位成功");
     self.currentLocation = [locations lastObject];
+    if (_isFirst) {
+        _isFirst = NO;
+        //开启定时发送位置信息功能
+        AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        [appdl addTimer];
+        [_timer fire];
+    }
 }
 
 -(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
@@ -106,7 +149,7 @@
 
 -(void)addTimer{
     _locationHelp = [[LocationHelper alloc] init];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:300 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
     [_timer fire];
     //[[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }

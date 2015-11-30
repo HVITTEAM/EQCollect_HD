@@ -96,4 +96,32 @@
     return self.frame.size;
 }
 
+
+
+///////
+- (CGFloat)left
+{
+    return self.frame.origin.x;
+}
+
+- (CGFloat)top
+{
+    return self.frame.origin.y;
+}
+
+- (void)setLeft:(CGFloat)x
+{
+    CGRect oldFrame = self.frame;
+    CGRect newFrame = CGRectMake(x, oldFrame.origin.y, oldFrame.size.width, oldFrame.size.height);
+    self.frame = newFrame;
+}
+
+- (void)setTop:(CGFloat)y
+{
+    CGRect oldFrame = self.frame;
+    CGRect newFrame = CGRectMake(oldFrame.origin.x, y, oldFrame.size.width, oldFrame.size.height);
+    self.frame = newFrame;
+}
+
+
 @end

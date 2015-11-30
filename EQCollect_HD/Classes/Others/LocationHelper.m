@@ -7,6 +7,9 @@
 //
 
 #import "LocationHelper.h"
+#import <AMapNaviKit/AMapNaviKit.h>
+#import <AMapNaviKit/MAGeometry.h>
+#import "TrackTableHelper.h"
 
 @implementation LocationHelper
 
@@ -49,9 +52,23 @@
 
 -(void)uploadUserinfo
 {
+    
     AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSString *lon = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.longitude];
     NSString *lat = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.latitude];
+ 
+    //将数据保存到本地数据库中用作轨迹
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyyMMddHHmmss"];
+    NSDate *date = [NSDate date];
+    NSString *datestr = [formatter stringFromDate:date];
+    NSDictionary *trackDict = @{
+                                @"time":datestr,
+                                @"lon":lon,
+                                @"lat":lat
+                                };
+    [[TrackTableHelper sharedInstance] insertDataWith:trackDict];
+    
     
     UserModel *userinfo = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
     NSMutableDictionary *parameters1 =[[NSMutableDictionary alloc] initWithObjectsAndKeys:userinfo.userid,@"userid",nil];

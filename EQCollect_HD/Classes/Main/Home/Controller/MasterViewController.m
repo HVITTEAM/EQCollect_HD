@@ -9,7 +9,8 @@
 #import "PersonCenterController.h"
 #import "AdminTableHead.h"
 #import "LocationHelper.h"
-#import "EQMapViewController.h"
+//#import "EQMapViewController.h"
+#import "NavigationViewController.h"
 
 @interface MasterViewController ()
 
@@ -34,9 +35,6 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    //开启定时发送位置信息功能
-    AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appdl addTimer];
 }
 
 #pragma mark - Table view data source
@@ -47,7 +45,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -73,10 +71,15 @@
         cell.textLabel.text = @"系统设置";
         cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }else{
-        cell.textLabel.text = @"地图";
+    }else if(indexPath.section ==3){
+        cell.textLabel.text = @"地图导航";
         cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        
+//        cell.textLabel.text = @"地图";
+//        cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     }
     return cell;
@@ -100,11 +103,17 @@
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
     }else if (indexPath.section == 3){
-        EQMapViewController *mapVC = [[EQMapViewController alloc] init];
-        UIWindow *win =[UIApplication sharedApplication].keyWindow;
-        NSArray *VCs = ((UISplitViewController *)win.rootViewController).viewControllers;
-        UINavigationController *detailNavi = VCs[1];
-        [detailNavi pushViewController:mapVC animated:YES];
+        NavigationViewController *VC = [[NavigationViewController alloc] init];
+        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:VC];
+        navi.modalTransitionStyle = UIModalPresentationFullScreen;
+        [self presentViewController:navi animated:YES completion:nil];
+        
+    }else{
+//        EQMapViewController *mapVC = [[EQMapViewController alloc] init];
+//        UIWindow *win =[UIApplication sharedApplication].keyWindow;
+//        NSArray *VCs = ((UISplitViewController *)win.rootViewController).viewControllers;
+//        UINavigationController *detailNavi = VCs[1];
+//        [detailNavi pushViewController:mapVC animated:YES];
     }
 }
 

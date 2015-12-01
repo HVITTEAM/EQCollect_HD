@@ -15,12 +15,11 @@
 #import "iflyMSC/IFlySpeechConstant.h"
 #import "iflyMSC/IFlySpeechUtility.h"
 #import "iflyMSC/IFlySetting.h"
-#import <AMapNaviKit/AMapNaviKit.h>
-#import <AMapSearchKit/AMapSearchKit.h>
 
+#define APIKey @"4e4a9f0b5e8b6511cfdb23e7fc29b421"
 @interface AppDelegate ()
 {
-    CLLocationManager *_locationManager;
+    AMapLocationManager *_locationManager;
     NSTimer *_timer;
     LocationHelper *_locationHelp;
     BOOL _isFirst;
@@ -38,19 +37,22 @@
     // 2.显示窗口(成为主窗口)
     [self.window makeKeyAndVisible];
     
+    [MAMapServices sharedServices].apiKey = APIKey;
+    [AMapNaviServices sharedServices].apiKey = APIKey;
+    [AMapSearchServices sharedServices].apiKey = APIKey;
+    [AMapLocationServices sharedServices].apiKey = APIKey;
+    
     _isFirst = YES;
+    
     //开启定位
     [self setupLocationManager];
+    
     //获取 earthid
     [self getEarthid];
     
-    [MAMapServices sharedServices].apiKey = @"4e4a9f0b5e8b6511cfdb23e7fc29b421";
-    [AMapNaviServices sharedServices].apiKey = @"4e4a9f0b5e8b6511cfdb23e7fc29b421";
-    [AMapSearchServices sharedServices].apiKey = @"4e4a9f0b5e8b6511cfdb23e7fc29b421";
     //导航语音
     [self configIFlySpeech];
 
-    
     if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
     {
         NSLog(@"已经存在用户");
@@ -111,47 +113,44 @@
 
 
 -(void)setupLocationManager{
-    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager = [[AMapLocationManager alloc] init];
     if ([CLLocationManager locationServicesEnabled]) {
-        NSLog(@"开始定位");
         _locationManager.delegate = self;
         _locationManager.distanceFilter = 200.0;
         _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        //ios8以上要授权
-        if (IOS_VERSION >=8.0) {
-            //[_locationManager requestWhenInUseAuthorization];//使用中授权
-            [_locationManager requestAlwaysAuthorization];
-        }
+            
+        [_locationManager setPausesLocationUpdatesAutomatically:NO];
+        [_locationManager setAllowsBackgroundLocationUpdates:YES];
+        
         [_locationManager startUpdatingLocation];
     }else{
         //失败
-        [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"定位失败，请确定是否开启定位功能" delegate:nil
-                          cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
+        [self showAlertViewWithTitle:@"提醒" message:@"定位失败，请确定是否开启定位功能"];
     }
 }
 
-#pragma mark - CLLocationManagerDelegate
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
-    NSLog(@"定位成功");
-    self.currentLocation = [locations lastObject];
+#pragma mark - MALocationManager Delegate
+
+- (void)amapLocationManager:(AMapLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"定位失败");
+}
+
+- (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location
+{
+    NSLog(@"定位成功%f    %f",location.coordinate.latitude,location.coordinate.longitude);
+    self.currentLocation = location;
     if (_isFirst) {
         _isFirst = NO;
         //开启定时发送位置信息功能
-        AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appdl addTimer];
-        [_timer fire];
+        [self addTimer];
     }
-}
-
--(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
-    NSLog(@"定位失败");
 }
 
 -(void)addTimer{
     _locationHelp = [[LocationHelper alloc] init];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:300 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
     [_timer fire];
-    //[[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)removeTimer{
@@ -162,15 +161,29 @@
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         NSLog(@"获取 earthid 成功");
-        
-        NSLog(@"%@",responseObject);
-        
-        self.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
-        
+        NSLog(@"获取 earthid   %@",responseObject);
+        NSArray *responseArray = (NSArray *)responseObject;
+        if (!responseArray || responseArray.count == 0) {
+            [self showAlertViewWithTitle:nil message:@"获取地震编号失败,请确定本次预案已启动。可在个人中里重新获取"];
+        }else{
+            Boolean result = [responseArray[0][@"success"] boolValue];
+            if (result) {
+                NSLog(@"获取 earthid 成功");
+                //成功
+                self.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
+            }else{
+                [self showAlertViewWithTitle:nil message:@"获取地震编号失败,请确定本次预案已启动。可在个人中里重新获取"];
+            }
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"获取 earthid 失败");
+        [self showAlertViewWithTitle:nil message:@"无法连接服务器,获取地震编号失败。可在个人中里重新获取"];
     }];
+}
+
+-(void)showAlertViewWithTitle:(NSString *)title message:(NSString *)msg
+{
+    [[[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
 }
 
 @end

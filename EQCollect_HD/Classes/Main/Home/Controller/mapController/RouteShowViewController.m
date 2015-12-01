@@ -37,7 +37,7 @@
     }
     return self;
 }
-
+#pragma mark ------ 生命周期方法 -----
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -56,7 +56,26 @@
     [self configBottomPanel];
 }
 
-#pragma mark - Utils
+#pragma mark ------ getter、setter及初始化方法  -----
+
+- (void)initBaseNavigationBar
+{
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回"
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(returnAction)];
+    self.navigationItem.title = self.title;
+}
+
+- (void)configMapView
+{
+    [self.mapView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - kBottomPaneHeight)];
+    [self.view insertSubview:self.mapView atIndex:0];
+    
+    [self.mapView setShowsUserLocation:NO];
+    [self.mapView addAnnotations:_annotations];
+    [self showRouteWithNaviRoute:_actNaviManager.naviRoute];
+}
 
 - (void)configBottomPanel
 {
@@ -78,21 +97,37 @@
     UIButton *routeBtn = [self createToolButton];
     [routeBtn setTitle:@"开始导航" forState:UIControlStateNormal];
     [routeBtn addTarget:self action:@selector(gpsNavi:) forControlEvents:UIControlEventTouchUpInside];
-    //routeBtn.center = CGPointMake(260, kBottomPaneHeight / 2.0);
     routeBtn.center = CGPointMake(_bottomPanel.width - 70, kBottomPaneHeight / 2.0);
     [_bottomPanel addSubview:routeBtn];
     
     [self.view addSubview:_bottomPanel];
 }
 
-- (void)configMapView
+#pragma mark --------- 事件方法 --------
+
+- (void)gpsNavi:(id)sender
 {
-    [self.mapView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - kBottomPaneHeight)];
-    [self.view insertSubview:self.mapView atIndex:0];
+    [self.actNaviManager presentNaviViewController:self.naviViewController animated:YES];
+}
+
+- (void)returnAction
+{
+    [self clearMapView];
+}
+
+#pragma mark ----------- 内部方法  ---------
+
+#pragma mark - Utility
+
+- (void)clearMapView
+{
+    self.mapView.showsUserLocation = NO;
     
-    [self.mapView setShowsUserLocation:NO];
-    [self.mapView addAnnotations:_annotations];
-    [self showRouteWithNaviRoute:_actNaviManager.naviRoute];
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    
+    [self.mapView removeOverlays:self.mapView.overlays];
+    
+    self.mapView.delegate = nil;
 }
 
 - (void)showRouteWithNaviRoute:(AMapNaviRoute *)naviRoute
@@ -105,7 +140,9 @@
     [self.mapView removeOverlays:self.mapView.overlays];
     
     NSUInteger coordianteCount = [naviRoute.routeCoordinates count];
+    
     NSLog(@"RouteShowViewController路径上的点-----%d",coordianteCount);
+    
     CLLocationCoordinate2D coordinates[coordianteCount];
     for (int i = 0; i < coordianteCount; i++)
     {
@@ -118,14 +155,7 @@
     [self.mapView setVisibleMapRect:[polyline boundingMapRect] animated:NO];
 }
 
-#pragma mark - GPS navi
-
-- (void)gpsNavi:(id)sender
-{
-    [self.actNaviManager presentNaviViewController:self.naviViewController animated:YES];
-}
-
-#pragma mark - Utils
+#pragma mark - 工具方法
 
 - (UILabel *)createTitleLabel:(NSString *)title
 {
@@ -152,39 +182,6 @@
     toolBtn.titleLabel.font = [UIFont systemFontOfSize: 13.0];
     
     return toolBtn;
-}
-
-#pragma mark - Utility
-
-- (void)clearMapView
-{
-    self.mapView.showsUserLocation = NO;
-    
-    [self.mapView removeAnnotations:self.mapView.annotations];
-    
-    [self.mapView removeOverlays:self.mapView.overlays];
-    
-    self.mapView.delegate = nil;
-}
-
-#pragma mark - Handle Action
-
-- (void)returnAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
-    
-    [self clearMapView];
-}
-
-#pragma mark - Initialization
-
-- (void)initBaseNavigationBar
-{
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回"
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(returnAction)];
-    self.navigationItem.title = self.title;
 }
 
 @end

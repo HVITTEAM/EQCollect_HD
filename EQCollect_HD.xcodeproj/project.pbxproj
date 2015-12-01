@@ -163,6 +163,7 @@
 		D29472891BF7062700CDA506 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D29472881BF7062700CDA506 /* MessageModel.m */; };
 		D294728D1BF70E1C00CDA506 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D294728B1BF70E1C00CDA506 /* MessageViewController.m */; };
 		D294728E1BF70E1C00CDA506 /* MessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D294728C1BF70E1C00CDA506 /* MessageViewController.xib */; };
+		D2953F7B1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2953F7A1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m */; };
 		D2C189651BA94D0F00312EBA /* PictureInfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */; };
 		D2C189681BA9510100312EBA /* PictureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189671BA9510100312EBA /* PictureMode.m */; };
 		D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */; };
@@ -540,6 +541,8 @@
 		D294728A1BF70E1C00CDA506 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		D294728B1BF70E1C00CDA506 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		D294728C1BF70E1C00CDA506 /* MessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageViewController.xib; sourceTree = "<group>"; };
+		D2953F791C0D3E8E006C3CF3 /* SWYMapTypeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWYMapTypeSelectView.h; sourceTree = "<group>"; };
+		D2953F7A1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWYMapTypeSelectView.m; sourceTree = "<group>"; };
 		D2C189631BA94D0F00312EBA /* PictureInfoTableHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureInfoTableHelper.h; sourceTree = "<group>"; };
 		D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureInfoTableHelper.m; sourceTree = "<group>"; };
 		D2C189661BA9510100312EBA /* PictureMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureMode.h; sourceTree = "<group>"; };
@@ -1295,6 +1298,8 @@
 		D228EFB61C0809A60029C058 /* mapViews */ = {
 			isa = PBXGroup;
 			children = (
+				D2953F791C0D3E8E006C3CF3 /* SWYMapTypeSelectView.h */,
+				D2953F7A1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m */,
 				D228EFD31C080A8C0029C058 /* MoreMenuView.h */,
 				D228EFD41C080A8C0029C058 /* MoreMenuView.m */,
 				D228EFD51C080A8C0029C058 /* SharedMapView.h */,
@@ -1711,6 +1716,7 @@
 				D2DDCDE61BB92B1000A14147 /* UzysAssetsPickerController.m in Sources */,
 				D2FC4E9F1BDBC7FB0072281A /* FeedbackViewController.m in Sources */,
 				D2F175501BC9097F00655EDD /* SDWebImageCompat.m in Sources */,
+				D2953F7B1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m in Sources */,
 				01E81AED1BA2A557008FE6EC /* UserModel.m in Sources */,
 				01E354631B9D5F5700014114 /* NSObject+MJKeyValue.m in Sources */,
 				D2F4D8421C0BEE71000E47CE /* TrackModel.m in Sources */,

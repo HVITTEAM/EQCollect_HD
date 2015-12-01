@@ -675,7 +675,6 @@ NSString const *DownloadStageInfoKey2      = @"DownloadStageInfoKey";
         
         self.needReloadWhenDisappear = NO;
     }
-    self.navigationController.toolbar.hidden = YES;
 }
 
 @end

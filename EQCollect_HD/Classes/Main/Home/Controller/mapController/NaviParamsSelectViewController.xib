@@ -19,7 +19,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="SSJ-xr-z0N">
-                    <rect key="frame" x="259.5" y="5" width="81" height="29"/>
+                    <rect key="frame" x="259" y="5" width="81" height="29"/>
                     <animations/>
                     <segments>
                         <segment title="驾车"/>
@@ -29,14 +29,8 @@
                         <action selector="getTravelType:" destination="-1" eventType="valueChanged" id="3rZ-bc-Zo3"/>
                     </connections>
                 </segmentedControl>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="当前位置" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jvm-fC-dcs">
-                    <rect key="frame" x="50" y="38" width="530" height="30"/>
-                    <animations/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mor-Y9-cyL">
-                    <rect key="frame" x="50" y="78" width="530" height="30"/>
+                    <rect key="frame" x="20" y="78" width="560" height="30"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
@@ -49,7 +43,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GbI-1h-1vf">
                     <rect key="frame" x="0.0" y="146" width="600" height="1"/>
                     <animations/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="jas-5N-P74"/>
                     </constraints>
@@ -64,17 +58,23 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YmP-DO-9sD">
-                    <rect key="frame" x="60" y="113" width="104" height="28"/>
+                    <rect key="frame" x="30" y="113" width="104" height="28"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <state key="normal" title="取消使用当前位置">
+                    <state key="normal" title="起点使用当前位置">
                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
-                    <state key="selected" title="起点使用当前位置"/>
+                    <state key="selected" title="取消使用当前位置"/>
                     <connections>
                         <action selector="currentLocationBtnClickee:" destination="-1" eventType="touchUpInside" id="2IY-13-DZa"/>
                     </connections>
                 </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="当前位置" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jvm-fC-dcs">
+                    <rect key="frame" x="20" y="38" width="560" height="30"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -85,13 +85,13 @@
                 <constraint firstItem="SSJ-xr-z0N" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Dha-La-2JY"/>
                 <constraint firstAttribute="trailing" secondItem="jvm-fC-dcs" secondAttribute="trailing" constant="20" id="GPB-9s-qyJ"/>
                 <constraint firstItem="JfB-0a-MAS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="OlE-je-SrK"/>
-                <constraint firstItem="jvm-fC-dcs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="Ptn-4P-iQi"/>
+                <constraint firstItem="jvm-fC-dcs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="Ptn-4P-iQi"/>
                 <constraint firstAttribute="bottom" secondItem="JfB-0a-MAS" secondAttribute="bottom" constant="20" id="TAv-2O-TbW"/>
                 <constraint firstItem="SSJ-xr-z0N" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="5" id="Tfy-dh-Q5h"/>
                 <constraint firstAttribute="trailing" secondItem="Mor-Y9-cyL" secondAttribute="trailing" constant="20" id="Z7d-6n-Rh2"/>
                 <constraint firstItem="GbI-1h-1vf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fwl-KJ-YNt"/>
                 <constraint firstItem="YmP-DO-9sD" firstAttribute="top" secondItem="Mor-Y9-cyL" secondAttribute="bottom" constant="5" id="kpF-Gh-cAj"/>
-                <constraint firstItem="Mor-Y9-cyL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="ljS-fT-OaJ"/>
+                <constraint firstItem="Mor-Y9-cyL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="ljS-fT-OaJ"/>
                 <constraint firstItem="YmP-DO-9sD" firstAttribute="leading" secondItem="Mor-Y9-cyL" secondAttribute="leading" constant="10" id="mwb-Er-G0O"/>
                 <constraint firstItem="4t7-FH-san" firstAttribute="trailing" secondItem="Mor-Y9-cyL" secondAttribute="trailing" constant="-10" id="pMS-cR-gut"/>
                 <constraint firstItem="GbI-1h-1vf" firstAttribute="top" secondItem="YmP-DO-9sD" secondAttribute="bottom" constant="5" id="rHN-H4-SU2"/>

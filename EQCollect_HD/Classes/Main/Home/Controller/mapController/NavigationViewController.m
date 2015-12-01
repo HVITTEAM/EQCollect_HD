@@ -14,6 +14,7 @@
 #import "NaviParamsSelectViewController.h"
 #import "TrackTableHelper.h"
 #import "TrackModel.h"
+#import "SWYMapTypeSelectView.h"
 
 #define kSetingViewHeight 215
 
@@ -36,7 +37,7 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
 
 @interface NavigationViewController () <AMapNaviViewControllerDelegate,
                                         UIGestureRecognizerDelegate,
-                                        MoreMenuViewDelegate,NaviParamsSelectViewControllerDelegate>
+                                        MoreMenuViewDelegate,NaviParamsSelectViewControllerDelegate,MapTypeSelectViewDelegate>
 {
     UILabel *_wayPointLabel;
     UILabel *_strategyLabel;
@@ -69,10 +70,14 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     /////////////////SWY///////////////////////
 @property (nonatomic, strong) NSString *searchContent;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) MAUserLocation *currUserLocation;
 
 @property (nonatomic,strong) UIButton *beforeYesterBtn;
 @property (nonatomic,strong) UIButton *yesterBtn;
 @property (nonatomic,strong) UIButton *todayBtn;
+@property (nonatomic, strong) UIButton *trafficSwitchBtn;       //切换交通图
+@property (nonatomic, strong) UIButton *mapTypeSwitchBtn;       //切换地图类型
+@property (nonatomic, strong) UIButton *mylocationBtn;          //切换用户跟随模式
 
 @end
 
@@ -98,16 +103,19 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     
     [self initNaviViewController];
     [self initBottomBar];
+    [self initControlButton];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:animated];
     
     [self configMapView];
     
     [self initSettingState];
+    
 }
 
 
@@ -149,7 +157,7 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     self.mapView.showsUserLocation = YES;
     ///////////////////////////////////////by swy////////////////////////////////////
     self.mapView.showsCompass= YES;
-    self.mapView.compassOrigin= CGPointMake(self.mapView.compassOrigin.x, 22);
+    self.mapView.compassOrigin= CGPointMake(self.mapView.compassOrigin.x-20, 22);
     self.mapView.showsScale = YES;
     self.mapView.scaleOrigin= CGPointMake(self.mapView.scaleOrigin.x, 22);
     [self.mapView setZoomLevel:14 animated:YES];
@@ -157,8 +165,6 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     self.mapView.rotateCameraEnabled= NO;
     
     [self.mapView setUserTrackingMode: MAUserTrackingModeFollow animated:YES];
-    
-    
 }
 
 
@@ -224,6 +230,39 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     [bottomBar addSubview:line2];
 }
 
+/**
+ *  初始化地图属性的控制按钮
+ */
+-(void)initControlButton
+{
+    CGFloat screenWidth;
+    CGFloat screenHeigth;
+    if (IOS_VERSION<8.0) {
+        screenWidth = MTScreenH;
+        screenHeigth = MTScreenW;
+    }else{
+        screenWidth = MTScreenW;
+        screenHeigth = MTScreenH;
+    }
+    
+    //切换交通情况按钮
+    self.trafficSwitchBtn = [self createBtnWithNormalImageName:@"trafficSwitch_icon_normal" selectedImageName:@"trafficSwitch_icon_selected"];
+    self.trafficSwitchBtn.x = screenWidth - 70;
+    self.trafficSwitchBtn.y = 140;
+    self.trafficSwitchBtn.tag = 20;
+    
+    //切换地图类型掉按钮
+    self.mapTypeSwitchBtn = [self createBtnWithNormalImageName:@"mapTypeSwitch_icon" selectedImageName:@"mapTypeSwitch_icon"];
+    self.mapTypeSwitchBtn.x = screenWidth - 70;
+    self.mapTypeSwitchBtn.y = 190;
+    self.mapTypeSwitchBtn.tag = 21;
+    
+    //切换跟随模式按钮
+    self.mylocationBtn = [self createBtnWithNormalImageName:@"locationIconNone" selectedImageName:@"locationIconNone"];
+    self.mylocationBtn.x = 70;
+    self.mylocationBtn.y = screenHeigth-140;
+    self.mylocationBtn.tag = 22;
+}
 
 - (void)initSettingState
 {
@@ -306,19 +345,14 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
             return;
         }
     }
-    [self.view makeToast:@"请先确定起点和终点"
-                duration:2.0
-                position:[NSValue valueWithCGPoint:CGPointMake(160, 240)]];
-
 }
-
 
 #pragma mark - MAMapView Delegate
 
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id<MAAnnotation>)annotation
 {
-    UIButton *accessoryView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [accessoryView setTitle:@"开始导航" forState: UIControlStateNormal];
+    UIButton *accessoryView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [accessoryView setBackgroundImage:[UIImage imageNamed:@"navi_icon"] forState:UIControlStateNormal];
     
     if ([annotation isKindOfClass:[NavPointAnnotation class]])
     {
@@ -418,8 +452,9 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
         _hasCurrLoc = YES;
         
         [self.mapView setCenterCoordinate:userLocation.coordinate];
-        [self.mapView setZoomLevel:12 animated:NO];
+        [self.mapView setZoomLevel:14 animated:NO];
     }
+    self.currUserLocation = userLocation;
 }
 
 
@@ -658,6 +693,26 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     
 }
 
+/**
+ *  创建地图属性控制按钮
+ */
+-(UIButton *)createBtnWithNormalImageName:(NSString *)norImageName selectedImageName:(NSString *)seltImageName
+{
+    UIButton *btn = [[UIButton alloc] init];
+    btn.bounds = CGRectMake(0, 0, 40, 40);
+    
+    UIImage *norImage = [UIImage imageNamed:norImageName];
+    UIImage *seltImage = [UIImage imageNamed:seltImageName];
+    [btn setImage:norImage forState:UIControlStateNormal];
+    [btn setImage:seltImage forState:UIControlStateSelected];
+    
+    [self.view addSubview:btn];
+    
+    [btn addTarget:self action:@selector(mapControlBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    btn.backgroundColor = [UIColor whiteColor];
+    return btn;
+}
+
 -(void)bottomBarBtnClicked:(UIButton *)btn
 {
     //NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:@"20151130%"];
@@ -713,6 +768,69 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     [self.mapView addOverlay:polyline];
     [self.mapView setVisibleMapRect:[polyline boundingMapRect] animated:NO];
 
+}
+
+#pragma mark MapTypeSelectViewDelegate方法
+-(void)mapTypeSelectView:(SWYMapTypeSelectView *)mapTypeView selectedType:(mapType)type
+{
+    switch (type) {
+        case mapTypeStandard:
+            [self.mapView setCameraDegree:0 animated:YES duration:0.5];
+            self.mapView.mapType = MAMapTypeStandard;
+            break;
+        case mapTypeSatellite:
+            [self.mapView setCameraDegree:0 animated:YES duration:0.5];
+            self.mapView.mapType = MAMapTypeSatellite;
+            break;
+        case mapType3D:
+            [self.mapView setCameraDegree:70.0f animated:YES duration:0.5];
+            break;
+    }
+}
+
+
+/**
+ *  点击地图上的属性控制按钮后调用
+ */
+-(void)mapControlBtnClicked:(UIButton *)sender
+{
+    if (sender.tag == 20) {
+        //切换交通图
+        sender.selected = !sender.isSelected;
+        self.mapView.showTraffic = sender.isSelected;
+    }else if (sender.tag == 22){
+        UIImage *image;
+        //切换用户跟随模式
+        switch (self.mapView.userTrackingMode) {
+            case MAUserTrackingModeNone:
+                //切换成Follow模式
+                [self.mapView setUserTrackingMode: MAUserTrackingModeFollow animated:YES];
+                image = [UIImage imageNamed:@"locationIconFollow"];
+                NSLog(@"Follow");
+                break;
+            case MAUserTrackingModeFollow:
+                //切换成Heading模式
+                [self.mapView setUserTrackingMode: MAUserTrackingModeFollowWithHeading animated:YES];
+                image = [UIImage imageNamed:@"locationIconHeading"];
+                NSLog(@"Heading");
+                break;
+            case MAUserTrackingModeFollowWithHeading:
+                //切换成None模式
+                [self.mapView setUserTrackingMode: MAUserTrackingModeNone animated:YES];
+                [self.mapView setCenterCoordinate:self.currUserLocation.coordinate animated:YES];
+                [self.mapView setZoomLevel:14 animated:NO];
+                image = [UIImage imageNamed:@"locationIconNone"];
+                NSLog(@"None");
+                break;
+        }
+        [sender setImage:image forState:UIControlStateNormal];
+        NSLog(@"%f",self.mapView.zoomLevel);
+    }else{
+        //切换地图类型
+        SWYMapTypeSelectView *selectView =  [[SWYMapTypeSelectView alloc] init];
+        selectView.delegate = self;
+        [selectView showMapTypeViewToView:self.view position:CGPointMake(sender.x, CGRectGetMaxY(sender.frame))];
+    }
 }
 
 -(void)dealloc

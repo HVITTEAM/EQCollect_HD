@@ -7,17 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
-#import "AppDelegate.h"
 
-@interface LocationHelper : NSObject<CLLocationManagerDelegate>
+@protocol locationHelperDelegate;
 
-@property (strong, nonatomic) CLGeocoder *geocoder;
+@interface LocationHelper : NSObject
 
--(void)reverseGeocodeWithSuccess:(void (^)(NSString *address))success failure:(void (^)(void))failure;
+@property (weak,nonatomic)id<locationHelperDelegate>delegate;
 
 -(void)uploadUserinfo;
 
+-(void)reverseGeocode;
 
 @end
 
+@protocol locationHelperDelegate <NSObject>
+
+-(void)reverseGeocodeSuccess:(NSString *)address;
+-(void)reverseGeocodeFailure;
+
+@end

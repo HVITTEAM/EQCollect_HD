@@ -7,56 +7,58 @@
 //
 
 #import "LocationHelper.h"
-#import <AMapNaviKit/AMapNaviKit.h>
-#import <AMapNaviKit/MAGeometry.h>
+#import "AppDelegate.h"
+#import <AMapSearchKit/AMapSearchAPI.h>
 #import "TrackTableHelper.h"
+
+@interface LocationHelper ()<AMapSearchDelegate>
+
+@property (strong, nonatomic) AMapSearchAPI *searchApi;
+@property (assign, nonatomic) BOOL isUploadUserinfo;
+
+@end
 
 @implementation LocationHelper
 
 -(instancetype)init
 {
     if (self = [super init]) {
-        self.geocoder = [[CLGeocoder alloc] init];
+        self.searchApi = [[AMapSearchAPI alloc] init];
+        self.searchApi.delegate = self;
     }
     return self;
 }
 
--(void)reverseGeocodeWithSuccess:(void (^)(NSString *))success failure:(void (^)(void))failure
+/**
+ *  逆地理编码请求
+ */
+-(void)reverseGeocode
 {
-    AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [self.geocoder reverseGeocodeLocation:appdl.currentLocation completionHandler:
-     ^(NSArray *placemarks, NSError *error){
-         // 如果解析结果的集合元素的个数大于1，表明解析得到了经度、纬度信息
-         if (placemarks.count > 0){
-             // 处理第一个解析结果
-             CLPlacemark* placemark = placemarks[0];
-             // 获取详细地址信息
-             NSArray* addrArray = [placemark.addressDictionary
-                                   objectForKey:@"FormattedAddressLines"];
-             // 将详细地址拼接成一个字符串
-             NSMutableString *addr = [[NSMutableString alloc] init];
-             for(int i = 0 ; i < addrArray.count ; i ++){
-                 [addr appendString:addrArray[i]];
-             }
-             appdl.currrentaddr = addr;
-             success(addr);
-             NSLog(@"reverseGeocode成功%@",addr);
-         }
-         else{
-             //失败
-             NSLog(@"reverseGeocode失败");
-             //failure();
-         }
-     }];
-}
-
--(void)uploadUserinfo
-{
+    self.isUploadUserinfo = NO;
     
     AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSString *lon = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.longitude];
-    NSString *lat = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.latitude];
- 
+    CLLocationCoordinate2D coordinate = appdl.currentCoordinate;
+    
+    AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
+    
+    regeo.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+    regeo.requireExtension = YES;
+
+    [self.searchApi AMapReGoecodeSearch:regeo];
+}
+
+/**
+ *  上传用户信息
+ */
+-(void)uploadUserinfo
+{
+    self.isUploadUserinfo = YES;
+    
+    AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    CLLocationCoordinate2D coordinate = appdl.currentCoordinate;
+    NSString *lon = [NSString stringWithFormat:@"%f",coordinate.longitude];
+    NSString *lat = [NSString stringWithFormat:@"%f",coordinate.latitude];
+    
     //将数据保存到本地数据库中用作轨迹
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyyMMddHHmmss"];
@@ -69,65 +71,58 @@
                                 };
     [[TrackTableHelper sharedInstance] insertDataWith:trackDict];
     
-    
-    UserModel *userinfo = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
-    NSMutableDictionary *parameters1 =[[NSMutableDictionary alloc] initWithObjectsAndKeys:userinfo.userid,@"userid",nil];
-    parameters1[@"userlon"] = lon;
-    parameters1[@"userlat"] = lat;
-    //    NSDictionary *parameters = [userinfo keyValues];
-    //    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    
-    [self.geocoder reverseGeocodeLocation:appdl.currentLocation completionHandler:
-     ^(NSArray *placemarks, NSError *error){
-         // 如果解析结果的集合元素的个数大于1，表明解析得到了经度、纬度信息
-         if (placemarks.count > 0){
-             // 处理第一个解析结果
-             CLPlacemark* placemark = placemarks[0];
-             // 获取详细地址信息
-             NSArray* addrArray = [placemark.addressDictionary
-                                   objectForKey:@"FormattedAddressLines"];
-             // 将详细地址拼接成一个字符串
-             NSMutableString *addr = [[NSMutableString alloc] init];
-             for(int i = 0 ; i < addrArray.count ; i ++){
-                 [addr appendString:addrArray[i]];
-             }
-             NSLog(@"反地址解释成功");
-             appdl.currrentaddr = addr;
-             parameters1[@"useraddress"] = addr;
-             NSLog(@"自动上传的参数parameters1%@",parameters1);
-             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-             [manager POST:URL_uploadlocation parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"userinfo数据上传成功: %@", responseObject);
-                 userinfo.useraddress = addr;
-                 userinfo.userlat = lat;
-                 userinfo.userlon = lon;
-                 [ArchiverCacheHelper saveObjectToLoacl:userinfo key:User_Archiver_Key filePath:User_Archiver_Path];
-                 
-             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 NSLog(@"userinfo数据上传失败");
-             }];
-             
-         }else{
-             //失败
-             NSLog(@"反地址解释失败");
-             parameters1[@"useraddress"] = @"当前地址未知";
-             NSLog(@"自动上传的参数parameters1%@",parameters1);
-             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-             [manager POST:URL_uploadlocation parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"userinfo数据上传成功: %@", responseObject);
-                 userinfo.useraddress = @"当前地址未知";
-                 userinfo.userlat = lat;
-                 userinfo.userlon = lon;
-                 [ArchiverCacheHelper saveObjectToLoacl:userinfo key:User_Archiver_Key filePath:User_Archiver_Path];
-                 
-             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 NSLog(@"userinfo数据上传失败");
-             }];
-
-         }
-     }];
+    //发起逆地理编码请求
+    AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
+    regeo.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+    regeo.requireExtension = YES;
+    [self.searchApi AMapReGoecodeSearch:regeo];
 }
 
 
+#pragma mark - AMapSearchDelegate
+/* 逆地理编码回调. */
+- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+{
+    if (response.regeocode != nil){
+        
+        if (self.isUploadUserinfo) {
+            
+            NSMutableDictionary *parameters =[[NSMutableDictionary alloc] init];
+            
+            UserModel *userinfo = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
+            NSString *lon = [NSString stringWithFormat:@"%f",request.location.longitude];
+            NSString *lat = [NSString stringWithFormat:@"%f",request.location.latitude];
+            
+            parameters[@"userlon"] = lon;
+            parameters[@"userlat"] = lat;
+            parameters[@"userid"] = userinfo.userid;
+            parameters[@"useraddress"] = response.regeocode.formattedAddress;
+            
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            [manager POST:URL_uploadlocation parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"userinfo数据上传成功: %@", responseObject);
+                userinfo.useraddress = response.regeocode.formattedAddress;
+                userinfo.userlat = lat;
+                userinfo.userlon = lon;
+                [ArchiverCacheHelper saveObjectToLoacl:userinfo key:User_Archiver_Key filePath:User_Archiver_Path];
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"userinfo数据上传失败");
+            }];
+        }else{
+            if ([self.delegate respondsToSelector:@selector(reverseGeocodeSuccess:)]) {
+                [self.delegate reverseGeocodeSuccess:response.regeocode.formattedAddress];
+            }
+        }
+    }else{
+        if (self.isUploadUserinfo) {
+            NSLog(@"逆地理编码");
+        }else{
+            if ([self.delegate respondsToSelector:@selector(reverseGeocodeFailure)]) {
+                [self.delegate reverseGeocodeFailure];
+            }
+        }
+    }
+}
 
 @end

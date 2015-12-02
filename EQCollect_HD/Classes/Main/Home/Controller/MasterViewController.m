@@ -45,7 +45,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 5;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,12 +75,6 @@
         cell.textLabel.text = @"地图导航";
         cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }else{
-        
-//        cell.textLabel.text = @"地图";
-//        cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
     }
     return cell;
 }
@@ -108,12 +102,6 @@
         navi.modalTransitionStyle = UIModalPresentationFullScreen;
         [self presentViewController:navi animated:YES completion:nil];
         
-    }else{
-//        EQMapViewController *mapVC = [[EQMapViewController alloc] init];
-//        UIWindow *win =[UIApplication sharedApplication].keyWindow;
-//        NSArray *VCs = ((UISplitViewController *)win.rootViewController).viewControllers;
-//        UINavigationController *detailNavi = VCs[1];
-//        [detailNavi pushViewController:mapVC animated:YES];
     }
 }
 

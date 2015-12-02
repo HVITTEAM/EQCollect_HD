@@ -9,7 +9,7 @@
 #import "BaseNaviViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "SharedMapView.h"
-#import "Toast+UIView.h"
+//#import "Toast+UIView.h"
 #import "CityListViewController.h"
 #include "NaviParamsSelectViewController.h"
 
@@ -161,10 +161,7 @@
 - (void)naviManager:(AMapNaviManager *)naviManager onCalculateRouteFailure:(NSError *)error
 {
     NSLog(@"onCalculateRouteFailure");
-    
-    [self.view makeToast:@"算路失败"
-                duration:2.0
-                position:[NSValue valueWithCGPoint:CGPointMake(160, 240)]];
+    [[[UIAlertView alloc] initWithTitle:nil message:@"路径规划失败，请重新规划" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
 }
 
 - (void)naviManagerNeedRecalculateRouteForYaw:(AMapNaviManager *)naviManager

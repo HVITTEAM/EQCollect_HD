@@ -11,6 +11,7 @@
 #import "VersionViewController.h"
 #import "UseHelpViewController.h"
 #import "FeedbackViewController.h"
+#import "AppDelegate.h"
 
 @interface SettingViewController ()
 

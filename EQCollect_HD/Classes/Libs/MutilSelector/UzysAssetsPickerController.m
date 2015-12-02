@@ -3,12 +3,8 @@
 //  UzysAssetsPickerController
 //
 //  Created by Uzysjung on 2014. 2. 12..
-//  Copyright (c) 2014년 Uzys. All rights reserved.
+//  Copyright (c) 2014 Uzys. All rights reserved.
 //
-
-// 版权属于原作者
-// http://code4app.com(cn) http://code4app.net(en)
-// 来源于最专业的源码分享网站: Code4App
 
 #import "UzysAssetsPickerController.h"
 #import "UzysAssetsViewCell.h"
@@ -74,7 +70,6 @@
 }
 - (void)dealloc
 {
-//    NSLog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
     self.assetsLibrary = nil;
     self.assetsGroup = nil;
@@ -129,6 +124,7 @@
 {
     __weak typeof(self) weakSelf = self;
     self.groupPicker = [[UzysGroupPickerView alloc] initWithGroups:self.groups];
+
     self.groupPicker.blockTouchCell = ^(NSInteger row){
         [weakSelf changeGroup:row filter:weakSelf.assetsFilter];
     };
@@ -243,7 +239,7 @@
     
     __weak typeof(self) weakSelf = self;
     
-    ALAssetsFilter *assetsFilter = [ALAssetsFilter allAssets]; // number of Asset 메쏘드 호출 시에 적용.
+    ALAssetsFilter *assetsFilter = [ALAssetsFilter allAssets]; // number of Asset
     
     ALAssetsLibraryGroupsEnumerationResultsBlock resultsBlock = ^(ALAssetsGroup *group, BOOL *stop) {
         if (group)
@@ -276,7 +272,7 @@
     };
 
     ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *error) {
-        //접근이 허락 안되었을 경우
+        
         [self showNotAllowed];
         self.segmentedControl.enabled = NO;
         self.btnDone.enabled = NO;
@@ -557,7 +553,7 @@
                 return;
             }
             
-            if(updatedAssets.count  <2 && updatedAssetGroup.count ==0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0) //이미지픽커에서 앨범에 저장할 경우.
+            if(updatedAssets.count  <2 && updatedAssetGroup.count ==0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0)
             {
                 [self.assetsLibrary assetForURL:[updatedAssets allObjects][0] resultBlock:^(ALAsset *asset) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -647,7 +643,7 @@
 //                [self initImagePicker];
                 __weak typeof(self) weakSelf = self;
                 [self presentViewController:self.picker animated:YES completion:^{
-                    //카메라 화면으로 가면 강제로 가메라 롤로 변경.
+                    
                     if(![weakSelf.assetsGroup isEqual:weakSelf.groups[0]] )
                     {
                         weakSelf.assetsGroup = weakSelf.groups[0];
@@ -700,7 +696,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     __weak typeof(self) weakSelf = self;
-    //사진 촬영 시
+    
     if (CFStringCompare((CFStringRef) [info objectForKey:UIImagePickerControllerMediaType], kUTTypeImage, 0) == kCFCompareEqualTo)
     {
         if(self.segmentedControl.selectedSegmentIndex ==1)
@@ -715,7 +711,7 @@
                 NSLog(@"writeImageToSavedPhotosAlbum");
             }];
     }
-    else //비디오 촬영시
+    else //
     {
         if(self.segmentedControl.selectedSegmentIndex ==0)
         {
@@ -759,17 +755,6 @@
 -(BOOL)shouldAutorotate
 {
     return YES;
-}
-
-//by swy  解决旋转问题
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (self.groupPicker.frame.origin.y >= 0) {
-        self.groupPicker.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-        //self.groupPicker.tableView.frame = CGRectMake(0, 64,self.groupPicker.bounds.size.width, self.groupPicker.bounds.size.height - 64);
-        //[self.groupPicker.tableView reloadData];
-    }
-    
 }
 
 @end

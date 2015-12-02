@@ -109,7 +109,6 @@
 		D228EFB01C0806870029C058 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D228EFAF1C0806870029C058 /* AddressBook.framework */; };
 		D228EFB21C0807460029C058 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D228EFB11C0807460029C058 /* AMap.bundle */; };
 		D228EFB41C0807580029C058 /* AMapNavi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D228EFB31C0807580029C058 /* AMapNavi.bundle */; };
-		D228EFCB1C0809FC0029C058 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFC41C0809FC0029C058 /* Toast+UIView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D228EFD21C080A6D0029C058 /* NavPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFD11C080A6D0029C058 /* NavPointAnnotation.m */; };
 		D228EFD71C080A8C0029C058 /* MoreMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFD41C080A8C0029C058 /* MoreMenuView.m */; };
 		D228EFD81C080A8C0029C058 /* SharedMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFD61C080A8C0029C058 /* SharedMapView.m */; };
@@ -445,8 +444,6 @@
 		D228EFAF1C0806870029C058 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D228EFB11C0807460029C058 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AMap.bundle; path = MAMap/AMapNaviKit.framework/Versions/1.3.2.70b9c1e/Resources/AMap.bundle; sourceTree = "<group>"; };
 		D228EFB31C0807580029C058 /* AMapNavi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AMapNavi.bundle; path = MAMap/AMapNaviKit.framework/Versions/1.3.2.70b9c1e/Resources/AMapNavi.bundle; sourceTree = "<group>"; };
-		D228EFC31C0809FC0029C058 /* Toast+UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Toast+UIView.h"; sourceTree = "<group>"; };
-		D228EFC41C0809FC0029C058 /* Toast+UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Toast+UIView.m"; sourceTree = "<group>"; };
 		D228EFD01C080A6D0029C058 /* NavPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavPointAnnotation.h; sourceTree = "<group>"; };
 		D228EFD11C080A6D0029C058 /* NavPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavPointAnnotation.m; sourceTree = "<group>"; };
 		D228EFD31C080A8C0029C058 /* MoreMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMenuView.h; sourceTree = "<group>"; };
@@ -1131,7 +1128,6 @@
 		01EED5791B9D25420041D28A /* Libs */ = {
 			isa = PBXGroup;
 			children = (
-				D228EFC21C0809FC0029C058 /* Toast */,
 				D228EFB31C0807580029C058 /* AMapNavi.bundle */,
 				D228EFB11C0807460029C058 /* AMap.bundle */,
 				D228EFA91C0806270029C058 /* iflyMSC.framework */,
@@ -1306,15 +1302,6 @@
 				D228EFD61C080A8C0029C058 /* SharedMapView.m */,
 			);
 			path = mapViews;
-			sourceTree = "<group>";
-		};
-		D228EFC21C0809FC0029C058 /* Toast */ = {
-			isa = PBXGroup;
-			children = (
-				D228EFC31C0809FC0029C058 /* Toast+UIView.h */,
-				D228EFC41C0809FC0029C058 /* Toast+UIView.m */,
-			);
-			path = Toast;
 			sourceTree = "<group>";
 		};
 		D228EFCF1C080A640029C058 /* map */ = {
@@ -1728,7 +1715,6 @@
 				0177A0CE1B968475003199F4 /* HMBadgeView.m in Sources */,
 				D2DCDE621BBD66020085CC25 /* SheetViewController.m in Sources */,
 				D228EFE01C080ABA0029C058 /* NavigationViewController.m in Sources */,
-				D228EFCB1C0809FC0029C058 /* Toast+UIView.m in Sources */,
 				01EED5891B9D25420041D28A /* FMDatabasePool.m in Sources */,
 				D2F250F91BD728AF00E54FB7 /* AFNetworkReachabilityManager.m in Sources */,
 				D294728D1BF70E1C00CDA506 /* MessageViewController.m in Sources */,

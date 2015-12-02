@@ -3,12 +3,9 @@
 //  UzysAssetsPickerController
 //
 //  Created by Uzysjung on 2014. 2. 13..
-//  Copyright (c) 2014년 Uzys. All rights reserved.
+//  Copyright (c) 2014 Uzys. All rights reserved.
 //
 
-// 版权属于原作者
-// http://code4app.com(cn) http://code4app.net(en)
-// 来源于最专业的源码分享网站: Code4App
 
 #import "UzysGroupPickerView.h"
 #import "UzysGroupViewCell.h"
@@ -37,8 +34,8 @@
 
 - (void)setupLayout
 {
-    //anchorPoint 를 잡는데 화살표 지점으로 잡아야함
-    self.frame = CGRectMake(0, - [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    CGSize screenSize = [self getScreenSize];
+    self.frame = CGRectMake(0, - screenSize.height, screenSize.width,screenSize.height);
     self.layer.cornerRadius = 4;
     self.clipsToBounds = YES;
     self.backgroundColor = [UIColor lightGrayColor];
@@ -47,7 +44,6 @@
 - (void)setupTableView
 {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavigationHeight, self.bounds.size.width, self.bounds.size.height -NavigationHeight) style:UITableViewStylePlain];
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;//by swy 解决旋转问题
     self.tableView.contentInset = UIEdgeInsetsMake(1, 0, 0, 0);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.dataSource = self;
@@ -56,6 +52,9 @@
     self.tableView.rowHeight = kGroupPickerViewCellLength;
     self.tableView.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.tableView];
+    
+    
+    self.tableView.backgroundColor = [UIColor redColor];
 }
 - (void)reloadData
 {
@@ -63,11 +62,13 @@
 }
 - (void)show
 {
+    CGSize screenSize = [self getScreenSize];
+    
     [UIView animateWithDuration:0.4f delay:0.f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.frame = CGRectMake(0, BounceAnimationPixel ,[UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+        self.frame = CGRectMake(0, BounceAnimationPixel ,screenSize.width, screenSize.height);
     } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.15f delay:0.f options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-                    self.frame = CGRectMake(0, 0 , [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+                    self.frame = CGRectMake(0, 0 , screenSize.width, screenSize.height);
             } completion:^(BOOL finished) {
             }];
     }];
@@ -75,14 +76,15 @@
 }
 - (void)dismiss:(BOOL)animated
 {
+    CGSize screenSize = [self getScreenSize];
     if (!animated)
     {
-        self.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height );
+        self.frame = CGRectMake(0, -screenSize.height, screenSize.width, screenSize.height );
     }
     else
     {
         [UIView animateWithDuration:0.4f animations:^{
-            self.frame = CGRectMake(0, - [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+            self.frame = CGRectMake(0, - screenSize.height, screenSize.width, screenSize.height);
         } completion:^(BOOL finished) {
         }];
     }
@@ -137,6 +139,21 @@
 {
     if(self.blockTouchCell)
         self.blockTouchCell(indexPath.row);
+}
+
+//by swy
+-(CGSize)getScreenSize
+{
+    CGFloat screenW;
+    CGFloat screenH;
+    if (IOS_VERSION < 8.0) {
+        screenW = [UIScreen mainScreen].bounds.size.height;
+        screenH = [UIScreen mainScreen].bounds.size.width;
+    }else{
+        screenW = [UIScreen mainScreen].bounds.size.width;
+        screenH = [UIScreen mainScreen].bounds.size.height;
+    }
+    return CGSizeMake(screenW, screenH);
 }
 
 @end

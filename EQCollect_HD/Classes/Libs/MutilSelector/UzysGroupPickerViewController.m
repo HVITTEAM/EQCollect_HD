@@ -3,12 +3,9 @@
 //  UzysAssetsPickerController
 //
 //  Created by Uzysjung on 2014. 2. 13..
-//  Copyright (c) 2014년 Uzys. All rights reserved.
+//  Copyright (c) 2014 Uzys. All rights reserved.
 //
 
-// 版权属于原作者
-// http://code4app.com(cn) http://code4app.net(en)
-// 来源于最专业的源码分享网站: Code4App
 
 #import "UzysGroupViewCell.h"
 #import "UzysGroupPickerViewController.h"
@@ -55,7 +52,7 @@
 - (void)setupLayout
 {
     self.view.frame = [UIScreen mainScreen].bounds;
-    //anchorPoint 를 잡는데 화살표 지점으로 잡아야함
+    //anchorPoint
     self.containerView = [[UIView alloc] init];
     self.containerView.layer.anchorPoint = CGPointMake(0.5, 0);
     self.containerView.frame = CGRectMake(1, 55, 318, 250);

@@ -67,15 +67,21 @@
 {
     //获取键盘动画曲线和持续时间和键盘高
     NSDictionary *keyboardDict = [notification userInfo];
-    CGFloat keyboardHeight = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size.height;
+    //CGFloat keyboardHeight = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size.height;
+    CGRect keybaordFrame = [[keyboardDict objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue];
+    CGFloat keyboardHeight;
+    if (IOS_VERSION < 8.0) {
+        keyboardHeight = keybaordFrame.size.width;
+    }else{
+        keyboardHeight = keybaordFrame.size.height;
+    }
     NSInteger animationCurve = [[keyboardDict objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     CGFloat duration = [[keyboardDict objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     //键盘顶部到屏幕顶部距离
-    CGFloat keyboardTopToViewTop = self.view.height - keyboardHeight;
+    CGFloat keyboardTopToViewTop = self.view.bounds.size.height - keyboardHeight;
     //当前文本框底部到屏幕顶部距离
     CGRect currentTextFieldFrame = [self.view convertRect:_currentTextField.frame fromView:self.inputBgView];
     CGFloat currentTextFieldBottom = CGRectGetMaxY(currentTextFieldFrame);
-    
     //条件成立，说明键盘遮挡了文本框
     if (currentTextFieldBottom >= keyboardTopToViewTop-60) {
         //向上移动

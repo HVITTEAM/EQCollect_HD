@@ -13,9 +13,10 @@
 #import "LocationHelper.h"
 #import "ChooseIntensityViewController.h"
 #import "EarthInfo.h"
+#import "AppDelegate.h"
 
 
-@interface PointinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate>
+@interface PointinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate,locationHelperDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
 @property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
@@ -124,8 +125,6 @@
     {
         self.pointidTextF.text = [self createUniqueIdWithAbbreTableName:@"DC"];
         
-        
-        
         UserModel *model = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
         if (!model) {
             model = [[UserModel alloc] init];
@@ -142,16 +141,18 @@
         self.pointtimeTextF.text = [formatter stringFromDate:date];
         
         _locationHelp = [[LocationHelper alloc] init];
-        AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-        self.pointlatTextF.text = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.latitude];
-        self.pointlonTextF.text = [NSString stringWithFormat:@"%f",appdl.currentLocation.coordinate.longitude];
+        _locationHelp.delegate = self;
+        [_locationHelp reverseGeocode];
+        AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.pointlatTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.latitude];
+        self.pointlonTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.longitude];
         // __weak typeof(self) weakSelf = self;
-        [_locationHelp reverseGeocodeWithSuccess:^(NSString *address) {
-            self.pointlocationTextF.text = address;
-        } failure:^{
-            [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"无法解析当前地址，您可手动输入地址" delegate:nil
-                              cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
-        }];
+//        [_locationHelp reverseGeocodeWithSuccess:^(NSString *address) {
+//            self.pointlocationTextF.text = address;
+//        } failure:^{
+//            [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"无法解析当前地址，您可手动输入地址" delegate:nil
+//                              cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
+//        }];
     }
 }
 
@@ -464,6 +465,18 @@
         }
     }
     return NO;
+}
+
+
+-(void)reverseGeocodeFailure
+{
+    [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"无法解析当前地址，您可手动输入地址" delegate:nil
+                                   cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
+}
+
+-(void)reverseGeocodeSuccess:(NSString *)address
+{
+    self.pointlocationTextF.text = address;
 }
 
 -(void)back

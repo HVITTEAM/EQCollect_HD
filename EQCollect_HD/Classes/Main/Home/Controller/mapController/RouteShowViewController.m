@@ -112,6 +112,7 @@
 
 - (void)returnAction
 {
+    [self.navigationController popViewControllerAnimated:YES];
     [self clearMapView];
 }
 

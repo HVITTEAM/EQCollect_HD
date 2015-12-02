@@ -198,22 +198,6 @@
 
 }
 
-////上传数据
-//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
-//{
-//          //上传数据成功则更新本地数据
-//    PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-//        BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.pointid];
-//        if (result) {
-//            model.upload = @"1";
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//            });
-//        }
-//    
-//}
-
-
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {

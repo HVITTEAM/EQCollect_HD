@@ -26,7 +26,7 @@
 //}
 
 #import <Foundation/Foundation.h>
-
+//地震信息
 @interface EarthInfo : NSObject
 
 @property(nonatomic,copy)NSString *deep;

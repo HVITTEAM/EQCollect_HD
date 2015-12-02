@@ -139,7 +139,7 @@
 - (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location
 {
     NSLog(@"定位成功%f    %f",location.coordinate.latitude,location.coordinate.longitude);
-    self.currentLocation = location;
+    self.currentCoordinate = location.coordinate;
     if (_isFirst) {
         _isFirst = NO;
         //开启定时发送位置信息功能
@@ -166,14 +166,8 @@
         if (!responseArray || responseArray.count == 0) {
             [self showAlertViewWithTitle:nil message:@"获取地震编号失败,请确定本次预案已启动。可在个人中里重新获取"];
         }else{
-            Boolean result = [responseArray[0][@"success"] boolValue];
-            if (result) {
-                NSLog(@"获取 earthid 成功");
-                //成功
-                self.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
-            }else{
-                [self showAlertViewWithTitle:nil message:@"获取地震编号失败,请确定本次预案已启动。可在个人中里重新获取"];
-            }
+            //成功
+            self.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"获取 earthid 失败");

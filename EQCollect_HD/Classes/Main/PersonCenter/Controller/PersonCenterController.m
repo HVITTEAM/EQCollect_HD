@@ -90,11 +90,11 @@
     username.textString = _userinfo.username;
     //username.textString = @" admin";
     
-    HMCommonTextfieldItem *userpwd = [HMCommonTextfieldItem itemWithTitle:@"密码"];
-    [userpwd.rightText setSecureTextEntry:YES];
-    userpwd.placeholder = @"请输入密码";
-    userpwd.textString = _userinfo.userpwd;
-    //userpwd.textString = @"hvit";
+//    HMCommonTextfieldItem *userpwd = [HMCommonTextfieldItem itemWithTitle:@"密码"];
+//    [userpwd.rightText setSecureTextEntry:YES];
+//    userpwd.placeholder = @"请输入密码";
+//    userpwd.textString = _userinfo.userpwd;
+//    //userpwd.textString = @"hvit";
 
     HMCommonTextfieldItem *usertel = [HMCommonTextfieldItem itemWithTitle:@"电话"];
     usertel.placeholder = @"请输入电话";
@@ -104,7 +104,7 @@
 //    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];
 //    groupname.centerString = @"第一组";
     
-    group.items = @[userccount,username,userpwd,usertel];
+    group.items = @[userccount,username,usertel];
 }
 
 - (void)setupGroup1
@@ -154,14 +154,14 @@
     
     NSString *userccount = ((HMCommonTextfieldItem *)group0.items[0]).rightText.text;
     NSString *username = ((HMCommonTextfieldItem *)group0.items[1]).rightText.text;
-    NSString *userpwd = ((HMCommonTextfieldItem *)group0.items[2]).rightText.text;
-    NSString *usertel = ((HMCommonTextfieldItem *)group0.items[3]).rightText.text;
+//    NSString *userpwd = ((HMCommonTextfieldItem *)group0.items[2]).rightText.text;
+    NSString *usertel = ((HMCommonTextfieldItem *)group0.items[2]).rightText.text;
     NSString *pointgroup = ((HMCommonTextfieldItem *)group1.items[0]).rightText.text;
     NSString *pointperson = ((HMCommonTextfieldItem *)group1.items[1]).rightText.text;
     
     _userinfo.userccount = userccount;
     _userinfo.username = username;
-    _userinfo.userpwd = userpwd;
+//    _userinfo.userpwd = userpwd;
     _userinfo.usertel = usertel;
     _userinfo.pointgroup = pointgroup;
     _userinfo.pointperson = pointperson;

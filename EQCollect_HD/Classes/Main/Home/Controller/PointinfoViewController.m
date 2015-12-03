@@ -133,7 +133,12 @@
         self.pointPersonTextF.text = model.pointperson;
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        self.earthidTextF.text = appDelegate.earthinfo.earthid;
+        NSString *earthid = appDelegate.earthinfo.earthid;
+        if (!earthid) {
+            [self getEarthid];
+        }else{
+             self.earthidTextF.text = earthid;
+        }
         
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -146,14 +151,28 @@
         AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         self.pointlatTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.latitude];
         self.pointlonTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.longitude];
-        // __weak typeof(self) weakSelf = self;
-//        [_locationHelp reverseGeocodeWithSuccess:^(NSString *address) {
-//            self.pointlocationTextF.text = address;
-//        } failure:^{
-//            [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"无法解析当前地址，您可手动输入地址" delegate:nil
-//                              cancelButtonTitle:@"确定" otherButtonTitles: nil]show];
-//        }];
-    }
+     }
+}
+
+-(void)getEarthid
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"获取 earthid   %@",responseObject);
+        NSArray *responseArray = (NSArray *)responseObject;
+        if (!responseArray || responseArray.count == 0) {
+            self.earthidTextF.text = kearthidDefault;
+            [[[UIAlertView alloc] initWithTitle:nil message:@"没有获取到地震编号" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+        }else{
+            //成功
+            AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            appdelegate.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
+            self.earthidTextF.text = appdelegate.earthinfo.earthid;
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"获取 earthid 失败");
+        
+    }];
 }
 
 /**
@@ -185,7 +204,7 @@
     [super textFieldShouldBeginEditing:textField];
     BOOL canEdit;
     
-    if (textField.tag ==1000 || textField.tag == 1001 ) {
+    if (textField.tag ==1000 || textField.tag == 1001 || textField.tag == 1003) {
         canEdit = NO;
     }else if (textField.tag == 1009){
         canEdit = NO;

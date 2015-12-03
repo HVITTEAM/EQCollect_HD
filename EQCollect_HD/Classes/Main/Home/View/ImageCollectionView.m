@@ -11,6 +11,7 @@
 static NSString *kcellIdentifier = @"collectionCellID";
 
 #import "ImageCollectionView.h"
+#import "SWYPhotoBrowserViewController.h"
 
 @interface ImageCollectionView ()
 
@@ -19,7 +20,7 @@ static NSString *kcellIdentifier = @"collectionCellID";
 @implementation ImageCollectionView
 {
     BOOL isFull;//是否已经选择十张
-    MWPhotoBrowser *_browser;
+    //MWPhotoBrowser *_browser;
 
 }
 
@@ -302,73 +303,14 @@ static NSString *kcellIdentifier = @"collectionCellID";
 #pragma mark - 浏览图片
 -(void)showImageWhthCurrentIdx:(NSInteger)idx
 {
-    // Browser
-    NSMutableArray *photos = [[NSMutableArray alloc] init];
-    NSMutableArray *thumbs = [[NSMutableArray alloc] init];
-    MWPhoto *photo;
-    BOOL displayActionButton = YES;
-    BOOL displaySelectionButtons = NO;
-    BOOL displayNavArrows = NO;
-    BOOL enableGrid = NO;
-    BOOL startOnGrid = YES;
-    
+    NSMutableArray *images = [[NSMutableArray alloc] init];
     for(PictureVO* vo in self.dataProvider)
     {
-//        NSUInteger idx = [self.dataProvider indexOfObject:vo];
-//        if (idx == self.dataProvider.count - 1)
-//            break;
         UIImage *img = [[UIImage alloc] initWithData:vo.imageData];
-        photo = [MWPhoto photoWithImage:img];
-        photo.caption = vo.name;
-        [photos addObject:photo];
+        [images addObject:img];
     }
-    
-    // Options
-    self.photos = photos;
-    self.thumbs = thumbs;
-    // Create browser
-    _browser= [[MWPhotoBrowser alloc] initWithDelegate:self];
-    _browser.displayActionButton = displayActionButton;//分享按钮,默认是
-    _browser.displayNavArrows = displayNavArrows;//左右分页切换,默认否
-    _browser.displaySelectionButtons = displaySelectionButtons;//是否显示选择按钮在图片上,默认否
-    _browser.alwaysShowControls = displaySelectionButtons;//控制条件控件 是否显示,默认否
-    _browser.zoomPhotosToFill = NO;//是否全屏,默认是
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-    browser.wantsFullScreenLayout = YES;//是否全屏
-#endif
-    _browser.enableGrid = enableGrid;//是否允许用网格查看所有图片,默认是
-    _browser.startOnGrid = startOnGrid;//是否第一张,默认否
-    _browser.enableSwipeToDismiss = YES;
-    [_browser showNextPhotoAnimated:YES];
-    [_browser showPreviousPhotoAnimated:YES];
-    [_browser setCurrentPhotoIndex:idx];
-    
-    UINavigationController *nav0 = [[UINavigationController alloc] initWithRootViewController:_browser];
-    nav0.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav0 animated:YES completion:nil];
-}
-
-#pragma mark - MWPhotoBrowserDelegate
-
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
-{
-    return _photos.count;
-}
-
-- (id )photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
-{
-    if (index < _photos.count)
-        return [_photos objectAtIndex:index];
-    return nil;
-}
-
-
--(void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser
-{
-    [photoBrowser dismissViewControllerAnimated:YES completion:nil];
-    _browser = nil;
-    self.photos = nil;
-    self.thumbs = nil;
+    SWYPhotoBrowserViewController *photoBrowser = [[SWYPhotoBrowserViewController alloc] initPhotoBrowserWithImages:images currentIndex:idx];
+    [self.nav presentViewController:photoBrowser animated:YES completion:nil];
 }
 
 #pragma mark - UzysAssetsPickerControllerDelegate

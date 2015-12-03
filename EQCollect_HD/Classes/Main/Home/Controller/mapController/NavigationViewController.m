@@ -733,11 +733,14 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     if ([btn.titleLabel.text isEqualToString:@"前天"]) {
         NSString *value = [NSString stringWithFormat:@"%@%%",beforeYesterdaystr];
         NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
-        CLLocationCoordinate2D coordinates[4];
-        coordinates[0] = CLLocationCoordinate2DMake(30.179988, 120.120939);
-        coordinates[1] = CLLocationCoordinate2DMake(30.279988, 120.020939);
-        coordinates[2] = CLLocationCoordinate2DMake(30.379988, 120.520939);
-        coordinates[3] = CLLocationCoordinate2DMake(30.479988, 120.420939);
+        
+        NSUInteger num = array.count;
+        CLLocationCoordinate2D coordinates[num];
+        for (int i = 0;i < num; i++) {
+            TrackModel *model = array[i];
+            coordinates[i] = CLLocationCoordinate2DMake([model.lat doubleValue], [model.lon doubleValue]);
+            NSLog(@"%f  %f",[model.lat doubleValue],[model.lon doubleValue]);
+        }
         polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
         
     }else if ([btn.titleLabel.text isEqualToString:@"昨天"]){
@@ -745,12 +748,21 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
         NSString *value = [NSString stringWithFormat:@"%@%%",yesterdaystr];
         NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
         
-        CLLocationCoordinate2D coordinates[4];
-        coordinates[0] = CLLocationCoordinate2DMake(30.579988, 120.110939);
-        coordinates[1] = CLLocationCoordinate2DMake(30.670088, 120.620989);
-        coordinates[2] = CLLocationCoordinate2DMake(30.979944, 120.520939);
-        coordinates[3] = CLLocationCoordinate2DMake(30.379988, 120.300939);
+        NSUInteger num = array.count;
+        CLLocationCoordinate2D coordinates[num];
+        for (int i = 0;i < num; i++) {
+            TrackModel *model = array[i];
+            coordinates[i] = CLLocationCoordinate2DMake([model.lat doubleValue], [model.lon doubleValue]);
+            NSLog(@"%f  %f",[model.lat doubleValue],[model.lon doubleValue]);
+        }
         polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
+
+//        CLLocationCoordinate2D coordinates[4];
+//        coordinates[0] = CLLocationCoordinate2DMake(30.579988, 120.110939);
+//        coordinates[1] = CLLocationCoordinate2DMake(30.670088, 120.620989);
+//        coordinates[2] = CLLocationCoordinate2DMake(30.979944, 120.520939);
+//        coordinates[3] = CLLocationCoordinate2DMake(30.379988, 120.300939);
+//        polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
 
     }else{
         NSString *value = [NSString stringWithFormat:@"%@%%",todaystr];

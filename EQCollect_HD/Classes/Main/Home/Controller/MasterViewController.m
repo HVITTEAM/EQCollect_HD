@@ -60,21 +60,21 @@
     }
     
     if (indexPath.section ==0) {
-        cell.textLabel.text = @"个人中心";
-        cell.imageView.image = [UIImage imageNamed:@"personCenter"];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }else if (indexPath.section ==1){
         cell.textLabel.text = @"调查点管理";
         cell.imageView.image = [UIImage imageNamed:@"surveyPoints"];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }else if(indexPath.section == 2){
-        cell.textLabel.text = @"系统设置";
-        cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }else if(indexPath.section ==3){
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }else if (indexPath.section ==1){
         cell.textLabel.text = @"地图导航";
         cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else if(indexPath.section == 2){
+        cell.textLabel.text = @"个人中心";
+        cell.imageView.image = [UIImage imageNamed:@"personCenter"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+     }else if(indexPath.section ==3){
+         cell.textLabel.text = @"系统设置";
+         cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
+         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
 }
@@ -83,25 +83,23 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0){
-        PersonCenterController *personView = [[PersonCenterController alloc] init];
-        UINavigationController  *nav = [[UINavigationController alloc] initWithRootViewController:personView];
-        nav.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:nav animated:YES completion:nil];
 
     }else if (indexPath.section == 1){
-    
-    }
-    else if (indexPath.section == 2){
-        SettingViewController *settingView = [[SettingViewController alloc] init];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingView];
-        nav.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:nav animated:YES completion:nil];
-    }else if (indexPath.section == 3){
         NavigationViewController *VC = [[NavigationViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:VC];
         navi.modalTransitionStyle = UIModalPresentationFullScreen;
         [self presentViewController:navi animated:YES completion:nil];
-        
+    }
+    else if (indexPath.section == 2){
+        PersonCenterController *personView = [[PersonCenterController alloc] init];
+        UINavigationController  *nav = [[UINavigationController alloc] initWithRootViewController:personView];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:nav animated:YES completion:nil];
+    }else if (indexPath.section == 3){
+        SettingViewController *settingView = [[SettingViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingView];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:nav animated:YES completion:nil];
     }
 }
 

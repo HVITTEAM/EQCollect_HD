@@ -83,11 +83,13 @@
     HMCommonTextfieldItem *userccount = [HMCommonTextfieldItem itemWithTitle:@"帐号"];
     userccount.placeholder = @"请输入帐号";
     userccount.textString = _userinfo.userccount;
+    userccount.rightText.userInteractionEnabled = NO;
     //userccount.textString = @"123456";
     
     HMCommonTextfieldItem *username = [HMCommonTextfieldItem itemWithTitle:@"名称"];
     username.placeholder = @"请输入名称";
     username.textString = _userinfo.username;
+    username.rightText.userInteractionEnabled = NO;
     //username.textString = @" admin";
     
 //    HMCommonTextfieldItem *userpwd = [HMCommonTextfieldItem itemWithTitle:@"密码"];
@@ -99,6 +101,7 @@
     HMCommonTextfieldItem *usertel = [HMCommonTextfieldItem itemWithTitle:@"电话"];
     usertel.placeholder = @"请输入电话";
     usertel.textString = _userinfo.usertel;
+    usertel.rightText.userInteractionEnabled = NO;
     //usertel.textString = @"88888888";
 
 //    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];

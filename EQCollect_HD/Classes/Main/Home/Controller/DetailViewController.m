@@ -9,10 +9,13 @@
 #import "PointinfoViewController.h"
 #import "SurveyPointCell.h"
 #import "MessageViewController.h"
+#import "AppDelegate.h"
+#import "EarthInfo.h"
 
 @interface DetailViewController ()<UISplitViewControllerDelegate,UISearchBarDelegate,InfoCellDelegate,PointinfoDelegate>
 @property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
 @property (nonatomic, retain) NSArray *filtedData;        //需要显示的调查点信息
+@property (nonatomic, strong) MBProgressHUD *mbprogress;
 
 @end
 
@@ -198,30 +201,70 @@
 
 }
 
-//上传数据
+//上传按钮被点击
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
-    MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-    
-     NSString * intensity  = [self switchRomeNumToNum:model.pointintensity];
-        //创建字典对象作为上传参数
-     NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                     model.pointid,@"pointid",
-                                     model.earthid,@"earthid",
-                                     model.pointlocation,@"location",
-                                     model.pointlon, @"lon",
-                                     model.pointlat, @"lat",
-                                     model.pointname,@"name",
-                                     //model.pointtime,@"pointtime",
-                                     model.pointgroup,@"group",
-                                     model.pointperson,@"person",
-                                     intensity,@"intensity",
-                                     model.pointcontent,@"content",
-                                     //upload,@"upload",
-                                     nil];
-    
-    
+    NSString *earthiddefault = kearthidDefault;
+    if ([model.earthid isEqualToString:earthiddefault]) {
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        NSString *earthid = appDelegate.earthinfo.earthid;
+        if (!earthid) {
+            [self getEarthidWithIndexPath:indexPath];
+        }else{
+             model.earthid = earthid;
+            [self uploadPointinfoWithIndexPath:indexPath];
+        }
+    }else{
+       [self uploadPointinfoWithIndexPath:indexPath];
+    }
+}
+
+-(void)getEarthidWithIndexPath:(NSIndexPath *)indexPath
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"获取 earthid   %@",responseObject);
+        NSArray *responseArray = (NSArray *)responseObject;
+        if (!responseArray || responseArray.count == 0) {
+            [self.mbprogress removeFromSuperview];
+            [[[UIAlertView alloc] initWithTitle:nil message:@"没有获取到地震编号,请确定本次预案已经开启" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+        }else{
+            //成功
+            AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            appdelegate.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
+            PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+            model.earthid = appdelegate.earthinfo.earthid;
+            [self uploadPointinfoWithIndexPath:indexPath];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.mbprogress removeFromSuperview];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"没有获取到地震编号,请检查网络是否异常" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+    }];
+}
+
+-(void)uploadPointinfoWithIndexPath:(NSIndexPath *)indexPath
+{
+
+    PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
+    NSString * intensity  = [self switchRomeNumToNum:model.pointintensity];
+    //创建字典对象作为上传参数
+    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                        model.pointid,@"pointid",
+                                        model.earthid,@"earthid",
+                                        model.pointlocation,@"location",
+                                        model.pointlon, @"lon",
+                                        model.pointlat, @"lat",
+                                        model.pointname,@"name",
+                                        //model.pointtime,@"pointtime",
+                                        model.pointgroup,@"group",
+                                        model.pointperson,@"person",
+                                        intensity,@"intensity",
+                                        model.pointcontent,@"content",
+                                        //upload,@"upload",
+                                        nil];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -235,12 +278,13 @@
             });
         }
         
-        [mbprogress removeFromSuperview];
+        [self.mbprogress removeFromSuperview];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"数据上传失败:");
-        [mbprogress removeFromSuperview];
+        [self.mbprogress removeFromSuperview];
     }];
-    
+
+
 }
 
 //提示

@@ -17,7 +17,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong ,nonatomic) EarthInfo *earthinfo;                //地震信息
 @property (assign, nonatomic) CLLocationCoordinate2D currentCoordinate;          //当前位置信息
-@property (strong, atomic) NSMutableString *currrentaddr;        //当前地址
+//@property (strong, atomic) NSMutableString *currrentaddr;        //当前地址
 -(void)addTimer;
 -(void)removeTimer;
 @end

@@ -24,7 +24,7 @@
     LocationHelper *_locationHelp;
     BOOL _isFirst;
 }
--(void)setupLocationManager;
+//-(void)setupLocationManager;
 @end
 
 @implementation AppDelegate
@@ -46,9 +46,6 @@
     
     //开启定位
     [self setupLocationManager];
-    
-    //获取 earthid
-    [self getEarthid];
     
     //导航语音
     [self configIFlySpeech];
@@ -111,12 +108,11 @@
     [[IFlySpeechSynthesizer sharedInstance] setParameter:nil forKey:[IFlySpeechConstant TTS_AUDIO_PATH]];
 }
 
-
 -(void)setupLocationManager{
     _locationManager = [[AMapLocationManager alloc] init];
     if ([CLLocationManager locationServicesEnabled]) {
         _locationManager.delegate = self;
-        _locationManager.distanceFilter = 200.0;
+        _locationManager.distanceFilter = 20.0;
         _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             
         [_locationManager setPausesLocationUpdatesAutomatically:NO];
@@ -125,7 +121,7 @@
         [_locationManager startUpdatingLocation];
     }else{
         //失败
-        [self showAlertViewWithTitle:@"提醒" message:@"定位失败，请确定是否开启定位功能"];
+        [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"定位失败，请确定是否开启定位功能" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
     }
 }
 
@@ -155,29 +151,6 @@
 
 -(void)removeTimer{
     [_timer invalidate];
-}
-
--(void)getEarthid
-{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"获取 earthid   %@",responseObject);
-        NSArray *responseArray = (NSArray *)responseObject;
-        if (!responseArray || responseArray.count == 0) {
-            [self showAlertViewWithTitle:nil message:@"获取地震编号失败,请确定本次预案已启动。可在个人中里重新获取"];
-        }else{
-            //成功
-            self.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"获取 earthid 失败");
-        [self showAlertViewWithTitle:nil message:@"无法连接服务器,获取地震编号失败。可在个人中里重新获取"];
-    }];
-}
-
--(void)showAlertViewWithTitle:(NSString *)title message:(NSString *)msg
-{
-    [[[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
 }
 
 @end

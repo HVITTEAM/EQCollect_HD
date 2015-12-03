@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MWPhotoBrowser.h"
+//#import "MWPhotoBrowser.h"
 #import "CommonUIImagePickerController.h"
 #import "PictureVO.h"
 #import <AVFoundation/AVFoundation.h>
@@ -15,12 +15,12 @@
 
 typedef void(^changeHeight)(CGFloat);
 
-@interface ImageCollectionView : UICollectionViewController<UIAlertViewDelegate,UIImagePickerControllerDelegate,MWPhotoBrowserDelegate,UzysAssetsPickerControllerDelegate,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate>
+@interface ImageCollectionView : UICollectionViewController<UIAlertViewDelegate,UIImagePickerControllerDelegate,UzysAssetsPickerControllerDelegate,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate>
 
 @property (nonatomic, retain) NSMutableArray *dataProvider;
 
-@property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) NSMutableArray *thumbs;
+//@property (nonatomic, strong) NSMutableArray *photos;
+//@property (nonatomic, strong) NSMutableArray *thumbs;
 
 @property (nonatomic, retain) UINavigationController *nav;
 /**页面方式**/

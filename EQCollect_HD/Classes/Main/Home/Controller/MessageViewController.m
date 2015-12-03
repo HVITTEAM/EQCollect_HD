@@ -67,11 +67,11 @@
 
         //创建字典对象作为上传参数
         NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                            self.phoneNumTextField,@"msgtel",
+                                            self.phoneNumTextField.text,@"msgtel",
                                             self.contentTextView.text,@"msgcontent",
                                             self.pointModel.pointid,@"pointid",
                                             nil];
-        
+        NSLog(@"%@",parameters1);
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:URL_addmsg parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"数据上传成功: %@", responseObject);

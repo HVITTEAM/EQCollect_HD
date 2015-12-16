@@ -69,10 +69,9 @@
     _navHeight = kNormalNavHeight;
     
     _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    self.navigationItem.rightBarButtonItem = _rigthItem;
-//    if (![self.damageinfo.upload isEqualToString:@"1"]) {
-//        self.navigationItem.rightBarButtonItem = _rigthItem;
-//    }
+    if ([self.damageinfo.upload isEqualToString:kdidNotUpload]) {
+        self.navigationItem.rightBarButtonItem = _rigthItem;
+    }
     
     if (self.actionType == kActionTypeAdd) {
         //设置导航栏按钮
@@ -80,6 +79,7 @@
         self.navigationItem.leftBarButtonItem = leftItem;
         
         _rigthItem.title = @"确定";
+        self.navigationItem.rightBarButtonItem = _rigthItem;
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
@@ -183,7 +183,7 @@
         
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM-dd HH:mm"];
+        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.damagetimeTextF.text = [formatter stringFromDate:date];
     }
 }
@@ -293,27 +293,19 @@
     if (self.actionType == kActionTypeShow) {
         self.navigationItem.rightBarButtonItem.title = @"确定";
         self.actionType = kactionTypeEdit;
+    }else if(self.actionType == kActionTypeAdd){
+        //判断是否有文本框为空，有空则返回并提示
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(addDamageinfo)];
+        }
     }else{
-        if (self.actionType == kActionTypeAdd) {
-            //判断是否有文本框为空，有空则返回并提示
-            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-                [self showMBProgressHUDWithSel:@selector(addDamageinfo)];
-            }
-        }else{
-            //判断是否有文本框为空，有空则返回并提示
-            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-                
-                if ([self.damageinfo.upload isEqualToString:kdidUpload]) {
-                    [self showMBProgressHUDWithSel:@selector(updateNetWorkDamageInfo)];
-                }else{
-                    [self showMBProgressHUDWithSel:@selector(updateDamageinfo)];
-                    self.actionType = kActionTypeShow;
-                }
-                
-                //[self.view endEditing:YES];
-                self.navigationItem.rightBarButtonItem.title = @"编辑";
-                
-            }
+        //判断是否有文本框为空，有空则返回并提示
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            
+            [self showMBProgressHUDWithSel:@selector(updateDamageinfo)];
+            self.actionType = kActionTypeShow;
+            //[self.view endEditing:YES];
+            self.navigationItem.rightBarButtonItem.title = @"编辑";
         }
     }
 }
@@ -426,63 +418,6 @@
             [self.delegate updateDamageinfoSuccess:self];
         }
     }
-}
-
-
--(void)updateNetWorkDamageInfo
-{
-    //防止异步加载图片出错
-    imgview.isExitThread = YES;
-    
-    NSString *damageid = self.damageinfo.damageid;
-    NSString *damagetime = self.damagetimeTextF.text;
-    NSString *damageaddress = self.damageaddressTextF.text;
-    NSString *damageintensity0 = self.damageintensityTextF.text;
-    NSString *damageintensity = [self switchRomeNumToNum:self.damageintensityTextF.text];
-    NSString *zrcorxq = self.zrcorxqTextF.text;
-    NSString *dworzh = self.dworzhTextF.text;
-    NSString *fortificationintensity0 = self.fortificationintensityTextF.text;
-    NSString *fortificationintensity = [self switchRomeNumToNum:self.fortificationintensityTextF.text];
-    NSString *damagesituation = self.damagesituationTextF.text;
-    NSString *damageindex = self.damageindexTextF.text;
-    NSString *housetype = self.houseTypeTextF.text;
-    NSString *pointid = self.damageinfo.pointid;
-    NSString *upload = self.damageinfo.upload;
-    
-    //创建字典对象作为上传参数
-    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                 damageid,@"damageid",
-                                 //model.damagetime,@"damagetime",
-                                 damageaddress,@"damageaddress",
-                                 damageintensity, @"damageintensity",
-                                 zrcorxq, @"zrcorxq",
-                                 dworzh,@"dworzh",
-                                 fortificationintensity,@"fortificationintensity",
-                                 damagesituation,@"damagesituation",
-                                 damageindex,@"damageindex",
-                                 housetype,@"housetype",
-                                 pointid,@"pointid",
-                                 //@"0",@"upload",
-                                 nil];
-    
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:URL_updatedamage parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"数据上传成功: %@", responseObject);
-        //上传数据成功则更新本地数
-        
-        parameters1[@"damagetime"] = damagetime;
-        parameters1[@"upload"] = upload;
-        parameters1[@"damageintensity"] = damageintensity0;
-        parameters1[@"fortificationintensity"] = fortificationintensity0;
-        
-        BOOL result = [[DamageinfoTableHelper sharedInstance]updateDataWith:parameters1];
-        if (result) {
-            self.actionType = kActionTypeShow;
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"数据上传失败:");
-    }];
 }
 
 -(NSString *)switchRomeNumToNum:(NSString *)romeNum

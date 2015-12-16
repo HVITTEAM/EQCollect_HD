@@ -140,7 +140,7 @@
     //创建字典对象作为上传参数
     NSDictionary *parameters1 = [[NSDictionary alloc] initWithObjectsAndKeys:
                           model.abnormalid,@"abnormalid",
-                          //model.abnormaltime,@"abnormaltime",
+                          model.abnormaltime,@"abnormaltime",
                           model.informant,@"informant",
                           intensity, @"abnormalintensity",
                           model.groundwater, @"groundwater",

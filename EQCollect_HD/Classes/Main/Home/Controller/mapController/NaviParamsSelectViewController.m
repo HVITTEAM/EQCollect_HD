@@ -168,7 +168,7 @@ typedef NS_ENUM(NSInteger, SelectPoint)
 //实现正向地理编码的回调函数
 - (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response
 {
-    NSLog(@"正向地理编码结果数量%d",response.geocodes.count);
+    //NSLog(@"正向地理编码结果数量%d",response.geocodes.count);
     if(response.geocodes.count == 0){
         return;
     }

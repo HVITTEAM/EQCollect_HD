@@ -9,8 +9,8 @@
 #import "PersonCenterController.h"
 #import "AdminTableHead.h"
 #import "LocationHelper.h"
-//#import "EQMapViewController.h"
 #import "NavigationViewController.h"
+#import "NoteViewController.h"
 
 @interface MasterViewController ()
 
@@ -45,7 +45,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,7 +75,11 @@
          cell.textLabel.text = @"系统设置";
          cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
          cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
+     }else{
+         cell.textLabel.text = @"注意事项";
+         cell.imageView.image = [UIImage imageNamed:@"settingIcon"];
+         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+     }
     return cell;
 }
 
@@ -100,6 +104,12 @@
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingView];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
+    } else{
+        NoteViewController *noteVC = [[NoteViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:noteVC];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:nav animated:YES completion:nil];
+
     }
 }
 

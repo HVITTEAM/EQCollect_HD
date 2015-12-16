@@ -23,5 +23,4 @@
 
 //更新当前界面数据
 -(void)updatePointinfo;
--(void)updateNetWorkPointInfo;
 @end

@@ -79,7 +79,7 @@
     _navHeight = kNormalNavHeight;
     
     _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    if (![self.reactioninfo.upload isEqualToString:@"1"]) {
+    if ([self.reactioninfo.upload isEqualToString:kdidNotUpload]) {
         self.navigationItem.rightBarButtonItem = _rigthItem;
     }
 
@@ -88,6 +88,7 @@
         self.navigationItem.leftBarButtonItem = leftItem;
         
         _rigthItem.title = @"确定";
+         self.navigationItem.rightBarButtonItem = _rigthItem;
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
@@ -208,7 +209,7 @@
         
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM-dd HH:mm"];
+        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.reactiontimeTextF.text = [formatter stringFromDate:date];
     }
 }
@@ -322,37 +323,18 @@
     if (self.actionType == kActionTypeShow) {
         self.navigationItem.rightBarButtonItem.title = @"确定";
         self.actionType = kactionTypeEdit;
+    }else if(self.actionType == kActionTypeAdd){
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(addReactioninfo)];
+        }
     }else{
-        if (self.actionType == kActionTypeAdd) {
-            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-                [self showMBProgressHUDWithSel:@selector(addReactioninfo)];
-            }
-        }else{
-            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-                [self showMBProgressHUDWithSel:@selector(updateReactioninfo)];
-                [self.view endEditing:YES];
-                self.navigationItem.rightBarButtonItem.title = @"编辑";
-                self.actionType = kActionTypeShow;
-            }
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(updateReactioninfo)];
+            //[self.view endEditing:YES];
+            self.navigationItem.rightBarButtonItem.title = @"编辑";
+            self.actionType = kActionTypeShow;
         }
     }
-//    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"编辑"]) {
-//        self.navigationItem.rightBarButtonItem.title = @"确定";
-//        self.actionType = kactionTypeEdit;
-//    }else{
-//        if (self.actionType == kActionTypeAdd) {
-//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-//                [self showMBProgressHUDWithSel:@selector(addReactioninfo)];
-//            }
-//        }else{
-//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-//                [self showMBProgressHUDWithSel:@selector(updateReactioninfo)];
-//                [self.view endEditing:YES];
-//                self.navigationItem.rightBarButtonItem.title = @"编辑";
-//                self.actionType = kActionTypeShow;
-//            }
-//        }
-//    }
 }
 
 /**

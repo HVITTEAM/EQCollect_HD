@@ -14,11 +14,12 @@
 #import "ChooseIntensityViewController.h"
 #import "EarthInfo.h"
 #import "AppDelegate.h"
+#import "ImageCollectionView.h"
 
 
 @interface PointinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate,locationHelperDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidTopCons;        //调查点编号TextField的顶部约束
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pointidWidthCons;      //调查点编号TextField的宽约束
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
 @property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
 
@@ -44,6 +45,7 @@
 {
     CGFloat _navHeight;       // 导航栏与状态栏总的高度
     LocationHelper *_locationHelp;
+    ImageCollectionView *imgview;
 }
 
 - (void)viewDidLoad
@@ -55,6 +57,7 @@
     self.containerV = self.containerView;
     
     [self initPointinfoVC];
+    [self initImageCollectionView];
     [self showPointinfoData];
 }
 
@@ -101,7 +104,48 @@
     //设置顶部高约束
     self.pointidTopCons.constant = 20+_navHeight;
 
+    [self setActionType:self.actionType];
 }
+
+/**
+ *  初始化ImageCollectionView
+ */
+-(void)initImageCollectionView
+{
+    //创建图片视图
+    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
+    imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+    
+    imgview.showType = self.actionType;
+    if (self.actionType == kActionTypeAdd) {
+        imgview.nav = self.navigationController;
+    }else{
+       imgview.nav = (UINavigationController *)self.preVc;
+    }
+    
+    //[self addChildViewController:imgview];
+    [self.containerView addSubview:imgview.collectionView];
+    
+    //设置 block，当图片数发生变化时会回调
+    __weak typeof(self) weakSelf = self;
+    __weak ImageCollectionView * weakImgview = imgview;
+    imgview.changeHeightBlock = ^(CGFloat viewheight){
+        weakSelf.imgViewHeightCons.constant = viewheight;
+        [weakImgview.collectionView updateConstraintsIfNeeded];
+    };
+    
+    //设置图片视图约束
+    imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *dictViews = @{
+                                @"pointcontentTextV":self.pointcontentTextV,
+                                @"imgview":imgview.collectionView,
+                                };
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointcontentTextV]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
+    [imgview.collectionView addConstraint:self.imgViewHeightCons];
+}
+
 
 /**
  *  显示数据
@@ -121,6 +165,13 @@
         self.pointPersonTextF.text = self.pointinfo.pointperson;
         self.pointintensityTextF.text = self.pointinfo.pointintensity;
         self.pointcontentTextV.text = self.pointinfo.pointcontent;
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSMutableArray *images = [self getImagesWithReleteId:self.pointinfo.pointid releteTable:@"POINTINFOTAB"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                imgview.dataProvider = images;
+            });
+        });
     }else
     {
         self.pointidTextF.text = [self createUniqueIdWithAbbreTableName:@"DC"];
@@ -142,7 +193,7 @@
         
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM-dd HH:mm"];
+        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.pointtimeTextF.text = [formatter stringFromDate:date];
         
         _locationHelp = [[LocationHelper alloc] init];
@@ -152,27 +203,6 @@
         self.pointlatTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.latitude];
         self.pointlonTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.longitude];
      }
-}
-
--(void)getEarthid
-{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"获取 earthid   %@",responseObject);
-        NSArray *responseArray = (NSArray *)responseObject;
-        if (!responseArray || responseArray.count == 0) {
-            self.earthidTextF.text = kearthidDefault;
-            [[[UIAlertView alloc] initWithTitle:nil message:@"没有获取到地震编号" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
-        }else{
-            //成功
-            AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            appdelegate.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
-            self.earthidTextF.text = appdelegate.earthinfo.earthid;
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"获取 earthid 失败");
-        
-    }];
 }
 
 /**
@@ -187,14 +217,12 @@
             txt.userInteractionEnabled = NO;
         }
     }else{
-        if ([self.pointinfo.upload isEqualToString:kdidUpload]) {
-            self.pointintensityTextF.userInteractionEnabled = YES;
-        }else{
-            for (UIView *txt in self.textInputViews) {
-                txt.userInteractionEnabled = YES;
-            }
+        for (UIView *txt in self.textInputViews) {
+            txt.userInteractionEnabled = YES;
         }
     }
+    
+    imgview.showType = actionType;
 }
 
 #pragma mark UITextFieldDelegate方法
@@ -258,6 +286,29 @@
     inputView.text = itemStr;
 }
 
+/**
+ * 地震编号
+ **/
+-(void)getEarthid
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:URL_isstart parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"获取 earthid   %@",responseObject);
+        NSArray *responseArray = (NSArray *)responseObject;
+        if (!responseArray || responseArray.count == 0) {
+            self.earthidTextF.text = kearthidDefault;
+            [[[UIAlertView alloc] initWithTitle:nil message:@"没有获取到地震编号" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+        }else{
+            //成功
+            AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            appdelegate.earthinfo = [EarthInfo objectWithKeyValues:[responseObject firstObject]];
+            self.earthidTextF.text = appdelegate.earthinfo.earthid;
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"获取 earthid 失败");
+        
+    }];
+}
 
 /**
  * 新增调查点信息
@@ -307,9 +358,13 @@
                 [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
             });
           }else{
+            [self saveImages:imgview.dataProvider releteId:pointid releteTable:@"POINTINFOTAB"];
             dispatch_async(dispatch_get_main_queue(), ^{
-                
                 [self.view endEditing:YES];
+                //清空imageCollectionView的数据
+                imgview.dataProvider = [[NSMutableArray alloc] init];
+                //防止循环引用导致无法释放当前这个控制器
+                imgview.nav = nil;
                 
                 if ([self.delegate respondsToSelector:@selector(addPointinfoSuccess:)]) {
                     [self.delegate addPointinfoSuccess:self];
@@ -373,6 +428,9 @@
                 [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
             });
         }else{
+            
+            [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"POINTINFOTAB" Releteid:self.pointinfo.pointid];
+            [self saveImages:imgview.dataProvider releteId:pointid releteTable:@"POINTINFOTAB"];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.view endEditing:YES];
                 
@@ -380,78 +438,10 @@
                     [self.delegate updatePointinfoSuccess:self];
                 }
              });
-                   }
+          }
     } completionBlock:^{
         [hud removeFromSuperview];
         //[hud release];
-    }];
-}
-
--(void)updateNetWorkPointInfo
-{
-    MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-    NSString *pointid = self.pointinfo.pointid;
-    NSString *earthid = self.earthidTextF.text;
-    NSString *pointlocation = self.pointlocationTextF.text;
-    NSString *pointlon = self.pointlonTextF.text;
-    NSString *pointlat = self.pointlatTextF.text;
-    NSString *pointname = self.pointnameTextF.text;
-    NSString *pointtime = self.pointtimeTextF.text;
-    NSString *pointgroup = self.pointgroupTextF.text;
-    NSString *pointperson = self.pointPersonTextF.text;
-    
-    NSString * pointintensity0  = self.pointintensityTextF.text;
-    NSString * pointintensity  = [self switchRomeNumToNum:self.pointintensityTextF.text];
-    
-    NSString *pointcontent = self.pointcontentTextV.text;
-    NSString *upload = self.pointinfo.upload;
-
-    //创建字典对象作为上传参数
-    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                        pointid,@"pointid",
-                                        earthid,@"earthid",
-                                        pointlocation,@"location",
-                                        pointlon, @"lon",
-                                        pointlat, @"lat",
-                                        pointname,@"name",
-                                        //model.pointtime,@"pointtime",
-                                        pointgroup,@"group",
-                                        pointperson,@"person",
-                                        pointintensity,@"intensity",
-                                        pointcontent,@"content",
-                                        //upload,@"upload",
-                                        nil];
-    
-    //创建字典对象作为本地保存
-    NSMutableDictionary *parameters2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                        pointid,@"pointid",
-                                        earthid,@"earthid",
-                                        pointlocation,@"pointlocation",
-                                        pointlon, @"pointlon",
-                                        pointlat, @"pointlat",
-                                        pointname,@"pointname",
-                                        pointtime,@"pointtime",
-                                        pointgroup,@"pointgroup",
-                                        pointperson,@"pointperson",
-                                        pointintensity0,@"pointintensity",
-                                        pointcontent,@"pointcontent",
-                                        upload,@"upload",
-                                        nil];
-    
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:URL_updatepoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"数据上传成功: %@", responseObject);
-        //上传数据成功则更新本地数
-        BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:parameters2];
-        if (result) {
-            self.actionType = kActionTypeShow;
-        }
-        [mbprogress removeFromSuperview];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"数据上传失败:%@",error);
-        [mbprogress removeFromSuperview];
     }];
 }
 
@@ -500,6 +490,13 @@
 
 -(void)back
 {
+    //清空imageCollectionView的数据
+    imgview.dataProvider = [[NSMutableArray alloc] init];
+    //防止循环引用导致无法释放当前这个控制器
+    imgview.nav = nil;
+    //防止异步加载图片出错
+    imgview.isExitThread = YES;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

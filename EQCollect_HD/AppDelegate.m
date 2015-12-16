@@ -50,16 +50,18 @@
     //导航语音
     [self configIFlySpeech];
 
-    if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
-    {
-        NSLog(@"已经存在用户");
-        [HMControllerTool setRootViewController];
-    }
-    else
-    {
-        NSLog(@"新登录用户");
-        [HMControllerTool setLoginViewController];
-    }
+    [HMControllerTool setLoginViewController];
+    
+//    if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
+//    {
+//        NSLog(@"已经存在用户");
+//        [HMControllerTool setRootViewController];
+//    }
+//    else
+//    {
+//        NSLog(@"新登录用户");
+//        
+//    }
     
     return YES;
 }

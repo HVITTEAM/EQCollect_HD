@@ -15,6 +15,9 @@
 #import "TrackTableHelper.h"
 #import "TrackModel.h"
 #import "SWYMapTypeSelectView.h"
+#import "AppDelegate.h"
+#import "MemberAnnotation.h"
+#import "UserModel.h"
 
 #define kSetingViewHeight 215
 
@@ -104,6 +107,7 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     [self initNaviViewController];
     [self initBottomBar];
     [self initControlButton];
+    [self fetchMemberLocation];
 }
 
 
@@ -356,13 +360,13 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     
     if ([annotation isKindOfClass:[NavPointAnnotation class]])
     {
-        static NSString *annotationIdentifier = @"annotationIdentifier";
+        static NSString *navPointAnnotationID = @"NavPointAnnotation";
         
-        MAPinAnnotationView *pointAnnotationView = (MAPinAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+        MAPinAnnotationView *pointAnnotationView = (MAPinAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:navPointAnnotationID];
         if (pointAnnotationView == nil)
         {
             pointAnnotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation
-                                                                  reuseIdentifier:annotationIdentifier];
+                                                                  reuseIdentifier:navPointAnnotationID];
         }
         
         pointAnnotationView.animatesDrop   = NO;
@@ -387,11 +391,11 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     }
     if ([annotation isKindOfClass:[MAPointAnnotation class]])
     {
-        static NSString *pointReuseIndentifier = @"MAPointAnnotationID";
-        MAPinAnnotationView*annotationView = (MAPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:pointReuseIndentifier];
+        static NSString *maPointAnnotationID = @"MAPointAnnotation";
+        MAPinAnnotationView*annotationView = (MAPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:maPointAnnotationID];
         if (annotationView == nil)
         {
-            annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:pointReuseIndentifier];
+            annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:maPointAnnotationID];
         }
         annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
         annotationView.animatesDrop = YES;        //设置标注动画显示，默认为NO
@@ -402,11 +406,11 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     }
     if ([annotation isKindOfClass:[POIAnnotation class]])
     {
-        static NSString *pointReuseIndentifier = @"POIAnnotationID";
-        MAPinAnnotationView*annotationView = (MAPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:pointReuseIndentifier];
+        static NSString *poiAnnotationID = @"POIAnnotation";
+        MAPinAnnotationView*annotationView = (MAPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:poiAnnotationID];
         if (annotationView == nil)
         {
-            annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:pointReuseIndentifier];
+            annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:poiAnnotationID];
         }
         annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
         annotationView.animatesDrop = YES;        //设置标注动画显示，默认为NO
@@ -415,6 +419,20 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
         annotationView.leftCalloutAccessoryView = accessoryView;
         return annotationView;
     }
+    
+    if ([annotation isKindOfClass:[MemberAnnotation class]]) {
+        static NSString *memberAnnotatioID = @"memberAnnotatio";
+        MAAnnotationView*annotationView = (MAAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:memberAnnotatioID];
+        if (annotationView == nil)
+        {
+            annotationView = (MAAnnotationView *)[[MAAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:memberAnnotatioID];
+        }
+        annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
+        annotationView.draggable = YES;        //设置标注可以拖动，默认为NO
+        annotationView.image = [UIImage imageNamed:@"navi_icon"];
+        return annotationView;
+    }
+    
     return nil;
 }
 
@@ -640,7 +658,6 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
 //实现正向地理编码的回调函数
 - (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response
 {
-     NSLog(@"%d",response.geocodes.count);
     if(response.geocodes.count == 0)
     {
         [[[UIAlertView alloc] initWithTitle:nil message:@"无法查询到地址，请更换内容后重试" delegate: nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
@@ -735,6 +752,9 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
         NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
         
         NSUInteger num = array.count;
+        if (num <= 0) {
+            return;
+        }
         CLLocationCoordinate2D coordinates[num];
         for (int i = 0;i < num; i++) {
             TrackModel *model = array[i];
@@ -749,6 +769,10 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
         NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
         
         NSUInteger num = array.count;
+        if (num <= 0) {
+            return;
+        }
+        
         CLLocationCoordinate2D coordinates[num];
         for (int i = 0;i < num; i++) {
             TrackModel *model = array[i];
@@ -757,18 +781,14 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
         }
         polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
 
-//        CLLocationCoordinate2D coordinates[4];
-//        coordinates[0] = CLLocationCoordinate2DMake(30.579988, 120.110939);
-//        coordinates[1] = CLLocationCoordinate2DMake(30.670088, 120.620989);
-//        coordinates[2] = CLLocationCoordinate2DMake(30.979944, 120.520939);
-//        coordinates[3] = CLLocationCoordinate2DMake(30.379988, 120.300939);
-//        polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
-
     }else{
         NSString *value = [NSString stringWithFormat:@"%@%%",todaystr];
         NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
         
         NSUInteger num = array.count;
+        if (num <= 0) {
+            return;
+        }
         CLLocationCoordinate2D coordinates[num];
         for (int i = 0;i < num; i++) {
             TrackModel *model = array[i];
@@ -843,6 +863,39 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
         selectView.delegate = self;
         [selectView showMapTypeViewToView:self.view position:CGPointMake(sender.x, CGRectGetMaxY(sender.frame))];
     }
+}
+
+
+-(void)fetchMemberLocation
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:URL_showusers parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSLog(@"navi----------------------%@",responseObject);
+        [self addMemberToMap:responseObject];
+        
+    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+        NSLog(@"navi----------------------%@",@"失败");
+    }];
+}
+
+-(void)addMemberToMap:(id)responseObject
+{
+    NSArray *objects = (NSArray *)responseObject;
+    if (objects.count == 0 || !objects) {
+        return;
+    }
+    
+    
+    NSMutableArray *annotations = [[NSMutableArray alloc] init];
+    UserModel *userInfor = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
+    for (NSDictionary *dict in objects) {
+        if ([dict[@"userid"] doubleValue] != [userInfor.userid doubleValue] ) {
+            MemberAnnotation *anno = [[MemberAnnotation alloc] initWithLon:[dict[@"lon"] floatValue] lat:[dict[@"lat"] floatValue] memberName:dict[@"name"] address:dict[@"useraddress"]];
+            [annotations addObject:anno];
+        }
+    }
+    [self.mapView addAnnotations:annotations];
+    [self.mapView showAnnotations:annotations animated:NO];
 }
 
 -(void)dealloc

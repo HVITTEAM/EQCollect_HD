@@ -16,6 +16,8 @@
 #import "AbnormalinfoViewController.h"
 #import "ReactioninfoViewController.h"
 #import "DamageinfoViewController.h"
+#import "OtherListViewController.h"
+#import "OtherViewController.h"
 
 @interface SurveyPointDetailViewController ()<QCSlideSwitchViewDelegate>
 {
@@ -29,6 +31,7 @@
 @property (strong,nonatomic)ReactioninfoListController *reactioninfoListVC;
 @property (strong,nonatomic)DamageinfoListController   *damageinfoListVC;
 @property (strong,nonatomic)PointinfoViewController *pointinfoVC;
+@property (strong,nonatomic)OtherListViewController *otherListVC;
 
 @end
 
@@ -53,9 +56,10 @@
     self.title = @"调查点详情";
     
     _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rigthItemTap:)];
-    //_rightItem.barButtonItemState = BarButtonItemStateShow;   //按钮的操作
-    self.navigationItem.rightBarButtonItem = _rightItem;
     
+    if ([self.pointinfo.upload isEqualToString:kdidNotUpload]) {
+        self.navigationItem.rightBarButtonItem = _rightItem;
+    }
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -65,6 +69,7 @@
     self.pointinfoVC = [[PointinfoViewController alloc] initWithNibName:@"PointinfoViewController" bundle:nil];
     self.pointinfoVC.title = @"调查点";
     self.pointinfoVC.pointinfo = self.pointinfo;
+    self.pointinfoVC.actionType = kActionTypeShow;
     self.pointinfoVC.preVc = self.navigationController;
     
     UISplitViewController *rootVC = (UISplitViewController *)[[UIApplication sharedApplication] keyWindow].rootViewController;
@@ -88,6 +93,14 @@
     [self.vcArray addObject:self.reactioninfoListVC];
     
     
+    self.otherListVC = [[OtherListViewController alloc] init];
+    self.otherListVC.title = @"其它";
+    self.otherListVC.nav = self.navigationController;
+    self.otherListVC.pointid = self.pointinfo.pointid;
+    self.otherListVC.pointUploadFlag = self.pointinfo.upload;
+    [self.vcArray addObject:self.otherListVC];
+    
+
     self.abnormalinfoListVC = [[AbnormalinfoListController alloc] initWithNibName:@"AbnormalinfoListController" bundle:nil];
     self.abnormalinfoListVC.title = @"宏观异常";
     self.abnormalinfoListVC.nav = self.navigationController;
@@ -95,9 +108,6 @@
     self.abnormalinfoListVC.pointUploadFlag = self.pointinfo.upload;
     [self.vcArray addObject:self.abnormalinfoListVC];
     
-
-    
-
 }
 
 /**
@@ -126,7 +136,7 @@
 #pragma mark SlideSwitchView协议方法
 -(NSUInteger)numberOfTab:(QCSlideSwitchView *)view
 {
-    return 4;
+    return 5;
 }
 
 - (UIViewController *)slideSwitchView:(QCSlideSwitchView *)view viewOfTab:(NSUInteger)number
@@ -138,11 +148,15 @@
 {
     if (number == 0) {
         _rightItem.title = @"编辑";
-        self.pointinfoVC.actionType = kActionTypeShow;
-        //_rightItem.barButtonItemState = BarButtonItemStateShow;
+        if ([self.pointinfo.upload isEqualToString:kdidNotUpload]) {
+            self.navigationItem.rightBarButtonItem = _rightItem;
+            self.pointinfoVC.actionType = kActionTypeShow;
+        }else{
+            self.navigationItem.rightBarButtonItem = nil;
+        }
     }else {
         _rightItem.title = @"新增";
-        //_rightItem.barButtonItemState = BarButtonItemStateAdd;
+        self.navigationItem.rightBarButtonItem = _rightItem;
     }
     _currentIndex = number;
 }
@@ -155,32 +169,10 @@
             self.pointinfoVC.actionType = kactionTypeEdit;
         }else if(self.pointinfoVC.actionType == kactionTypeEdit){
             _rightItem.title = @"编辑";
-            if ([self.pointinfoVC.pointinfo.upload isEqualToString:kdidUpload]) {
-                [self.pointinfoVC updateNetWorkPointInfo];
-            }else{
-                //更新数据
-                [self.pointinfoVC updatePointinfo];
-                self.pointinfoVC.actionType = kActionTypeShow;
-            }
-            
+            //更新数据
+            [self.pointinfoVC updatePointinfo];
+            self.pointinfoVC.actionType = kActionTypeShow;
         }
-
-//        if ([_rightItem.title isEqualToString:@"编辑"]) {
-//            _rightItem.title = @"确定";
-//            self.pointinfoVC.actionType = kactionTypeEdit;
-//            
-//        }else{
-//            _rightItem.title = @"编辑";
-//            
-//            if ([self.pointinfoVC.pointinfo.upload isEqualToString:@"1"]) {
-//                [self.pointinfoVC updateNetWorkPointInfo];
-//            }else{
-//                //更新数据
-//                [self.pointinfoVC updatePointinfo];
-//                self.pointinfoVC.actionType = kActionTypeShow;
-//            }
-//
-//        }
     }else if (_currentIndex == 1) {
         
         DamageinfoViewController *damageinfoVC1 = [[DamageinfoViewController alloc] init];
@@ -205,7 +197,19 @@
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
 
-    }else if (_currentIndex ==3){
+    }else if (_currentIndex == 3){
+        
+        OtherViewController *otherVC = [[OtherViewController alloc] init];
+        otherVC.actionType = kActionTypeAdd;
+        otherVC.pointid = self.pointinfo.pointid;
+        
+        otherVC.delegate = self.otherListVC;
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:otherVC];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:nav animated:YES completion:nil];
+    
+    }else if (_currentIndex ==4){
         
         AbnormalinfoViewController *abnormalVC1 = [[AbnormalinfoViewController alloc] init];
         abnormalVC1.actionType = kActionTypeAdd;

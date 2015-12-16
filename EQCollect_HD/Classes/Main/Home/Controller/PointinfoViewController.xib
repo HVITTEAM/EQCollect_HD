@@ -41,7 +41,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="677"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dqS-4z-0za">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="650"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="调查点编号" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NBa-R0-w0Z">
                                     <rect key="frame" x="105" y="20" width="187" height="30"/>
@@ -215,7 +215,7 @@
                                 <constraint firstItem="3VG-kc-3c9" firstAttribute="top" secondItem="DKY-A5-Q4w" secondAttribute="bottom" constant="30" id="Ebn-vA-t7I"/>
                                 <constraint firstItem="7Vr-hO-ZwT" firstAttribute="trailing" secondItem="omv-lp-C94" secondAttribute="trailing" id="GMZ-oZ-fIB"/>
                                 <constraint firstItem="Lm5-sJ-q38" firstAttribute="trailing" secondItem="E2X-Yk-O2P" secondAttribute="trailing" id="J1I-KF-zh3"/>
-                                <constraint firstAttribute="bottom" secondItem="3VG-kc-3c9" secondAttribute="bottom" id="JNg-wI-Jb1"/>
+                                <constraint firstAttribute="bottom" secondItem="3VG-kc-3c9" secondAttribute="bottom" constant="50" placeholder="YES" id="JNg-wI-Jb1"/>
                                 <constraint firstItem="NBa-R0-w0Z" firstAttribute="centerY" secondItem="QzN-yi-nfD" secondAttribute="centerY" constant="0.5" id="Jn0-JU-q0j"/>
                                 <constraint firstItem="7Vr-hO-ZwT" firstAttribute="trailing" secondItem="4H5-sH-4M5" secondAttribute="trailing" id="Jqz-WC-5Bd"/>
                                 <constraint firstItem="7Vr-hO-ZwT" firstAttribute="trailing" secondItem="DKY-A5-Q4w" secondAttribute="trailing" id="K73-xR-giy"/>

@@ -71,15 +71,15 @@
     //默认有状态栏，高度为64
     _navHeight = kNormalNavHeight;
     _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    self.navigationItem.rightBarButtonItem = _rigthItem;
-//    if (![self.abnormalinfo.upload isEqualToString:@"1"]) {
-//
-//    }
+    if (![self.abnormalinfo.upload isEqualToString:kdidNotUpload]) {
+         self.navigationItem.rightBarButtonItem = _rigthItem;
+    }
     
     if (self.actionType == kActionTypeAdd){
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         self.navigationItem.leftBarButtonItem = leftItem;
         _rigthItem.title = @"确定";
+         self.navigationItem.rightBarButtonItem = _rigthItem;
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
@@ -183,7 +183,7 @@
         
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM-dd HH:mm"];
+        [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.abnormaltimeTextF.text = [formatter stringFromDate:date];
     }
 }
@@ -318,47 +318,20 @@
     if (self.actionType == kActionTypeShow) {
         self.navigationItem.rightBarButtonItem.title = @"确定";
         self.actionType = kactionTypeEdit;
+    }else if(self.actionType == kActionTypeAdd){
+        //判断是否有文本框为空，有空则返回并提示
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
+        }
     }else{
-        if (self.actionType == kActionTypeAdd) {
-            //判断是否有文本框为空，有空则返回并提示
-            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-                [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
-            }
-        }else{
-            //判断是否有文本框为空，有空则返回并提示
-            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-                
-                if ([self.abnormalinfo.upload isEqualToString:kdidUpload]) {
-                    [self showMBProgressHUDWithSel:@selector(updateNetWorkAbnormalinfo)];
-                }else{
-                    [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
-                    self.actionType = kActionTypeShow;
-                }
-                
-                //[self.view endEditing:YES];
-                self.navigationItem.rightBarButtonItem.title = @"编辑";
-                
-            }
+        //判断是否有文本框为空，有空则返回并提示
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
+            self.actionType = kActionTypeShow;
+            //[self.view endEditing:YES];
+            self.navigationItem.rightBarButtonItem.title = @"编辑";
         }
     }
-    
-//    if (self.actionType == kActionTypeShow) {
-//        self.navigationItem.rightBarButtonItem.title = @"确定";
-//        self.actionType = kactionTypeEdit;
-//    }else{
-//        if (self.actionType == kActionTypeAdd) {
-//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-//                [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
-//            }
-//        }else{
-//            if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-//                self.navigationItem.rightBarButtonItem.title = @"编辑";
-//                [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
-//                [self.view endEditing:YES];
-//                self.actionType = kActionTypeShow;
-//            }
-//        }
-//    }
 }
 
 /**
@@ -471,61 +444,6 @@
             [self.delegate updateAbnormalinfoSuccess:self];
         }
     }
-}
-
-
--(void)updateNetWorkAbnormalinfo
-{
-    //防止异步加载图片出错
-    imgview.isExitThread = YES;
-    
-    NSString *abnormalid = self.abnormalidTextF.text;
-    NSString *abnormaltime = self.abnormaltimeTextF.text;
-    NSString *informant = self.informantTextF.text;
-    NSString *abnormalintensity0 = self.abnormalintensityTextF.text;
-    NSString *abnormalintensity = [self switchRomeNumToNum:self.abnormalintensityTextF.text];
-    NSString *groundwater = self.groundwaterTextF.text;
-    NSString *abnormalhabit = self.abnormalhabitTextF.text;
-    NSString *abnormalphenomenon = self.abnormalphenomenonTextF.text;
-    NSString *other = self.otherTextF.text;
-    NSString *implementation = self.implementationTextF.text;
-    NSString *abnormalanalysis = self.abnormalanalysisTextF.text;
-    NSString *credibly = self.crediblyTextF.text;
-    NSString *pointid = self.abnormalinfo.pointid;
-    NSString *upload = self.abnormalinfo.upload;
-    
-    //创建字典对象作为上传参数
-    NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                 abnormalid,@"abnormalid",
-                                 //model.abnormaltime,@"abnormaltime",
-                                 informant,@"informant",
-                                 abnormalintensity, @"abnormalintensity",
-                                 groundwater, @"groundwater",
-                                 abnormalhabit,@"abnormalhabit",
-                                 abnormalphenomenon,@"abnormalphenomenon",
-                                 other,@"other",
-                                 implementation,@"implementation",
-                                 abnormalanalysis,@"abnormalanalysis",
-                                 credibly,@"credibly",
-                                 pointid,@"pointid",
-                                 // @"0",@"upload",
-                                 nil];
-
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:URL_updatedamage parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"数据上传成功: %@", responseObject);
-        parameters1[@"abnormaltime"] = abnormaltime;
-        parameters1[@"upload"] = upload;
-        parameters1[@"abnormalintensity"] = abnormalintensity0;
-
-        //上传数据成功则更新本地数
-        BOOL result = [[AbnormalinfoTableHelper sharedInstance]updateDataWith:parameters1];
-        if (result) {
-            self.actionType = kActionTypeShow;
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"数据上传失败:");
-    }];
 }
 
 -(NSString *)switchRomeNumToNum:(NSString *)romeNum

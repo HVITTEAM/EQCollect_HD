@@ -97,7 +97,7 @@
             parameters[@"userlat"] = lat;
             parameters[@"userid"] = userinfo.userid;
             parameters[@"useraddress"] = response.regeocode.formattedAddress;
-            
+            NSLog(@"上传位置%@",parameters);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             [manager POST:URL_uploadlocation parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"userinfo数据上传成功: %@", responseObject);

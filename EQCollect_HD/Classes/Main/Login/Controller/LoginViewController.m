@@ -154,7 +154,7 @@
         UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:@"帐号或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alertV show];
     }
-  // [HMControllerTool setRootViewController];
+   //[HMControllerTool setRootViewController];
 }
 
 -(void)dealloc

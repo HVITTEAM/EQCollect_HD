@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UseHelpViewController">
@@ -17,7 +17,6 @@
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.无法定位怎么办?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHw-ZO-6w9">
                     <rect key="frame" x="20" y="98" width="123.5" height="18"/>
-                    <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -26,7 +25,6 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4E-XZ-UdN">
                             <rect key="frame" x="30" y="21" width="540" height="18.5"/>
-                            <animations/>
                             <attributedString key="attributedText">
                                 <fragment content="定位需要开启设备定位功能。进入“设置”-“隐私”-“定位服务”，打开定位服务且应用被允许">
                                     <attributes>
@@ -40,7 +38,6 @@
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u2a-ty-jhK">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="0.5" id="q3q-lW-0r3"/>
@@ -48,7 +45,6 @@
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5oh-pK-xOM">
                             <rect key="frame" x="30" y="49" width="540" height="18.5"/>
-                            <animations/>
                             <attributedString key="attributedText">
                                 <fragment content="iOS 系统在定位时需联网一次，定位成功后可关闭网络。因此确定第一次定位时网络联接正常">
                                     <attributes>
@@ -62,14 +58,12 @@
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jt-Cj-T7d">
                             <rect key="frame" x="0.0" y="82" width="600" height="1"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="0.5" id="vEG-d9-Vhj"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="u2a-ty-jhK" firstAttribute="top" secondItem="pJC-Hw-A9n" secondAttribute="top" id="3Gt-qP-lJA"/>
@@ -92,7 +86,6 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIh-JB-Uot">
                             <rect key="frame" x="30" y="21" width="540" height="61"/>
-                            <animations/>
                             <attributedString key="attributedText">
                                 <fragment content="地址解析服务指从已知的经纬度坐标到对应的地址描述。转换需要向服务器发送请求，有可能请求不成功或服务器发回的数据为空，从而导致无法获取地址。可手动输入或退出等待30秒后重新进入。">
                                     <attributes>
@@ -106,7 +99,6 @@
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Sk-Bo-QJe">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="0.5" id="fGv-h3-srm"/>
@@ -114,20 +106,17 @@
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqQ-eg-dkA">
                             <rect key="frame" x="30" y="91.5" width="540" height="0.0"/>
-                            <animations/>
                             <attributedString key="attributedText"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxo-YS-UFn">
                             <rect key="frame" x="0.0" y="106" width="600" height="1"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.86274509799999999" green="0.86274509799999999" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="0.5" id="7qM-2I-6Ni"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="4Sk-Bo-QJe" firstAttribute="leading" secondItem="Wc9-fY-mGN" secondAttribute="leading" id="7AF-ce-mzU"/>
@@ -147,19 +136,16 @@
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.创建调查点时无法自动获取地址?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KKr-uh-xb4">
                     <rect key="frame" x="20" y="229" width="230.5" height="18"/>
-                    <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="常见问题" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPd-VC-eDR">
                     <rect key="frame" x="20" y="60" width="60" height="18"/>
-                    <animations/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="cHw-ZO-6w9" firstAttribute="top" secondItem="DPd-VC-eDR" secondAttribute="bottom" constant="20" id="2xj-oc-hid"/>

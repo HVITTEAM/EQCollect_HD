@@ -11,6 +11,7 @@
 #import "MessageViewController.h"
 #import "AppDelegate.h"
 #import "EarthInfo.h"
+#import "OtherTableHelper.h"
 
 @interface DetailViewController ()<UISplitViewControllerDelegate,UISearchBarDelegate,InfoCellDelegate,PointinfoDelegate>
 @property (nonatomic, retain) NSMutableArray *dataProvider;        //所有的调查点信息
@@ -185,6 +186,16 @@
         }
     }
     
+    //删除其它数据
+    NSMutableArray *others = [[OtherTableHelper sharedInstance] selectDataByAttribute:@"pointid" value:pointInfo.pointid];
+    for (int i = 0; i<others.count; i++) {
+        OtherModel *otherModel = others[i];
+        result = [[PictureInfoTableHelper sharedInstance] deleteImageByReleteTable:@"OTHERTAB" Releteid:otherModel.otherid];
+        if (result) {
+            result = [[OtherTableHelper sharedInstance] deleteDataByAttribute:@"otherid" value:otherModel.otherid];
+        }
+    }
+    
     //删除调查点数据
     if (result) {
         result = [[PointinfoTableHelper sharedInstance] deleteDataByAttribute:@"pointid" value:pointInfo.pointid];
@@ -207,19 +218,21 @@
     self.mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-    NSString *earthiddefault = kearthidDefault;
-    if ([model.earthid isEqualToString:earthiddefault]) {
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        NSString *earthid = appDelegate.earthinfo.earthid;
-        if (!earthid) {
-            [self getEarthidWithIndexPath:indexPath];
-        }else{
-             model.earthid = earthid;
-            [self uploadPointinfoWithIndexPath:indexPath];
-        }
-    }else{
-       [self uploadPointinfoWithIndexPath:indexPath];
-    }
+//    NSString *earthiddefault = kearthidDefault;
+//    if ([model.earthid isEqualToString:earthiddefault]) {
+//        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//        NSString *earthid = appDelegate.earthinfo.earthid;
+//        if (!earthid) {
+//            [self getEarthidWithIndexPath:indexPath];
+//        }else{
+//             model.earthid = earthid;
+//            [self uploadPointinfoWithIndexPath:indexPath];
+//        }
+//    }else{
+//       [self uploadPointinfoWithIndexPath:indexPath];
+//    }
+    
+     [self uploadPointinfoWithIndexPath:indexPath];
 }
 
 -(void)getEarthidWithIndexPath:(NSIndexPath *)indexPath
@@ -250,15 +263,20 @@
 
     PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
     NSString * intensity  = [self switchRomeNumToNum:model.pointintensity];
+    
+    //获取要上传的图片
+    NSArray *imgs = [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"POINTINFOTAB" Releteid:model.pointid];
+
     //创建字典对象作为上传参数
     NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                         model.pointid,@"pointid",
-                                        model.earthid,@"earthid",
+                                        //model.earthid,@"earthid",
+                                        model.earthid,@"1",//测试
                                         model.pointlocation,@"location",
                                         model.pointlon, @"lon",
                                         model.pointlat, @"lat",
                                         model.pointname,@"name",
-                                        //model.pointtime,@"pointtime",
+                                        model.pointtime,@"time",
                                         model.pointgroup,@"group",
                                         model.pointperson,@"person",
                                         intensity,@"intensity",
@@ -268,23 +286,52 @@
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:URL_addpoint parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
         NSLog(@"数据上传成功: %@", responseObject);
-        //上传数据成功则更新本地数据
-        BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.pointid];
-        if (result) {
-            model.upload = kdidUpload;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-            });
+        if (imgs.count > 0) {
+            //信息上传成功后上传对应的图片
+            NSDictionary *parameters2 = @{@"id":model.pointid,@"from":@"point"};
+            [manager POST:URL_addimg parameters:parameters2 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                //循环添加要上传的图片
+                for (PictureMode *picmodel in imgs) {
+                    NSURL *filePath = [NSURL fileURLWithPath:picmodel.picturePath];
+                    NSData * imagedata = [NSData dataWithContentsOfURL:filePath];
+                    [formData appendPartWithFileData:imagedata name:@"file" fileName:[NSString stringWithFormat:@"%@.jpg",picmodel.pictureName] mimeType:@"image/jpeg"];
+                }
+            } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"图片上传成功: %@", responseObject);
+                //上传数据成功则更新本地数据
+                BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.pointid];
+                if (result) {
+                    model.upload = kdidUpload;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                    });
+                    [self.mbprogress removeFromSuperview];
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"图片上传失败:");
+                [self.mbprogress removeFromSuperview];
+            }];
+        }else{
+            NSLog(@"不用上传图片");
+            //上传数据成功则更新本地数据
+            BOOL result = [[PointinfoTableHelper sharedInstance]updateUploadFlag:kdidUpload ID:model.pointid];
+            if (result) {
+                model.upload = kdidUpload;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                });
+                [self.mbprogress removeFromSuperview];
+            }
         }
         
-        [self.mbprogress removeFromSuperview];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"数据上传失败:");
         [self.mbprogress removeFromSuperview];
     }];
-
-
+  
 }
 
 //提示

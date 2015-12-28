@@ -10,7 +10,6 @@
 
 //{"userid":1,"roleid":null,"userlat":null,"username":"管理员","jobname":null,"groupname":null,"userpwd":"$s0$e0801$HBCjcUcN0Am6pZfzA6CcdA==$Ssd5OpKOIdO+YsxZOci+bN10XKBmDNYLoFAI3Uje010=","userccount":"admin","jobid":null,"userlon":null,"groupid":null,"usertel":"88888888888","useraddress":null,"userstatus":"0"}
 
-
 @interface UserModel : NSObject
 
 @property (nonatomic, retain) NSString *userid;

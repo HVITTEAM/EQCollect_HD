@@ -9,12 +9,12 @@
 #import "SheetViewController.h"
 
 @interface SheetViewController ()
-{
-    NSNotification *_currentKeyboardNotification;   //保存键盘通知对象，键盘隐藏时为nil
-    NSInteger _lastDistance;                        //键盘遮挡文本时前一次向上移动的距离
-    
-    MBProgressHUD *_HUD;
-}
+
+@property(strong,nonatomic)NSNotification *currentKeyboardNotification;   //保存键盘通知对象，键盘隐藏时为nil
+
+@property(assign,nonatomic)NSInteger lastDistance;                        //键盘遮挡文本时前一次向上移动的距离
+
+@property(strong,nonatomic)MBProgressHUD *HUD;
 
 @end
 
@@ -37,16 +37,16 @@
 {
     [super viewWillDisappear:animated];
     //取消监听键盘事件
-    //[[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
+#pragma mark -- 协议方法 --
 #pragma mark UITextFieldDelegate方法
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     //如果为空，则表是当前键盘隐藏，系统会发出键盘通知
-    if (_currentKeyboardNotification !=nil) {
+    if (self.currentKeyboardNotification !=nil) {
         [self keyboardWillShow:_currentKeyboardNotification];
     }
 }
@@ -59,20 +59,22 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField.returnKeyType == UIReturnKeyNext) {
-        _currentInputViewTag +=1;
+        self.currentInputViewTag +=1;
         //根据tag获取下一个文本框
-        UIView *textF =[self.view viewWithTag:_currentInputViewTag];
+        UIView *textF =[self.view viewWithTag:self.currentInputViewTag];
         [textF becomeFirstResponder];
     }
+    
     if (textField.returnKeyType == UIReturnKeyDone) {
         [textField resignFirstResponder];
     }
+    
     return YES;
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _currentInputViewTag = textField.tag;
+    self.currentInputViewTag = textField.tag;
     return YES;
 }
 
@@ -80,23 +82,31 @@
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     //如果为空，则表是当前键盘隐藏，系统会发出键盘通知
-    if (_currentKeyboardNotification !=nil) {
-        [self keyboardWillShow:_currentKeyboardNotification];
+    if (self.currentKeyboardNotification !=nil) {
+        [self keyboardWillShow:self.currentKeyboardNotification];
     }
 }
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    _currentInputViewTag = textView.tag;
+    self.currentInputViewTag = textView.tag;
     return YES;
 }
 
+#pragma mark - MBProgressHUDDelegate
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [self.HUD removeFromSuperview];
+    self.HUD = nil;
+}
+
+#pragma mark -- 事件方法 --
+#pragma mark 键盘相关方法
 /**
  *  键盘处理方法，键盘将出现时调用
  */
 -(void)keyboardWillShow:(NSNotification *)notification
 {
-    _currentKeyboardNotification = notification;
+    self.currentKeyboardNotification = notification;
     UIWindow *keyWin = [[UIApplication sharedApplication] keyWindow];
     
     //键盘最大 Y 值
@@ -154,7 +164,7 @@
             self.rootScrollV.contentOffset= CGPointMake(0, currentTextFieldMaxY - keyboardY+60);
         } completion:nil];
         //将向上移距离赋值给_lastDistance
-        _lastDistance = currentTextFieldMaxY - keyboardY+60;
+        self.lastDistance = currentTextFieldMaxY - keyboardY+60;
     }
 }
 
@@ -175,40 +185,24 @@
     } completion:nil];
     self.rootScrollV.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
-    _currentKeyboardNotification = nil;
-    _lastDistance = 0;
+    self.currentKeyboardNotification = nil;
+    self.lastDistance = 0;
 }
 
-////显示等待动画MBProgressHUD
-//-(void)showMBProgressHUDWithSel:(SEL)method
-//{
-//    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-//    [self.navigationController.view addSubview:_HUD];
-//    
-//    _HUD.delegate = self;
-//    _HUD.labelText = @"请稍等...";
-//    
-//    [_HUD showWhileExecuting:method onTarget:self withObject:nil animated:YES];
-//}
-
-//显示等待动画MBProgressHUD
+#pragma mark -- 公开方法 --
+/**
+ * 显示等待动画MBProgressHUD
+ **/
 -(void)showMBProgressHUDWithSel:(SEL)method
 {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    _HUD = [[MBProgressHUD alloc] initWithWindow:window];
-    [window addSubview:_HUD];
+    self.HUD = [[MBProgressHUD alloc] initWithWindow:window];
+    [window addSubview:self.HUD];
     
-    _HUD.delegate = self;
-    _HUD.labelText = @"请稍等...";
+    self.HUD.delegate = self;
+    self.HUD.labelText = @"请稍等...";
     
-    [_HUD showWhileExecuting:method onTarget:self withObject:nil animated:YES];
-}
-
-#pragma mark - MBProgressHUDDelegate
-- (void)hudWasHidden:(MBProgressHUD *)hud {
-    [_HUD removeFromSuperview];
-    //[HUD release];
-    _HUD = nil;
+    [self.HUD showWhileExecuting:method onTarget:self withObject:nil animated:YES];
 }
 
 /**
@@ -286,6 +280,5 @@
    NSString *timeSp = [NSString stringWithFormat:@"%@%ld", name,(long)[datenow timeIntervalSince1970]];
    return timeSp;
 }
-
 
 @end

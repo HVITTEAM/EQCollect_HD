@@ -218,21 +218,21 @@
     self.mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     PointModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-//    NSString *earthiddefault = kearthidDefault;
-//    if ([model.earthid isEqualToString:earthiddefault]) {
-//        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//        NSString *earthid = appDelegate.earthinfo.earthid;
-//        if (!earthid) {
-//            [self getEarthidWithIndexPath:indexPath];
-//        }else{
-//             model.earthid = earthid;
-//            [self uploadPointinfoWithIndexPath:indexPath];
-//        }
-//    }else{
-//       [self uploadPointinfoWithIndexPath:indexPath];
-//    }
+    NSString *earthiddefault = kearthidDefault;
+    if ([model.earthid isEqualToString:earthiddefault]) {
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        NSString *earthid = appDelegate.earthinfo.earthid;
+        if (!earthid) {
+            [self getEarthidWithIndexPath:indexPath];
+        }else{
+             model.earthid = earthid;
+            [self uploadPointinfoWithIndexPath:indexPath];
+        }
+    }else{
+       [self uploadPointinfoWithIndexPath:indexPath];
+    }
     
-     [self uploadPointinfoWithIndexPath:indexPath];
+     //[self uploadPointinfoWithIndexPath:indexPath];
 }
 
 -(void)getEarthidWithIndexPath:(NSIndexPath *)indexPath
@@ -270,7 +270,7 @@
     //创建字典对象作为上传参数
     NSMutableDictionary *parameters1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                         model.pointid,@"pointid",
-                                        //model.earthid,@"earthid",
+                                        model.earthid,@"earthid",
                                         model.earthid,@"1",//测试
                                         model.pointlocation,@"location",
                                         model.pointlon, @"lon",

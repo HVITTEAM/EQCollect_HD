@@ -8,17 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <AMapNaviKit/AMapNaviKit.h>
-#import <AMapSearchKit/AMapSearchKit.h>
-#import <AMapLocationKit/AMapLocationKit.h>
+
 @class EarthInfo;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,AMapLocationManagerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong ,nonatomic) EarthInfo *earthinfo;                //地震信息
 @property (assign, nonatomic) CLLocationCoordinate2D currentCoordinate;          //当前位置信息
-//@property (strong, atomic) NSMutableString *currrentaddr;        //当前地址
--(void)addTimer;
+
 -(void)removeTimer;
+
 @end
 

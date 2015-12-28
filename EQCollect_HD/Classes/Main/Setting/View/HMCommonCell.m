@@ -91,7 +91,6 @@
     return _rightText;
 }
 
-
 - (UIButton *)rightBtn
 {
     if (_rightBtn == nil) {

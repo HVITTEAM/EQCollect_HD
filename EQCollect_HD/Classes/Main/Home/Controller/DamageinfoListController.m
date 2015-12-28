@@ -47,8 +47,8 @@
     //设置cell的属性
     cell.damageid.text = [NSString stringWithFormat:@"编号:%@",damageinfo.damageid];
     cell.damagetime.text = damageinfo.damagetime;
-    cell.damageintensity.text = [NSString stringWithFormat:@"烈度:%@",damageinfo.damageintensity];
-    cell.damageaddress.text = [NSString stringWithFormat:@"地址:%@",damageinfo.damageaddress];
+    //cell.damageintensity.text = [NSString stringWithFormat:@"烈度:%@",damageinfo.damageintensity];
+    //cell.damageaddress.text = [NSString stringWithFormat:@"地址:%@",damageinfo.damageaddress];
     
     if ([damageinfo.upload isEqualToString:@"1"]) {
         cell.uploadBtn.selected = YES;
@@ -103,19 +103,6 @@
     }
 }
 
-
-////上传数据
-//-(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    DamageModel *model = [self.dataProvider objectAtIndex:indexPath.row];
-//    //上传数据成功则更新本地数据
-//    BOOL result = [[DamageinfoTableHelper sharedInstance]updateUploadFlag:@"1" ID:model.damageid];
-//    if (result) {
-//        model.upload = @"1";
-//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//    }
-//}
-
 //上传数据
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -127,25 +114,27 @@
     MBProgressHUD *mbprogress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DamageModel *model = [self.dataProvider objectAtIndex:indexPath.row];
     
-    NSString * damageintensity  = [self switchRomeNumToNum:model.damageintensity];
     NSString * fortificationintensity  = [self switchRomeNumToNum:model.fortificationintensity];
+    
     //获取要上传的图片
     NSArray *imgs = [[PictureInfoTableHelper sharedInstance] selectDataByReleteTable:@"DAMAGEINFOTAB" Releteid:model.damageid];
     
     //创建字典对象作为上传参数
     NSDictionary *parameters1 = [[NSDictionary alloc] initWithObjectsAndKeys:
                           model.damageid,@"damageid",
-                          model.damagetime,@"damagetime",
-                          model.damageaddress,@"damageaddress",
-                          damageintensity, @"damageintensity",
-                          model.zrcorxq, @"zrcorxq",
+                          model.pointid,@"pointid",
+                          model.buildingage, @"buildingage",
+                          model.damagearea,@"damagearea",
+                          model.fieldtype,@"fieldtype",
+                          model.damagelevel,@"damagelevel",
+                          model.zrcorxq,@"zrcorxq",
                           model.dworzh,@"dworzh",
                           fortificationintensity,@"fortificationintensity",
                           model.damagesituation,@"damagesituation",
                           model.damageindex,@"damageindex",
+                          model.damagerindex,@"damagerindex",
                           model.housetype,@"housetype",
-                          model.pointid,@"pointid",
-                          //@"0",@"upload",
+                          model.damagetime,@"damagetime",
                           nil];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:URL_adddamage parameters:parameters1 success:^(AFHTTPRequestOperation *operation, id responseObject) {

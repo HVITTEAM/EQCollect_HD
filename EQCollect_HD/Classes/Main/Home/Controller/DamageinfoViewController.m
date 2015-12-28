@@ -12,6 +12,7 @@
 #import "ImageCollectionView.h"
 #import "PictureMode.h"
 #import "ChooseIntensityViewController.h"
+#import "CacheUtil.h"
 
 @interface DamageinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate>
 {
@@ -20,48 +21,55 @@
     ImageCollectionView *imgview;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidTopCons;         //房屋震害编号TextField顶部约束
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *damageidWidthCons;        //房屋震害编号TextField宽约束
-@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
 @property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
 
-@property (weak, nonatomic) IBOutlet UITextField *damageidTextF;                   //房屋震害编号
-@property (weak, nonatomic) IBOutlet UITextField *damagetimeTextF;                 //调查时间
-@property (weak, nonatomic) IBOutlet UITextField *damageaddressTextF;              //地址
-@property (weak, nonatomic) IBOutlet UITextField *damageintensityTextF;            //烈度
-@property (weak, nonatomic) IBOutlet UITextField *zrcorxqTextF;                    //自然村或小区
-@property (weak, nonatomic) IBOutlet UITextField *dworzhTextF;                     //单位或住户
-@property (weak, nonatomic) IBOutlet UITextField *fortificationintensityTextF;     //设防烈度
-@property (weak, nonatomic) IBOutlet UITextField *damagesituationTextF;            //破坏情况
-@property (weak, nonatomic) IBOutlet UITextField *damageindexTextF;                //震害指数
-@property (weak, nonatomic) IBOutlet UITextField *houseTypeTextF;                  //房屋类型
+@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
+
+@property (weak, nonatomic) IBOutlet UITextField *damageidTextF;
+@property (weak, nonatomic) IBOutlet UITextField *damagetimeTextF;
+@property (weak, nonatomic) IBOutlet UITextField *buildingageTextF;
+@property (weak, nonatomic) IBOutlet UITextField *damageareaTextF;
+@property (weak, nonatomic) IBOutlet UITextField *fieldtypeTextF;
+@property (weak, nonatomic) IBOutlet UITextField *damagelevelTextF;
+@property (weak, nonatomic) IBOutlet UITextField *zrcorxqTextF;
+@property (weak, nonatomic) IBOutlet UITextField *dworzhTextF;
+@property (weak, nonatomic) IBOutlet UITextField *fortificationintensityTextF;
+@property (weak, nonatomic) IBOutlet UITextField *damageindexTextF;
+@property (weak, nonatomic) IBOutlet UITextField *damagerindexTextF;
+@property (weak, nonatomic) IBOutlet UITextField *housetypeTextF;
+
+@property (weak, nonatomic) IBOutlet UITextView *damagesituationTextView;
 
 @property (strong,nonatomic)NSArray *textInputViews;                //所有的文本输入框
-@property (strong,nonatomic)NSArray *intensityItems;                //烈度选项
+@property (strong,nonatomic)NSArray *zrcorxqItems;                  //自然村小区
+@property (strong,nonatomic)NSArray *dworzhItems;                   //单位住户
+@property (strong,nonatomic)NSArray *damagelevelItems;              //破坏等级
 @property (strong,nonatomic)NSArray *fortificationintensityItems;   //设防烈度选项
-@property (strong,nonatomic)NSArray *damagesituationItems;          //破坏情况选项
-@property (strong,nonatomic)NSArray *damageindexItems;              //震害指数选项
 @property (strong,nonatomic)NSArray *houseTypeItems;                //房屋类型选项
 
 @end
 
 @implementation DamageinfoViewController
 
+#pragma mark -- 生命周期方法 --
 - (void)viewDidLoad {
     [super viewDidLoad];
     //将rootScrollView，containerView 赋值给父类的变量
     self.rootScrollV = self.rootScrollView;
     self.containerV = self.containerView;
 
+    [self initNavBar];
     [self initDamageinfo];
     [self initImageCollectionView];
     [self showDamageinfoData];
 }
 
+#pragma mark -- 初始化方法 --
 /**
- *  初始化房屋震害信息控制器
+ *  初始化导航栏
  */
--(void)initDamageinfo
+-(void)initNavBar
 {
     self.navigationItem.title = @"房屋震害";
     
@@ -83,32 +91,46 @@
         
         //当为新增时没有状态栏，高度为44
         _navHeight = kAddNavheight;
-        //启用交互
-        [self.view setUserInteractionEnabled:YES];
     }
+}
+
+/**
+ *  初始化房屋震害信息控制器
+ */
+-(void)initDamageinfo
+{
+    self.damagesituationTextView.backgroundColor = [UIColor whiteColor];
+    self.damagesituationTextView.layer.borderColor = HMColor(210, 210, 210).CGColor;
+    self.damagesituationTextView.layer.borderWidth = 0.6f;
+    self.damagesituationTextView.layer.cornerRadius = 8.0f;
+    
      self.textInputViews = @[
                             self.damageidTextF,
                             self.damagetimeTextF,
                             self.zrcorxqTextF,
                             self.dworzhTextF,
                             self.fortificationintensityTextF,
-                            self.damageintensityTextF,
-                            self.damagesituationTextF,
+                            self.damagelevelTextF,
                             self.damageindexTextF,
-                            self.houseTypeTextF,
-                            self.damageaddressTextF
-                            ];
-    for (int i = 0;i<self.textInputViews.count;i++) {
-        UITextField *textF = self.textInputViews[i];
-        textF.delegate = self;
-        //设置tag
-        textF.tag = 1000+i;
+                            self.damagerindexTextF,
+                            self.damageareaTextF,
+                            self.housetypeTextF,
+                            self.buildingageTextF,
+                            self.fieldtypeTextF,
+                            self.damagesituationTextView
+                             ];
+    for (int i = 0;i < self.textInputViews.count - 1;i++) {
+        UITextView *textInputView = self.textInputViews[i];
+        textInputView.delegate = self;
+        textInputView.tag = 1000 + i;
     }
+    self.damagesituationTextView.delegate = self;
+    self.damagesituationTextView.tag = 1000 + self.textInputViews.count-1;
 
-    self.intensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
+    self.zrcorxqItems = @[@"自然村",@"小区"];
+    self.dworzhItems = @[@"单位",@"住户"];
     self.fortificationintensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
-    self.damagesituationItems = @[@"严重",@"中等",@"轻微"];
-    self.damageindexItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
+    self.damagelevelItems = @[@"毁坏",@"严重破坏",@"中等破坏",@"轻微破坏",@"基本完好"];
     self.houseTypeItems = @[@"钢混",@"设防砖混",@"砖混",@"砖木",@"土木",@"其它"];
     
     //设置顶部高约束
@@ -143,11 +165,11 @@
     //设置视图约束
     imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *dictViews = @{
-                                @"damageaddressTextF":self.damageaddressTextF,
+                                @"damagesituationTextView":self.damagesituationTextView,
                                 @"imgview":imgview.collectionView,
                                 };
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[damageaddressTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[damagesituationTextView]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
     self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
     [imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
@@ -160,16 +182,18 @@
     if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit) {
         self.damageidTextF.text = self.damageinfo.damageid;
         self.damagetimeTextF.text = self.damageinfo.damagetime;
-        self.damageaddressTextF.text = self.damageinfo.damageaddress;
-        self.damageintensityTextF.text = self.damageinfo.damageintensity;
         self.zrcorxqTextF.text = self.damageinfo.zrcorxq;
         self.dworzhTextF.text = self.damageinfo.dworzh;
         self.fortificationintensityTextF.text = self.damageinfo.fortificationintensity;
-        self.damagesituationTextF.text = self.damageinfo.damagesituation;
+        self.damagelevelTextF.text = self.damageinfo.damagelevel;
         self.damageindexTextF.text = self.damageinfo.damageindex;
-        self.houseTypeTextF.text = self.damageinfo.housetype;
+        self.damagerindexTextF.text = self.damageinfo.damagerindex;
+        self.damageareaTextF.text = self.damageinfo.damagearea;
+        self.housetypeTextF.text = self.damageinfo.housetype;
+        self.buildingageTextF.text = self.damageinfo.buildingage;
+        self.fieldtypeTextF.text = self.damageinfo.fieldtype;
+        self.damagesituationTextView.text = self.damageinfo.damagesituation;
         
-        //[self getimage];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSMutableArray *images = [self getImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -185,8 +209,26 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.damagetimeTextF.text = [formatter stringFromDate:date];
+        
+        DamageModel *cache = [CacheUtil shareInstance].cacheDamage;
+        if (!cache) {
+            return;
+        }
+        self.zrcorxqTextF.text = cache.zrcorxq;
+        self.dworzhTextF.text = cache.dworzh;
+        self.fortificationintensityTextF.text = cache.fortificationintensity;
+        self.damagelevelTextF.text = cache.damagelevel;
+        self.damageindexTextF.text = cache.damageindex;
+        self.damagerindexTextF.text = cache.damagerindex;
+        self.damageareaTextF.text = cache.damagearea;
+        self.housetypeTextF.text = cache.housetype;
+        self.buildingageTextF.text = cache.buildingage;
+        self.fieldtypeTextF.text = cache.fieldtype;
+        self.damagesituationTextView.text = cache.damagesituation;
     }
 }
+
+#pragma mark -- setter和getter方法 --
 
 /**
  *  ActionType属性的 setter 方法
@@ -195,17 +237,12 @@
 {
     _actionType = actionType;
     if (actionType == kActionTypeShow) {
-        for (UITextField *txt in self.textInputViews) {
-            txt.userInteractionEnabled = NO;
+        for (UIView *inputView in self.textInputViews) {
+            inputView.userInteractionEnabled = NO;
         }
     }else{
-        if ([self.damageinfo.upload isEqualToString:@"1"]) {
-            self.damageintensityTextF.userInteractionEnabled = YES;
-            self.fortificationintensityTextF.userInteractionEnabled = YES;
-        }else{
-            for (UITextField *txt in self.textInputViews) {
-                txt.userInteractionEnabled = YES;
-            }
+        for (UIView *inputView in self.textInputViews) {
+            inputView.userInteractionEnabled = YES;
         }
     }
     imgview.showType = self.actionType;
@@ -220,6 +257,12 @@
     //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
     if (textField.tag == 1000||textField.tag == 1001) {
         canEdit = NO;
+    }else if (textField.tag == 1002){
+        canEdit = NO;
+        [self showAlertViewWithTextField:textField items:self.zrcorxqItems];
+    }else if (textField.tag == 1003){
+        canEdit = NO;
+        [self showAlertViewWithTextField:textField items:self.dworzhItems];
     }else if (textField.tag == 1004){
         canEdit = NO;
         ChooseIntensityViewController *intensityVC = [ChooseIntensityViewController sharedInstance];
@@ -229,18 +272,8 @@
         [self presentViewController:naviga animated:YES completion:nil];
     }else if (textField.tag == 1005){
         canEdit = NO;
-        ChooseIntensityViewController *intensityVC = [ChooseIntensityViewController sharedInstance];
-        intensityVC.delegate = self;
-        UINavigationController *naviga = [[UINavigationController alloc] initWithRootViewController:intensityVC];
-        naviga.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:naviga animated:YES completion:nil];
-    }else if (textField.tag == 1006){
-        canEdit = NO;
-        [self showAlertViewWithTextField:textField items:self.damagesituationItems];
-    }else if (textField.tag == 1007){
-        canEdit = NO;
-        [self showAlertViewWithTextField:textField items:self.damageindexItems];
-    }else if (textField.tag == 1008){
+        [self showAlertViewWithTextField:textField items:self.damagelevelItems];
+    }else if (textField.tag == 1009){
         canEdit = NO;
         [self showAlertViewWithTextField:textField items:self.houseTypeItems];
     }else{
@@ -320,30 +353,41 @@
     
     NSString *damageid = self.damageidTextF.text;
     NSString *damagetime = self.damagetimeTextF.text;
-    NSString *damageaddress = self.damageaddressTextF.text;
-    NSString *damageintensity = self.damageintensityTextF.text;
+    NSString *buildingage = self.buildingageTextF.text;
+    NSString *damagearea = self.damageareaTextF.text;
+    NSString *fieldtype = self.fieldtypeTextF.text;
+    NSString *damagelevel = self.damagelevelTextF.text;
     NSString *zrcorxq = self.zrcorxqTextF.text;
     NSString *dworzh = self.dworzhTextF.text;
     NSString *fortificationintensity = self.fortificationintensityTextF.text;
-    NSString *damagesituation = self.damagesituationTextF.text;
+    NSString *damagesituation = self.damagesituationTextView.text;
     NSString *damageindex = self.damageindexTextF.text;
-    NSString *housetype = self.houseTypeTextF.text;
+    NSString *damagerindex = self.damagerindexTextF.text;
+    NSString *housetype = self.housetypeTextF.text;
+
+    NSString *pointid = self.pointid;
+    NSString *upload = kdidNotUpload;
     
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                           damageid,@"damageid",
                           damagetime,@"damagetime",
-                          damageaddress,@"damageaddress",
-                          damageintensity, @"damageintensity",
-                          zrcorxq, @"zrcorxq",
+                          buildingage,@"buildingage",
+                          damagearea, @"damagearea",
+                          fieldtype, @"fieldtype",
+                          damagelevel,@"damagelevel",
+                          zrcorxq,@"zrcorxq",
                           dworzh,@"dworzh",
                           fortificationintensity,@"fortificationintensity",
                           damagesituation,@"damagesituation",
                           damageindex,@"damageindex",
+                          damagerindex,@"damagerindex",
                           housetype,@"housetype",
-                          self.pointid,@"pointid",
-                          kdidNotUpload,@"upload",
+                          pointid,@"pointid",
+                          upload,@"upload",
                           nil];
+    
+    [[CacheUtil shareInstance] setCacheDamageWithDict:dict];
     
     BOOL result = [[DamageinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
@@ -351,8 +395,7 @@
             [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
         });
     }else{
-        
-        //        [self saveImagesWithReleteId:damageid releteTable:@"DAMAGEINFOTAB"];
+
         [self saveImages:imgview.dataProvider releteId:damageid releteTable:@"DAMAGEINFOTAB"];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -377,33 +420,45 @@
     //防止异步加载图片出错
     imgview.isExitThread = YES;
 
-   // NSString *damageid = self.damageidTextF.text;
-    //NSString *damagetime = self.damagetimeTextF.text;
-    NSString *damageaddress = self.damageaddressTextF.text;
-    NSString *damageintensity = self.damageintensityTextF.text;
+    NSString *damageid = self.damageinfo.damageid;
+    NSString *damagetime = self.damageinfo.damagetime;
+    
+    NSString *buildingage = self.buildingageTextF.text;
+    NSString *damagearea = self.damageareaTextF.text;
+    NSString *fieldtype = self.fieldtypeTextF.text;
+    NSString *damagelevel = self.damagelevelTextF.text;
     NSString *zrcorxq = self.zrcorxqTextF.text;
     NSString *dworzh = self.dworzhTextF.text;
     NSString *fortificationintensity = self.fortificationintensityTextF.text;
-    NSString *damagesituation = self.damagesituationTextF.text;
+    NSString *damagesituation = self.damagesituationTextView.text;
     NSString *damageindex = self.damageindexTextF.text;
-    NSString *housetype = self.houseTypeTextF.text;
+    NSString *damagerindex = self.damagerindexTextF.text;
+    NSString *housetype = self.housetypeTextF.text;
+    
+    NSString *pointid = self.damageinfo.pointid;
+    NSString *upload = self.damageinfo.upload;
     
     //创建字典对象并向表中插和数据
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          self.damageinfo.damageid,@"damageid",
-                          self.damageinfo.damagetime,@"damagetime",
-                          damageaddress,@"damageaddress",
-                          damageintensity, @"damageintensity",
-                          zrcorxq, @"zrcorxq",
+                          damageid,@"damageid",
+                          damagetime,@"damagetime",
+                          buildingage,@"buildingage",
+                          damagearea, @"damagearea",
+                          fieldtype, @"fieldtype",
+                          damagelevel,@"damagelevel",
+                          zrcorxq,@"zrcorxq",
                           dworzh,@"dworzh",
                           fortificationintensity,@"fortificationintensity",
                           damagesituation,@"damagesituation",
                           damageindex,@"damageindex",
+                          damagerindex,@"damagerindex",
                           housetype,@"housetype",
-                          self.damageinfo.pointid,@"pointid",
-                          self.damageinfo.upload,@"upload",
+                          pointid,@"pointid",
+                          upload,@"upload",
                           nil];
     
+    [[CacheUtil shareInstance] setCacheDamageWithDict:dict];
+
     BOOL result = [[DamageinfoTableHelper sharedInstance] updateDataWith:dict];
     if (!result) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -411,7 +466,6 @@
         });
     }else{
         [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"DAMAGEINFOTAB" Releteid:self.damageinfo.damageid];
-        //[self saveImagesWithReleteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
         [self saveImages:imgview.dataProvider releteId:self.damageinfo.damageid releteTable:@"DAMAGEINFOTAB"];
         
         if ([self.delegate respondsToSelector:@selector(updateDamageinfoSuccess:)]) {
@@ -441,7 +495,6 @@
 
 -(void)dealloc
 {
-
     NSLog(@"DamageinfoViewController释放了吗。。。。。。。。。。。。。");
 }
 @end

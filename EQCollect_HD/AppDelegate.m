@@ -8,23 +8,28 @@
 
 #import "AppDelegate.h"
 #import "LocationHelper.h"
-#import "ArchiverCacheHelper.h"
 #import "EarthInfo.h"
+#import "CurrentUser.h"
 #import "iflyMSC/IFlySpeechSynthesizer.h"
 #import "iflyMSC/IFlySpeechSynthesizerDelegate.h"
 #import "iflyMSC/IFlySpeechConstant.h"
 #import "iflyMSC/IFlySpeechUtility.h"
 #import "iflyMSC/IFlySetting.h"
+#import <AMapSearchKit/AMapSearchKit.h>
+#import <AMapLocationKit/AMapLocationKit.h>
 
-#define APIKey @"4e4a9f0b5e8b6511cfdb23e7fc29b421"
-@interface AppDelegate ()
-{
-    AMapLocationManager *_locationManager;
-    NSTimer *_timer;
-    LocationHelper *_locationHelp;
-    BOOL _isFirst;
-}
-//-(void)setupLocationManager;
+@interface AppDelegate ()<AMapLocationManagerDelegate>
+
+@property(strong,nonatomic)AMapLocationManager *locationManager;
+
+@property(strong,nonatomic) LocationHelper *locationHelp;               //进行逆地址解析，并将信息上传
+
+@property(strong,nonatomic)NSTimer *timer;
+
+@property(assign,nonatomic)BOOL shouldAddTimer;                         //是否要添加定时器
+
+//-(void)addTimer;
+
 @end
 
 @implementation AppDelegate
@@ -42,7 +47,7 @@
     [AMapSearchServices sharedServices].apiKey = APIKey;
     [AMapLocationServices sharedServices].apiKey = APIKey;
     
-    _isFirst = YES;
+    self.shouldAddTimer = YES;
     
     //开启定位
     [self setupLocationManager];
@@ -51,17 +56,6 @@
     [self configIFlySpeech];
 
     [HMControllerTool setLoginViewController];
-    
-//    if ([ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path])
-//    {
-//        NSLog(@"已经存在用户");
-//        [HMControllerTool setRootViewController];
-//    }
-//    else
-//    {
-//        NSLog(@"新登录用户");
-//        
-//    }
     
     return YES;
 }
@@ -89,6 +83,9 @@
    [self removeTimer];
 }
 
+/**
+ *  导航语音
+ */
 - (void)configIFlySpeech
 {
     [IFlySpeechUtility createUtility:[NSString stringWithFormat:@"appid=%@,timeout=%@",@"5565399b",@"20000"]];
@@ -110,17 +107,20 @@
     [[IFlySpeechSynthesizer sharedInstance] setParameter:nil forKey:[IFlySpeechConstant TTS_AUDIO_PATH]];
 }
 
+/**
+ *  开启定位
+ */
 -(void)setupLocationManager{
-    _locationManager = [[AMapLocationManager alloc] init];
+    self.locationManager = [[AMapLocationManager alloc] init];
     if ([CLLocationManager locationServicesEnabled]) {
-        _locationManager.delegate = self;
-        _locationManager.distanceFilter = 20.0;
-        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.locationManager.delegate = self;
+        self.locationManager.distanceFilter = 20.0;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             
-        [_locationManager setPausesLocationUpdatesAutomatically:NO];
-        [_locationManager setAllowsBackgroundLocationUpdates:YES];
+        [self.locationManager setPausesLocationUpdatesAutomatically:NO];
+        [self.locationManager setAllowsBackgroundLocationUpdates:YES];
         
-        [_locationManager startUpdatingLocation];
+        [self.locationManager startUpdatingLocation];
     }else{
         //失败
         [[[UIAlertView alloc] initWithTitle:@"提醒" message:@"定位失败，请确定是否开启定位功能" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
@@ -128,7 +128,6 @@
 }
 
 #pragma mark - MALocationManager Delegate
-
 - (void)amapLocationManager:(AMapLocationManager *)manager didFailWithError:(NSError *)error
 {
     NSLog(@"定位失败");
@@ -137,22 +136,26 @@
 - (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location
 {
     NSLog(@"定位成功%f    %f",location.coordinate.latitude,location.coordinate.longitude);
+    
     self.currentCoordinate = location.coordinate;
-    if (_isFirst) {
-        _isFirst = NO;
-        //开启定时发送位置信息功能
-        [self addTimer];
+    
+    if (self.shouldAddTimer) {
+        if ([[CurrentUser shareInstance].success boolValue]) {
+            //开启定时发送位置信息功能
+            [self addTimer];
+            self.shouldAddTimer = NO;
+        }
     }
 }
 
 -(void)addTimer{
-    _locationHelp = [[LocationHelper alloc] init];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:300 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
-    [_timer fire];
+    self.locationHelp = [[LocationHelper alloc] init];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:300 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
+    [self.timer fire];
 }
 
 -(void)removeTimer{
-    [_timer invalidate];
+    [self.timer invalidate];
 }
 
 @end

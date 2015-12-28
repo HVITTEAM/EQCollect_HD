@@ -7,34 +7,27 @@
 //
 
 //房屋震害信息表(damageinfo)
-//字段	                 描述	    类型
-//damageid	             房屋震害编号	 Int
-//damagetime	         调查时间 	 Date
-//damageaddress	         地址	     Varchar
-//damageintensity        烈度	     Varchar
-//zrcorxq	             自然村或小区	 Varchar
-//dworzh	             单位或住户	 Varchar
-//fortificationintensity 设防烈度	     Varchar
-//damagesituation	     破坏情况 	 Varchar
-//damageindex	         震害指数	     Float
 
 #define TABLENAME        @"DAMAGEINFOTAB"
-#define DAMAGEID         @"damageid"
-#define DAMAGETIME       @"damagetime"
-#define DAMAGEADDRESS    @"damageaddress"
-#define DAMAGEINTENSITY  @"damageintensity"
-#define ZRCORXQ          @"zrcorxq"
-#define DWORZH           @"dworzh"
-#define FORTIFICATIONINTENSITY    @"fortificationintensity"
-#define DAMAGESITUATION  @"damagesituation"
-#define DAMAGEINDEX      @"damageindex"
-#define HOUSETYPE        @"housetype"
 
-#define POINTID          @"pointid"
-#define UPLOAD           @"upload"
+#define DAMAGEID         @"damageid"                              //房屋震害编号
+#define DAMAGETIME       @"damagetime"                            //调查时间
+#define BUILDINGAGE      @"buildingage"                           //建造年代
+#define DAMAGEAREA       @"damagearea"                            //房屋面积
+#define FIELDTYPE        @"fieldtype"                             //场地类型
+#define DAMAGELEVEL      @"damagelevel"                           //破坏等级
+#define ZRCORXQ          @"zrcorxq"                               //自然村或小区
+#define DWORZH           @"dworzh"                                //单位或住户
+#define FORTIFICATIONINTENSITY    @"fortificationintensity"       //设防烈度
+#define DAMAGESITUATION  @"damagesituation"                       //破坏情况
+#define DAMAGEINDEX      @"damageindex"                           //震害指数(自动)
+#define DAMAGERINDEX     @"damagerindex"                          //震害指数(人工)
+#define HOUSETYPE        @"housetype"                             //房屋类型
+
+#define POINTID          @"pointid"                                //调查点编号
+#define UPLOAD           @"upload"                                 //上传状态
 
 #import "DamageinfoTableHelper.h"
-
 
 @implementation DamageinfoTableHelper
 
@@ -64,13 +57,12 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,
-                                     DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,HOUSETYPE,POINTID,UPLOAD];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT,'%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,DAMAGEID,DAMAGETIME,BUILDINGAGE,DAMAGEAREA,FIELDTYPE,DAMAGELEVEL,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,DAMAGERINDEX,HOUSETYPE,POINTID,UPLOAD];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
-            //NSLog(@"error when creating db table");
+            NSLog(@"error when creating DAMAGEINFOTAB table");
         } else {
-            //NSLog(@"success to creating db table");
+            NSLog(@"success to creating DAMAGEINFOTAB table");
         }
         [db close];
     }
@@ -78,42 +70,41 @@
 
 -(BOOL) insertDataWith:(NSDictionary *)dict
 {
-    BOOL result = NO;
+    BOOL res = NO;
     if ([db open]) {
         NSString *insertSql1= [NSString stringWithFormat:
-                               @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@', '%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@', '%@')",
-                               TABLENAME,DAMAGEID,DAMAGETIME,DAMAGEADDRESS,DAMAGEINTENSITY,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,HOUSETYPE,POINTID,UPLOAD,dict[@"damageid"],dict[@"damagetime"], dict[@"damageaddress"],dict[@"damageintensity"], dict[@"zrcorxq"], dict[@"dworzh"],dict[@"fortificationintensity"], dict[@"damagesituation"], dict[@"damageindex"],dict[@"housetype"],dict[@"pointid"],dict[@"upload"]];
-        BOOL res = [db executeUpdate:insertSql1];
+                               @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@', '%@','%@','%@', '%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@', '%@','%@', '%@','%@')",
+                               TABLENAME,DAMAGEID,DAMAGETIME,BUILDINGAGE,DAMAGEAREA,FIELDTYPE,DAMAGELEVEL,ZRCORXQ,DWORZH,FORTIFICATIONINTENSITY,DAMAGESITUATION,DAMAGEINDEX,DAMAGERINDEX,HOUSETYPE,POINTID,UPLOAD,dict[@"damageid"],dict[@"damagetime"],dict[@"buildingage"],dict[@"damagearea"],dict[@"fieldtype"],dict[@"damagelevel"],dict[@"zrcorxq"],dict[@"dworzh"],dict[@"fortificationintensity"],dict[@"damagesituation"],dict[@"damageindex"],dict[@"damagerindex"],dict[@"housetype"],dict[@"pointid"],dict[@"upload"]];
+        
+        NSLog(@"+++++++++++++++++++++++++++++++++++++++++++%@",insertSql1);
+       res = [db executeUpdate:insertSql1];
         if (!res) {
-           // NSLog(@"error when insert db table");
-            result = NO;
+            NSLog(@"error when insert DAMAGEINFOTAB table");
         } else {
-            //NSLog(@"success to insert db table");
-            result = YES;
+            NSLog(@"success to insert DAMAGEINFOTAB table");
         }
         [db close];
     }
-    return result;
+    return res;
+    
 }
 
 -(BOOL) updateDataWith:(NSDictionary *)dict
 {
-    BOOL result = NO;
+    BOOL res = NO;
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,DAMAGEID,dict[@"damageid"],DAMAGETIME,dict[@"damagetime"],DAMAGEADDRESS,dict[@"damageaddress"],DAMAGEINTENSITY,dict[@"damageintensity"],ZRCORXQ,dict[@"zrcorxq"],DWORZH,dict[@"dworzh"],FORTIFICATIONINTENSITY,dict[@"fortificationintensity"],DAMAGESITUATION,dict[@"damagesituation"],DAMAGEINDEX,dict[@"damageindex"],HOUSETYPE,dict[@"housetype"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],DAMAGEID,dict[@"damageid"]];
-        BOOL res = [db executeUpdate:updateSql];
+                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' ,%@ = '%@',%@ = '%@'WHERE %@ = '%@' ",TABLENAME,DAMAGETIME,dict[@"damagetime"],BUILDINGAGE,dict[@"buildingage"],DAMAGEAREA,dict[@"damagearea"],FIELDTYPE,dict[@"fieldtype"],DAMAGELEVEL,dict[@"damagelevel"],ZRCORXQ,dict[@"zrcorxq"],DWORZH,dict[@"dworzh"],FORTIFICATIONINTENSITY,dict[@"fortificationintensity"],DAMAGESITUATION,dict[@"damagesituation"],DAMAGEINDEX,dict[@"damageindex"],DAMAGERINDEX,dict[@"damagerindex"],HOUSETYPE,dict[@"housetype"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],DAMAGEID,dict[@"damageid"]];
+        res = [db executeUpdate:updateSql];
         if (!res) {
-            //NSLog(@"error when update db table");
-            result = NO;
+            NSLog(@"error when update DAMAGEINFOTAB table");
         } else {
-            //NSLog(@"success to update db table");
-            result = YES;
+            NSLog(@"success to update DAMAGEINFOTAB table");
         }
         [db close];
     }
-    return result;
+    return res;
 }
 
 -(BOOL)updateUploadFlag:(NSString *)uploadFlag ID:(NSString *)idString
@@ -122,12 +113,11 @@
     if ([db open]) {
         NSString *updateSql = [NSString stringWithFormat:
                                @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,UPLOAD,uploadFlag,DAMAGEID,idString];
-//        NSLog(@"%@",updateSql);
         result = [db executeUpdate:updateSql];
         if (!result) {
-            NSLog(@"error when update db table");
+            NSLog(@"error when UploadFlag db table");
         }else{
-            NSLog(@"success to update db table");
+            NSLog(@"success to UploadFlag db table");
         }
         [db close];
     }
@@ -136,25 +126,22 @@
 
 -(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
-    BOOL result = NO;
+    BOOL res = NO;
     if ([db open])
     {
-        
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
                                TABLENAME, attribute, value];
-        BOOL res = [db executeUpdate:deleteSql];
+        res = [db executeUpdate:deleteSql];
         
         if (!res) {
-            //NSLog(@"error when delete db table");
-            result = NO;
+            NSLog(@"error when delete DAMAGEINFOTAB table");
         } else {
-            //NSLog(@"success to delete db table");
-            result = YES;
+            NSLog(@"success to delete DAMAGEINFOTAB table");
         }
         [db close];
     }
-    return result;
+    return res;
 }
 
 
@@ -167,30 +154,36 @@
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * damageid = [rs stringForColumn:DAMAGEID];
-            NSString * damagetime = [rs stringForColumn:DAMAGETIME];
-            NSString * damageaddress = [rs stringForColumn:DAMAGEADDRESS];
-            NSString * damageintensity = [rs stringForColumn:DAMAGEINTENSITY];
-            NSString * zrcorxq = [rs stringForColumn:ZRCORXQ];
-            NSString * dworzh = [rs stringForColumn:DWORZH];
-            NSString * fortificationintensity = [rs stringForColumn:FORTIFICATIONINTENSITY];
-            NSString * damagesituation = [rs stringForColumn:DAMAGESITUATION];
-            NSString * damageindex = [rs stringForColumn:DAMAGEINDEX];
-            NSString * houseType = [rs stringForColumn:HOUSETYPE];
-            NSString * pointid = [rs stringForColumn:POINTID];
-            NSString * upload = [rs stringForColumn:UPLOAD];
+            NSString *damageid = [rs stringForColumn:DAMAGEID];
+            NSString *damagetime = [rs stringForColumn:DAMAGETIME];
+            NSString *buildingage= [rs stringForColumn:BUILDINGAGE];
+            NSString *damagearea  = [rs stringForColumn:DAMAGEAREA];
+            NSString *fieldtype  = [rs stringForColumn:FIELDTYPE];
+            NSString *damagelevel  = [rs stringForColumn:DAMAGELEVEL];
+            NSString *zrcorxq  = [rs stringForColumn:ZRCORXQ];
+            NSString *dworzh  = [rs stringForColumn:DWORZH];
+            NSString *fortificationintensity  = [rs stringForColumn:FORTIFICATIONINTENSITY];
+            NSString *damagesituation  = [rs stringForColumn:DAMAGESITUATION];
+            NSString *damageindex  = [rs stringForColumn:DAMAGEINDEX];
+            NSString *damagerindex  = [rs stringForColumn:DAMAGERINDEX];
+            NSString *housetype  = [rs stringForColumn:HOUSETYPE];
+            NSString *pointid  = [rs stringForColumn:POINTID];
+            NSString *upload  = [rs stringForColumn:UPLOAD];
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:damageid forKey:@"damageid"];
             [dict setObject:damagetime forKey:@"damagetime"];
-            [dict setObject:damageaddress forKey:@"damageaddress"];
-            [dict setObject:damageintensity forKey:@"damageintensity"];
+            [dict setObject:buildingage forKey:@"buildingage"];
+            [dict setObject:damagearea forKey:@"damagearea"];
+            [dict setObject:fieldtype forKey:@"fieldtype"];
+            [dict setObject:damagelevel forKey:@"damagelevel"];
             [dict setObject:zrcorxq forKey:@"zrcorxq"];
             [dict setObject:dworzh forKey:@"dworzh"];
             [dict setObject:fortificationintensity forKey:@"fortificationintensity"];
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
-            [dict setObject:houseType forKey:@"housetype"];
+            [dict setObject:damagerindex forKey:@"damagerindex"];
+            [dict setObject:housetype forKey:@"housetype"];
             [dict setObject:pointid forKey:@"pointid"];
             [dict setObject:upload forKey:@"upload"];
     
@@ -198,7 +191,6 @@
         }
         [db close];
     }
-    
     return dataCollect;
 }
 
@@ -211,30 +203,36 @@
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * damageid = [rs stringForColumn:DAMAGEID];
-            NSString * damagetime = [rs stringForColumn:DAMAGETIME];
-            NSString * damageaddress = [rs stringForColumn:DAMAGEADDRESS];
-            NSString * damageintensity = [rs stringForColumn:DAMAGEINTENSITY];
-            NSString * zrcorxq = [rs stringForColumn:ZRCORXQ];
-            NSString * dworzh = [rs stringForColumn:DWORZH];
-            NSString * fortificationintensity = [rs stringForColumn:FORTIFICATIONINTENSITY];
-            NSString * damagesituation = [rs stringForColumn:DAMAGESITUATION];
-            NSString * damageindex = [rs stringForColumn:DAMAGEINDEX];
-            NSString * houseType = [rs stringForColumn:HOUSETYPE];
-            NSString * pointid = [rs stringForColumn:POINTID];
-            NSString * upload = [rs stringForColumn:UPLOAD];
+            NSString *damageid = [rs stringForColumn:DAMAGEID];
+            NSString *damagetime = [rs stringForColumn:DAMAGETIME];
+            NSString *buildingage= [rs stringForColumn:BUILDINGAGE];
+            NSString *damagearea  = [rs stringForColumn:DAMAGEAREA];
+            NSString *fieldtype  = [rs stringForColumn:FIELDTYPE];
+            NSString *damagelevel  = [rs stringForColumn:DAMAGELEVEL];
+            NSString *zrcorxq  = [rs stringForColumn:ZRCORXQ];
+            NSString *dworzh  = [rs stringForColumn:DWORZH];
+            NSString *fortificationintensity  = [rs stringForColumn:FORTIFICATIONINTENSITY];
+            NSString *damagesituation  = [rs stringForColumn:DAMAGESITUATION];
+            NSString *damageindex  = [rs stringForColumn:DAMAGEINDEX];
+            NSString *damagerindex  = [rs stringForColumn:DAMAGERINDEX];
+            NSString *housetype  = [rs stringForColumn:HOUSETYPE];
+            NSString *pointid  = [rs stringForColumn:POINTID];
+            NSString *upload  = [rs stringForColumn:UPLOAD];
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:damageid forKey:@"damageid"];
             [dict setObject:damagetime forKey:@"damagetime"];
-            [dict setObject:damageaddress forKey:@"damageaddress"];
-            [dict setObject:damageintensity forKey:@"damageintensity"];
+            [dict setObject:buildingage forKey:@"buildingage"];
+            [dict setObject:damagearea forKey:@"damagearea"];
+            [dict setObject:fieldtype forKey:@"fieldtype"];
+            [dict setObject:damagelevel forKey:@"damagelevel"];
             [dict setObject:zrcorxq forKey:@"zrcorxq"];
             [dict setObject:dworzh forKey:@"dworzh"];
             [dict setObject:fortificationintensity forKey:@"fortificationintensity"];
             [dict setObject:damagesituation forKey:@"damagesituation"];
             [dict setObject:damageindex forKey:@"damageindex"];
-            [dict setObject:houseType forKey:@"housetype"];
+            [dict setObject:damagerindex forKey:@"damagerindex"];
+            [dict setObject:housetype forKey:@"housetype"];
             [dict setObject:pointid forKey:@"pointid"];
             [dict setObject:upload forKey:@"upload"];
             

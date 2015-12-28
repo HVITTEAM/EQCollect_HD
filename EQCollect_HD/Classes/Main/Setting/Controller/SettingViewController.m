@@ -7,7 +7,6 @@
 //
 
 #import "SettingViewController.h"
-#import "LocationHelper.h"
 #import "VersionViewController.h"
 #import "UseHelpViewController.h"
 #import "FeedbackViewController.h"
@@ -19,10 +18,7 @@
 
 @implementation SettingViewController
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
+#pragma mark -- 生命周期方法 --
 
 - (void)viewDidLoad
 {
@@ -35,6 +31,7 @@
     self.tableView.rowHeight = 50;
 }
 
+#pragma mark -- 初始化方法 --
 /**
  *  初始化导航栏
  */
@@ -46,8 +43,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
 }
 
-
-# pragma  mark 设置数据源
+# pragma  mark -- 设置数据源 --
 /**
  *  初始化模型数据
  */
@@ -57,31 +53,16 @@
     [self.groups removeAllObjects];
     
     //重置数据源
-    //[self setupGroup0];
-    [self setupGroup1];
-    
+    [self setupGroup0];
     [self setupFooter];
     
     //刷新表格
     [self.tableView reloadData];
 }
-//- (void)setupGroup0
-//{
-//    // 1.创建组
-//    HMCommonGroup *group = [HMCommonGroup group];
-//    [self.groups addObject:group];
-//    
-//    // 设置组的所有行数据
-//    HMCommonArrowItem *account = [HMCommonArrowItem itemWithTitle:@"帐号管理" icon:nil];
-//    // newFriend.destVcClass = [MyAccountViewController class];
-//    account.operation = ^{
-//    };
-//    group.items = @[account];
-//}
 
-- (void)setupGroup1
+- (void)setupGroup0
 {
-    // 1.创建组
+    // 创建组
     HMCommonGroup *group = [HMCommonGroup group];
     [self.groups addObject:group];
     
@@ -100,13 +81,10 @@
     group.items = @[version,help,advice];
 }
 
-
 - (void)setupFooter
 {
-    // 1.创建按钮
-    UIButton *logout = [[UIButton alloc] init];
-    
-    // 2.设置属性
+    // 创建按钮
+    UIButton *logout = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 60)];
     logout.titleLabel.font = [UIFont systemFontOfSize:16];
     [logout setTitle:@"退出当前帐号" forState:UIControlStateNormal];
     [logout setTitleColor:HMColor(255, 10, 10) forState:UIControlStateNormal];
@@ -114,25 +92,23 @@
     [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background_highlighted"] forState:UIControlStateHighlighted];
     [logout addTarget:self action:@selector(loginOut) forControlEvents:UIControlEventTouchUpInside];
     
-    // 3.设置尺寸(tableFooterView和tableHeaderView的宽度跟tableView的宽度一样)
-    logout.height = 60;
-    
     self.tableView.tableFooterView = logout;
-    
 }
 
+#pragma mark -- 事件方法 --
+/**
+ *  退出
+ */
+-(void)loginOut
+{
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate removeTimer];
+    [HMControllerTool setLoginViewController];
+}
 
 -(void)back
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
--(void)loginOut
-{
-    AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appdl removeTimer];
-    [ArchiverCacheHelper removeLocaldataByFilePath:User_Archiver_Path];
-    [HMControllerTool setLoginViewController];
 }
 
 @end

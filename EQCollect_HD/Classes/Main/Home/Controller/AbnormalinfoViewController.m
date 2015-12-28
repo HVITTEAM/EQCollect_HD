@@ -12,6 +12,7 @@
 #import "ImageCollectionView.h"
 #import "PictureMode.h"
 #import "ChooseIntensityViewController.h"
+#import "CacheUtil.h"
 
 @interface AbnormalinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate>
 {
@@ -105,9 +106,7 @@
     }
     
     self.intensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
-//    self.groundwaterItems = @[@"地下水1",@"地下水2",@"地下水3",@"地下水4"];
-//    self.habitItems = @[@"习性1",@"习性2",@"习性3",@"习性4"];
-//    self.phenomenonItems = @[@"物化1",@"物化2",@"物化3",@"物化4",@"物化5"];
+
     self.crediblyItems = @[@"1",@"2",@"3",@"4",@"5"];
     
     //设置顶部高约束
@@ -185,6 +184,22 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.abnormaltimeTextF.text = [formatter stringFromDate:date];
+        
+        AbnormalinfoModel *cache = [CacheUtil shareInstance].cacheAbnormalinfo;
+        if (!cache) {
+            return;
+        }
+        self.abnormalidTextF.text = cache.abnormalid;
+        self.abnormaltimeTextF.text = cache.abnormaltime;
+        self.informantTextF.text = cache.informant;
+        self.abnormalintensityTextF.text = cache.abnormalintensity;
+        self.groundwaterTextF.text = cache.groundwater;
+        self.abnormalhabitTextF.text = cache.abnormalhabit;
+        self.abnormalphenomenonTextF.text = cache.abnormalphenomenon;
+        self.otherTextF.text = cache.other;
+        self.implementationTextF.text = cache.implementation;
+        self.abnormalanalysisTextF.text = cache.abnormalanalysis;
+        self.crediblyTextF.text = cache.credibly;
     }
 }
 
@@ -371,6 +386,8 @@
                           kdidNotUpload,@"upload",
                           nil];
     
+    [[CacheUtil shareInstance] setCacheAbnormalinfoWithDict:dict];
+    
     BOOL result = [[AbnormalinfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -430,6 +447,8 @@
                           self.abnormalinfo.pointid,@"pointid",
                           self.abnormalinfo.upload,@"upload",
                           nil];
+    
+    [[CacheUtil shareInstance] setCacheAbnormalinfoWithDict:dict];
     
     BOOL result = [[AbnormalinfoTableHelper sharedInstance] updateDataWith:dict];
     if (!result) {

@@ -152,48 +152,40 @@
 /**
  *   网络请求的url
  */
+#define URL_base                 @"http://61.164.34.9:3000"
+#define URL_Login                @"http://61.164.34.9:3000/login"
+#define URL_addpoint             @"http://61.164.34.9:3000/addpoint"
+#define URL_addabnormal          @"http://61.164.34.9:3000/addabnormal"
+#define URL_addreaction          @"http://61.164.34.9:3000/addreaction"
+#define URL_adddamage            @"http://61.164.34.9:3000/adddamage"
+#define URL_addimg               @"http://61.164.34.9:3000/addimg"
+#define URL_uploadlocation       @"http://61.164.34.9:3000/uploadlocation"
+#define URL_isstart              @"http://61.164.34.9:3000/isstart"
+#define URL_updatepoint          @"http://61.164.34.9:3000/updatepoint"
+#define URL_updatedamage         @"http://61.164.34.9:3000/updatedamage"
+#define updateabnormal           @"http://61.164.34.9:3000/updateabnormal"
+#define URL_addmsg               @"http://61.164.34.9:3000/addmsg"
+#define URL_showusers            @"http://61.164.34.9:3000/showusers"
+#define URL_addother             @"http://61.164.34.9:3000/addother"
+#define URL_resources            @"http://61.164.34.9:3000/matters"
 
-//#define URL_Login                @"http://61.164.34.9:3000/login"
-//#define URL_addpoint             @"http://61.164.34.9:3000/addpoint"
-//#define URL_addabnormal          @"http://61.164.34.9:3000/addabnormal"
-//#define URL_addreaction          @"http://61.164.34.9:3000/addreaction"
-//#define URL_adddamage            @"http://61.164.34.9:3000/adddamage"
-//#define URL_addimg               @"http://61.164.34.9:3000/addimg"
-//#define URL_uploadlocation       @"http://61.164.34.9:3000/uploadlocation"
-//#define URL_isstart              @"http://61.164.34.9:3000/isstart"
-//#define URL_updatepoint          @"http://61.164.34.9:3000/updatepoint"
-//#define URL_updatedamage         @"http://61.164.34.9:3000/updatedamage"
-//#define updateabnormal           @"http://61.164.34.9:3000/updateabnormal"
-//#define URL_addmsg               @"http://61.164.34.9:3000/addmsg"
-//#define URL_showusers            @"http://61.164.34.9:3000/showusers"
-//#define URL_addother             @"http://61.164.34.9:3000/addother"
+//#define URL_base                 @"http://192.168.1.142:3000"
+//#define URL_Login                @"http://192.168.1.142:3000/login"
+//#define URL_addpoint             @"http://192.168.1.142:3000/addpoint"
+//#define URL_addabnormal          @"http://192.168.1.142:3000/addabnormal"
+//#define URL_addreaction          @"http://192.168.1.142:3000/addreaction"
+//#define URL_adddamage            @"http://192.168.1.142:3000/adddamage"
+//#define URL_addimg               @"http://192.168.1.142:3000/addimg"
+//#define URL_uploadlocation       @"http://192.168.1.142:3000/uploadlocation"
+//#define URL_isstart              @"http://192.168.1.142:3000/isstart"
+//#define URL_updatepoint          @"http://192.168.1.142:3000/updatepoint"
+//#define URL_updatedamage         @"http://192.168.1.142:3000/updatedamage"
+//#define updateabnormal           @"http://192.168.1.142:3000/updateabnormal"
+//#define URL_addmsg               @"http://192.168.1.142:3000/addmsg"
+//#define URL_showusers            @"http://192.168.1.142:3000/showusers"
+//#define URL_addother             @"http://192.168.1.142:3000/addother"
+//#define URL_resources            @"http://192.168.1.142:3000/matters"
 
-
-#define URL_base                 @"http://192.168.1.142:3000"
-#define URL_Login                @"http://192.168.1.142:3000/login"
-#define URL_addpoint             @"http://192.168.1.142:3000/addpoint"
-#define URL_addabnormal          @"http://192.168.1.142:3000/addabnormal"
-#define URL_addreaction          @"http://192.168.1.142:3000/addreaction"
-#define URL_adddamage            @"http://192.168.1.142:3000/adddamage"
-#define URL_addimg               @"http://192.168.1.142:3000/addimg"
-#define URL_uploadlocation       @"http://192.168.1.142:3000/uploadlocation"
-#define URL_isstart              @"http://192.168.1.142:3000/isstart"
-#define URL_updatepoint          @"http://192.168.1.142:3000/updatepoint"
-#define URL_updatedamage         @"http://192.168.1.142:3000/updatedamage"
-#define updateabnormal           @"http://192.168.1.142:3000/updateabnormal"
-#define URL_addmsg               @"http://192.168.1.142:3000/addmsg"
-#define URL_showusers            @"http://192.168.1.142:3000/showusers"
-#define URL_addother             @"http://192.168.1.142:3000/addother"
-#define URL_resources            @"http://192.168.1.142:3000/matters"  //@"http://192.168.1.142:3000/resources"
-
-
-//(ANY "/addmsg" [msgtel msgcontent pointid]
-
-#define URL_Registerfamily(telnum, pwd)  [NSString stringWithFormat:@"%@registerfamily?rtelnum=%@&rpwd=%@",URL_IP,telnum,pwd];
-
-//#define URL_Login(telnum, pwd)  [NSString stringWithFormat:@"%@loginfamily?loginnum=%@&pwd=%@",URL_IP,telnum,pwd];
-
-#define URL_UpdatePwd(oldpwd, nowpwd, rid, tb)  [NSString stringWithFormat:@"%@updatefamilypwd?oldpwd=%@&newpwd=%@&id=%@&tb=%@",URL_IP,oldpwd,nowpwd,rid,tb];
 
 #define kAddPointinfoSucceedNotification @"AddPointinfosucceedNotifiaction"
 #define kAddAbnormalinfoSucceedNotification @"AddAbnormalinfoSucceedNotification"
@@ -211,4 +203,7 @@ typedef NS_ENUM(NSInteger, ActionType) {
 #define kdidUpload @"1"
 #define kdidNotUpload  @"0"
 #define kearthidDefault @"未获取到地震编号";
+
+//高德 key 
+#define APIKey @"4e4a9f0b5e8b6511cfdb23e7fc29b421"
 

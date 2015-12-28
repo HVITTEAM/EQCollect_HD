@@ -7,33 +7,20 @@
 //
 
 #import "PersonCenterController.h"
-#import "HMCommonCenterItem.h"
 #import "HMCommonTextfieldItem.h"
+#import "CurrentUser.h"
 
 @interface PersonCenterController ()
-
 
 @end
 
 @implementation PersonCenterController
-{
-    NSIndexPath *_cIndexPath;
-    UserModel *_userinfo;
-}
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
+#pragma mark -- 生命周期方法 --
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _userinfo = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
-    if (!_userinfo) {
-        _userinfo = [[UserModel alloc] init];
-    }
     
     [self initNavigation];
     
@@ -42,9 +29,10 @@
     self.tableView.rowHeight = 50;
 }
 
+#pragma mark -- 初始化方法 --
 /**
- 
- *  初始化导航栏 */
+ *  初始化导航栏
+ */
 -(void)initNavigation
 {
     self.title = @"个人中心";
@@ -53,8 +41,20 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
 }
 
+#pragma mark -- 协议方法 --
 
-# pragma  mark 设置数据源
+#pragma mark tableViewDataSource
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.section == 0) {
+        cell.userInteractionEnabled = NO;
+    }
+    
+    return cell;
+}
+
+# pragma  mark -- 设置数据源 --
 /**
  *  初始化模型数据
  */
@@ -72,113 +72,80 @@
     [self.tableView reloadData];
 }
 
-
 - (void)setupGroup0
 {
-    // 1.创建组
+    // 创建组
     HMCommonGroup *group = [HMCommonGroup group];
     [self.groups addObject:group];
     
     // 设置组的所有行数据
     HMCommonTextfieldItem *userccount = [HMCommonTextfieldItem itemWithTitle:@"帐号"];
-    userccount.placeholder = @"请输入帐号";
-    userccount.textString = _userinfo.userccount;
-    userccount.rightText.userInteractionEnabled = NO;
-    //userccount.textString = @"123456";
+    userccount.placeholder = nil;
+    userccount.textString = [CurrentUser shareInstance].userccount;
     
     HMCommonTextfieldItem *username = [HMCommonTextfieldItem itemWithTitle:@"名称"];
-    username.placeholder = @"请输入名称";
-    username.textString = _userinfo.username;
-    username.rightText.userInteractionEnabled = NO;
-    //username.textString = @" admin";
+    username.placeholder = nil;
+    username.textString = [CurrentUser shareInstance].username;
     
-//    HMCommonTextfieldItem *userpwd = [HMCommonTextfieldItem itemWithTitle:@"密码"];
-//    [userpwd.rightText setSecureTextEntry:YES];
-//    userpwd.placeholder = @"请输入密码";
-//    userpwd.textString = _userinfo.userpwd;
-//    //userpwd.textString = @"hvit";
-
     HMCommonTextfieldItem *usertel = [HMCommonTextfieldItem itemWithTitle:@"电话"];
-    usertel.placeholder = @"请输入电话";
-    usertel.textString = _userinfo.usertel;
-    usertel.rightText.userInteractionEnabled = NO;
-    //usertel.textString = @"88888888";
-
-//    HMCommonCenterItem *groupname = [HMCommonCenterItem itemWithTitle:@"所在分组" icon:nil];
-//    groupname.centerString = @"第一组";
+    usertel.placeholder = nil;
+    usertel.textString = [CurrentUser shareInstance].usertel;
     
     group.items = @[userccount,username,usertel];
 }
 
 - (void)setupGroup1
 {
-    // 1.创建组
+    // 创建组
     HMCommonGroup *group = [HMCommonGroup group];
     [self.groups addObject:group];
     
     // 设置组的所有行数据
-
     HMCommonTextfieldItem *groupname = [HMCommonTextfieldItem itemWithTitle:@"所在分组"];
-    groupname.placeholder = @"输入分组名称";
-    groupname.textString = _userinfo. pointgroup;
+    groupname.placeholder = @"输入所在的组";
+    groupname.textString = [CurrentUser shareInstance].pointgroup;
     
     HMCommonTextfieldItem *persons = [HMCommonTextfieldItem itemWithTitle:@"小组成员"];
-    persons.placeholder = @"输入分组成员";
-    persons.textString = _userinfo. pointperson;
+    persons.placeholder = @"输入小组成员名称,以逗号分隔";
+    persons.textString = [CurrentUser shareInstance].pointperson;
     
     group.items = @[groupname,persons];
 }
 
-
 - (void)setupFooter
 {
-    // 1.创建按钮
-    UIButton *logout = [[UIButton alloc] init];
-    
-    // 2.设置属性
+    // 创建按钮
+    UIButton *logout = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1, 60)];
     logout.titleLabel.font = [UIFont systemFontOfSize:16];
-    [logout setTitle:@"修改" forState:UIControlStateNormal];
+    [logout setTitle:@"完成" forState:UIControlStateNormal];
     [logout setTitleColor:HMColor(255, 10, 10) forState:UIControlStateNormal];
     [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background"] forState:UIControlStateNormal];
     [logout setBackgroundImage:[UIImage resizedImage:@"common_card_background_highlighted"] forState:UIControlStateHighlighted];
     [logout addTarget:self action:@selector(modifyUserInfo) forControlEvents:UIControlEventTouchUpInside];
     
-    // 3.设置尺寸(tableFooterView和tableHeaderView的宽度跟tableView的宽度一样)
-    logout.height = 60;
-    
     self.tableView.tableFooterView = logout;
-    
 }
 
+#pragma mark -- 事件方法 --
+/**
+ *  修改当前用户信息
+ */
 -(void)modifyUserInfo
 {
-    HMCommonGroup *group0 = self.groups[0];
     HMCommonGroup *group1 = self.groups[1];
     
-    NSString *userccount = ((HMCommonTextfieldItem *)group0.items[0]).rightText.text;
-    NSString *username = ((HMCommonTextfieldItem *)group0.items[1]).rightText.text;
-//    NSString *userpwd = ((HMCommonTextfieldItem *)group0.items[2]).rightText.text;
-    NSString *usertel = ((HMCommonTextfieldItem *)group0.items[2]).rightText.text;
     NSString *pointgroup = ((HMCommonTextfieldItem *)group1.items[0]).rightText.text;
     NSString *pointperson = ((HMCommonTextfieldItem *)group1.items[1]).rightText.text;
     
-    _userinfo.userccount = userccount;
-    _userinfo.username = username;
-//    _userinfo.userpwd = userpwd;
-    _userinfo.usertel = usertel;
-    _userinfo.pointgroup = pointgroup;
-    _userinfo.pointperson = pointperson;
+    [CurrentUser shareInstance].pointgroup = pointgroup;
+    [CurrentUser shareInstance].pointperson = pointperson;
     
-    [ArchiverCacheHelper saveObjectToLoacl:_userinfo key:User_Archiver_Key filePath:User_Archiver_Path];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    
-
 }
 
 -(void)back
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 @end

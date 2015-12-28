@@ -13,6 +13,7 @@
 #import "OtherTableHelper.h"
 #import "LocationHelper.h"
 #import "AppDelegate.h"
+#import "CacheUtil.h"
 
 @interface OtherViewController ()<locationHelperDelegate>
 {
@@ -168,7 +169,14 @@
         AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         self.otherLatTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.latitude];
         self.otherLonTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.longitude];
-
+        
+        
+        OtherModel *cache = [CacheUtil shareInstance].cacheOther;
+        if (!cache) {
+            return;
+        }
+        self.self.otherAddressTextF.text = cache.otheraddress;
+        self.self.otherTextView.text = cache.othercontent;
     }
 }
 
@@ -233,7 +241,8 @@
                           self.pointid,@"pointid",
                           kdidNotUpload,@"upload",
                           nil];
-
+    
+    [[CacheUtil shareInstance] setCacheOtherWithDict:dict];
     
     BOOL result = [[OtherTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
@@ -284,6 +293,8 @@
                           self.otherInfor.pointid,@"pointid",
                           self.otherInfor.upload,@"upload",
                           nil];
+    
+    [[CacheUtil shareInstance] setCacheOtherWithDict:dict];
     
     BOOL result = [[OtherTableHelper sharedInstance] updateDataWith:dict];
     if (!result) {

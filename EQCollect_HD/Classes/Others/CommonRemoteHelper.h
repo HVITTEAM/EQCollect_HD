@@ -21,7 +21,16 @@ typedef NS_ENUM(NSInteger, CommonRemoteType) {
                           success:(void (^)(NSDictionary *dict, id responseObject))success
                           failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
-+(void)RemoteWithUrl:(NSString *)url  parameters:(id)parameters  type:(CommonRemoteType)type
-             success:(void (^)(NSDictionary *dict, id responseObject))success
++(AFHTTPRequestOperation *)RemoteWithUrl:(NSString *)url
+          parameters:(id)parameters
+                type:(CommonRemoteType)type
+             success:(void (^)(id responseObject))success
              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
++(AFHTTPRequestOperation *)remoteImageWithUrl:(NSString *)url
+               parameters:(id)parameters
+              formObjects:(NSMutableArray *)formObjects
+                  success:(void(^)(id responseObject))success
+                  failure:(void(^)(AFHTTPRequestOperation *operation,NSError *error))failure;
+
 @end

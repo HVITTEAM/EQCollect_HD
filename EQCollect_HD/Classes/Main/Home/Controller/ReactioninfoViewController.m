@@ -10,6 +10,7 @@
 #import "ReactioninfoViewController.h"
 #import "ImageCollectionView.h"
 #import "PictureMode.h"
+#import "CacheUtil.h"
 
 @interface ReactioninfoViewController ()<UIAlertViewDelegate>
 {
@@ -195,8 +196,7 @@
         self.furnituredumpTextF.text= self.reactioninfo.furnituredump;
         self.soundsizeTextF.text= self.reactioninfo.soundsize;
         self.sounddirectionTextF.text= self.reactioninfo.sounddirection;
-        
-        //[self getimage];
+
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSMutableArray *images = [self getImagesWithReleteId:self.reactioninfo.reactionid releteTable:@"REACTIONINFOTAB"];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -211,6 +211,26 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.reactiontimeTextF.text = [formatter stringFromDate:date];
+        
+        ReactionModel *cache = [CacheUtil shareInstance].cacheReaction;
+        if (!cache) {
+            return;
+        }
+        self.informantnameTextF.text= cache.informantname;
+        self.informantageTextF.text= cache.informantage;
+        self.informanteducationTextF.text= cache.informanteducation;
+        self.informantjobTextF.text= cache.informantjob;
+        self.reactionaddressTextF.text= cache.reactionaddress;
+        self.rockfeelingTextF.text= cache.rockfeeling;
+        self.throwfeelingTextF.text= cache.throwfeeling;
+        self.throwtingsTextF.text= cache.throwtings;
+        self.throwdistanceTextF.text= cache.throwdistance;
+        self.fallTextF.text= cache.fall;
+        self.hangTextF.text= cache.hang;
+        self.furnituresoundTextF.text= cache.furnituresound;
+        self.furnituredumpTextF.text= cache.furnituredump;
+        self.soundsizeTextF.text= cache.soundsize;
+        self.sounddirectionTextF.text= cache.sounddirection;
     }
 }
 
@@ -386,6 +406,8 @@
                           kdidNotUpload,@"upload",
                           nil];
     
+    [[CacheUtil shareInstance] setCacheReactionWithDict:dict];
+    
     BOOL result = [[ReactioninfoTableHelper sharedInstance] insertDataWith:dict];
     if (!result) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -456,6 +478,8 @@
                           self.reactioninfo.pointid,@"pointid",
                           self.reactioninfo.upload,@"upload",
                           nil];
+    
+    [[CacheUtil shareInstance] setCacheReactionWithDict:dict];
     
     BOOL result = [[ReactioninfoTableHelper sharedInstance] updateDataWith:dict];
     if (!result) {

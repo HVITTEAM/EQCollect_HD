@@ -15,6 +15,8 @@
 #import "EarthInfo.h"
 #import "AppDelegate.h"
 #import "ImageCollectionView.h"
+#import "CurrentUser.h"
+#import "CacheUtil.h"
 
 
 @interface PointinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate,locationHelperDelegate>
@@ -59,6 +61,12 @@
     [self initPointinfoVC];
     [self initImageCollectionView];
     [self showPointinfoData];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSLog(@"subclass %@",self);
 }
 
 /**
@@ -172,16 +180,11 @@
                 imgview.dataProvider = images;
             });
         });
-    }else
-    {
+    }else{
         self.pointidTextF.text = [self createUniqueIdWithAbbreTableName:@"DC"];
         
-        UserModel *model = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
-        if (!model) {
-            model = [[UserModel alloc] init];
-        }
-        self.pointgroupTextF.text = model.pointgroup;
-        self.pointPersonTextF.text = model.pointperson;
+        self.pointgroupTextF.text = [CurrentUser shareInstance].pointgroup;
+        self.pointPersonTextF.text = [CurrentUser shareInstance].pointperson;
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         NSString *earthid = appDelegate.earthinfo.earthid;
@@ -202,6 +205,16 @@
         AppDelegate *appdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         self.pointlatTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.latitude];
         self.pointlonTextF.text = [NSString stringWithFormat:@"%f",appdelegate.currentCoordinate.longitude];
+        
+        PointModel *cache = [CacheUtil shareInstance].cachePoint;
+        if (!cache) {
+            return;
+        }
+        self.pointnameTextF.text = cache.pointname;
+        self.pointgroupTextF.text = cache.pointgroup;
+        self.pointPersonTextF.text = cache.pointperson;
+        self.pointintensityTextF.text = cache.pointintensity;
+        self.pointcontentTextV.text = cache.pointcontent;
      }
 }
 
@@ -265,7 +278,7 @@
  */
 -(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
 {
-    [self.view endEditing:YES];
+   [self.view endEditing:YES];
     //创建UIAlertView并设置标题
     NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
@@ -306,7 +319,7 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"获取 earthid 失败");
-        
+        self.earthidTextF.text = kearthidDefault;
     }];
 }
 
@@ -351,6 +364,8 @@
                               pointintensity,@"pointintensity",
                               pointcontent,@"pointcontent",
                               upload,@"upload",nil];
+        
+        [[CacheUtil shareInstance] setCachePointWithDict:dict];
         
         BOOL result = [[PointinfoTableHelper sharedInstance] insertDataWith:dict];
         if (!result) {
@@ -421,6 +436,8 @@
                               pointcontent,@"pointcontent",
                               upload,@"upload",
                               nil];
+        
+        [[CacheUtil shareInstance] setCachePointWithDict:dict];
         
         BOOL result = [[PointinfoTableHelper sharedInstance]updateDataWith:dict];
         if (!result) {

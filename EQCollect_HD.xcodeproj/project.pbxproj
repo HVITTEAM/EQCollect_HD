@@ -71,18 +71,12 @@
 		01FEE2A21B9BCACF007C4641 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29D1B9BCACF007C4641 /* MasterViewController.m */; };
 		01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */; };
 		01FEE2A41B9BCACF007C4641 /* SurveyPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */; };
-		D2023F2D1C0ACC2100B35E8C /* POIAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2023F2C1C0ACC2100B35E8C /* POIAnnotation.m */; };
-		D2023F321C0AE35400B35E8C /* NaviParamsSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2023F301C0AE35400B35E8C /* NaviParamsSelectViewController.m */; };
-		D2023F331C0AE35400B35E8C /* NaviParamsSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2023F311C0AE35400B35E8C /* NaviParamsSelectViewController.xib */; };
 		D21018D51BF5742900CA3F5A /* ChooseIntensityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21018D31BF5742900CA3F5A /* ChooseIntensityViewController.m */; };
 		D21018D61BF5742900CA3F5A /* ChooseIntensityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21018D41BF5742900CA3F5A /* ChooseIntensityViewController.xib */; };
 		D21018DB1BF57AB400CA3F5A /* ChooseIntensityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21018D91BF57AB400CA3F5A /* ChooseIntensityCell.m */; };
 		D21018DC1BF57AB400CA3F5A /* ChooseIntensityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21018DA1BF57AB400CA3F5A /* ChooseIntensityCell.xib */; };
 		D2173F361BA86BC800DB61B7 /* DamageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E354761B9D619900014114 /* DamageModel.m */; };
 		D21747601C19640A00788DC8 /* OtherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D217475F1C19640A00788DC8 /* OtherModel.m */; };
-		D21D92771C212E5200202C11 /* NoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21D92751C212E5200202C11 /* NoteViewController.m */; };
-		D21D92781C212E5200202C11 /* NoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21D92761C212E5200202C11 /* NoteViewController.xib */; };
-		D21D927B1C21405900202C11 /* NoteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D21D927A1C21405900202C11 /* NoteModel.m */; };
 		D21D92821C21576900202C11 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21D92801C21576900202C11 /* WebViewController.m */; };
 		D21D92831C21576900202C11 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21D92811C21576900202C11 /* WebViewController.xib */; };
 		D222DAD11C19224A008DAAB3 /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D222DACF1C19224A008DAAB3 /* OtherViewController.m */; };
@@ -97,13 +91,6 @@
 		D228EFB01C0806870029C058 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D228EFAF1C0806870029C058 /* AddressBook.framework */; };
 		D228EFB21C0807460029C058 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D228EFB11C0807460029C058 /* AMap.bundle */; };
 		D228EFB41C0807580029C058 /* AMapNavi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D228EFB31C0807580029C058 /* AMapNavi.bundle */; };
-		D228EFD21C080A6D0029C058 /* NavPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFD11C080A6D0029C058 /* NavPointAnnotation.m */; };
-		D228EFD71C080A8C0029C058 /* MoreMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFD41C080A8C0029C058 /* MoreMenuView.m */; };
-		D228EFD81C080A8C0029C058 /* SharedMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFD61C080A8C0029C058 /* SharedMapView.m */; };
-		D228EFDF1C080ABA0029C058 /* BaseNaviViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFDA1C080ABA0029C058 /* BaseNaviViewController.m */; };
-		D228EFE01C080ABA0029C058 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFDC1C080ABA0029C058 /* NavigationViewController.m */; };
-		D228EFE11C080ABA0029C058 /* RouteShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFDE1C080ABA0029C058 /* RouteShowViewController.m */; };
-		D228EFE41C0829A40029C058 /* CityListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D228EFE31C0829A40029C058 /* CityListViewController.m */; };
 		D232096E1BC7B16D00E2902D /* InfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D232096D1BC7B16D00E2902D /* InfoCell.m */; };
 		D23338921C1968FE00BBA6B0 /* OtherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D23338901C1968FE00BBA6B0 /* OtherCell.m */; };
 		D23338931C1968FE00BBA6B0 /* OtherCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23338911C1968FE00BBA6B0 /* OtherCell.xib */; };
@@ -127,7 +114,8 @@
 		D23A1AAA1B9EE3C500758DDD /* DamageinfoListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1AA81B9EE3C500758DDD /* DamageinfoListController.xib */; };
 		D23A1AAE1B9EE3F900758DDD /* DamageinfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D23A1AAC1B9EE3F900758DDD /* DamageinfoCell.m */; };
 		D23A1AAF1B9EE3F900758DDD /* DamageinfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */; };
-		D27417B21C17D579004C589B /* MemberAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D27417B11C17D579004C589B /* MemberAnnotation.m */; };
+		D27BEFD31C2C1DF2004DCEB1 /* MultipartFormObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BEFD21C2C1DF2004DCEB1 /* MultipartFormObject.m */; };
+		D27BEFD61C2C2459004DCEB1 /* CurrentUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BEFD51C2C2459004DCEB1 /* CurrentUser.m */; };
 		D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28D42E91B8FF81500E720AB /* AdminTableHead.xib */; };
 		D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */ = {isa = PBXBuildFile; fileRef = D28D42EC1B90006B00E720AB /* AdminTableHead.m */; };
 		D28DCCAF1BC6114D004DC637 /* MJRefreshAutoFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = D28DCC851BC6114D004DC637 /* MJRefreshAutoFooter.m */; };
@@ -153,7 +141,22 @@
 		D29472891BF7062700CDA506 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D29472881BF7062700CDA506 /* MessageModel.m */; };
 		D294728D1BF70E1C00CDA506 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D294728B1BF70E1C00CDA506 /* MessageViewController.m */; };
 		D294728E1BF70E1C00CDA506 /* MessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D294728C1BF70E1C00CDA506 /* MessageViewController.xib */; };
-		D2953F7B1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2953F7A1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m */; };
+		D2A8AE041C30FB66007AD4A7 /* CacheUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE031C30FB66007AD4A7 /* CacheUtil.m */; };
+		D2A8AE4A1C3112C6007AD4A7 /* BaseNaviViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE301C3112C6007AD4A7 /* BaseNaviViewController.m */; };
+		D2A8AE4B1C3112C6007AD4A7 /* CityListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE321C3112C6007AD4A7 /* CityListViewController.m */; };
+		D2A8AE4C1C3112C6007AD4A7 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE341C3112C6007AD4A7 /* NavigationViewController.m */; };
+		D2A8AE4D1C3112C6007AD4A7 /* NaviParamsSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE361C3112C6007AD4A7 /* NaviParamsSelectViewController.m */; };
+		D2A8AE4E1C3112C6007AD4A7 /* NaviParamsSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2A8AE371C3112C6007AD4A7 /* NaviParamsSelectViewController.xib */; };
+		D2A8AE4F1C3112C6007AD4A7 /* RouteShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE391C3112C6007AD4A7 /* RouteShowViewController.m */; };
+		D2A8AE501C3112C6007AD4A7 /* MemberAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE3C1C3112C6007AD4A7 /* MemberAnnotation.m */; };
+		D2A8AE511C3112C6007AD4A7 /* NavPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE3E1C3112C6007AD4A7 /* NavPointAnnotation.m */; };
+		D2A8AE521C3112C6007AD4A7 /* POIAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE401C3112C6007AD4A7 /* POIAnnotation.m */; };
+		D2A8AE531C3112C6007AD4A7 /* TrackModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE421C3112C6007AD4A7 /* TrackModel.m */; };
+		D2A8AE541C3112C6007AD4A7 /* MoreMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE451C3112C6007AD4A7 /* MoreMenuView.m */; };
+		D2A8AE551C3112C6007AD4A7 /* SharedMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE471C3112C6007AD4A7 /* SharedMapView.m */; };
+		D2A8AE561C3112C6007AD4A7 /* SWYMapTypeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE491C3112C6007AD4A7 /* SWYMapTypeSelectView.m */; };
+		D2A8AE601C3112D3007AD4A7 /* NoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE5A1C3112D3007AD4A7 /* NoteViewController.m */; };
+		D2A8AE621C3112D3007AD4A7 /* NoteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8AE5E1C3112D3007AD4A7 /* NoteModel.m */; };
 		D2C189651BA94D0F00312EBA /* PictureInfoTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */; };
 		D2C189681BA9510100312EBA /* PictureMode.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C189671BA9510100312EBA /* PictureMode.m */; };
 		D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C207F81B9D264A00454591 /* QCSlideSwitchView.m */; };
@@ -215,7 +218,6 @@
 		D2F2DA6D1C06EC6F005E3F2A /* MAHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2DA6C1C06EC6F005E3F2A /* MAHeaderView.m */; };
 		D2F2FCCA1BF985C700BA4AD1 /* EarthInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2FCC91BF985C700BA4AD1 /* EarthInfo.m */; };
 		D2F4D83E1C0BE5AD000E47CE /* TrackTableHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F4D83D1C0BE5AD000E47CE /* TrackTableHelper.m */; };
-		D2F4D8421C0BEE71000E47CE /* TrackModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F4D8411C0BEE71000E47CE /* TrackModel.m */; };
 		D2F4D8451C0C447C000E47CE /* AMapLocationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2F4D8441C0C447C000E47CE /* AMapLocationKit.framework */; };
 		D2FC4E991BDBBDAD0072281A /* UseHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FC4E971BDBBDAD0072281A /* UseHelpViewController.m */; };
 		D2FC4E9A1BDBBDAD0072281A /* UseHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2FC4E981BDBBDAD0072281A /* UseHelpViewController.xib */; };
@@ -359,11 +361,6 @@
 		01FEE29E1B9BCACF007C4641 /* SurveyPointDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurveyPointDetailViewController.h; sourceTree = "<group>"; };
 		01FEE29F1B9BCACF007C4641 /* SurveyPointDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurveyPointDetailViewController.m; sourceTree = "<group>"; };
 		01FEE2A01B9BCACF007C4641 /* SurveyPointDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveyPointDetailViewController.xib; sourceTree = "<group>"; };
-		D2023F2B1C0ACC2100B35E8C /* POIAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POIAnnotation.h; sourceTree = "<group>"; };
-		D2023F2C1C0ACC2100B35E8C /* POIAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POIAnnotation.m; sourceTree = "<group>"; };
-		D2023F2F1C0AE35400B35E8C /* NaviParamsSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NaviParamsSelectViewController.h; sourceTree = "<group>"; };
-		D2023F301C0AE35400B35E8C /* NaviParamsSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NaviParamsSelectViewController.m; sourceTree = "<group>"; };
-		D2023F311C0AE35400B35E8C /* NaviParamsSelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NaviParamsSelectViewController.xib; sourceTree = "<group>"; };
 		D21018D21BF5742900CA3F5A /* ChooseIntensityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseIntensityViewController.h; sourceTree = "<group>"; };
 		D21018D31BF5742900CA3F5A /* ChooseIntensityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseIntensityViewController.m; sourceTree = "<group>"; };
 		D21018D41BF5742900CA3F5A /* ChooseIntensityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseIntensityViewController.xib; sourceTree = "<group>"; };
@@ -372,11 +369,6 @@
 		D21018DA1BF57AB400CA3F5A /* ChooseIntensityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseIntensityCell.xib; sourceTree = "<group>"; };
 		D217475E1C19640A00788DC8 /* OtherModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherModel.h; sourceTree = "<group>"; };
 		D217475F1C19640A00788DC8 /* OtherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherModel.m; sourceTree = "<group>"; };
-		D21D92741C212E5200202C11 /* NoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteViewController.h; sourceTree = "<group>"; };
-		D21D92751C212E5200202C11 /* NoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteViewController.m; sourceTree = "<group>"; };
-		D21D92761C212E5200202C11 /* NoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteViewController.xib; sourceTree = "<group>"; };
-		D21D92791C21405900202C11 /* NoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteModel.h; sourceTree = "<group>"; };
-		D21D927A1C21405900202C11 /* NoteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteModel.m; sourceTree = "<group>"; };
 		D21D927F1C21576900202C11 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		D21D92801C21576900202C11 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		D21D92811C21576900202C11 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
@@ -395,20 +387,6 @@
 		D228EFAF1C0806870029C058 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D228EFB11C0807460029C058 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AMap.bundle; path = MAMap/AMapNaviKit.framework/Versions/1.3.2.70b9c1e/Resources/AMap.bundle; sourceTree = "<group>"; };
 		D228EFB31C0807580029C058 /* AMapNavi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AMapNavi.bundle; path = MAMap/AMapNaviKit.framework/Versions/1.3.2.70b9c1e/Resources/AMapNavi.bundle; sourceTree = "<group>"; };
-		D228EFD01C080A6D0029C058 /* NavPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavPointAnnotation.h; sourceTree = "<group>"; };
-		D228EFD11C080A6D0029C058 /* NavPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavPointAnnotation.m; sourceTree = "<group>"; };
-		D228EFD31C080A8C0029C058 /* MoreMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMenuView.h; sourceTree = "<group>"; };
-		D228EFD41C080A8C0029C058 /* MoreMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMenuView.m; sourceTree = "<group>"; };
-		D228EFD51C080A8C0029C058 /* SharedMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedMapView.h; sourceTree = "<group>"; };
-		D228EFD61C080A8C0029C058 /* SharedMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedMapView.m; sourceTree = "<group>"; };
-		D228EFD91C080ABA0029C058 /* BaseNaviViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNaviViewController.h; sourceTree = "<group>"; };
-		D228EFDA1C080ABA0029C058 /* BaseNaviViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNaviViewController.m; sourceTree = "<group>"; };
-		D228EFDB1C080ABA0029C058 /* NavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationViewController.h; sourceTree = "<group>"; };
-		D228EFDC1C080ABA0029C058 /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
-		D228EFDD1C080ABA0029C058 /* RouteShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteShowViewController.h; sourceTree = "<group>"; };
-		D228EFDE1C080ABA0029C058 /* RouteShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteShowViewController.m; sourceTree = "<group>"; };
-		D228EFE21C0829A40029C058 /* CityListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityListViewController.h; sourceTree = "<group>"; };
-		D228EFE31C0829A40029C058 /* CityListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityListViewController.m; sourceTree = "<group>"; };
 		D232096C1BC7B16D00E2902D /* InfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoCell.h; sourceTree = "<group>"; };
 		D232096D1BC7B16D00E2902D /* InfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoCell.m; sourceTree = "<group>"; };
 		D233388F1C1968FE00BBA6B0 /* OtherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherCell.h; sourceTree = "<group>"; };
@@ -444,8 +422,10 @@
 		D23A1AAB1B9EE3F900758DDD /* DamageinfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamageinfoCell.h; sourceTree = "<group>"; };
 		D23A1AAC1B9EE3F900758DDD /* DamageinfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamageinfoCell.m; sourceTree = "<group>"; };
 		D23A1AAD1B9EE3F900758DDD /* DamageinfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DamageinfoCell.xib; sourceTree = "<group>"; };
-		D27417B01C17D579004C589B /* MemberAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberAnnotation.h; sourceTree = "<group>"; };
-		D27417B11C17D579004C589B /* MemberAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberAnnotation.m; sourceTree = "<group>"; };
+		D27BEFD11C2C1DF2004DCEB1 /* MultipartFormObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipartFormObject.h; sourceTree = "<group>"; };
+		D27BEFD21C2C1DF2004DCEB1 /* MultipartFormObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipartFormObject.m; sourceTree = "<group>"; };
+		D27BEFD41C2C2459004DCEB1 /* CurrentUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentUser.h; sourceTree = "<group>"; };
+		D27BEFD51C2C2459004DCEB1 /* CurrentUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentUser.m; sourceTree = "<group>"; };
 		D28D42E91B8FF81500E720AB /* AdminTableHead.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdminTableHead.xib; sourceTree = "<group>"; };
 		D28D42EB1B90006B00E720AB /* AdminTableHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdminTableHead.h; sourceTree = "<group>"; };
 		D28D42EC1B90006B00E720AB /* AdminTableHead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdminTableHead.m; sourceTree = "<group>"; };
@@ -494,8 +474,37 @@
 		D294728A1BF70E1C00CDA506 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		D294728B1BF70E1C00CDA506 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		D294728C1BF70E1C00CDA506 /* MessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageViewController.xib; sourceTree = "<group>"; };
-		D2953F791C0D3E8E006C3CF3 /* SWYMapTypeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWYMapTypeSelectView.h; sourceTree = "<group>"; };
-		D2953F7A1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWYMapTypeSelectView.m; sourceTree = "<group>"; };
+		D2A8AE021C30FB66007AD4A7 /* CacheUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheUtil.h; sourceTree = "<group>"; };
+		D2A8AE031C30FB66007AD4A7 /* CacheUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheUtil.m; sourceTree = "<group>"; };
+		D2A8AE2F1C3112C6007AD4A7 /* BaseNaviViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNaviViewController.h; sourceTree = "<group>"; };
+		D2A8AE301C3112C6007AD4A7 /* BaseNaviViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNaviViewController.m; sourceTree = "<group>"; };
+		D2A8AE311C3112C6007AD4A7 /* CityListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityListViewController.h; sourceTree = "<group>"; };
+		D2A8AE321C3112C6007AD4A7 /* CityListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityListViewController.m; sourceTree = "<group>"; };
+		D2A8AE331C3112C6007AD4A7 /* NavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationViewController.h; sourceTree = "<group>"; };
+		D2A8AE341C3112C6007AD4A7 /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
+		D2A8AE351C3112C6007AD4A7 /* NaviParamsSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NaviParamsSelectViewController.h; sourceTree = "<group>"; };
+		D2A8AE361C3112C6007AD4A7 /* NaviParamsSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NaviParamsSelectViewController.m; sourceTree = "<group>"; };
+		D2A8AE371C3112C6007AD4A7 /* NaviParamsSelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NaviParamsSelectViewController.xib; sourceTree = "<group>"; };
+		D2A8AE381C3112C6007AD4A7 /* RouteShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteShowViewController.h; sourceTree = "<group>"; };
+		D2A8AE391C3112C6007AD4A7 /* RouteShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteShowViewController.m; sourceTree = "<group>"; };
+		D2A8AE3B1C3112C6007AD4A7 /* MemberAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberAnnotation.h; sourceTree = "<group>"; };
+		D2A8AE3C1C3112C6007AD4A7 /* MemberAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberAnnotation.m; sourceTree = "<group>"; };
+		D2A8AE3D1C3112C6007AD4A7 /* NavPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavPointAnnotation.h; sourceTree = "<group>"; };
+		D2A8AE3E1C3112C6007AD4A7 /* NavPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavPointAnnotation.m; sourceTree = "<group>"; };
+		D2A8AE3F1C3112C6007AD4A7 /* POIAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POIAnnotation.h; sourceTree = "<group>"; };
+		D2A8AE401C3112C6007AD4A7 /* POIAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POIAnnotation.m; sourceTree = "<group>"; };
+		D2A8AE411C3112C6007AD4A7 /* TrackModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackModel.h; sourceTree = "<group>"; };
+		D2A8AE421C3112C6007AD4A7 /* TrackModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackModel.m; sourceTree = "<group>"; };
+		D2A8AE441C3112C6007AD4A7 /* MoreMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMenuView.h; sourceTree = "<group>"; };
+		D2A8AE451C3112C6007AD4A7 /* MoreMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMenuView.m; sourceTree = "<group>"; };
+		D2A8AE461C3112C6007AD4A7 /* SharedMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedMapView.h; sourceTree = "<group>"; };
+		D2A8AE471C3112C6007AD4A7 /* SharedMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedMapView.m; sourceTree = "<group>"; };
+		D2A8AE481C3112C6007AD4A7 /* SWYMapTypeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWYMapTypeSelectView.h; sourceTree = "<group>"; };
+		D2A8AE491C3112C6007AD4A7 /* SWYMapTypeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWYMapTypeSelectView.m; sourceTree = "<group>"; };
+		D2A8AE591C3112D3007AD4A7 /* NoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteViewController.h; sourceTree = "<group>"; };
+		D2A8AE5A1C3112D3007AD4A7 /* NoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteViewController.m; sourceTree = "<group>"; };
+		D2A8AE5D1C3112D3007AD4A7 /* NoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteModel.h; sourceTree = "<group>"; };
+		D2A8AE5E1C3112D3007AD4A7 /* NoteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteModel.m; sourceTree = "<group>"; };
 		D2C189631BA94D0F00312EBA /* PictureInfoTableHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureInfoTableHelper.h; sourceTree = "<group>"; };
 		D2C189641BA94D0F00312EBA /* PictureInfoTableHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureInfoTableHelper.m; sourceTree = "<group>"; };
 		D2C189661BA9510100312EBA /* PictureMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureMode.h; sourceTree = "<group>"; };
@@ -602,8 +611,6 @@
 		D2F2FCC91BF985C700BA4AD1 /* EarthInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EarthInfo.m; sourceTree = "<group>"; };
 		D2F4D83C1C0BE5AD000E47CE /* TrackTableHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackTableHelper.h; sourceTree = "<group>"; };
 		D2F4D83D1C0BE5AD000E47CE /* TrackTableHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackTableHelper.m; sourceTree = "<group>"; };
-		D2F4D8401C0BEE71000E47CE /* TrackModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackModel.h; sourceTree = "<group>"; };
-		D2F4D8411C0BEE71000E47CE /* TrackModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackModel.m; sourceTree = "<group>"; };
 		D2F4D8441C0C447C000E47CE /* AMapLocationKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMapLocationKit.framework; path = EQCollect_HD/Classes/Libs/MAMap/AMapLocationKit.framework; sourceTree = "<group>"; };
 		D2FC4E961BDBBDAD0072281A /* UseHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseHelpViewController.h; sourceTree = "<group>"; };
 		D2FC4E971BDBBDAD0072281A /* UseHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseHelpViewController.m; sourceTree = "<group>"; };
@@ -655,7 +662,7 @@
 			isa = PBXGroup;
 			children = (
 				0177A0A41B968390003199F4 /* Controller */,
-				0177A0A51B968390003199F4 /* Model */,
+				D2A8AE2C1C311130007AD4A7 /* Model */,
 				0177A0A61B968390003199F4 /* View */,
 			);
 			path = Setting;
@@ -679,13 +686,6 @@
 				D2FC4E9E1BDBC7FB0072281A /* FeedbackViewController.xib */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		0177A0A51B968390003199F4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		0177A0A61B968390003199F4 /* View */ = {
@@ -742,8 +742,8 @@
 			isa = PBXGroup;
 			children = (
 				0177A0DF1B9689FA003199F4 /* Controller */,
-				0177A0E01B9689FA003199F4 /* Model */,
-				0177A0E11B9689FA003199F4 /* View */,
+				D2A8AE2A1C311105007AD4A7 /* Model */,
+				D2A8AE2B1C311105007AD4A7 /* View */,
 			);
 			path = PersonCenter;
 			sourceTree = "<group>";
@@ -755,20 +755,6 @@
 				0177A0E31B968A18003199F4 /* PersonCenterController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		0177A0E01B9689FA003199F4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		0177A0E11B9689FA003199F4 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		01E354331B9D5F5700014114 /* MJExtension */ = {
@@ -799,15 +785,10 @@
 			children = (
 				01E81AEB1BA2A557008FE6EC /* UserModel.h */,
 				01E81AEC1BA2A557008FE6EC /* UserModel.m */,
+				D27BEFD41C2C2459004DCEB1 /* CurrentUser.h */,
+				D27BEFD51C2C2459004DCEB1 /* CurrentUser.m */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		01E81AEA1BA2A52E008FE6EC /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		01EDAD4D1B8EF22200C1CF21 = {
@@ -885,6 +866,8 @@
 		01EDAD911B8EFBF300C1CF21 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				D2A8AE571C3112D3007AD4A7 /* Note */,
+				D2A8AE2D1C3112C6007AD4A7 /* MapController */,
 				0177A0DE1B9689FA003199F4 /* PersonCenter */,
 				0177A0A31B968374003199F4 /* Setting */,
 				01EDAD921B8EFBF300C1CF21 /* Home */,
@@ -906,7 +889,6 @@
 		01EDAD981B8EFBF300C1CF21 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D228EFCF1C080A640029C058 /* map */,
 				01E3546C1B9D615700014114 /* PointModel.h */,
 				01E3546D1B9D615700014114 /* PointModel.m */,
 				01E3546F1B9D617900014114 /* AbnormalinfoModel.h */,
@@ -925,8 +907,6 @@
 				D29472881BF7062700CDA506 /* MessageModel.m */,
 				D2F2FCC81BF985C700BA4AD1 /* EarthInfo.h */,
 				D2F2FCC91BF985C700BA4AD1 /* EarthInfo.m */,
-				D21D92791C21405900202C11 /* NoteModel.h */,
-				D21D927A1C21405900202C11 /* NoteModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -935,7 +915,6 @@
 			isa = PBXGroup;
 			children = (
 				D2F2054F1C0FEBF500F6D808 /* imagePicker */,
-				D228EFB61C0809A60029C058 /* mapViews */,
 				D2C207F61B9D264A00454591 /* SlideViewController */,
 				D28D42EB1B90006B00E720AB /* AdminTableHead.h */,
 				D28D42EC1B90006B00E720AB /* AdminTableHead.m */,
@@ -969,9 +948,9 @@
 		01EDAD9A1B8EFBF300C1CF21 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				01E81AE91BA2A52E008FE6EC /* Model */,
-				01E81AEA1BA2A52E008FE6EC /* View */,
 				01EDAD9D1B8EFC0700C1CF21 /* Controller */,
+				D2A8AE291C311094007AD4A7 /* View */,
+				01E81AE91BA2A52E008FE6EC /* Model */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1059,11 +1038,15 @@
 				01E81AE51BA274F5008FE6EC /* SharedAppUtil.m */,
 				01A26EE41BA17F1A00EEB627 /* CommonRemoteHelper.h */,
 				01A26EE51BA17F1A00EEB627 /* CommonRemoteHelper.m */,
+				D27BEFD11C2C1DF2004DCEB1 /* MultipartFormObject.h */,
+				D27BEFD21C2C1DF2004DCEB1 /* MultipartFormObject.m */,
 				01EED5971B9D2A190041D28A /* FMDBHelper */,
 				01E354781B9D746900014114 /* VenderMannager.h */,
 				01E354791B9D746900014114 /* VenderMannager.m */,
 				D2E6A73E1BD0A94C00C38525 /* LocationHelper.h */,
 				D2E6A73F1BD0A94C00C38525 /* LocationHelper.m */,
+				D2A8AE021C30FB66007AD4A7 /* CacheUtil.h */,
+				D2A8AE031C30FB66007AD4A7 /* CacheUtil.m */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -1094,7 +1077,6 @@
 		01FEE2991B9BCACF007C4641 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				D228EFB51C08092E0029C058 /* mapController */,
 				D2DCDE601BBD66020085CC25 /* SheetViewController.h */,
 				D2DCDE611BBD66020085CC25 /* SheetViewController.m */,
 				01FEE29A1B9BCACF007C4641 /* DetailViewController.h */,
@@ -1114,9 +1096,6 @@
 				D21D927F1C21576900202C11 /* WebViewController.h */,
 				D21D92801C21576900202C11 /* WebViewController.m */,
 				D21D92811C21576900202C11 /* WebViewController.xib */,
-				D21D92741C212E5200202C11 /* NoteViewController.h */,
-				D21D92751C212E5200202C11 /* NoteViewController.m */,
-				D21D92761C212E5200202C11 /* NoteViewController.xib */,
 				D21018D21BF5742900CA3F5A /* ChooseIntensityViewController.h */,
 				D21018D31BF5742900CA3F5A /* ChooseIntensityViewController.m */,
 				D21018D41BF5742900CA3F5A /* ChooseIntensityViewController.xib */,
@@ -1177,52 +1156,6 @@
 				D222DAD01C19224A008DAAB3 /* OtherViewController.xib */,
 			);
 			name = Other;
-			sourceTree = "<group>";
-		};
-		D228EFB51C08092E0029C058 /* mapController */ = {
-			isa = PBXGroup;
-			children = (
-				D228EFE21C0829A40029C058 /* CityListViewController.h */,
-				D228EFE31C0829A40029C058 /* CityListViewController.m */,
-				D228EFD91C080ABA0029C058 /* BaseNaviViewController.h */,
-				D228EFDA1C080ABA0029C058 /* BaseNaviViewController.m */,
-				D228EFDB1C080ABA0029C058 /* NavigationViewController.h */,
-				D228EFDC1C080ABA0029C058 /* NavigationViewController.m */,
-				D228EFDD1C080ABA0029C058 /* RouteShowViewController.h */,
-				D228EFDE1C080ABA0029C058 /* RouteShowViewController.m */,
-				D2023F2F1C0AE35400B35E8C /* NaviParamsSelectViewController.h */,
-				D2023F301C0AE35400B35E8C /* NaviParamsSelectViewController.m */,
-				D2023F311C0AE35400B35E8C /* NaviParamsSelectViewController.xib */,
-			);
-			path = mapController;
-			sourceTree = "<group>";
-		};
-		D228EFB61C0809A60029C058 /* mapViews */ = {
-			isa = PBXGroup;
-			children = (
-				D2953F791C0D3E8E006C3CF3 /* SWYMapTypeSelectView.h */,
-				D2953F7A1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m */,
-				D228EFD31C080A8C0029C058 /* MoreMenuView.h */,
-				D228EFD41C080A8C0029C058 /* MoreMenuView.m */,
-				D228EFD51C080A8C0029C058 /* SharedMapView.h */,
-				D228EFD61C080A8C0029C058 /* SharedMapView.m */,
-			);
-			path = mapViews;
-			sourceTree = "<group>";
-		};
-		D228EFCF1C080A640029C058 /* map */ = {
-			isa = PBXGroup;
-			children = (
-				D228EFD01C080A6D0029C058 /* NavPointAnnotation.h */,
-				D228EFD11C080A6D0029C058 /* NavPointAnnotation.m */,
-				D2023F2B1C0ACC2100B35E8C /* POIAnnotation.h */,
-				D2023F2C1C0ACC2100B35E8C /* POIAnnotation.m */,
-				D2F4D8401C0BEE71000E47CE /* TrackModel.h */,
-				D2F4D8411C0BEE71000E47CE /* TrackModel.m */,
-				D27417B01C17D579004C589B /* MemberAnnotation.h */,
-				D27417B11C17D579004C589B /* MemberAnnotation.m */,
-			);
-			path = map;
 			sourceTree = "<group>";
 		};
 		D28DCC821BC6114D004DC637 /* MJRefresh */ = {
@@ -1317,6 +1250,125 @@
 				D28DCCA41BC6114D004DC637 /* MJRefreshStateHeader.m */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		D2A8AE291C311094007AD4A7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D2A8AE2A1C311105007AD4A7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D2A8AE2B1C311105007AD4A7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D2A8AE2C1C311130007AD4A7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D2A8AE2D1C3112C6007AD4A7 /* MapController */ = {
+			isa = PBXGroup;
+			children = (
+				D2A8AE2E1C3112C6007AD4A7 /* Controller */,
+				D2A8AE3A1C3112C6007AD4A7 /* Model */,
+				D2A8AE431C3112C6007AD4A7 /* View */,
+			);
+			path = MapController;
+			sourceTree = "<group>";
+		};
+		D2A8AE2E1C3112C6007AD4A7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D2A8AE2F1C3112C6007AD4A7 /* BaseNaviViewController.h */,
+				D2A8AE301C3112C6007AD4A7 /* BaseNaviViewController.m */,
+				D2A8AE311C3112C6007AD4A7 /* CityListViewController.h */,
+				D2A8AE321C3112C6007AD4A7 /* CityListViewController.m */,
+				D2A8AE331C3112C6007AD4A7 /* NavigationViewController.h */,
+				D2A8AE341C3112C6007AD4A7 /* NavigationViewController.m */,
+				D2A8AE351C3112C6007AD4A7 /* NaviParamsSelectViewController.h */,
+				D2A8AE361C3112C6007AD4A7 /* NaviParamsSelectViewController.m */,
+				D2A8AE371C3112C6007AD4A7 /* NaviParamsSelectViewController.xib */,
+				D2A8AE381C3112C6007AD4A7 /* RouteShowViewController.h */,
+				D2A8AE391C3112C6007AD4A7 /* RouteShowViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		D2A8AE3A1C3112C6007AD4A7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D2A8AE3B1C3112C6007AD4A7 /* MemberAnnotation.h */,
+				D2A8AE3C1C3112C6007AD4A7 /* MemberAnnotation.m */,
+				D2A8AE3D1C3112C6007AD4A7 /* NavPointAnnotation.h */,
+				D2A8AE3E1C3112C6007AD4A7 /* NavPointAnnotation.m */,
+				D2A8AE3F1C3112C6007AD4A7 /* POIAnnotation.h */,
+				D2A8AE401C3112C6007AD4A7 /* POIAnnotation.m */,
+				D2A8AE411C3112C6007AD4A7 /* TrackModel.h */,
+				D2A8AE421C3112C6007AD4A7 /* TrackModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D2A8AE431C3112C6007AD4A7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D2A8AE441C3112C6007AD4A7 /* MoreMenuView.h */,
+				D2A8AE451C3112C6007AD4A7 /* MoreMenuView.m */,
+				D2A8AE461C3112C6007AD4A7 /* SharedMapView.h */,
+				D2A8AE471C3112C6007AD4A7 /* SharedMapView.m */,
+				D2A8AE481C3112C6007AD4A7 /* SWYMapTypeSelectView.h */,
+				D2A8AE491C3112C6007AD4A7 /* SWYMapTypeSelectView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D2A8AE571C3112D3007AD4A7 /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				D2A8AE581C3112D3007AD4A7 /* Controller */,
+				D2A8AE5C1C3112D3007AD4A7 /* Model */,
+				D2A8AE5F1C3112D3007AD4A7 /* View */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
+		D2A8AE581C3112D3007AD4A7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D2A8AE591C3112D3007AD4A7 /* NoteViewController.h */,
+				D2A8AE5A1C3112D3007AD4A7 /* NoteViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		D2A8AE5C1C3112D3007AD4A7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D2A8AE5D1C3112D3007AD4A7 /* NoteModel.h */,
+				D2A8AE5E1C3112D3007AD4A7 /* NoteModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D2A8AE5F1C3112D3007AD4A7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		D2C207F61B9D264A00454591 /* SlideViewController */ = {
@@ -1553,7 +1605,6 @@
 				0177A09D1B9590C5003199F4 /* SurveyPointCell.xib in Resources */,
 				D222DAD21C19224A008DAAB3 /* OtherViewController.xib in Resources */,
 				D2F08E581BDA173800E5A194 /* VersionViewController.xib in Resources */,
-				D21D92781C212E5200202C11 /* NoteViewController.xib in Resources */,
 				D222DADC1C19269C008DAAB3 /* OtherListViewController.xib in Resources */,
 				D28D42EA1B8FF81500E720AB /* AdminTableHead.xib in Resources */,
 				D21D92831C21576900202C11 /* WebViewController.xib in Resources */,
@@ -1566,12 +1617,12 @@
 				D21018DC1BF57AB400CA3F5A /* ChooseIntensityCell.xib in Resources */,
 				D23A1A871B9EBA9800758DDD /* DamageinfoViewController.xib in Resources */,
 				D28DCCBD1BC6114D004DC637 /* MJRefresh.bundle in Resources */,
+				D2A8AE4E1C3112C6007AD4A7 /* NaviParamsSelectViewController.xib in Resources */,
 				D23A1A961B9ED48200758DDD /* AbnormalinfoCell.xib in Resources */,
 				D2DDCDE51BB92B1000A14147 /* UzysAssetPickerController.bundle in Resources */,
 				016734891BAAA358009C5620 /* ImageCollectionView.xib in Resources */,
 				D294728E1BF70E1C00CDA506 /* MessageViewController.xib in Resources */,
 				D23A1AA01B9EDE5400758DDD /* ReactioninfoCell.xib in Resources */,
-				D2023F331C0AE35400B35E8C /* NaviParamsSelectViewController.xib in Resources */,
 				010CAB451BAB962100828EBD /* SQCollectionCell.xib in Resources */,
 				D21018D61BF5742900CA3F5A /* ChooseIntensityViewController.xib in Resources */,
 			);
@@ -1613,22 +1664,23 @@
 				D21D92821C21576900202C11 /* WebViewController.m in Sources */,
 				D2FC4E9F1BDBC7FB0072281A /* FeedbackViewController.m in Sources */,
 				D2F175501BC9097F00655EDD /* SDWebImageCompat.m in Sources */,
-				D2953F7B1C0D3E8E006C3CF3 /* SWYMapTypeSelectView.m in Sources */,
 				01E81AED1BA2A557008FE6EC /* UserModel.m in Sources */,
 				01E354631B9D5F5700014114 /* NSObject+MJKeyValue.m in Sources */,
-				D2F4D8421C0BEE71000E47CE /* TrackModel.m in Sources */,
+				D27BEFD31C2C1DF2004DCEB1 /* MultipartFormObject.m in Sources */,
 				D28DCCB91BC6114D004DC637 /* MJRefreshBackStateFooter.m in Sources */,
 				D2F175581BC9097F00655EDD /* UIImage+MultiFormat.m in Sources */,
 				D2FC4E991BDBBDAD0072281A /* UseHelpViewController.m in Sources */,
 				D28DCCBE1BC6114D004DC637 /* MJRefreshConst.m in Sources */,
 				0177A0CE1B968475003199F4 /* HMBadgeView.m in Sources */,
 				D2DCDE621BBD66020085CC25 /* SheetViewController.m in Sources */,
-				D228EFE01C080ABA0029C058 /* NavigationViewController.m in Sources */,
 				01EED5891B9D25420041D28A /* FMDatabasePool.m in Sources */,
 				D2F250F91BD728AF00E54FB7 /* AFNetworkReachabilityManager.m in Sources */,
+				D27BEFD61C2C2459004DCEB1 /* CurrentUser.m in Sources */,
+				D2A8AE601C3112D3007AD4A7 /* NoteViewController.m in Sources */,
 				D294728D1BF70E1C00CDA506 /* MessageViewController.m in Sources */,
 				D23A1A811B9EAC0C00758DDD /* ReactioninfoViewController.m in Sources */,
 				01E3545E1B9D5F5700014114 /* MJFoundation.m in Sources */,
+				D2A8AE4A1C3112C6007AD4A7 /* BaseNaviViewController.m in Sources */,
 				D21018DB1BF57AB400CA3F5A /* ChooseIntensityCell.m in Sources */,
 				D29472891BF7062700CDA506 /* MessageModel.m in Sources */,
 				D28DCCC01BC6114D004DC637 /* UIScrollView+MJRefresh.m in Sources */,
@@ -1637,6 +1689,7 @@
 				D2C189681BA9510100312EBA /* PictureMode.m in Sources */,
 				01EED58A1B9D25420041D28A /* FMDatabaseQueue.m in Sources */,
 				D2E6A7401BD0A94C00C38525 /* LocationHelper.m in Sources */,
+				D2A8AE551C3112C6007AD4A7 /* SharedMapView.m in Sources */,
 				D2F175521BC9097F00655EDD /* SDWebImageDownloader.m in Sources */,
 				016734881BAAA358009C5620 /* ImageCollectionView.m in Sources */,
 				D2F1755B1BC9097F00655EDD /* UIImageView+WebCache.m in Sources */,
@@ -1652,17 +1705,16 @@
 				D28D42ED1B90006B00E720AB /* AdminTableHead.m in Sources */,
 				0177A0C31B968436003199F4 /* HMCommonCenterItem.m in Sources */,
 				D28DCCBA1BC6114D004DC637 /* MJRefreshGifHeader.m in Sources */,
-				D2023F2D1C0ACC2100B35E8C /* POIAnnotation.m in Sources */,
 				0177A0DB1B968496003199F4 /* UIView+Extension.m in Sources */,
 				D28DCCB71BC6114D004DC637 /* MJRefreshBackGifFooter.m in Sources */,
 				D23A1AAE1B9EE3F900758DDD /* DamageinfoCell.m in Sources */,
-				D228EFE41C0829A40029C058 /* CityListViewController.m in Sources */,
 				0177A0C51B968436003199F4 /* HMCommonItem.m in Sources */,
 				D2F175591BC9097F00655EDD /* UIImage+WebP.m in Sources */,
 				01FEE2A11B9BCACF007C4641 /* DetailViewController.m in Sources */,
 				0177A0D91B968496003199F4 /* UIImage+Extension.m in Sources */,
 				01E81AE71BA274F5008FE6EC /* HMControllerTool.m in Sources */,
 				D222DAD11C19224A008DAAB3 /* OtherViewController.m in Sources */,
+				D2A8AE4B1C3112C6007AD4A7 /* CityListViewController.m in Sources */,
 				D2F1754C1BC9097F00655EDD /* README.md in Sources */,
 				D232096E1BC7B16D00E2902D /* InfoCell.m in Sources */,
 				D23A1A951B9ED48200758DDD /* AbnormalinfoCell.m in Sources */,
@@ -1672,25 +1724,24 @@
 				D28DCCB41BC6114D004DC637 /* MJRefreshAutoGifFooter.m in Sources */,
 				D2F4D83E1C0BE5AD000E47CE /* TrackTableHelper.m in Sources */,
 				D23A1A8B1B9ED3FD00758DDD /* AbnormalinfoListController.m in Sources */,
-				D228EFE11C080ABA0029C058 /* RouteShowViewController.m in Sources */,
 				D2C207F91B9D264A00454591 /* QCSlideSwitchView.m in Sources */,
-				D2023F321C0AE35400B35E8C /* NaviParamsSelectViewController.m in Sources */,
 				01EDAD5F1B8EF22200C1CF21 /* AppDelegate.m in Sources */,
+				D2A8AE4D1C3112C6007AD4A7 /* NaviParamsSelectViewController.m in Sources */,
 				D2F250FC1BD728AF00E54FB7 /* AFURLRequestSerialization.m in Sources */,
 				D2F175551BC9097F00655EDD /* SDWebImagePrefetcher.m in Sources */,
 				01E81AE61BA274F5008FE6EC /* ArchiverCacheHelper.m in Sources */,
-				D228EFDF1C080ABA0029C058 /* BaseNaviViewController.m in Sources */,
 				0177A0CB1B96845A003199F4 /* HMCommonCell.m in Sources */,
 				D23A1A9F1B9EDE5400758DDD /* ReactioninfoCell.m in Sources */,
 				01EED5871B9D25420041D28A /* FMDatabase.m in Sources */,
+				D2A8AE511C3112C6007AD4A7 /* NavPointAnnotation.m in Sources */,
 				D2F175531BC9097F00655EDD /* SDWebImageDownloaderOperation.m in Sources */,
 				D28DCCB61BC6114D004DC637 /* MJRefreshAutoStateFooter.m in Sources */,
 				0177A0E51B968A18003199F4 /* PersonCenterController.m in Sources */,
 				D2F250FE1BD728AF00E54FB7 /* AFURLSessionManager.m in Sources */,
-				D228EFD21C080A6D0029C058 /* NavPointAnnotation.m in Sources */,
+				D2A8AE4F1C3112C6007AD4A7 /* RouteShowViewController.m in Sources */,
+				D2A8AE621C3112D3007AD4A7 /* NoteModel.m in Sources */,
 				D28DCCB11BC6114D004DC637 /* MJRefreshComponent.m in Sources */,
 				0177A09C1B9590C5003199F4 /* SurveyPointCell.m in Sources */,
-				D21D92771C212E5200202C11 /* NoteViewController.m in Sources */,
 				D21747601C19640A00788DC8 /* OtherModel.m in Sources */,
 				D23A1AA91B9EE3C500758DDD /* DamageinfoListController.m in Sources */,
 				D28DCCB51BC6114D004DC637 /* MJRefreshAutoNormalFooter.m in Sources */,
@@ -1704,36 +1755,38 @@
 				01E3546E1B9D615700014114 /* PointModel.m in Sources */,
 				01FEE2A31B9BCACF007C4641 /* SurveyPointDetailViewController.m in Sources */,
 				01EED5881B9D25420041D28A /* FMDatabaseAdditions.m in Sources */,
-				D27417B21C17D579004C589B /* MemberAnnotation.m in Sources */,
-				D228EFD81C080A8C0029C058 /* SharedMapView.m in Sources */,
 				D2F250F71BD728AF00E54FB7 /* AFHTTPRequestOperationManager.m in Sources */,
 				0177A0C61B968436003199F4 /* HMCommonLabelItem.m in Sources */,
 				D2C189651BA94D0F00312EBA /* PictureInfoTableHelper.m in Sources */,
+				D2A8AE531C3112C6007AD4A7 /* TrackModel.m in Sources */,
+				D2A8AE521C3112C6007AD4A7 /* POIAnnotation.m in Sources */,
 				D23A1A861B9EBA9800758DDD /* DamageinfoViewController.m in Sources */,
 				0177A0D81B968496003199F4 /* UIBarButtonItem+Extension.m in Sources */,
 				D2F250FD1BD728AF00E54FB7 /* AFURLResponseSerialization.m in Sources */,
 				D2F2FCCA1BF985C700BA4AD1 /* EarthInfo.m in Sources */,
 				D23338921C1968FE00BBA6B0 /* OtherCell.m in Sources */,
 				D2F175561BC9097F00655EDD /* UIButton+WebCache.m in Sources */,
+				D2A8AE561C3112C6007AD4A7 /* SWYMapTypeSelectView.m in Sources */,
+				D2A8AE541C3112C6007AD4A7 /* MoreMenuView.m in Sources */,
 				0177A0C11B968436003199F4 /* HMCommonArrowItem.m in Sources */,
 				D2F250FB1BD728AF00E54FB7 /* AFURLConnectionOperation.m in Sources */,
 				01E354741B9D618900014114 /* ReactionModel.m in Sources */,
 				D2F1754D1BC9097F00655EDD /* MKAnnotationView+WebCache.m in Sources */,
 				D28DCCBC1BC6114D004DC637 /* MJRefreshStateHeader.m in Sources */,
 				D2DDCDE91BB92B1000A14147 /* UzysGroupPickerView.m in Sources */,
-				D228EFD71C080A8C0029C058 /* MoreMenuView.m in Sources */,
 				01E3545D1B9D5F5700014114 /* MJConst.m in Sources */,
 				D28DCCAF1BC6114D004DC637 /* MJRefreshAutoFooter.m in Sources */,
 				D2F1755A1BC9097F00655EDD /* UIImageView+HighlightedWebCache.m in Sources */,
 				D28DCCB01BC6114D004DC637 /* MJRefreshBackFooter.m in Sources */,
 				D2F2054D1C0FEBE800F6D808 /* SWYPhotoBrowserViewController.m in Sources */,
 				D21018D51BF5742900CA3F5A /* ChooseIntensityViewController.m in Sources */,
-				D21D927B1C21405900202C11 /* NoteModel.m in Sources */,
+				D2A8AE4C1C3112C6007AD4A7 /* NavigationViewController.m in Sources */,
 				D222DB021C195444008DAAB3 /* OtherTableHelper.m in Sources */,
 				D2F250F81BD728AF00E54FB7 /* AFHTTPSessionManager.m in Sources */,
 				0177A0AF1B9683F6003199F4 /* SettingViewController.m in Sources */,
 				D23A1AA41B9EE23000758DDD /* ReactioninfoListController.m in Sources */,
 				D2DDCDEA1BB92B1000A14147 /* UzysGroupPickerViewController.m in Sources */,
+				D2A8AE041C30FB66007AD4A7 /* CacheUtil.m in Sources */,
 				018A1D911B9D316400C97B48 /* DamageinfoTableHelper.m in Sources */,
 				0177A0C71B968436003199F4 /* HMCommonSwitchItem.m in Sources */,
 				D28DCCB21BC6114D004DC637 /* MJRefreshFooter.m in Sources */,
@@ -1741,6 +1794,7 @@
 				D2DDCDE81BB92B1000A14147 /* UzysAssetsViewCell.m in Sources */,
 				01E3545F1B9D5F5700014114 /* MJIvar.m in Sources */,
 				D2DDCDEC1BB92B1000A14147 /* UzysWrapperPickerController.m in Sources */,
+				D2A8AE501C3112C6007AD4A7 /* MemberAnnotation.m in Sources */,
 				D28DCCB31BC6114D004DC637 /* MJRefreshHeader.m in Sources */,
 				0177A0DA1B968496003199F4 /* UINavigationBar+Awesome.m in Sources */,
 				D29472851BF6FDBA00CDA506 /* MessageTableHelper.m in Sources */,

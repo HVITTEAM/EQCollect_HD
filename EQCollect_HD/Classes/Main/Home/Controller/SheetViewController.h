@@ -11,17 +11,17 @@
 #import "PictureMode.h"
 
 @interface SheetViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,MBProgressHUDDelegate>
+
 @property (weak, nonatomic) UIScrollView *rootScrollV;  //用于滚动的scrollView;
+
 @property (weak, nonatomic) UIView *containerV;         //包裹真正内容的容器view
+
 @property (assign,nonatomic) NSUInteger currentInputViewTag;  //当前文本框的tag
 
 /**
  * 显示提示图标
  **/
 -(void)showMBProgressHUDWithSel:(SEL)method;
-
-//-(void)keyboardWillShow:(NSNotification *)notification;
-//-(void)keyboardWillHide:(NSNotification *)notification;
 
 /**
  * 创建唯一标识号
@@ -42,4 +42,5 @@
  *  判断是否有文本框为空
  */
 -(BOOL)hasTextBeNullInTextInputViews:(NSArray *)textInputViews;
+
 @end

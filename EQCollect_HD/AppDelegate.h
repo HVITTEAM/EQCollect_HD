@@ -14,9 +14,19 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
 @property (strong ,nonatomic) EarthInfo *earthinfo;                //地震信息
+
 @property (assign, nonatomic) CLLocationCoordinate2D currentCoordinate;          //当前位置信息
 
+/**
+ *  增加定时器
+ */
+-(void)addTimer;
+
+/**
+ *  移除定时器
+ */
 -(void)removeTimer;
 
 @end

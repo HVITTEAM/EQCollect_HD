@@ -9,11 +9,22 @@
 #import <UIKit/UIKit.h>
 
 @protocol chooseIntensityDelegate;
+
 @interface ChooseIntensityViewController : UITableViewController
+
 @property(nonatomic,weak)id<chooseIntensityDelegate>delegate;
+
 +(instancetype)sharedInstance;
+
 @end
 
+/////////////////////////////////////////////////////////////
+
 @protocol chooseIntensityDelegate <NSObject>
+
+/**
+ *  选中烈度后回调
+ */
 -(void)viewController:(ChooseIntensityViewController *)chooseIntensityVC selectedIntensity:(NSString *)intensity;
+
 @end

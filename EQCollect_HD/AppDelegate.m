@@ -26,10 +26,6 @@
 
 @property(strong,nonatomic)NSTimer *timer;
 
-@property(assign,nonatomic)BOOL shouldAddTimer;                         //是否要添加定时器
-
-//-(void)addTimer;
-
 @end
 
 @implementation AppDelegate
@@ -42,20 +38,20 @@
     // 2.显示窗口(成为主窗口)
     [self.window makeKeyAndVisible];
     
+    // 3.设置根视图
+    [HMControllerTool setLoginViewController];
+    
+    //配置 KEY
     [MAMapServices sharedServices].apiKey = APIKey;
     [AMapNaviServices sharedServices].apiKey = APIKey;
     [AMapSearchServices sharedServices].apiKey = APIKey;
     [AMapLocationServices sharedServices].apiKey = APIKey;
     
-    self.shouldAddTimer = YES;
-    
     //开启定位
     [self setupLocationManager];
-    
+
     //导航语音
     [self configIFlySpeech];
-
-    [HMControllerTool setLoginViewController];
     
     return YES;
 }
@@ -81,6 +77,19 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
    [self removeTimer];
+}
+
+#pragma mark - MALocationManager Delegate
+- (void)amapLocationManager:(AMapLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"定位失败");
+}
+
+- (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location
+{
+    NSLog(@"定位成功%f    %f",location.coordinate.latitude,location.coordinate.longitude);
+    
+    self.currentCoordinate = location.coordinate;
 }
 
 /**
@@ -127,30 +136,9 @@
     }
 }
 
-#pragma mark - MALocationManager Delegate
-- (void)amapLocationManager:(AMapLocationManager *)manager didFailWithError:(NSError *)error
-{
-    NSLog(@"定位失败");
-}
-
-- (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location
-{
-    NSLog(@"定位成功%f    %f",location.coordinate.latitude,location.coordinate.longitude);
-    
-    self.currentCoordinate = location.coordinate;
-    
-    if (self.shouldAddTimer) {
-        if ([[CurrentUser shareInstance].success boolValue]) {
-            //开启定时发送位置信息功能
-            [self addTimer];
-            self.shouldAddTimer = NO;
-        }
-    }
-}
-
 -(void)addTimer{
     self.locationHelp = [[LocationHelper alloc] init];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:300 target:_locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:300 target:self.locationHelp selector:@selector(uploadUserinfo) userInfo:nil repeats:YES];
     [self.timer fire];
 }
 

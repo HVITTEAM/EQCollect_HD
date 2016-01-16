@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 @class PointModel;
+
 @interface MessageViewController : UIViewController
-@property(nonatomic,strong)PointModel *pointModel;
+
+@property(nonatomic,strong)PointModel *pointModel;              //这条提示信息对应的调查点信息(必须需传入)
+
 @end
 

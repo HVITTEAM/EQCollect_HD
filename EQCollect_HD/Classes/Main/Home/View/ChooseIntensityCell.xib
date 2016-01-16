@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN1-TQ-Sf2">
-                        <rect key="frame" x="10" y="10" width="60" height="60"/>
+                        <rect key="frame" x="10" y="32.5" width="60" height="60"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ⅷ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yKQ-PG-yjb">
                                 <rect key="frame" x="12" y="15" width="37.5" height="30"/>
@@ -24,7 +24,6 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yKQ-PG-yjb" firstAttribute="centerX" secondItem="iN1-TQ-Sf2" secondAttribute="centerX" id="1nK-Ic-n0p"/>
                             <constraint firstAttribute="width" constant="60" id="ACx-Gp-dnE"/>
@@ -71,8 +70,8 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="fB3-E0-xne" firstAttribute="trailing" secondItem="GdC-eR-pPm" secondAttribute="trailing" id="1DP-AX-CwX"/>
+                    <constraint firstItem="iN1-TQ-Sf2" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3KP-HL-f2F"/>
                     <constraint firstItem="rPa-mF-guW" firstAttribute="top" secondItem="SL6-SC-GML" secondAttribute="top" id="B5S-7k-nOy"/>
-                    <constraint firstItem="iN1-TQ-Sf2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Eel-i3-BCd"/>
                     <constraint firstAttribute="bottom" secondItem="fB3-E0-xne" secondAttribute="bottom" constant="11" id="LNy-WD-ldy"/>
                     <constraint firstItem="k5X-fs-IZt" firstAttribute="trailing" secondItem="pYt-zc-NRQ" secondAttribute="trailing" id="Lev-UQ-04W"/>
                     <constraint firstAttribute="trailing" secondItem="SL6-SC-GML" secondAttribute="trailing" constant="10" id="OjU-bT-VVY"/>
@@ -95,8 +94,10 @@
             <connections>
                 <outlet property="damageLb" destination="GdC-eR-pPm" id="ILt-NN-3Hj"/>
                 <outlet property="feelLb" destination="SL6-SC-GML" id="xVF-KE-gE0"/>
+                <outlet property="feelTitleLb" destination="rPa-mF-guW" id="rbM-Zh-3sq"/>
                 <outlet property="intensityLb" destination="yKQ-PG-yjb" id="CNS-l4-4k1"/>
                 <outlet property="otherLb" destination="fB3-E0-xne" id="CF8-87-EMY"/>
+                <outlet property="titleView" destination="iN1-TQ-Sf2" id="fCv-PZ-XJ5"/>
             </connections>
             <point key="canvasLocation" x="310" y="318.5"/>
         </tableViewCell>

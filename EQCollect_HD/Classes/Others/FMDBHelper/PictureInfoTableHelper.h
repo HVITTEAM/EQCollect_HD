@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class PictureMode;
 
 @interface PictureInfoTableHelper : NSObject
 {
@@ -15,24 +16,41 @@
 }
 
 +(PictureInfoTableHelper *)sharedInstance;
-/**初始化数据库**/
-- (void)initDataBase;
-/**创建表**/
-- (void)createTable;
-/**插入数据**/
--(BOOL) insertDataWith:(NSDictionary *)dict;
 
-/**根据字段删除数据，不删除沙盒中的图片**/
+/**
+ *  初始化数据库
+ */
+- (void)initDataBase;
+
+/**
+ *  创建表
+ */
+- (void)createTable;
+
+/**
+ *  插入数据
+ */
+//-(BOOL) insertDataWith:(NSDictionary *)dict;
+-(BOOL)insertDataWithPictureModel:(PictureMode *)model;
+
+/**
+ *  根据字段删除数据，不删除沙盒中的图片
+ */
 -(BOOL) deleteDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid;
 
-/**根据字段查询数据**/
+/**
+ *  根据字段查询数据
+ */
 -(NSMutableArray *) selectDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid;
 
-/**根据字段删除沙盒中的图片并删除表中的记录**/
+/**
+ *  根据字段删除沙盒中的图片并删除表中的记录
+ */
 -(BOOL)deleteImageByReleteTable:(NSString *)reltable Releteid:(NSString *)relid;
 
-/**根据字段删除沙盒中的图片并删除表中的记录，主要是根据图片名字来删除**/
+/**
+ *  根据字段删除沙盒中的图片并删除表中的记录，主要是根据图片名字来删除
+ */
 -(BOOL) deleteImageByAttribute:(NSString *)attribute value:(NSString *)value;
-
 
 @end

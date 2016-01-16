@@ -18,6 +18,7 @@
 #import "AppDelegate.h"
 #import "MemberAnnotation.h"
 #import "UserModel.h"
+#import "CurrentUser.h"
 
 #define kSetingViewHeight 215
 
@@ -29,12 +30,21 @@ typedef NS_ENUM(NSInteger, MapSelectPointState)
     MapSelectPointStateEndPoint,   // 当前操作为选择终止点
 };
 
-
 typedef NS_ENUM(NSInteger, NavigationTypes)
 {
     NavigationTypeNone = 0,
     NavigationTypeSimulator, // 模拟导航
     NavigationTypeGPS,       // 实时导航
+};
+
+////////////////by swy//////////////////////
+/**
+ *  地图上的属性控制按钮类型的枚举（by swy）
+ */
+typedef NS_ENUM(NSInteger, ControlButtonType) {
+    ControlButtonTypeTraffic = 20,           //切换路况信息按钮
+    ControlButtonTypeMapType,                //切换地图显示类型按钮
+    ControlButtonTypeMylocation,             //我的位置(跟随模式)
 };
 
 
@@ -68,16 +78,15 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
 
 @property (nonatomic, weak) RouteShowViewController *routeShowVC;
 
-
-
-    /////////////////SWY///////////////////////
+/////////////////SWY///////////////////////
 @property (nonatomic, strong) NSString *searchContent;
-@property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) UIPopoverController *navRoutPopover;                //弹出视图，用于导航路径搜索
 @property (nonatomic, strong) MAUserLocation *currUserLocation;
 
-@property (nonatomic,strong) UIButton *beforeYesterBtn;
-@property (nonatomic,strong) UIButton *yesterBtn;
-@property (nonatomic,strong) UIButton *todayBtn;
+@property (nonatomic,strong) UIButton *beforeYesterBtn;         //前天按钮
+@property (nonatomic,strong) UIButton *yesterBtn;               //昨天按钮
+@property (nonatomic,strong) UIButton *todayBtn;                //今天按钮
+@property (nonatomic,strong) UIButton *clearTrackBtn;           //清除路径按钮
 @property (nonatomic, strong) UIButton *trafficSwitchBtn;       //切换交通图
 @property (nonatomic, strong) UIButton *mapTypeSwitchBtn;       //切换地图类型
 @property (nonatomic, strong) UIButton *mylocationBtn;          //切换用户跟随模式
@@ -99,29 +108,29 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     return self;
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self initNaviViewController];
+    
     [self initBottomBar];
+    
     [self initControlButton];
+    
     [self fetchMemberLocation];
 }
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [self.navigationController setToolbarHidden:YES animated:animated];
     
     [self configMapView];
     
     [self initSettingState];
-    
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -159,9 +168,10 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     _hasCurrLoc = NO;
     
     self.mapView.showsUserLocation = YES;
+    
     ///////////////////////////////////////by swy////////////////////////////////////
     self.mapView.showsCompass= YES;
-    self.mapView.compassOrigin= CGPointMake(self.mapView.compassOrigin.x-20, 22);
+    self.mapView.compassOrigin= CGPointMake(self.mapView.compassOrigin.x-27, 22);
     self.mapView.showsScale = YES;
     self.mapView.scaleOrigin= CGPointMake(self.mapView.scaleOrigin.x, 22);
     [self.mapView setZoomLevel:14 animated:YES];
@@ -180,6 +190,9 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     }
 }
 
+/**
+ *   创建底部按钮栏(前天，昨天，今天) （by swy）
+ */
 -(void)initBottomBar
 {
     UIView *bottomBar;
@@ -188,15 +201,26 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     }else{
         bottomBar = [[UIView alloc] initWithFrame:CGRectMake((MTScreenW-320)/2, MTScreenH-80,320, 40)];
     }
-    
-    
     bottomBar.layer.cornerRadius = 7;
     bottomBar.layer.masksToBounds = YES;
     [self.view addSubview:bottomBar];
     
+    //创建清理路径按钮
+    self.clearTrackBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.clearTrackBtn.frame = CGRectMake(CGRectGetMaxX(bottomBar.frame)+10,bottomBar.frame.origin.y, 60, 40);
+    self.clearTrackBtn.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
+    [self.clearTrackBtn setTitle:@"隐藏" forState: UIControlStateNormal];
+    [self.clearTrackBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    self.clearTrackBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.clearTrackBtn.layer.cornerRadius = 7;
+    self.clearTrackBtn.layer.masksToBounds = YES;
+    self.clearTrackBtn.hidden = YES;
+    [self.clearTrackBtn addTarget:self action:@selector(clearTrack:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.clearTrackBtn];
+    
     CGFloat btnWidth = bottomBar.width/3;
     CGFloat btnHeight = 40;
-    
+    //创建前天按钮
     self.beforeYesterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.beforeYesterBtn.frame = CGRectMake(0, 0, btnWidth, btnHeight);
     self.beforeYesterBtn.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
@@ -206,6 +230,7 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     [self.beforeYesterBtn addTarget:self action:@selector(bottomBarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [bottomBar addSubview:self.beforeYesterBtn];
     
+    //创建昨天按钮
     self. yesterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.yesterBtn.frame = CGRectMake(btnWidth, 0, btnWidth, btnHeight);
     self.yesterBtn.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
@@ -215,7 +240,7 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     [self.yesterBtn addTarget:self action:@selector(bottomBarBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [bottomBar addSubview:self.yesterBtn];
     
-    
+    //创建今天按钮
     self.todayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.todayBtn.frame = CGRectMake(2*btnWidth, 0,btnWidth, btnHeight);
     self.todayBtn.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
@@ -235,7 +260,7 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
 }
 
 /**
- *  初始化地图属性的控制按钮
+ *  初始化地图属性的控制按钮（by swy）
  */
 -(void)initControlButton
 {
@@ -250,27 +275,29 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     }
     
     //切换交通情况按钮
-    self.trafficSwitchBtn = [self createBtnWithNormalImageName:@"trafficSwitch_icon_normal" selectedImageName:@"trafficSwitch_icon_selected"];
+    self.trafficSwitchBtn = [self createBtnWithNormalImageName:@"trafficSwitch_icon_normal"
+                                             selectedImageName:@"trafficSwitch_icon_selected"];
     self.trafficSwitchBtn.x = screenWidth - 70;
     self.trafficSwitchBtn.y = 140;
-    self.trafficSwitchBtn.tag = 20;
+    self.trafficSwitchBtn.tag = ControlButtonTypeTraffic;
     
     //切换地图类型掉按钮
-    self.mapTypeSwitchBtn = [self createBtnWithNormalImageName:@"mapTypeSwitch_icon" selectedImageName:@"mapTypeSwitch_icon"];
+    self.mapTypeSwitchBtn = [self createBtnWithNormalImageName:@"mapTypeSwitch_icon"
+                                             selectedImageName:@"mapTypeSwitch_icon"];
     self.mapTypeSwitchBtn.x = screenWidth - 70;
     self.mapTypeSwitchBtn.y = 190;
-    self.mapTypeSwitchBtn.tag = 21;
+    self.mapTypeSwitchBtn.tag = ControlButtonTypeMapType;
     
     //切换跟随模式按钮
-    self.mylocationBtn = [self createBtnWithNormalImageName:@"locationIconNone" selectedImageName:@"locationIconNone"];
-    self.mylocationBtn.x = 70;
-    self.mylocationBtn.y = screenHeigth-140;
-    self.mylocationBtn.tag = 22;
+    self.mylocationBtn = [self createBtnWithNormalImageName:@"locationIconNone"
+                                          selectedImageName:@"locationIconNone"];
+    self.mylocationBtn.x = 40;
+    self.mylocationBtn.y = screenHeigth-75;
+    self.mylocationBtn.tag = ControlButtonTypeMylocation;
 }
 
 - (void)initSettingState
 {
-    
     _beginAnnotation = nil;
     _wayAnnotation   = nil;
     _endAnnotation   = nil;
@@ -703,15 +730,38 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     NaviParamsSelectViewController *naviParVC = [[NaviParamsSelectViewController alloc] init];
     naviParVC.delegate = self;
     
-    self.popover = [[UIPopoverController alloc] initWithContentViewController:naviParVC];
+    self.navRoutPopover = [[UIPopoverController alloc] initWithContentViewController:naviParVC];
 
-    [self.popover presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItems[1]
+    [self.navRoutPopover presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItems[1]
                                   permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
 
+////////////////////////////////////////////////by swy///////////////////////////////////////////////////////////
+
+#pragma mark MapTypeSelectViewDelegate方法
 /**
- *  创建地图属性控制按钮
+ *  选择地图显示类型后回调
+ */
+-(void)mapTypeSelectView:(SWYMapTypeSelectView *)mapTypeView selectedType:(mapType)type
+{
+    switch (type) {
+        case mapTypeStandard:           //标准地图
+            [self.mapView setCameraDegree:0 animated:YES duration:0.5];
+            self.mapView.mapType = MAMapTypeStandard;
+            break;
+        case mapTypeSatellite:          //卫星图
+            [self.mapView setCameraDegree:0 animated:YES duration:0.5];
+            self.mapView.mapType = MAMapTypeSatellite;
+            break;
+        case mapType3D:                 //3D
+            [self.mapView setCameraDegree:70.0f animated:YES duration:0.5];
+            break;
+    }
+}
+
+/**
+ *  创建一个地图属性控制按钮
  */
 -(UIButton *)createBtnWithNormalImageName:(NSString *)norImageName selectedImageName:(NSString *)seltImageName
 {
@@ -726,111 +776,90 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     [self.view addSubview:btn];
     
     [btn addTarget:self action:@selector(mapControlBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    btn.backgroundColor = [UIColor whiteColor];
     return btn;
 }
 
--(void)bottomBarBtnClicked:(UIButton *)btn
+/**
+ *  隐藏轨迹
+ */
+-(void)clearTrack:(UIButton *)sender
 {
-    //NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:@"20151130%"];
+    //清除当前地图上的路径
+    [self.mapView removeOverlays:self.mapView.overlays];
+    //隐藏clearTrackBtn按钮
+    sender.hidden = YES;
+}
+
+/**
+ *  地图底部工具条上按钮点击后(前天，昨天，今天)
+ */
+-(void)bottomBarBtnClicked:(UIButton *)clickedBtn
+{
+    //前天、昨天、今天对应的 NSDate
     NSDate *today = [NSDate date];
     NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:24*60*60*(-1)];
     NSDate * beforeYesterday = [NSDate dateWithTimeIntervalSinceNow:24*60*60*(-2)];
 
-    //将数据保存到本地数据库中用作轨迹
+    //将NSDate转换成字符串
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyyMMdd"];
     NSString *todaystr = [formatter stringFromDate:today];
     NSString *yesterdaystr = [formatter stringFromDate:yesterday];
     NSString *beforeYesterdaystr = [formatter stringFromDate:beforeYesterday];
 
-    [self.mapView removeOverlays:self.mapView.overlays];
-    MAPolyline *polyline;
-
-    if ([btn.titleLabel.text isEqualToString:@"前天"]) {
-        NSString *value = [NSString stringWithFormat:@"%@%%",beforeYesterdaystr];
-        NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
-        
-        NSUInteger num = array.count;
-        if (num <= 0) {
-            return;
-        }
-        CLLocationCoordinate2D coordinates[num];
-        for (int i = 0;i < num; i++) {
-            TrackModel *model = array[i];
-            coordinates[i] = CLLocationCoordinate2DMake([model.lat doubleValue], [model.lon doubleValue]);
-            NSLog(@"%f  %f",[model.lat doubleValue],[model.lon doubleValue]);
-        }
-        polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
-        
-    }else if ([btn.titleLabel.text isEqualToString:@"昨天"]){
-        
-        NSString *value = [NSString stringWithFormat:@"%@%%",yesterdaystr];
-        NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
-        
-        NSUInteger num = array.count;
-        if (num <= 0) {
-            return;
-        }
-        
-        CLLocationCoordinate2D coordinates[num];
-        for (int i = 0;i < num; i++) {
-            TrackModel *model = array[i];
-            coordinates[i] = CLLocationCoordinate2DMake([model.lat doubleValue], [model.lon doubleValue]);
-            NSLog(@"%f  %f",[model.lat doubleValue],[model.lon doubleValue]);
-        }
-        polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
-
-    }else{
-        NSString *value = [NSString stringWithFormat:@"%@%%",todaystr];
-        NSMutableArray *array = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time" value:value];
-        
-        NSUInteger num = array.count;
-        if (num <= 0) {
-            return;
-        }
-        CLLocationCoordinate2D coordinates[num];
-        for (int i = 0;i < num; i++) {
-            TrackModel *model = array[i];
-         coordinates[i] = CLLocationCoordinate2DMake([model.lat doubleValue], [model.lon doubleValue]);
-            NSLog(@"%f  %f",[model.lat doubleValue],[model.lon doubleValue]);
-        }
-        polyline = [MAPolyline polylineWithCoordinates:coordinates count:sizeof(coordinates)/sizeof(coordinates[0])];
+    if (clickedBtn == self.beforeYesterBtn) {  //点击了前天按钮
+        [self addTrackToMapWithDay:beforeYesterdaystr];
+    }else if (clickedBtn == self.yesterBtn){   //点击了昨天按钮
+        [self addTrackToMapWithDay:yesterdaystr];
+    }else{   //点击了今天按钮
+        [self addTrackToMapWithDay:todaystr];
     }
+}
+
+/**
+ *  点击前天昨天今天按钮后调用，在地图上显示轨迹
+ *  aDayString参数格式为:yyyyMMdd
+ */
+-(void)addTrackToMapWithDay:(NSString *)aDayString
+{
+    //清除当前地图上的路径
+    [self.mapView removeOverlays:self.mapView.overlays];
+    
+    //从数据库中获取这一天的位置信息
+    NSMutableArray *trackArray = [[TrackTableHelper sharedInstance] selectDataByAttribute:@"time"
+                                                                                    value:aDayString];
+    NSUInteger num = trackArray.count;
+    if (num <= 0) {
+        [NoticeHelper AlertShow:@"没有相关数据!" view:self.view];
+        return;
+    }
+    
+    CLLocationCoordinate2D coordinates[num];
+    for (int i = 0;i < num; i++) {
+        TrackModel *model = trackArray[i];
+        coordinates[i] = CLLocationCoordinate2DMake([model.lat doubleValue], [model.lon doubleValue]);
+    }
+    //创建一个路径
+    MAPolyline *polyline = [MAPolyline polylineWithCoordinates:coordinates
+                                                         count:sizeof(coordinates)/sizeof(coordinates[0])];
+    //路径添加到地图上
     [self.mapView addOverlay:polyline];
     [self.mapView setVisibleMapRect:[polyline boundingMapRect] animated:NO];
-
+    
+    //显示clearTrackBtn按钮
+    self.clearTrackBtn.hidden = NO;
 }
-
-#pragma mark MapTypeSelectViewDelegate方法
--(void)mapTypeSelectView:(SWYMapTypeSelectView *)mapTypeView selectedType:(mapType)type
-{
-    switch (type) {
-        case mapTypeStandard:
-            [self.mapView setCameraDegree:0 animated:YES duration:0.5];
-            self.mapView.mapType = MAMapTypeStandard;
-            break;
-        case mapTypeSatellite:
-            [self.mapView setCameraDegree:0 animated:YES duration:0.5];
-            self.mapView.mapType = MAMapTypeSatellite;
-            break;
-        case mapType3D:
-            [self.mapView setCameraDegree:70.0f animated:YES duration:0.5];
-            break;
-    }
-}
-
 
 /**
  *  点击地图上的属性控制按钮后调用
  */
 -(void)mapControlBtnClicked:(UIButton *)sender
 {
-    if (sender.tag == 20) {
+    if (sender.tag == ControlButtonTypeTraffic) {
         //切换交通图
         sender.selected = !sender.isSelected;
         self.mapView.showTraffic = sender.isSelected;
-    }else if (sender.tag == 22){
+    }else if (sender.tag == ControlButtonTypeMylocation){
         UIImage *image;
         //切换用户跟随模式
         switch (self.mapView.userTrackingMode) {
@@ -865,33 +894,43 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
     }
 }
 
-
+/**
+ *  向服务器请求同伴位置信息
+ */
 -(void)fetchMemberLocation
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:URL_showusers parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSLog(@"navi----------------------%@",responseObject);
+    [CommonRemoteHelper RemoteWithUrl:URL_showusers parameters:nil type:CommonRemoteTypeGet success:^(id responseObject) {
+        NSLog(@"NavigationViewController----------------------%@",responseObject);
+        //NSArray *objects = (NSArray *)responseObject;
         [self addMemberToMap:responseObject];
-        
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-        NSLog(@"navi----------------------%@",@"失败");
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"NavigationViewController----------------------%@",@"失败");
     }];
 }
 
--(void)addMemberToMap:(id)responseObject
+/**
+ *  将同伴位置信息作为标注点添加到地图上
+ */
+-(void)addMemberToMap:(NSArray *)members
 {
-    NSArray *objects = (NSArray *)responseObject;
-    if (objects.count == 0 || !objects) {
+    if (members.count == 0 || !members) {
         return;
     }
-    
+    //获取当前用户信息
+    CurrentUser *currentUser = [CurrentUser shareInstance];
     
     NSMutableArray *annotations = [[NSMutableArray alloc] init];
-    UserModel *userInfor = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
-    for (NSDictionary *dict in objects) {
-        if ([dict[@"userid"] doubleValue] != [userInfor.userid doubleValue] ) {
-            MemberAnnotation *anno = [[MemberAnnotation alloc] initWithLon:[dict[@"lon"] floatValue] lat:[dict[@"lat"] floatValue] memberName:dict[@"name"] address:dict[@"useraddress"]];
-            [annotations addObject:anno];
+    
+    for (NSDictionary *memberInfoDict in members) {
+        //用户自己的位置不需要添加
+        if ([memberInfoDict[@"userid"] doubleValue] != [currentUser.userid doubleValue] ) {
+            
+            MemberAnnotation *annotation = [[MemberAnnotation alloc] initWithLon:[memberInfoDict[@"lon"] floatValue]
+                                                                       lat:[memberInfoDict[@"lat"] floatValue]
+                                                                memberName:memberInfoDict[@"name"]
+                                                                   address:memberInfoDict[@"useraddress"]];
+            [annotations addObject:annotation];
         }
     }
     [self.mapView addAnnotations:annotations];
@@ -900,8 +939,8 @@ typedef NS_ENUM(NSInteger, NavigationTypes)
 
 -(void)dealloc
 {
-    if (self.popover.isPopoverVisible) {
-        [self.popover dismissPopoverAnimated:YES];
+    if (self.navRoutPopover.isPopoverVisible) {
+        [self.navRoutPopover dismissPopoverAnimated:YES];
     }
 }
 

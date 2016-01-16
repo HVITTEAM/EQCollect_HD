@@ -10,21 +10,19 @@
 
 #import "AbnormalinfoViewController.h"
 #import "ImageCollectionView.h"
-#import "PictureMode.h"
+#import "ImageCollectionFlowLayout.h"
 #import "ChooseIntensityViewController.h"
 #import "CacheUtil.h"
 
 @interface AbnormalinfoViewController ()<UIAlertViewDelegate,chooseIntensityDelegate>
-{
-    CGFloat _navHeight;              // 导航栏与状态栏总的高度
-    UIBarButtonItem *_rigthItem;      //导航栏右侧按钮
-    ImageCollectionView *imgview;
-}
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidTopCons;        //宏观异常编号TextField顶部约束
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *abnormalidWidthCons;      //宏观异常编号TextField宽约束
-@property (strong,nonatomic)NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
-@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+@property (strong,nonatomic) NSLayoutConstraint *imgViewHeightCons;                 //图片View的高约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;                 //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;                        //包裹真正内容的容器view
+
+@property (assign,nonatomic)CGFloat navHeight;                  // 导航栏与状态栏总的高度
+@property (strong,nonatomic)ImageCollectionView *imgview;       //图片展示控件
 
 @property (weak, nonatomic) IBOutlet UITextField *abnormalidTextF;                 //宏观异常编号
 @property (weak, nonatomic) IBOutlet UITextField *abnormaltimeTextF;               //调查时间
@@ -39,16 +37,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *crediblyTextF;                   //可信度
 
 @property (strong,nonatomic)NSArray *textInputViews;           //所有的文本输入框
-@property (strong,nonatomic)NSArray *intensityItems;           //烈度选项
-@property (strong,nonatomic)NSArray *groundwaterItems;         //地下水选项
-@property (strong,nonatomic)NSArray *habitItems;               //动植物习性选项
-@property (strong,nonatomic)NSArray *phenomenonItems;          //物化现象选项
-@property (strong,nonatomic)NSArray *crediblyItems;            //可信度选项
 
 @end
 
 @implementation AbnormalinfoViewController
 
+#pragma mark -- 生命周期方法 --
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,9 +51,40 @@
     self.rootScrollV = self.rootScrollView;
     self.containerV = self.containerView;
 
+    [self initNavBar];
+    
     [self initAbnormalinfoVC];
+    
     [self initImageCollectionView];
+    
     [self showAbnormalinfoData];
+}
+
+#pragma mark -- 初始化子视图方法 --
+/**
+ *  初始化导航栏
+ */
+-(void)initNavBar
+{
+    //默认有状态栏，高度为64
+    self.navHeight = kNormalNavHeight;
+    
+    self.navigationItem.title = @"宏观异常";
+    UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
+    //没上传可以编辑,上传了不可编辑
+    if ([self.abnormalinfo.upload isEqualToString:kdidNotUpload]) {
+        self.navigationItem.rightBarButtonItem = rigthItem;
+    }
+    
+    if (self.actionType == kActionTypeAdd){
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        self.navigationItem.leftBarButtonItem = leftItem;
+        rigthItem.title = @"确定";
+        self.navigationItem.rightBarButtonItem = rigthItem;
+        
+        //当为新增时没有状态栏，高度为44
+        self.navHeight = kAddNavheight;
+    }
 }
 
 /**
@@ -67,24 +92,6 @@
  */
 -(void)initAbnormalinfoVC
 {
-    self.navigationItem.title = @"宏观异常";
-    
-    //默认有状态栏，高度为64
-    _navHeight = kNormalNavHeight;
-    _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    if (![self.abnormalinfo.upload isEqualToString:kdidNotUpload]) {
-         self.navigationItem.rightBarButtonItem = _rigthItem;
-    }
-    
-    if (self.actionType == kActionTypeAdd){
-        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-        self.navigationItem.leftBarButtonItem = leftItem;
-        _rigthItem.title = @"确定";
-         self.navigationItem.rightBarButtonItem = _rigthItem;
-        
-        //当为新增时没有状态栏，高度为44
-        _navHeight = kAddNavheight;
-    }
     self.textInputViews = @[
                             self.abnormalidTextF,
                             self.abnormaltimeTextF,
@@ -105,12 +112,8 @@
         textF.tag = 1000+i;
     }
     
-    self.intensityItems = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
-
-    self.crediblyItems = @[@"1",@"2",@"3",@"4",@"5"];
-    
     //设置顶部高约束
-    self.abnormalidTopCons.constant = 20+_navHeight;
+    self.abnormalidTopCons.constant = 20 + self.navHeight;
     
     [self setActionType:self.actionType];
 }
@@ -121,33 +124,35 @@
 -(void)initImageCollectionView
 {
     //创建图片视图
-    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
-    imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+    ImageCollectionFlowLayout *flowLayout =[[ImageCollectionFlowLayout alloc]init];
+    flowLayout.itemSize = CGSizeMake(70, 70);
+    flowLayout.minimumLineSpacing = 10;
+    flowLayout.minimumInteritemSpacing = 10;
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
     
-    imgview.showType = self.actionType;
-    imgview.nav = self.navigationController;
+    self.imgview.showType = self.actionType;
     
-    [self addChildViewController:imgview];
-    [self.containerView addSubview:imgview.collectionView];
+    [self addChildViewController:self.imgview];
+    [self.containerView addSubview:self.imgview.collectionView];
     
     //设置 block，当图片数发生变化时会回调
     __weak typeof(self) weakSelf = self;
-    __weak ImageCollectionView * weakImgview = imgview;
-    imgview.changeHeightBlock = ^(CGFloat viewheight){
+    self.imgview.changeHeightBlock = ^(CGFloat viewheight){
          weakSelf.imgViewHeightCons.constant = viewheight;
-        [weakImgview.collectionView updateConstraintsIfNeeded];
+        [weakSelf.imgview.collectionView updateConstraintsIfNeeded];
      };
     
     //设置图片视图约束
-    imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *dictViews = @{
                                 @"crediblyTextF":self.crediblyTextF,
-                                @"imgview":imgview.collectionView,
+                                @"imgview":self.imgview.collectionView,
                                 };
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[crediblyTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
-    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
-    [imgview.collectionView addConstraint:self.imgViewHeightCons];
+    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:self.imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
+    [self.imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
 
 /**
@@ -155,7 +160,7 @@
  */
 -(void)showAbnormalinfoData
 {
-    if (self.actionType == kActionTypeShow  || self.actionType == kactionTypeEdit) {
+    if (self.actionType == kActionTypeShow  || self.actionType == kactionTypeEdit) {         //显示数据
         self.abnormalidTextF.text = self.abnormalinfo.abnormalid;
         self.abnormaltimeTextF.text = self.abnormalinfo.abnormaltime;
         self.informantTextF.text = self.abnormalinfo.informant;
@@ -168,23 +173,23 @@
         self.abnormalanalysisTextF.text = self.abnormalinfo.abnormalanalysis;
         self.crediblyTextF.text = self.abnormalinfo.credibly;
         
-        //[self getimage];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSMutableArray *images = [self getImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
             dispatch_async(dispatch_get_main_queue(), ^{
-                imgview.dataProvider = images;
+                self.imgview.dataProvider = images;
             });
         });
-
-    }else {
+    }else {             //新增数据
         
+        //设置宏观异常编号
         self.abnormalidTextF.text = [self createUniqueIdWithAbbreTableName:@"HG"];
-        
+        //设置时间
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.abnormaltimeTextF.text = [formatter stringFromDate:date];
         
+        //用上一次缓存数据临时显示，减少输入
         AbnormalinfoModel *cache = [CacheUtil shareInstance].cacheAbnormalinfo;
         if (!cache) {
             return;
@@ -203,6 +208,7 @@
     }
 }
 
+#pragma mark -- getter 和 setter 方法 --
 /**
  *  ActionType属性的 setter 方法
  */
@@ -211,62 +217,19 @@
      _actionType = actionType;
      //根据当前选择设置文本框能否编辑
     if (actionType == kActionTypeShow) {
-        for (UITextField *txt in self.textInputViews) {
+        for (UIView *txt in self.textInputViews) {
             txt.userInteractionEnabled = NO;
         }
     }else{
-        
-        if ([self.abnormalinfo.upload isEqualToString:@"1"]) {
-            self.abnormalintensityTextF.userInteractionEnabled = YES;
-        }else{
-            for (UITextField *txt in self.textInputViews) {
-                txt.userInteractionEnabled = YES;
-            }
+        for (UIView *txt in self.textInputViews) {
+            txt.userInteractionEnabled = YES;
         }
     }
-    imgview.showType = actionType;
+    self.imgview.showType = actionType;
 }
 
+#pragma mark -- 协议方法 --
 #pragma mark UITextFieldDelegate方法
-//-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-//{
-//    [super textFieldShouldBeginEditing:textField];
-//    BOOL canEdit;
-//    //根据文本框的tag来确定哪些允许手动输入，哪些需要弹出框来选择
-//    switch (textField.tag) {
-//        case 1000:
-//        case 1001:
-//            canEdit = NO;
-//            break;
-//        case 1003:
-//            canEdit = NO;
-//            [self showAlertViewWithTextField:textField items:self.intensityItems];
-//            break;
-////        case 1004:
-////            canEdit = NO;
-////            [self showAlertViewWithTextField:textField items:self.groundwaterItems];
-////            break;
-////        case 1005:
-////            canEdit = NO;
-////            [self showAlertViewWithTextField:textField items:self.habitItems];
-////            break;
-////        case 1006:
-////            canEdit = NO;
-////            [self showAlertViewWithTextField:textField items:self.phenomenonItems];
-////            break;
-//        case 1010:
-//            canEdit = NO;
-//            [self showAlertViewWithTextField:textField items:self.crediblyItems];
-//            break;
-//        default:
-//            canEdit = YES;
-//            break;
-//    }
-//    return canEdit;
-//}
-
-
-
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [super textFieldShouldBeginEditing:textField];
@@ -281,50 +244,22 @@
         UINavigationController *naviga = [[UINavigationController alloc] initWithRootViewController:intensityVC];
         naviga.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:naviga animated:YES completion:nil];
-    }else if (textField.tag == 1010){
-        canEdit = NO;
-        [self showAlertViewWithTextField:textField items:self.crediblyItems];
     }else{
         canEdit = YES;
     }
     return canEdit;
 }
 
+#pragma mark chooseIntensityDelegate
+/**
+ *  选中烈度后回调
+ */
 -(void)viewController:(ChooseIntensityViewController *)chooseIntensityVC selectedIntensity:(NSString *)intensity
 {
     self.abnormalintensityTextF.text = intensity;
 }
 
-
-/**
- *  使用UIAlertView向文本框输入内容
- *
- *  @param textField 需要输入内容的文本框
- *  @param items     选项数组
- */
--(void)showAlertViewWithTextField:(UITextField *)textField items:(NSArray *)items
-{
-    [self.view endEditing:YES];
-    //创建UIAlertView并设置标题
-    NSString *titleStr = [NSString stringWithFormat:@"%@选项",textField.placeholder];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titleStr message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
-    //添加AlertView控件上的按钮
-    for (NSString *buttonTitle in items) {
-        [alert addButtonWithTitle:buttonTitle];
-    }
-    //显示AlertView控件
-    [alert show];
-}
-
-#pragma mark UIAlertViewDelegate方法
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
-    //将选中的按钮标题设为当前文本框的内容
-    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
-    inputView.text = itemStr;
-}
-
+#pragma mark -- 事件方法 --
 /**
  *  导航栏右侧按钮点击调用
  */
@@ -338,12 +273,11 @@
         if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
             [self showMBProgressHUDWithSel:@selector(addAbnormalinfo)];
         }
-    }else{
+    }else{    //如果是编辑
         //判断是否有文本框为空，有空则返回并提示
         if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
             [self showMBProgressHUDWithSel:@selector(updateAbnormalinfo)];
             self.actionType = kActionTypeShow;
-            //[self.view endEditing:YES];
             self.navigationItem.rightBarButtonItem.title = @"编辑";
         }
     }
@@ -355,7 +289,7 @@
 -(void)addAbnormalinfo
 {
     //防止异步加载图片出错
-    imgview.isExitThread = YES;
+    self.imgview.isExitThread = YES;
 
     NSString *abnormalid = self.abnormalidTextF.text;
     NSString *abnormaltime = self.abnormaltimeTextF.text;
@@ -369,41 +303,40 @@
     NSString *abnormalanalysis = self.abnormalanalysisTextF.text;
     NSString *credibly = self.crediblyTextF.text;
     
-    //创建字典对象并向表中插和数据
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                          abnormalid,@"abnormalid",
-                          abnormaltime,@"abnormaltime",
-                          informant,@"informant",
-                          abnormalintensity, @"abnormalintensity",
-                          groundwater, @"groundwater",
-                          abnormalhabit,@"abnormalhabit",
-                          abnormalphenomenon,@"abnormalphenomenon",
-                          other,@"other",
-                          implementation,@"implementation",
-                          abnormalanalysis,@"abnormalanalysis",
-                          credibly,@"credibly",
-                          self.pointid,@"pointid",
-                          kdidNotUpload,@"upload",
-                          nil];
+    NSString *pointid = self.pointid;
+    NSString *upload = kdidNotUpload;
     
-    [[CacheUtil shareInstance] setCacheAbnormalinfoWithDict:dict];
+    //创建一个AbnormalinfoModel对象
+    AbnormalinfoModel *abnormalModel = [[AbnormalinfoModel alloc] init];
+    abnormalModel.abnormalid = abnormalid;
+    abnormalModel.abnormaltime = abnormaltime;
+    abnormalModel.informant = informant;
+    abnormalModel.abnormalintensity = abnormalintensity;
+    abnormalModel.groundwater = groundwater;
+    abnormalModel.abnormalhabit = abnormalhabit;
+    abnormalModel.abnormalphenomenon = abnormalphenomenon;
+    abnormalModel.other = other;
+    abnormalModel.implementation = implementation;
+    abnormalModel.abnormalanalysis = abnormalanalysis;
+    abnormalModel.credibly = credibly;
+    abnormalModel.pointid = pointid;
+    abnormalModel.upload = upload;
     
-    BOOL result = [[AbnormalinfoTableHelper sharedInstance] insertDataWith:dict];
+     //数据缓存起来
+    [CacheUtil shareInstance].cacheAbnormalinfo = abnormalModel;
+     //本地数据库保存
+    BOOL result = [[AbnormalinfoTableHelper sharedInstance] insertDataWithAbnormalinfoModel:abnormalModel];
     if (!result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
         });
     }else{
-        
-        //[self saveImagesWithReleteId:abnormalid releteTable:@"ABNORMALINFOTAB"];
-        [self saveImages:imgview.dataProvider releteId:abnormalid releteTable:@"ABNORMALINFOTAB"];
+        //保存图片
+        [self saveImages:self.imgview.dataProvider releteId:abnormalid releteTable:@"ABNORMALINFOTAB"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             [self.view endEditing:YES];
             //清空imageCollectionView的数据
-            imgview.dataProvider = [[NSMutableArray alloc] init];
-            //防止循环引用导致无法释放当前这个控制器
-            imgview.nav = nil;
+            self.imgview.dataProvider = [[NSMutableArray alloc] init];
             if ([self.delegate respondsToSelector:@selector(addAbnormalinfoSuccess:)]) {
                 [self.delegate addAbnormalinfoSuccess:self];
             }
@@ -417,10 +350,8 @@
 -(void)updateAbnormalinfo
 {
     //防止异步加载图片出错
-    imgview.isExitThread = YES;
+    self.imgview.isExitThread = YES;
 
-    //NSString *abnormalid = self.abnormalidTextF.text;
-    //NSString *abnormaltime = self.abnormaltimeTextF.text;
     NSString *informant = self.informantTextF.text;
     NSString *abnormalintensity = self.abnormalintensityTextF.text;
     NSString *groundwater = self.groundwaterTextF.text;
@@ -430,56 +361,53 @@
     NSString *implementation = self.implementationTextF.text;
     NSString *abnormalanalysis = self.abnormalanalysisTextF.text;
     NSString *credibly = self.crediblyTextF.text;
+    
+    NSString *abnormalid = self.abnormalinfo.abnormalid;
+    NSString *abnormaltime = self.abnormalinfo.abnormaltime;
+    NSString *pointid = self.abnormalinfo.pointid;
+    NSString *upload = self.abnormalinfo.upload;
 
-    //创建字典对象并向表中插和数据
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          self.abnormalinfo.abnormalid,@"abnormalid",
-                          self.abnormalinfo.abnormaltime,@"abnormaltime",
-                          informant,@"informant",
-                          abnormalintensity, @"abnormalintensity",
-                          groundwater, @"groundwater",
-                          abnormalhabit,@"abnormalhabit",
-                          abnormalphenomenon,@"abnormalphenomenon",
-                          other,@"other",
-                          implementation,@"implementation",
-                          abnormalanalysis,@"abnormalanalysis",
-                          credibly,@"credibly",
-                          self.abnormalinfo.pointid,@"pointid",
-                          self.abnormalinfo.upload,@"upload",
-                          nil];
+    //创建一个AbnormalinfoModel对象
+    AbnormalinfoModel *abnormalModel = [[AbnormalinfoModel alloc] init];
+    abnormalModel.abnormalid = abnormalid;
+    abnormalModel.abnormaltime = abnormaltime;
+    abnormalModel.informant = informant;
+    abnormalModel.abnormalintensity = abnormalintensity;
+    abnormalModel.groundwater = groundwater;
+    abnormalModel.abnormalhabit = abnormalhabit;
+    abnormalModel.abnormalphenomenon = abnormalphenomenon;
+    abnormalModel.other = other;
+    abnormalModel.implementation = implementation;
+    abnormalModel.abnormalanalysis = abnormalanalysis;
+    abnormalModel.credibly = credibly;
+    abnormalModel.pointid = pointid;
+    abnormalModel.upload = upload;
     
-    [[CacheUtil shareInstance] setCacheAbnormalinfoWithDict:dict];
-    
-    BOOL result = [[AbnormalinfoTableHelper sharedInstance] updateDataWith:dict];
+    //数据缓存起来
+    [CacheUtil shareInstance].cacheAbnormalinfo = abnormalModel;
+
+    //本地数据库保存
+    BOOL result = [[AbnormalinfoTableHelper sharedInstance] updateDataWithAbnormalinfoModel:abnormalModel];
     if (!result) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
         });
     }else{
+        //保存图片
         [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"ABNORMALINFOTAB" Releteid:self.abnormalinfo.abnormalid];
-        //[self saveImagesWithReleteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
-        [self saveImages:imgview.dataProvider releteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
+        [self saveImages:self.imgview.dataProvider releteId:self.abnormalinfo.abnormalid releteTable:@"ABNORMALINFOTAB"];
         if ([self.delegate respondsToSelector:@selector(updateAbnormalinfoSuccess:)]) {
             [self.delegate updateAbnormalinfoSuccess:self];
         }
     }
 }
 
--(NSString *)switchRomeNumToNum:(NSString *)romeNum
-{
-    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
-    NSUInteger num = [romes indexOfObject:romeNum];
-    return [NSString stringWithFormat:@"%d",(int)(num+1)];
-}
-
 -(void)back
 {
     //清空imageCollectionView的数据
-    imgview.dataProvider = [[NSMutableArray alloc] init];
-    //防止循环引用导致无法释放当前这个控制器
-    imgview.nav = nil;
+    self.imgview.dataProvider = [[NSMutableArray alloc] init];
     //防止异步加载图片出错
-    imgview.isExitThread = YES;
+    self.imgview.isExitThread = YES;
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -488,4 +416,5 @@
 {
     NSLog(@"AbnormalinfoViewController 释放了吗");
 }
+
 @end

@@ -20,6 +20,7 @@
 
 @implementation SheetViewController
 
+#pragma mark -- 生命周期方法 --
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -110,9 +111,11 @@
     UIWindow *keyWin = [[UIApplication sharedApplication] keyWindow];
     
     //键盘最大 Y 值
-    CGFloat keyboardY;
+    CGFloat keyboardY = 0;
+    //键盘高
+    CGFloat keyboardHeight = 0;
     //当前文本框最大 y 值
-    CGFloat currentTextFieldMaxY;
+    CGFloat currentTextFieldMaxY = 0;
     
     //获取键盘属性字典
     NSDictionary *keyboardDict = [notification userInfo];
@@ -131,26 +134,31 @@
         UIDeviceOrientation devOrientation = (UIDeviceOrientation)self.interfaceOrientation;
         switch (devOrientation) {
             case UIDeviceOrientationPortrait:
-                keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+                keyboardHeight = keyboardFrame.size.height;
+                keyboardY = keyWin.frame.size.height - keyboardHeight;
                 currentTextFieldMaxY = CGRectGetMaxY(frameInWindow);
                 break;
             case UIDeviceOrientationLandscapeLeft:
-                keyboardY = keyWin.frame.size.width - keyboardFrame.size.width;
+                keyboardHeight = keyboardFrame.size.width;
+                keyboardY = keyWin.frame.size.width - keyboardHeight;
                 currentTextFieldMaxY = keyWin.frame.size.width - frameInWindow.origin.x;
                 break;
             case UIDeviceOrientationPortraitUpsideDown:
-                keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+                keyboardHeight = keyboardFrame.size.height;
+                keyboardY = keyWin.frame.size.height - keyboardHeight;
                 currentTextFieldMaxY = keyWin.frame.size.height - frameInWindow.origin.y;
                 break;
             case UIDeviceOrientationLandscapeRight:
-                keyboardY = keyWin.frame.size.width - keyboardFrame.size.width;
+                keyboardHeight = keyboardFrame.size.width;
+                keyboardY = keyWin.frame.size.width - keyboardHeight;
                 currentTextFieldMaxY = CGRectGetMaxX(frameInWindow);
                 break;
             default:
                 break;
         }
     }else{
-        keyboardY = keyWin.frame.size.height - keyboardFrame.size.height;
+        keyboardHeight = keyboardFrame.size.height;
+        keyboardY = keyWin.frame.size.height - keyboardHeight;
         currentTextFieldMaxY = CGRectGetMaxY(frameInWindow);
     }
     
@@ -159,7 +167,8 @@
     
     //当键盘被遮挡时view上移
     if (currentTextFieldMaxY > keyboardY-60) {
-        self.rootScrollV.contentInset = UIEdgeInsetsMake(0, 0, currentTextFieldMaxY - keyboardY+60, 0);
+//        self.rootScrollV.contentInset = UIEdgeInsetsMake(0, 0, currentTextFieldMaxY - keyboardY+60, 0);
+        self.rootScrollV.contentInset = UIEdgeInsetsMake(0, 0, keyboardHeight, 0);
         [UIView animateKeyframesWithDuration:duration delay:0 options:curve animations:^{
             self.rootScrollV.contentOffset= CGPointMake(0, currentTextFieldMaxY - keyboardY+60);
         } completion:nil];
@@ -221,14 +230,20 @@
             BOOL result = [v.imageData writeToFile: filePath atomically:YES]; // 写入本地沙盒
             if (result)
             {
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                      v.name,@"pictureName",
-                                      filePath,@"picturePath",
-                                      releteID,@"releteid",
-                                      releteTable,@"reletetable",
-                                      nil];
+//                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                                      v.name,@"pictureName",
+//                                      filePath,@"picturePath",
+//                                      releteID,@"releteid",
+//                                      releteTable,@"reletetable",
+//                                      nil];
+                PictureMode *pictureMode = [[PictureMode alloc] init];
+                pictureMode.pictureName = v.name;
+                pictureMode.picturePath = filePath;
+                pictureMode.releteid = releteID;
+                pictureMode.reletetable = releteTable;
                 //保存数据库
-                [[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+                //[[PictureInfoTableHelper sharedInstance] insertDataWith:dict];
+                [[PictureInfoTableHelper sharedInstance] insertDataWithPictureModel:pictureMode];
             }
         }
     }

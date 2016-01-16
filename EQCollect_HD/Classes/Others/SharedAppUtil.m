@@ -9,6 +9,7 @@
 #import "SharedAppUtil.h"
 
 @implementation SharedAppUtil
+
 static SharedAppUtil *util = nil;
 
 +(SharedAppUtil *)defaultCommonUtil
@@ -20,5 +21,31 @@ static SharedAppUtil *util = nil;
     });
     return util;
 }
+
++(NSString *)switchRomeNumToNum:(NSString *)romeNum
+{
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    NSUInteger num = [romes indexOfObject:romeNum];
+    if (num == NSNotFound) {
+        return nil;
+    }
+    return [NSString stringWithFormat:@"%d",(int)(num+1)];
+}
+
++(NSString *)switchNumToRomeNumWithNum:(NSInteger)num
+{
+    if (num <= 0) {
+        return nil;
+    }
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    return romes[num - 1];
+}
+
++(NSString *)switchIndexPathToRomeNumWithIndexPath:(NSIndexPath *)idx
+{
+    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
+    return romes[idx.row];
+}
+
 
 @end

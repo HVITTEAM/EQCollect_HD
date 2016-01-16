@@ -36,7 +36,8 @@ typedef NS_ENUM(NSInteger, movingDirection) {
 @end
 
 @implementation SWYPhotoBrowserViewController
-#pragma mark 初始化方法
+
+#pragma mark -- 初始化方法 --
 -(instancetype)initPhotoBrowserWithImageNames:(NSArray *)imageNames currentIndex:(NSInteger)currentIndex
 {
     self = [super initWithNibName:nil bundle:nil];
@@ -69,7 +70,7 @@ typedef NS_ENUM(NSInteger, movingDirection) {
     return self;
 }
 
-#pragma mark 生命周期方法
+#pragma mark -- 生命周期方法 --
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -99,13 +100,12 @@ typedef NS_ENUM(NSInteger, movingDirection) {
     [self changeImageWithMovingDirection:movingDirectionNone];
 }
 
-#pragma mark 视图的初始化方法、setter和getter方法
+#pragma mark -- 视图的初始化方法、setter和getter方法 --
 /**
  *  初始化ScrollView
  */
 -(void)initScrollView
 {
-    
     self.bkScrollView = [[UIScrollView alloc] init];
   
     self.bkScrollView.pagingEnabled = YES;
@@ -141,6 +141,7 @@ typedef NS_ENUM(NSInteger, movingDirection) {
     [self.rightScrollView addSubview:self.rightImageView];
     [self.bkScrollView addSubview:self.rightScrollView];
     
+    //当只有一张图片时，不滚动
     if (self.images.count == 1||self.imageNames.count == 1 ||self.imageURls.count ==1) {
         self.bkScrollView.scrollEnabled = NO;
     }
@@ -168,7 +169,7 @@ typedef NS_ENUM(NSInteger, movingDirection) {
     self.isDoubleTapBigger = YES;
 }
 
-#pragma mark 协议方法
+#pragma mark -- 协议方法 --
 #pragma mark  UIScrollViewDelegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -193,7 +194,7 @@ typedef NS_ENUM(NSInteger, movingDirection) {
     [self centerScrollViewContents];
 }
 
-#pragma mark 事件方法
+#pragma mark -- 事件方法 --
 /**
  *  双击手势时调用，来放大或缩小图片
  */

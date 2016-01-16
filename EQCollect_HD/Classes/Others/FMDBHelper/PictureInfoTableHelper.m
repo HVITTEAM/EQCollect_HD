@@ -10,13 +10,12 @@
 #import "PictureMode.h"
 
 #define TABLENAME         @"PICTUREINFOTAB"
-#define PICTUREID         @"pictureid"
-#define PICTURENAME       @"pictureName"
-#define PICTUREPATH       @"picturePath"
-#define RELETEID          @"releteid"
-#define RELETETABLE       @"reletetable"
+#define kPictureid         @"pictureid"
+#define kPictureName       @"pictureName"
+#define kPicturePath       @"picturePath"
+#define kReleteid          @"releteid"
+#define kReletetable       @"reletetable"
 
-//#define POINTID           @"pointid"
 
 @implementation PictureInfoTableHelper
 
@@ -45,37 +44,58 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,PICTUREID,PICTURENAME,PICTUREPATH,RELETEID,RELETETABLE];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@'INTEGER PRIMARY KEY AUTOINCREMENT, '%@' TEXT, '%@' TEXT,'%@' TEXT,'%@' TEXT)",TABLENAME,kPictureid,kPictureName,kPicturePath,kReleteid,kReletetable];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
-            //NSLog(@"error when creating imgaedb table");
+            NSLog(@"error when creating imgaedb table");
         } else {
-           // NSLog(@"success to creating imgaedb table");
+           NSLog(@"success to creating imgaedb table");
         }
         [db close];
     }
 }
 
--(BOOL) insertDataWith:(NSDictionary *)dict
+//-(BOOL)insertDataWith:(NSDictionary *)dict
+//{
+//    BOOL result = NO;
+//    if ([db open]) {
+//        NSString *insertSql1= [NSString stringWithFormat:
+//                               @"INSERT INTO '%@' ('%@', '%@', '%@','%@')  VALUES ('%@', '%@', '%@','%@')",
+//                               TABLENAME,kPictureName,kPicturePath,kReleteid,kReletetable,dict[@"pictureName"], dict[@"picturePath"],dict[@"releteid"],dict[@"reletetable"]];
+//        BOOL res = [db executeUpdate:insertSql1];
+//        if (!res) {
+//           // NSLog(@"error when insert db Imgtable");
+//            result = NO;
+//        } else {
+//            //NSLog(@"success to insert db Imgtable");
+//            result = YES;
+//        }
+//        [db close];
+//    }
+//    return result;
+//}
+
+////////////////////
+
+-(BOOL)insertDataWithPictureModel:(PictureMode *)model
 {
-    BOOL result = NO;
+    BOOL res = NO;
     if ([db open]) {
-        NSString *insertSql1= [NSString stringWithFormat:
+        NSString *insertSql= [NSString stringWithFormat:
                                @"INSERT INTO '%@' ('%@', '%@', '%@','%@')  VALUES ('%@', '%@', '%@','%@')",
-                               TABLENAME,PICTURENAME,PICTUREPATH,RELETEID,RELETETABLE,dict[@"pictureName"], dict[@"picturePath"],dict[@"releteid"],dict[@"reletetable"]];
-        BOOL res = [db executeUpdate:insertSql1];
+                               TABLENAME,kPictureName,kPicturePath,kReleteid,kReletetable,model.pictureName,model.picturePath,model.releteid,model.reletetable];
+        res = [db executeUpdate:insertSql];
         if (!res) {
-           // NSLog(@"error when insert db Imgtable");
-            result = NO;
+            NSLog(@"error when insert PictureInfo Imgtable");
         } else {
-            //NSLog(@"success to insert db Imgtable");
-            result = YES;
+            NSLog(@"success to insert PictureInfo Imgtable");
         }
         [db close];
     }
-    return result;
+    return res;
 }
 
+/////////////////
 
 /**
  *  根据releteid，reletetable 字段查询相应的图片
@@ -83,31 +103,30 @@
  *  @param reletetable 关联的表名
  *  @param releteid    关联表中某条记录的id
  */
--(NSMutableArray *) selectDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
+-(NSMutableArray *)selectDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
 {
     NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
     {
-        NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@ where %@ = '%@' AND %@ = '%@'",TABLENAME,RELETETABLE,reltable,RELETEID,relid];
+        NSString * sql = [NSString stringWithFormat: @"SELECT * FROM %@ where %@ = '%@' AND %@ = '%@'",TABLENAME,kReletetable,reltable,kReleteid,relid];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * pictureName = [rs stringForColumn:PICTURENAME];
-            NSString * picturePath = [rs stringForColumn:PICTUREPATH];
-            NSString * releteid = [rs stringForColumn:RELETEID];
-            NSString * reletetable = [rs stringForColumn:RELETETABLE];
+            NSString * pictureName = [rs stringForColumn:kPictureName];
+            NSString * picturePath = [rs stringForColumn:kPicturePath];
+            NSString * releteid = [rs stringForColumn:kReleteid];
+            NSString * reletetable = [rs stringForColumn:kReletetable];
 
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:pictureName forKey:@"pictureName"];
-            [dict setObject:picturePath forKey:@"picturePath"];
-            [dict setObject:releteid forKey:@"releteid"];
-            [dict setObject:reletetable forKey:@"reletetable"];
+            [dict setObject:pictureName forKey:kPictureName];
+            [dict setObject:picturePath forKey:kPicturePath];
+            [dict setObject:releteid forKey:kReleteid];
+            [dict setObject:reletetable forKey:kReletetable];
             
             [dataCollect addObject:[PictureMode objectWithKeyValues:dict]];
         }
         [db close];
     }
-
     return dataCollect;
 }
 
@@ -126,7 +145,7 @@
     
     if ([db open]) {
         //从数据库中找出所有对应的图片记录，并取出图片名字和图片路径这两个字段
-        NSString * sql = [NSString stringWithFormat: @"SELECT %@,%@ FROM %@ WHERE %@ = '%@' AND %@ = '%@'",PICTUREPATH,PICTUREID,TABLENAME,RELETETABLE,reltable,RELETEID,relid];
+        NSString * sql = [NSString stringWithFormat: @"SELECT %@,%@ FROM %@ WHERE %@ = '%@' AND %@ = '%@'",kPicturePath,kPictureid,TABLENAME,kReletetable,reltable,kReleteid,relid];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next]) {
             NSString *pPath = [rs stringForColumnIndex:0];
@@ -143,7 +162,7 @@
                 [db close];
                 return result;
             }
-            NSString *deleteSql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@' ",TABLENAME,PICTUREID,picResultSet[i][@"pId"]];
+            NSString *deleteSql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@' ",TABLENAME,kPictureid,picResultSet[i][@"pId"]];
             result = [db executeUpdate:deleteSql];
             if (!result) {
                 //NSLog(@"error when delete db table");
@@ -164,17 +183,17 @@
  *
  *  @return   成功返回 yes，失败返回 no
  */
--(BOOL) deleteImageByAttribute:(NSString *)attribute value:(NSString *)value
+-(BOOL)deleteImageByAttribute:(NSString *)attribute value:(NSString *)value
 {
     BOOL result = NO;
     NSString *picFilepath;
     if ([db open])
     {
-        NSString *selectsql = [NSString stringWithFormat:@"SELECT %@ FROM %@ WHERE %@='%@'",PICTUREPATH,TABLENAME,attribute,value];
+        NSString *selectsql = [NSString stringWithFormat:@"SELECT %@ FROM %@ WHERE %@='%@'",kPicturePath,TABLENAME,attribute,value];
         NSString *deleteSql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'",TABLENAME, attribute, value];
         FMResultSet *rs = [db executeQuery:selectsql];
         while ([rs next]) {
-             picFilepath = [rs stringForColumn:PICTUREPATH];
+             picFilepath = [rs stringForColumn:kPicturePath];
         }
         
         if (picFilepath!=nil) {
@@ -202,7 +221,7 @@
  *  @param reletetable 关联的表名
  *  @param releteid    关联表中某条记录的id
  */
--(BOOL) deleteDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
+-(BOOL)deleteDataByReleteTable:(NSString *)reltable Releteid:(NSString *)relid
 {
     BOOL result = NO;
     if ([db open])
@@ -210,7 +229,7 @@
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@' AND %@ = '%@'",
-                               TABLENAME,RELETETABLE,reltable,RELETEID, relid];
+                               TABLENAME,kReletetable,reltable,kReleteid, relid];
         BOOL res = [db executeUpdate:deleteSql];
         
         if (!res) {

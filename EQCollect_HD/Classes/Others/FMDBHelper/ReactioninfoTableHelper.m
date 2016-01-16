@@ -27,26 +27,27 @@
 //sounddirection	 地声方向       	    Varchar
 
 #define TABLENAME          @"REACTIONINFOTAB"
-#define REACTIONID         @"reactionid"
-#define REACTIONTIME       @"reactiontime"
-#define INFORMANTNAME      @"informantname"
-#define INFORMANTAGE       @"informantage"
-#define INFORMANTEDUCATION @"informanteducation"
-#define INFORMANTJOB       @"informantjob"
-#define REACTIONADDRESS    @"reactionaddress"
-#define ROCKFEELING        @"rockfeeling"
-#define THROWFEELING       @"throwfeeling"
-#define THROWTINGS         @"throwtings"
-#define THROWDISTANCE      @"throwdistance"
-#define FALL               @"fall"
-#define HANG               @"hang"
-#define FURNITURESOUND     @"furnituresound"
-#define FURNITUREDUMP      @"furnituredump"
-#define SOUNDSIZE          @"soundsize"
-#define SOUNDDIRECTION     @"sounddirection"
+#define kReactionid         @"reactionid"
+#define kReactiontime       @"reactiontime"
+#define kInformantname      @"informantname"
+#define kInformantage       @"informantage"
+#define kInformanteducation @"informanteducation"
+#define kInformantjob       @"informantjob"
+#define kReactionaddress    @"reactionaddress"
+#define kRockfeeling        @"rockfeeling"
+#define kThrowfeeling       @"throwfeeling"
+#define kThrowtings         @"throwtings"
+#define kThrowdistance      @"throwdistance"
+#define kFall               @"fall"
+#define kHang               @"hang"
+#define kFurnituresound     @"furnituresound"
+#define kFurnituredump      @"furnituredump"
+#define kSoundsize          @"soundsize"
+#define kSounddirection     @"sounddirection"
 
-#define POINTID            @"pointid"
-#define UPLOAD             @"upload"
+#define kPointid            @"pointid"
+#define kUploadFlag             @"upload"
+
 
 #import "ReactioninfoTableHelper.h"
 
@@ -78,56 +79,52 @@
 {
     if ([db open]) {
         NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,
-                                     REACTIONID,REACTIONTIME,INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID,UPLOAD];
+                                     kReactionid,kReactiontime,kInformantname,kInformantage,kInformanteducation,kInformantjob,kReactionaddress,kRockfeeling,kThrowfeeling,kThrowtings,kThrowdistance,kFall,kHang,kFurnituresound,kFurnituredump,kSoundsize,kSounddirection,kPointid,kUploadFlag];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
-            //NSLog(@"error when creating db table");
+            NSLog(@"error when creating Reactioninfo table");
         } else {
-            //NSLog(@"success to creating db table");
+            NSLog(@"success to creating Reactioninfo table");
         }
         [db close];
     }
 }
 
--(BOOL) insertDataWith:(NSDictionary *)dict
+-(BOOL)insertDataWithReactioninfoModel:(ReactionModel *)model
 {
-    BOOL result = NO;
+    BOOL res = NO;
     if ([db open]) {
-        NSString *insertSql1= [NSString stringWithFormat:
+        NSString *insertSql= [NSString stringWithFormat:
                                @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@','%@','%@','%@')",
-                               TABLENAME,REACTIONID,REACTIONTIME,
-                               INFORMANTNAME,INFORMANTAGE,INFORMANTEDUCATION,INFORMANTJOB,REACTIONADDRESS,ROCKFEELING,THROWFEELING,THROWTINGS,THROWDISTANCE,FALL,HANG,FURNITURESOUND,FURNITUREDUMP,SOUNDSIZE,SOUNDDIRECTION,POINTID,UPLOAD,dict[@"reactionid"],dict[@"reactiontime"], dict[@"informantname"],dict[@"informantage"], dict[@"informanteducation"], dict[@"informantjob"],dict[@"reactionaddress"], dict[@"rockfeeling"],dict[@"throwfeeling"],dict[@"throwtings"],dict[@"throwdistance"],dict[@"fall"],dict[@"hang"], dict[@"furnituresound"],dict[@"furnituredump"], dict[@"soundsize"],dict[@"sounddirection"],dict[@"pointid"],dict[@"upload"]];
-        BOOL res = [db executeUpdate:insertSql1];
+                               TABLENAME,kReactionid,kReactiontime,
+                               kInformantname,kInformantage,kInformanteducation,kInformantjob,kReactionaddress,kRockfeeling,kThrowfeeling,kThrowtings,kThrowdistance,kFall,kHang,kFurnituresound,kFurnituredump,kSoundsize,kSounddirection,kPointid,kUploadFlag,model.reactionid,model.reactiontime,model.informantname,model.informantage,model.informanteducation,model.informantjob,model.reactionaddress,model.rockfeeling,model.throwfeeling,model.throwtings,model.throwdistance,model.fall,model.hang,model.furnituresound,model.furnituredump,model.soundsize,model.sounddirection,model.pointid,model.upload];
+        res = [db executeUpdate:insertSql];
         if (!res) {
-            //NSLog(@"error when insert db table");
-            result = NO;
+            NSLog(@"error when insert Reactioninfo table");
         } else {
-            //NSLog(@"success to insert db table");
-            result = YES;
+            NSLog(@"success to insert Reactioninfo table");
         }
         [db close];
     }
-    return result;
+    return res;
 }
 
--(BOOL) updateDataWith:(NSDictionary *)dict
+-(BOOL)updateDataWithReactioninfoModel:(ReactionModel *)model
 {
-    BOOL result = NO;
+    BOOL res = NO;
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@'  ",TABLENAME,REACTIONID,dict[@"reactionid"],REACTIONTIME,dict[@"reactiontime"],INFORMANTNAME,dict[@"informantname"],INFORMANTAGE,dict[@"informantage"],INFORMANTEDUCATION,dict[@"informanteducation"],INFORMANTJOB,dict[@"informantjob"],REACTIONADDRESS,dict[@"reactionaddress"],ROCKFEELING,dict[@"rockfeeling"],THROWFEELING,dict[@"throwfeeling"],THROWTINGS,dict[@"throwtings"],THROWDISTANCE,dict[@"throwdistance"],FALL,dict[@"fall"],HANG,dict[@"hang"],FURNITURESOUND,dict[@"furnituresound"],FURNITUREDUMP,dict[@"furnituredump"],SOUNDSIZE,dict[@"soundsize"],SOUNDDIRECTION,dict[@"sounddirection"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],REACTIONID,dict[@"reactionid"]];
-        BOOL res = [db executeUpdate:updateSql];
+                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@',%@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@'",TABLENAME,kReactionid,model.reactionid,kReactiontime,model.reactiontime,kInformantname,model.informantname,kInformantage,model.informantage,kInformanteducation,model.informanteducation,kInformantjob,model.informantjob,kReactionaddress,model.reactionaddress,kRockfeeling,model.rockfeeling,kThrowfeeling,model.throwfeeling,kThrowtings,model.throwtings,kThrowdistance,model.throwdistance,kFall,model.fall,kHang,model.hang,kFurnituresound,model.furnituresound,kFurnituredump,model.furnituredump,kSoundsize,model.soundsize,kSounddirection,model.sounddirection,kPointid,model.pointid,kUploadFlag,model.upload,kReactionid,model.reactionid];
+        res = [db executeUpdate:updateSql];
         if (!res) {
-            //NSLog(@"error when update db table");
-            result = NO;
+            NSLog(@"error when update Reactioninfo table");
         } else {
-            //NSLog(@"success to update db table");
-            result = YES;
+            NSLog(@"success to update Reactioninfo table");
         }
         [db close];
     }
-    return result;
+    return res;
 }
 
 -(BOOL)updateUploadFlag:(NSString *)uploadFlag ID:(NSString *)idString
@@ -135,7 +132,7 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,UPLOAD,uploadFlag,REACTIONID,idString];
+                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,kUploadFlag,uploadFlag,kReactionid,idString];
         NSLog(@"%@",updateSql);
         result = [db executeUpdate:updateSql];
         if (!result) {
@@ -150,25 +147,23 @@
 
 -(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
-    BOOL result = NO;
+    BOOL res = NO;
     if ([db open])
     {
         
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from %@ where %@ = '%@'",
                                TABLENAME, attribute, value];
-        BOOL res = [db executeUpdate:deleteSql];
+        res = [db executeUpdate:deleteSql];
         
         if (!res) {
             //NSLog(@"error when delete db table");
-            result = NO;
         } else {
             //NSLog(@"success to delete db table");
-            result = YES;
         }
         [db close];
     }
-    return result;
+    return res;
 }
 
 
@@ -181,46 +176,46 @@
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * reactionid = [rs stringForColumn:REACTIONID];
-            NSString * reactiontime = [rs stringForColumn:REACTIONTIME];
-            NSString * informantname = [rs stringForColumn:INFORMANTNAME];
-            NSString * informantage = [rs stringForColumn:INFORMANTAGE];
-            NSString * informanteducation = [rs stringForColumn:INFORMANTEDUCATION];
-            NSString * informantjob = [rs stringForColumn:INFORMANTJOB];
-            NSString * reactionaddress = [rs stringForColumn:REACTIONADDRESS];
-            NSString * rockfeeling = [rs stringForColumn:ROCKFEELING];
-            NSString * throwfeeling = [rs stringForColumn:THROWFEELING];
-            NSString * throwtings = [rs stringForColumn:THROWTINGS];
-            NSString * throwdistance = [rs stringForColumn:THROWDISTANCE];
-            NSString * fall = [rs stringForColumn:FALL];
-            NSString * hang = [rs stringForColumn:HANG];
-            NSString * furnituresound = [rs stringForColumn:FURNITURESOUND];
-            NSString * furnituredump = [rs stringForColumn:FURNITUREDUMP];
-            NSString * sounddirection = [rs stringForColumn:SOUNDDIRECTION];
-            NSString * soundsize = [rs stringForColumn:SOUNDSIZE];
-            NSString * pointid = [rs stringForColumn:POINTID];
-            NSString * upload = [rs stringForColumn:UPLOAD];
+            NSString * reactionid = [rs stringForColumn:kReactionid];
+            NSString * reactiontime = [rs stringForColumn:kReactiontime];
+            NSString * informantname = [rs stringForColumn:kInformantname];
+            NSString * informantage = [rs stringForColumn:kInformantage];
+            NSString * informanteducation = [rs stringForColumn:kInformanteducation];
+            NSString * informantjob = [rs stringForColumn:kInformantjob];
+            NSString * reactionaddress = [rs stringForColumn:kReactionaddress];
+            NSString * rockfeeling = [rs stringForColumn:kRockfeeling];
+            NSString * throwfeeling = [rs stringForColumn:kThrowfeeling];
+            NSString * throwtings = [rs stringForColumn:kThrowtings];
+            NSString * throwdistance = [rs stringForColumn:kThrowdistance];
+            NSString * fall = [rs stringForColumn:kFall];
+            NSString * hang = [rs stringForColumn:kHang];
+            NSString * furnituresound = [rs stringForColumn:kFurnituresound];
+            NSString * furnituredump = [rs stringForColumn:kFurnituredump];
+            NSString * sounddirection = [rs stringForColumn:kSounddirection];
+            NSString * soundsize = [rs stringForColumn:kSoundsize];
+            NSString * pointid = [rs stringForColumn:kPointid];
+            NSString * upload = [rs stringForColumn:kUploadFlag];
 
              NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:reactionid forKey:@"reactionid"];
-            [dict setObject:reactiontime forKey:@"reactiontime"];
-            [dict setObject:informantname forKey:@"informantname"];
-            [dict setObject:informantage forKey:@"informantage"];
-            [dict setObject:informanteducation forKey:@"informanteducation"];
-            [dict setObject:informantjob forKey:@"informantjob"];
-            [dict setObject:reactionaddress forKey:@"reactionaddress"];
-            [dict setObject:rockfeeling forKey:@"rockfeeling"];
-            [dict setObject:throwfeeling forKey:@"throwfeeling"];
-            [dict setObject:throwtings forKey:@"throwtings"];
-            [dict setObject:throwdistance forKey:@"throwdistance"];
-            [dict setObject:fall forKey:@"fall"];
-            [dict setObject:hang forKey:@"hang"];
-            [dict setObject:furnituresound forKey:@"furnituresound"];
-            [dict setObject:furnituredump forKey:@"furnituredump"];
-            [dict setObject:soundsize forKey:@"soundsize"];
-            [dict setObject:sounddirection forKey:@"sounddirection"];
-            [dict setObject:pointid forKey:@"pointid"];
-            [dict setObject:upload forKey:@"upload"];
+            [dict setObject:reactionid forKey:kReactionid];
+            [dict setObject:reactiontime forKey:kReactiontime];
+            [dict setObject:informantname forKey:kInformantname];
+            [dict setObject:informantage forKey:kInformantage];
+            [dict setObject:informanteducation forKey:kInformanteducation];
+            [dict setObject:informantjob forKey:kInformantjob];
+            [dict setObject:reactionaddress forKey:kReactionaddress];
+            [dict setObject:rockfeeling forKey:kRockfeeling];
+            [dict setObject:throwfeeling forKey:kThrowfeeling];
+            [dict setObject:throwtings forKey:kThrowtings];
+            [dict setObject:throwdistance forKey:kThrowdistance];
+            [dict setObject:fall forKey:kFall];
+            [dict setObject:hang forKey:kHang];
+            [dict setObject:furnituresound forKey:kFurnituresound];
+            [dict setObject:furnituredump forKey:kFurnituredump];
+            [dict setObject:soundsize forKey:kSoundsize];
+            [dict setObject:sounddirection forKey:kSounddirection];
+            [dict setObject:pointid forKey:kPointid];
+            [dict setObject:upload forKey:kUploadFlag];
             
             [dataCollect addObject:[ReactionModel objectWithKeyValues:dict]];
         }
@@ -238,46 +233,46 @@
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * reactionid = [rs stringForColumn:REACTIONID];
-            NSString * reactiontime = [rs stringForColumn:REACTIONTIME];
-            NSString * informantname = [rs stringForColumn:INFORMANTNAME];
-            NSString * informantage = [rs stringForColumn:INFORMANTAGE];
-            NSString * informanteducation = [rs stringForColumn:INFORMANTEDUCATION];
-            NSString * informantjob = [rs stringForColumn:INFORMANTJOB];
-            NSString * reactionaddress = [rs stringForColumn:REACTIONADDRESS];
-            NSString * rockfeeling = [rs stringForColumn:ROCKFEELING];
-            NSString * throwfeeling = [rs stringForColumn:THROWFEELING];
-            NSString * throwtings = [rs stringForColumn:THROWTINGS];
-            NSString * throwdistance = [rs stringForColumn:THROWDISTANCE];
-            NSString * fall = [rs stringForColumn:FALL];
-            NSString * hang = [rs stringForColumn:HANG];
-            NSString * furnituresound = [rs stringForColumn:FURNITURESOUND];
-            NSString * furnituredump = [rs stringForColumn:FURNITUREDUMP];
-            NSString * sounddirection = [rs stringForColumn:SOUNDDIRECTION];
-            NSString * soundsize = [rs stringForColumn:SOUNDSIZE];
-            NSString * pointid = [rs stringForColumn:POINTID];
-            NSString * upload = [rs stringForColumn:UPLOAD];
+            NSString * reactionid = [rs stringForColumn:kReactionid];
+            NSString * reactiontime = [rs stringForColumn:kReactiontime];
+            NSString * informantname = [rs stringForColumn:kInformantname];
+            NSString * informantage = [rs stringForColumn:kInformantage];
+            NSString * informanteducation = [rs stringForColumn:kInformanteducation];
+            NSString * informantjob = [rs stringForColumn:kInformantjob];
+            NSString * reactionaddress = [rs stringForColumn:kReactionaddress];
+            NSString * rockfeeling = [rs stringForColumn:kRockfeeling];
+            NSString * throwfeeling = [rs stringForColumn:kThrowfeeling];
+            NSString * throwtings = [rs stringForColumn:kThrowtings];
+            NSString * throwdistance = [rs stringForColumn:kThrowdistance];
+            NSString * fall = [rs stringForColumn:kFall];
+            NSString * hang = [rs stringForColumn:kHang];
+            NSString * furnituresound = [rs stringForColumn:kFurnituresound];
+            NSString * furnituredump = [rs stringForColumn:kFurnituredump];
+            NSString * sounddirection = [rs stringForColumn:kSounddirection];
+            NSString * soundsize = [rs stringForColumn:kSoundsize];
+            NSString * pointid = [rs stringForColumn:kPointid];
+            NSString * upload = [rs stringForColumn:kUploadFlag];
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:reactionid forKey:@"reactionid"];
-            [dict setObject:reactiontime forKey:@"reactiontime"];
-            [dict setObject:informantname forKey:@"informantname"];
-            [dict setObject:informantage forKey:@"informantage"];
-            [dict setObject:informanteducation forKey:@"informanteducation"];
-            [dict setObject:informantjob forKey:@"informantjob"];
-            [dict setObject:reactionaddress forKey:@"reactionaddress"];
-            [dict setObject:rockfeeling forKey:@"rockfeeling"];
-            [dict setObject:throwfeeling forKey:@"throwfeeling"];
-            [dict setObject:throwtings forKey:@"throwtings"];
-            [dict setObject:throwdistance forKey:@"throwdistance"];
-            [dict setObject:fall forKey:@"fall"];
-            [dict setObject:hang forKey:@"hang"];
-            [dict setObject:furnituresound forKey:@"furnituresound"];
-            [dict setObject:furnituredump forKey:@"furnituredump"];
-            [dict setObject:soundsize forKey:@"soundsize"];
-            [dict setObject:sounddirection forKey:@"sounddirection"];
-            [dict setObject:pointid forKey:@"pointid"];
-            [dict setObject:upload forKey:@"upload"];
+            [dict setObject:reactionid forKey:kReactionid];
+            [dict setObject:reactiontime forKey:kReactiontime];
+            [dict setObject:informantname forKey:kInformantname];
+            [dict setObject:informantage forKey:kInformantage];
+            [dict setObject:informanteducation forKey:kInformanteducation];
+            [dict setObject:informantjob forKey:kInformantjob];
+            [dict setObject:reactionaddress forKey:kReactionaddress];
+            [dict setObject:rockfeeling forKey:kRockfeeling];
+            [dict setObject:throwfeeling forKey:kThrowfeeling];
+            [dict setObject:throwtings forKey:kThrowtings];
+            [dict setObject:throwdistance forKey:kThrowdistance];
+            [dict setObject:fall forKey:kFall];
+            [dict setObject:hang forKey:kHang];
+            [dict setObject:furnituresound forKey:kFurnituresound];
+            [dict setObject:furnituredump forKey:kFurnituredump];
+            [dict setObject:soundsize forKey:kSoundsize];
+            [dict setObject:sounddirection forKey:kSounddirection];
+            [dict setObject:pointid forKey:kPointid];
+            [dict setObject:upload forKey:kUploadFlag];
             
             [dataCollect addObject:[ReactionModel objectWithKeyValues:dict]];
         }
@@ -285,22 +280,6 @@
     }
     return dataCollect;
 }
-
-
-//-(NSInteger)getNumberOfRecords
-//{
-//    NSInteger count = 0;
-//    if ([db open]) {
-//        NSString *sql = [NSString stringWithFormat:@"SELECT COUNT(*) AS count FROM %@ ",TABLENAME];
-//        FMResultSet * rs = [db executeQuery:sql];
-//        while ([rs next]) {
-//            count = [rs intForColumn:@"count"];
-//            NSLog(@"%ld",count);
-//        }
-//    }
-//    [db close];
-//    return count;
-//}
 
 -(NSInteger)getMaxIdOfRecords
 {

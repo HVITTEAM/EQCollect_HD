@@ -8,41 +8,44 @@
 
 #define cellHeight 70
 #define cellWidth 70
+
 static NSString *kcellIdentifier = @"collectionCellID";
 
 #import "ImageCollectionView.h"
+#import "PictureVO.h"
+#import <AVFoundation/AVFoundation.h>
+#import "UzysAssetsPickerController.h"
 #import "SWYPhotoBrowserViewController.h"
 
-@interface ImageCollectionView ()
+@interface ImageCollectionView ()<UIAlertViewDelegate,UIImagePickerControllerDelegate,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UzysAssetsPickerControllerDelegate>
+
+@property (nonatomic, assign)BOOL isShowAddBtn;                    //是否显示新增图片的按钮
 
 @end
 
 @implementation ImageCollectionView
-{
-    BOOL isFull;//是否已经选择十张
-    //MWPhotoBrowser *_browser;
 
-}
-
+#pragma mark -- 生命周期方法 --
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initCollectionView];
     
-    _dataProvider = [[NSMutableArray alloc]init];
+    [self initCollectionView];
+    self.dataProvider = [[NSMutableArray alloc]init];
 }
 
+#pragma mark -- 初始化子视图方法 --
 /**
- *  初始化服务类别列表
+ *  初始化集合视图属性
  */
 -(void)initCollectionView
 {
     [self.collectionView registerNib:[UINib nibWithNibName:@"SQCollectionCell" bundle:nil] forCellWithReuseIdentifier:kcellIdentifier];
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.scrollEnabled = NO;
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
 }
 
+
+#pragma mark -- getter 和 setter方法 --
 /**
  *  重写dataProvider属性的的 setter方法
  */
@@ -68,125 +71,64 @@ static NSString *kcellIdentifier = @"collectionCellID";
  */
 -(void)setAddBtn
 {
-    if (_showType!=kActionTypeShow && _dataProvider.count<10) {
+    if (self.showType!=kActionTypeShow && _dataProvider.count<10) {
         self.isShowAddBtn = YES;
-    }else self.isShowAddBtn = NO;
+    }else {
+        self.isShowAddBtn = NO;
+    }
     
     [self.collectionView reloadData];
 }
 
-#pragma mark <UICollectionViewDataSource>
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    NSUInteger num = self.dataProvider.count;
-    if (self.isShowAddBtn) {
-        if (num+1<=5) {
-            return 1;
-        }else {
-            return 2;
-        }
-    }else {
-        if (num <=5) {
-            return 1;
-        }else{
-            return 2;
-        }
-    }
-}
-
+#pragma mark -- 协议方法 --
+#pragma mark UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     NSUInteger num = self.dataProvider.count;
     if (self.isShowAddBtn) {
-        if (num+1<=5) {
-            return num+1;
-        }else {
-            if (section ==0) {
-                return 5;
-            }else return num+1-5;
-        }
+        return num + 1;
     }else{
-        if (num<=5) {
-            return num;
-        }else{
-            if (section == 0) {
-                return 5;
-            }else return num-5;
-        }
+        return num;
     }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexPath.section * 5 +indexPath.row;
     //重用cell
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kcellIdentifier forIndexPath:indexPath];
-    //赋值
-    UIImageView *imageV = (UIImageView *)[cell viewWithTag:1];
-    UIImageView *delImageV  = (UIImageView *)[cell viewWithTag:2];
+    
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
+    UIImageView *delImageView  = (UIImageView *)[cell viewWithTag:2];
     
     //在不显示新增图片按钮时，index 最大是self.dataProvider.count-1，如果等于self.dataProvider.count，说明当前显示的是新增图片按钮
-    if ( index==self.dataProvider.count) {
-        delImageV.hidden = YES;
-        imageV.image = [UIImage imageNamed:@"icon_addpic"];
+    if ( indexPath.row ==self.dataProvider.count) {
+        delImageView.hidden = YES;
+        imageView.image = [UIImage imageNamed:@"icon_addpic"];
     }else{
-        if (self.showType == kActionTypeShow) {
-           delImageV.hidden = YES;
-        }else delImageV.hidden = NO;
         
-        PictureVO *vo = self.dataProvider[index];
+        delImageView.hidden = NO;
+        
+        if (self.showType == kActionTypeShow) {
+           delImageView.hidden = YES;
+        }
+        
+        PictureVO *vo = self.dataProvider[indexPath.row];
         //创建缩略图来显示
         UIImage *img = [[UIImage alloc] initWithData:vo.imageData];
-        imageV.image = [img scaleImageToSize:CGSizeMake(cellWidth,cellHeight)];
+        imageView.image = [img scaleImageToSize:CGSizeMake(cellWidth,cellHeight)];
     }
     return cell;
 }
 
-#pragma mark <UICollectionViewDelegate>
-
-//定义每个UICollectionView 的大小
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return CGSizeMake(cellWidth, cellHeight);
-}
-
-/**
- *  设置横向间距
- */
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 10;
-}
-
-/**
- *  设置竖向间距
- */
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 0;
-}
-
-/**
- *  定义每个section的 margin
- */
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return section==0?UIEdgeInsetsMake(10, 0, 7, 0):UIEdgeInsetsMake(7, 0, 0, 0);//分别为上、左、下、右
-}
-
-#pragma mark --UICollectionViewDelegate
-
+#pragma mark UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexPath.section * 5 +indexPath.row;
-    //在不显示新增图片按钮时，index 最大是self.dataProvider.count-1，如果等于self.dataProvider.count，说明当前显示新增图片按钮，且点击了新增图片按钮
+    NSInteger index = indexPath.row;
+    //如果等于self.dataProvider.count说明点击了新增图片按钮
     if (index == self.dataProvider.count) {
         UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"请选择图片来源" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从手机相册选择", nil];
         [alert show];
-    }
-    else
-    {
+    }else{
         if (self.showType==kActionTypeShow){
            [self showImageWhthCurrentIdx:index];
         }else if (self.showType == kActionTypeAdd) {
@@ -205,34 +147,22 @@ static NSString *kcellIdentifier = @"collectionCellID";
     }
 }
 
-#pragma mark -- 拍照选择模块
+#pragma mark UIAlertViewDelegate 
+/**
+ *  选择获取图片模式
+ */
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex==1)
+    if(buttonIndex==1)         //拍照
         [self shootPicturePrVideo];
-    else if(buttonIndex==2)
+    else if(buttonIndex==2)          //照片库中选取
         [self selectExistingPictureOrVideo];
 }
 
-/**从相机*/
--(void)shootPicturePrVideo
-{
-    [self getMediaFromSource:UIImagePickerControllerSourceTypeCamera];
-}
-
-/**从相册*/
--(void)selectExistingPictureOrVideo
-{
-    NSUInteger num = self.dataProvider.count;
-    UzysAssetsPickerController *picker = [[UzysAssetsPickerController alloc] init];
-    picker.delegate = self;
-    picker.maximumNumberOfSelectionVideo = 0;
-    picker.maximumNumberOfSelectionPhoto = num==0?10:10-num;
-    [self.nav presentViewController:picker animated:YES completion:^{
-    }];
-}
-
-#pragma 拍照模块
+#pragma UIImagePickerControllerDelegate
+/**
+ *  拍照完成
+ */
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     //实例化一个NSDateFormatter对象
@@ -265,7 +195,6 @@ static NSString *kcellIdentifier = @"collectionCellID";
         [self setAddBtn];
         //调整view高度
         [self changeViewHeight];
-
     }
 }
 
@@ -274,46 +203,15 @@ static NSString *kcellIdentifier = @"collectionCellID";
     
 }
 
--(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
     [picker dismissViewControllerAnimated:NO completion:nil];
 }
 
--(void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType
-{
-    NSArray *mediatypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
-    if([UIImagePickerController isSourceTypeAvailable:sourceType] &&[mediatypes count]>0)
-    {
-        NSArray *mediatypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
-        CommonUIImagePickerController *picker = [[CommonUIImagePickerController alloc] init];
-        picker.mediaTypes = mediatypes;
-        picker.delegate = self;
-        picker.allowsEditing = NO;
-        picker.sourceType = sourceType;
-        NSString *requiredmediatype = (NSString *)kUTTypeImage;
-        NSArray *arrmediatypes = [NSArray arrayWithObject:requiredmediatype];
-        [picker setMediaTypes:arrmediatypes];
-        [self.nav presentViewController:picker animated:YES completion:nil];
-    }
-    else{
-        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"错误信息!" message:@"当前设备不支持拍摄功能" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles: nil];
-        [alert show];
-    }
-}
-
-#pragma mark - 浏览图片
--(void)showImageWhthCurrentIdx:(NSInteger)idx
-{
-    NSMutableArray *images = [[NSMutableArray alloc] init];
-    for(PictureVO* vo in self.dataProvider)
-    {
-        UIImage *img = [[UIImage alloc] initWithData:vo.imageData];
-        [images addObject:img];
-    }
-    SWYPhotoBrowserViewController *photoBrowser = [[SWYPhotoBrowserViewController alloc] initPhotoBrowserWithImages:images currentIndex:idx];
-    [self.nav presentViewController:photoBrowser animated:YES completion:nil];
-}
-
-#pragma mark - UzysAssetsPickerControllerDelegate
+#pragma mark  UzysAssetsPickerControllerDelegate
+/**
+ *  照片选取完成
+ */
 - (void)UzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -341,7 +239,7 @@ static NSString *kcellIdentifier = @"collectionCellID";
                 PictureVO *imgVo = [[PictureVO alloc] init];
                 imgVo.name = [currentDateStr stringByAppendingFormat:@"_%lu",(unsigned long)idx];
                 imgVo.imageData = data;
-
+                
                 if (self.dataProvider.count < 10) {
                     [self.dataProvider addObject:imgVo];
                 }
@@ -350,10 +248,65 @@ static NSString *kcellIdentifier = @"collectionCellID";
                     //调整view高度
                     [self changeViewHeight];
                 });
-
+                
             }];
         }
     });
+}
+
+#pragma -- 事件方法 --
+/**
+ *  拍照
+ */
+-(void)shootPicturePrVideo
+{
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        NSArray *mediatypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+        if ([mediatypes count]>0) {
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.mediaTypes = mediatypes;
+            picker.delegate = self;
+            picker.allowsEditing = NO;
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            NSString *requiredmediatype = (NSString *)kUTTypeImage;
+            NSArray *arrmediatypes = [NSArray arrayWithObject:requiredmediatype];
+            [picker setMediaTypes:arrmediatypes];
+            [self.parentViewController presentViewController:picker animated:YES completion:nil];
+        }
+    }else{
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"错误信息!" message:@"当前设备不支持拍摄功能" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
+/**
+ *  从相册获取
+ */
+-(void)selectExistingPictureOrVideo
+{
+    NSUInteger num = self.dataProvider.count;
+    UzysAssetsPickerController *pickerVC = [[UzysAssetsPickerController alloc] init];
+    pickerVC.delegate = self;
+    pickerVC.maximumNumberOfSelectionVideo = 0;
+    pickerVC.maximumNumberOfSelectionPhoto = num==0?10:10-num;
+    [self.parentViewController presentViewController:pickerVC animated:YES completion:^{
+    }];
+}
+
+/**
+ *  浏览图片
+ */
+-(void)showImageWhthCurrentIdx:(NSInteger)idx
+{
+    NSMutableArray *images = [[NSMutableArray alloc] init];
+    for(PictureVO* vo in self.dataProvider)
+    {
+        UIImage *img = [[UIImage alloc] initWithData:vo.imageData];
+        [images addObject:img];
+    }
+    SWYPhotoBrowserViewController *photoBrowser = [[SWYPhotoBrowserViewController alloc] initPhotoBrowserWithImages:images currentIndex:idx];
+    [self.parentViewController presentViewController:photoBrowser animated:YES completion:nil];
 }
 
 /**
@@ -361,22 +314,29 @@ static NSString *kcellIdentifier = @"collectionCellID";
  */
 -(void)changeViewHeight
 {
-    //默认为一行5张，高度为87,两行时高度为164
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    //单行的高度
+    CGFloat itemHeight = flowLayout.itemSize.height + flowLayout.minimumLineSpacing * 2;
     
-    CGFloat h = 87;
     if (self.changeHeightBlock) {
-        
         if (self.isShowAddBtn) {
             if (self.dataProvider.count + 1 > 5) {
-                h=164;
+                //2行的高度
+                itemHeight = flowLayout.itemSize.height * 2 + flowLayout.minimumLineSpacing * 3;
             }
         }else{
             if (self.dataProvider.count > 5) {
-                h=164;
+                //2行的高度
+                itemHeight = flowLayout.itemSize.height * 2 + flowLayout.minimumLineSpacing * 3;
             }
         }
-        self.changeHeightBlock(h);
+        self.changeHeightBlock(itemHeight);
     }
+}
+
+-(void)dealloc
+{
+    NSLog(@"ImageCollectionView 释放了吗");
 }
 
 @end

@@ -14,5 +14,5 @@
 @property (nonatomic, copy) NSString *phoneNum;
 @property (nonatomic, copy) NSString *time;
 @property (nonatomic, copy) NSString *pointid;
-
+@property (nonatomic, copy) NSString *upload;
 @end

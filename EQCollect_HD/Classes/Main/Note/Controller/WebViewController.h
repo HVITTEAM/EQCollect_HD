@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface WebViewController : UIViewController
-@property(strong,nonatomic)NSURL *fileUrl;
+
+@property(strong,nonatomic)NSURL *fileUrl;               //打开文件的 URL 路径
+
+@property(strong,nonatomic)NSString *fileName;           //打开文件的文件名
+
 @end

@@ -9,7 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface ChooseIntensityCell : UITableViewCell
+
+/**
+ *  创建 Cell
+ */
 +(instancetype)cellWithTableView:(UITableView *)tableView model:(NSDictionary *)dict;
-+(CGFloat)heightForCell:(NSDictionary *)dict;
+
+/**
+ *  计算cell高度
+ */
++(CGFloat)heightForCell:(NSDictionary *)dict tableView:(UITableView *)tableView;
 
 @end

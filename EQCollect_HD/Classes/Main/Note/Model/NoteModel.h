@@ -10,19 +10,19 @@
 
 @interface NoteModel : NSObject
 
-@property (nonatomic, copy) NSString *resourceid;
+@property (nonatomic, copy) NSString *resourceid;            //资源 ID
 
-@property (nonatomic, copy) NSString *resourcename;
+@property (nonatomic, copy) NSString *resourcename;          //资源名字
 
-@property (nonatomic, copy) NSString *resourcepath;
+@property (nonatomic, copy) NSString *resourcepath;          //资源的子路径
 
-@property (nonatomic, copy) NSString *resourcetype;
+@property (nonatomic, copy) NSString *resourcetype;          //资源类型
 
 @property (nonatomic, copy) NSString *taskgroup;
 
 @property (nonatomic, copy) NSString *taskid;
 
-@property (nonatomic, copy) NSString *uploadtime;
+@property (nonatomic, copy) NSString *uploadtime;            //更新时间
 
 @end
 

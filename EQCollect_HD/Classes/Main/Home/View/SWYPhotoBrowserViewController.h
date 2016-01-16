@@ -24,4 +24,5 @@
  * 根据图片的URL字符串
  */
 -(instancetype)initPhotoBrowserWithImageURls:(NSArray *)imageURLs currentIndex:(NSInteger)currentIndex placeholderImageNmae:(NSString *)placeholderImageName;
+
 @end

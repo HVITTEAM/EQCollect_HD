@@ -7,29 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "MWPhotoBrowser.h"
-#import "CommonUIImagePickerController.h"
-#import "PictureVO.h"
-#import <AVFoundation/AVFoundation.h>
-#import "UzysAssetsPickerController.h"
 
 typedef void(^changeHeight)(CGFloat);
 
-@interface ImageCollectionView : UICollectionViewController<UIAlertViewDelegate,UIImagePickerControllerDelegate,UzysAssetsPickerControllerDelegate,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate>
+@interface ImageCollectionView : UICollectionViewController
 
-@property (nonatomic, retain) NSMutableArray *dataProvider;
+@property (nonatomic, strong) NSMutableArray *dataProvider;        //数据源
 
-//@property (nonatomic, strong) NSMutableArray *photos;
-//@property (nonatomic, strong) NSMutableArray *thumbs;
+//@property (nonatomic, weak) UINavigationController *nav;
 
-@property (nonatomic, retain) UINavigationController *nav;
-/**页面方式**/
-@property (nonatomic, assign) ActionType showType;
+@property (nonatomic, assign) ActionType showType;                 //页面类型
 
-@property (nonatomic,assign)BOOL isShowAddBtn;
+@property (nonatomic ,assign) BOOL isExitThread;                    //线程退出标志
 
-@property (nonatomic ,assign)BOOL isExitThread;
+@property (nonatomic,copy)changeHeight changeHeightBlock;          //根据图片的数量改变view的高度的 block
 
-/**根据图片的数改变view的高度**/
-@property (nonatomic,copy)changeHeight changeHeightBlock;
 @end

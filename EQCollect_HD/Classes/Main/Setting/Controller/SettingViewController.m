@@ -75,10 +75,10 @@
     HMCommonArrowItem *help = [HMCommonArrowItem itemWithTitle:@"使用帮助" icon:nil];
     help.destVcClass = [UseHelpViewController class];
     
-    HMCommonArrowItem *advice = [HMCommonArrowItem itemWithTitle:@"意见反馈" icon:nil];
-    advice.destVcClass = [FeedbackViewController class];
+//    HMCommonArrowItem *advice = [HMCommonArrowItem itemWithTitle:@"意见反馈" icon:nil];
+//    advice.destVcClass = [FeedbackViewController class];
     
-    group.items = @[version,help,advice];
+    group.items = @[version,help];
 }
 
 - (void)setupFooter
@@ -101,8 +101,10 @@
  */
 -(void)loginOut
 {
+    //结束定时发送位置功能
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate removeTimer];
+    
     [HMControllerTool setLoginViewController];
 }
 

@@ -12,19 +12,28 @@
 
 @protocol InfoCellDelegate <NSObject>
 @optional
-//删除cell时调用
+/**
+ *  删除cell按钮点击时调用
+ */
 - (void)infoCell:(InfoCell *)cell didClickDeleteBtnAtIndexPath:(NSIndexPath *)indexPath;
-//上传 cell 时调用
+
+/**
+ *  上传 cell 按钮点击时调用
+ */
 -(void)infocell:(InfoCell *)cell didClickUpLoadBtnAtIndexPath:(NSIndexPath *)indexPath;
 
-@optional
-//上传提示
+/**
+ *  上传提示按钮点击时调用
+ */
 -(void)infocell:(InfoCell *)cell didClickMessageBtnAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
+/////////////////////////////////////////////////////////////////////////
+
 @interface InfoCell : UITableViewCell
-//cell 所在的NSIndexPath
-@property (strong, nonatomic) NSIndexPath *indexPath;
+
+@property (strong, nonatomic) NSIndexPath *indexPath;                   //cell 所在的NSIndexPath
 
 @property (weak, nonatomic) id<InfoCellDelegate>delegate;
 

@@ -7,45 +7,51 @@
 #import "MasterViewController.h"
 #import "SettingViewController.h"
 #import "PersonCenterController.h"
-#import "AdminTableHead.h"
-#import "LocationHelper.h"
 #import "NavigationViewController.h"
 #import "NoteViewController.h"
+#import "CurrentUser.h"
+#import "AdminTableHead.h"
 
 @interface MasterViewController ()
 
 @end
 
 @implementation MasterViewController
-
+#pragma mark -- 生命周期方法 --
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"浙江省地震灾害现场采集";
     
-    //设置表头视图
-    AdminTableHead *headView  = [[[NSBundle mainBundle] loadNibNamed:@"AdminTableHead" owner:self options:nil] lastObject];
-    UserModel *userInfor = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
-    headView.useridLabel.text = userInfor.userccount;
-    headView.usernameLabel.text = userInfor.username;
-    self.tableView.tableHeaderView = headView;
+    [self initNaviBar];
+}
+
+#pragma mark -- 初始化设置方法 --
+-(void)initNaviBar
+{
+    self.navigationItem.title = @"浙江省地震灾害现场采集";
     
     //设置导航栏颜色
     self.navigationController.navigationBar.barTintColor = HMColor(102, 147, 255);
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
+    //设置表头视图
+    AdminTableHead *headView  = [[[NSBundle mainBundle] loadNibNamed:@"AdminTableHead" owner:self options:nil] lastObject];
+    headView.useridLabel.text = [CurrentUser shareInstance].userccount;
+    headView.usernameLabel.text = [CurrentUser shareInstance].username;
+    self.tableView.tableHeaderView = headView;
 }
 
-#pragma mark - Table view data source
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
-
+#pragma mark -- 协议方法 --
+#pragma mark  Table view data source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 5;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -83,33 +89,34 @@
     return cell;
 }
 
-#pragma mark - Table view delegate
+#pragma mark  Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0){
 
-    }else if (indexPath.section == 1){
+    }else if (indexPath.section == 1){   //地图导航
         NavigationViewController *VC = [[NavigationViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:VC];
         navi.modalTransitionStyle = UIModalPresentationFullScreen;
         [self presentViewController:navi animated:YES completion:nil];
     }
-    else if (indexPath.section == 2){
+    else if (indexPath.section == 2){   //个人中心
         PersonCenterController *personView = [[PersonCenterController alloc] init];
         UINavigationController  *nav = [[UINavigationController alloc] initWithRootViewController:personView];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
-    }else if (indexPath.section == 3){
+        
+    }else if (indexPath.section == 3){   //系统设置
         SettingViewController *settingView = [[SettingViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingView];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
-    } else{
+        
+    } else{     //注意事项
         NoteViewController *noteVC = [[NoteViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:noteVC];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:nav animated:YES completion:nil];
-
     }
 }
 
@@ -120,7 +127,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 40.0f;
+    return 30.0f;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section

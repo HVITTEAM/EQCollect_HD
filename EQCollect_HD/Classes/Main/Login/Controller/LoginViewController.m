@@ -9,6 +9,8 @@
 #import "LoginViewController.h"
 #import "LocationHelper.h"
 #import "CurrentUser.h"
+#import "AppDelegate.h"
+#import "TrackTableHelper.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 
@@ -20,6 +22,9 @@
 
 @property(strong,nonatomic)UITextField *currentTextField;          //当前正在编辑的输入框
 
+/**
+ *  登录
+ */
 - (IBAction)loginNow:(id)sender;
 
 @end
@@ -126,7 +131,10 @@
     } completion:nil];
 }
 
-#pragma mark 登录方法
+#pragma mark -- 登陆相关方法 --
+/**
+ *  登陆
+ */
 - (IBAction)loginNow:(id)sender
 {
     NSString *account = self.accountTextF.text;
@@ -183,6 +191,18 @@
         curtuser.pointgroup = userTemp.pointgroup;
         curtuser.pointperson = userTemp.pointperson;
         curtuser.success   =  userTemp.success;
+        
+        //开启定时发送位置功能
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        [appDelegate addTimer];
+        
+        //取得前天的日期
+        NSDate *beforYestoday = [NSDate dateWithTimeIntervalSinceNow:24 * 60 * 60 * (-2)];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyyMMdd"];
+        NSString *beforYestodayStr = [formatter stringFromDate:beforYestoday];
+        //只保留三天的位置信息，删除之前的数据
+        [[TrackTableHelper sharedInstance] deleteTracksOfBeforeDay:beforYestodayStr];
         
         //跳转到主界面
         [HMControllerTool setRootViewController];

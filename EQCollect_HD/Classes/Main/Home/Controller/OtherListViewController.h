@@ -11,8 +11,8 @@
 
 @interface OtherListViewController : UITableViewController<OtherinfoDelegate>
 
-@property (strong,nonatomic)UINavigationController *nav;
-@property (copy,nonatomic)NSString *pointid;
-@property (copy,nonatomic)NSString *pointUploadFlag;
+@property (copy,nonatomic)NSString *pointid;                   //对应调查点的 id
+
+@property (copy,nonatomic)NSString *pointUploadFlag;           //对应调查点的上传状态
 
 @end

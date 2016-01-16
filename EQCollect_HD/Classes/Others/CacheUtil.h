@@ -23,29 +23,5 @@
 
 +(instancetype)shareInstance;
 
-/**
- *  设置缓存调查点数据
- */
--(void)setCachePointWithDict:(NSDictionary *)aDict;
-
-/**
- *  设置缓存宏观异常数据
- */
--(void)setCacheAbnormalinfoWithDict:(NSDictionary *)aDict;
-
-/**
- *  设置缓存人物反应数据
- */
--(void)setCacheReactionWithDict:(NSDictionary *)aDict;
-
-/**
- *  设置缓存房屋震害数据
- */
--(void)setCacheDamageWithDict:(NSDictionary *)aDict;
-
-/**
- *  设置缓存其它表数据
- */
--(void)setCacheOtherWithDict:(NSDictionary *)aDict;
 
 @end

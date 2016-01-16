@@ -578,6 +578,10 @@ NSString const *DownloadStageInfoKey2      = @"DownloadStageInfoKey";
     self.tableView.delegate   = self;
     self.tableView.dataSource = self;
     
+    
+    
+    NSLog(@"前 ------ %@",self.tableView);
+    
     [self.view addSubview:self.tableView];
 }
 

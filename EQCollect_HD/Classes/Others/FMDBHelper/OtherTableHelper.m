@@ -8,14 +8,16 @@
 
 
 #define TABLENAME        @"OTHERTAB"
-#define OTHERID          @"otherid"
-#define OTHERCONTENT     @"othercontent"
-#define OTHERLON         @"otherlon"
-#define OTHERLAT         @"otherlat"
-#define OTHERADDRESS     @"otheraddress"
-#define OTHERTIME        @"othertime"
-#define POINTID          @"pointid"
-#define UPLOAD           @"upload"
+#define kOtherid          @"otherid"
+#define kOthercontent     @"othercontent"
+#define kOtherlon         @"otherlon"
+#define kOtherlat         @"otherlat"
+#define kOtheraddress     @"otheraddress"
+#define kOthertime        @"othertime"
+
+#define kPointid          @"pointid"
+#define kUploadFlag       @"upload"
+
 
 #import "OtherTableHelper.h"
 
@@ -47,8 +49,7 @@
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,OTHERID,OTHERCONTENT,
-                                     OTHERLON,OTHERLAT,OTHERADDRESS,OTHERTIME,POINTID,UPLOAD];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY,'%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,kOtherid,kOthercontent,kOtherlon,kOtherlat,kOtheraddress,kOthertime,kPointid,kUploadFlag];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating other table");
@@ -59,16 +60,16 @@
     }
 }
 
--(BOOL) insertDataWith:(NSDictionary *)dict
+-(BOOL)insertDataWithOtherinfoModel:(OtherModel *)model
 {
     BOOL res = NO;
     if ([db open]) {
-        NSString *insertSql1= [NSString stringWithFormat:
+        NSString *insertSql= [NSString stringWithFormat:
                                @"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@', '%@', '%@')",
-                               TABLENAME,OTHERID,OTHERCONTENT,OTHERLON,OTHERLAT,OTHERADDRESS,OTHERTIME,POINTID,UPLOAD,dict[@"otherid"],dict[@"othercontent"], dict[@"otherlon"],dict[@"otherlat"], dict[@"otheraddress"], dict[@"othertime"],dict[@"pointid"],dict[@"upload"]];
-       res = [db executeUpdate:insertSql1];
+                               TABLENAME,kOtherid,kOthercontent,kOtherlon,kOtherlat,kOtheraddress,kOthertime,kPointid,kUploadFlag,model.otherid,model.othercontent,model.otherlon,model.otherlat,model.otheraddress,model.othertime,model.pointid,model.upload];
+        res = [db executeUpdate:insertSql];
         if (!res) {
-             NSLog(@"error when insert other table");
+            NSLog(@"error when insert other table");
         } else {
             NSLog(@"success to insert other table");
         }
@@ -77,13 +78,13 @@
     return res;
 }
 
--(BOOL) updateDataWith:(NSDictionary *)dict
+-(BOOL)updateDataWithOtherinfoModel:(OtherModel *)model
 {
     BOOL res = NO;
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,OTHERID,dict[@"otherid"],OTHERCONTENT,dict[@"othercontent"],OTHERLON,dict[@"otherlon"],OTHERLAT,dict[@"otherlat"],OTHERADDRESS,dict[@"otheraddress"],OTHERTIME,dict[@"othertime"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],OTHERID,dict[@"otherid"]];
+                               @"UPDATE %@ SET %@ = '%@',%@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,kOtherid,model.otherid,kOthercontent,model.othercontent,kOtherlon,model.otherlon,kOtherlat,model.otherlat,kOtheraddress,model.otheraddress,kOthertime,model.othertime,kPointid,model.pointid,kUploadFlag,model.upload,kOtherid,model.otherid];
         res = [db executeUpdate:updateSql];
         if (!res) {
             NSLog(@"error when update other table");
@@ -100,7 +101,7 @@
     BOOL result = NO;
     if ([db open]) {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,UPLOAD,uploadFlag,OTHERID,idString];
+                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,kUploadFlag,uploadFlag,kOtherid,idString];
         result = [db executeUpdate:updateSql];
         if (!result) {
             NSLog(@"error when update other table");
@@ -117,10 +118,7 @@
     BOOL res = NO;
     if ([db open])
     {
-        
-        NSString *deleteSql = [NSString stringWithFormat:
-                               @"delete from %@ where %@ = '%@'",
-                               TABLENAME, attribute, value];
+        NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where %@ = '%@'",TABLENAME, attribute, value];
         res = [db executeUpdate:deleteSql];
         
         if (!res) {
@@ -133,7 +131,7 @@
     return res;
 }
 
--(NSMutableArray *) selectData
+-(NSMutableArray *)selectData
 {
     NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
@@ -142,24 +140,24 @@
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * otherid = [rs stringForColumn:OTHERID];
-            NSString * othercontent = [rs stringForColumn:OTHERCONTENT];
-            NSString * otherlon = [rs stringForColumn:OTHERLON];
-            NSString * otherlat = [rs stringForColumn:OTHERLAT];
-            NSString * otheraddress = [rs stringForColumn:OTHERADDRESS];
-            NSString * othertime = [rs stringForColumn:OTHERTIME];
-            NSString * pointid = [rs stringForColumn:POINTID];
-            NSString * upload = [rs stringForColumn:UPLOAD];
+            NSString * otherid = [rs stringForColumn:kOtherid];
+            NSString * othercontent = [rs stringForColumn:kOthercontent];
+            NSString * otherlon = [rs stringForColumn:kOtherlon];
+            NSString * otherlat = [rs stringForColumn:kOtherlat];
+            NSString * otheraddress = [rs stringForColumn:kOtheraddress];
+            NSString * othertime = [rs stringForColumn:kOthertime];
+            NSString * pointid = [rs stringForColumn:kPointid];
+            NSString * upload = [rs stringForColumn:kUploadFlag];
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:otherid forKey:@"otherid"];
-            [dict setObject:othercontent forKey:@"othercontent"];
-            [dict setObject:otherlon forKey:@"otherlon"];
-            [dict setObject:otherlat forKey:@"otherlat"];
-            [dict setObject:otheraddress forKey:@"otheraddress"];
-            [dict setObject:othertime forKey:@"othertime"];
-            [dict setObject:pointid forKey:@"pointid"];
-            [dict setObject:upload forKey:@"upload"];
+            [dict setObject:otherid forKey:kOtherid];
+            [dict setObject:othercontent forKey:kOthercontent];
+            [dict setObject:otherlon forKey:kOtherlon];
+            [dict setObject:otherlat forKey:kOtherlat];
+            [dict setObject:otheraddress forKey:kOtheraddress];
+            [dict setObject:othertime forKey:kOthertime];
+            [dict setObject:pointid forKey:kPointid];
+            [dict setObject:upload forKey:kUploadFlag];
             
             [dataCollect addObject:[OtherModel objectWithKeyValues:dict]];  
         }
@@ -178,24 +176,24 @@
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * otherid = [rs stringForColumn:OTHERID];
-            NSString * othercontent = [rs stringForColumn:OTHERCONTENT];
-            NSString * otherlon = [rs stringForColumn:OTHERLON];
-            NSString * otherlat = [rs stringForColumn:OTHERLAT];
-            NSString * otheraddress = [rs stringForColumn:OTHERADDRESS];
-            NSString * othertime = [rs stringForColumn:OTHERTIME];
-            NSString * pointid = [rs stringForColumn:POINTID];
-            NSString * upload = [rs stringForColumn:UPLOAD];
+            NSString * otherid = [rs stringForColumn:kOtherid];
+            NSString * othercontent = [rs stringForColumn:kOthercontent];
+            NSString * otherlon = [rs stringForColumn:kOtherlon];
+            NSString * otherlat = [rs stringForColumn:kOtherlat];
+            NSString * otheraddress = [rs stringForColumn:kOtheraddress];
+            NSString * othertime = [rs stringForColumn:kOthertime];
+            NSString * pointid = [rs stringForColumn:kPointid];
+            NSString * upload = [rs stringForColumn:kUploadFlag];
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:otherid forKey:@"otherid"];
-            [dict setObject:othercontent forKey:@"othercontent"];
-            [dict setObject:otherlon forKey:@"otherlon"];
-            [dict setObject:otherlat forKey:@"otherlat"];
-            [dict setObject:otheraddress forKey:@"otheraddress"];
-            [dict setObject:othertime forKey:@"othertime"];
-            [dict setObject:pointid forKey:@"pointid"];
-            [dict setObject:upload forKey:@"upload"];
+            [dict setObject:otherid forKey:kOtherid];
+            [dict setObject:othercontent forKey:kOthercontent];
+            [dict setObject:otherlon forKey:kOtherlon];
+            [dict setObject:otherlat forKey:kOtherlat];
+            [dict setObject:otheraddress forKey:kOtheraddress];
+            [dict setObject:othertime forKey:kOthertime];
+            [dict setObject:pointid forKey:kPointid];
+            [dict setObject:upload forKey:kUploadFlag];
             
             [dataCollect addObject:[OtherModel objectWithKeyValues:dict]];
         }
@@ -203,7 +201,5 @@
     }
     return dataCollect;
 }
-
-
 
 @end

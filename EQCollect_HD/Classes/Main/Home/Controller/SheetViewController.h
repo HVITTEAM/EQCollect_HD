@@ -10,7 +10,7 @@
 #import "PictureVO.h"
 #import "PictureMode.h"
 
-@interface SheetViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,MBProgressHUDDelegate>
+@interface SheetViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UIScrollViewDelegate,MBProgressHUDDelegate>
 
 @property (weak, nonatomic) UIScrollView *rootScrollV;  //用于滚动的scrollView;
 

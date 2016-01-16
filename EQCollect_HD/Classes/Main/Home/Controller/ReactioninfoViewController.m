@@ -7,22 +7,20 @@
 //
 #define kNormalNavHeight 64
 #define kAddNavheight 44
+
 #import "ReactioninfoViewController.h"
 #import "ImageCollectionView.h"
-#import "PictureMode.h"
 #import "CacheUtil.h"
+#import "ImageCollectionFlowLayout.h"
 
 @interface ReactioninfoViewController ()<UIAlertViewDelegate>
-{
-    CGFloat _navHeight;              // 导航栏与状态栏总的高度
-    UIBarButtonItem *_rigthItem;      //导航栏右侧按钮
-    ImageCollectionView *imgview;
-}
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *reactionidTopCons;        //人物反应编号TextField的顶部约束
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *reactionidWidthCons;     //人物反应编号TextField宽约束
-@property (strong,nonatomic) NSLayoutConstraint *imgViewHeightCons;  //图片View的高约束
-@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;  //用于滚动的scrollView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;         //包裹真正内容的容器view
+@property (strong,nonatomic) NSLayoutConstraint *imgViewHeightCons;               //图片View的高约束
+@property (weak, nonatomic) IBOutlet UIScrollView *rootScrollView;                //用于滚动的scrollView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;                       //包裹真正内容的容器view
+
+@property (assign,nonatomic)CGFloat navHeight;                  // 导航栏与状态栏总的高度
+@property (strong,nonatomic)ImageCollectionView *imgview;       //图片展示控件
 
 @property (weak, nonatomic) IBOutlet UITextField *reactionidTextF;                //人物反应编号
 @property (weak, nonatomic) IBOutlet UITextField *reactiontimeTextF;              //调查时间
@@ -57,6 +55,7 @@
 
 @implementation ReactioninfoViewController
 
+#pragma mark -- 生命周期方法 --
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -64,9 +63,40 @@
     self.rootScrollV = self.rootScrollView;
     self.containerV = self.containerView;
     
+    [self initNavBar];
+    
     [self initReactioninfoVC];
+    
     [self initImageCollectionView];
+    
     [self showReactioninfoData];
+}
+
+#pragma mark -- 初始化子视图方法 --
+/**
+ *  初始化导航栏
+ */
+-(void)initNavBar
+{
+    //默认有状态栏，高度为64
+    self.navHeight = kNormalNavHeight;
+    
+    self.navigationItem.title = @"人物反应";
+    UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
+    //没上传可以编辑,上传了不可编辑
+    if ([self.reactioninfo.upload isEqualToString:kdidNotUpload]) {
+        self.navigationItem.rightBarButtonItem = rigthItem;
+    }
+    
+    if (self.actionType == kActionTypeAdd) {
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        self.navigationItem.leftBarButtonItem = leftItem;
+        rigthItem.title = @"确定";
+        self.navigationItem.rightBarButtonItem = rigthItem;
+        
+        //当为新增时没有状态栏，高度为44
+        self.navHeight = kAddNavheight;
+    }
 }
 
 /**
@@ -74,28 +104,6 @@
  */
 -(void)initReactioninfoVC
 {
-    self.navigationItem.title = @"人物反应";
-    
-    //默认有状态栏，高度为64
-    _navHeight = kNormalNavHeight;
-    
-    _rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemTap:)];
-    if ([self.reactioninfo.upload isEqualToString:kdidNotUpload]) {
-        self.navigationItem.rightBarButtonItem = _rigthItem;
-    }
-
-    if (self.actionType == kActionTypeAdd) {
-        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-        self.navigationItem.leftBarButtonItem = leftItem;
-        
-        _rigthItem.title = @"确定";
-         self.navigationItem.rightBarButtonItem = _rigthItem;
-        
-        //当为新增时没有状态栏，高度为44
-        _navHeight = kAddNavheight;
-        //启用交互
-        [self.view setUserInteractionEnabled:YES];
-    }
     self.textInputViews = @[
                             self.reactionidTextF,
                             self.reactiontimeTextF,
@@ -121,7 +129,7 @@
         //设置tag
         textF.tag = 1000+i;
     }
-
+    
     self.educationItems = @[@"博士",@"研究生",@"大学",@"中学",@"小学",@"其它"];
     self.rockfeelingItems =@[@"强烈",@"中等",@"微弱",@"无感觉"];
     self.throwfeelingItems = @[@"强烈",@"中等",@"微弱",@"无感觉"];
@@ -133,7 +141,7 @@
     self.sounddirectionItems = @[@"东",@"南",@"西",@"北",@"东南",@"西北",@"西南",@"东北"];
     
     //设置顶部高约束
-    self.reactionidTopCons.constant = 20+_navHeight;
+    self.reactionidTopCons.constant = 20 + self.navHeight;
     
     [self setActionType:self.actionType];
 }
@@ -144,33 +152,35 @@
 -(void)initImageCollectionView
 {
     //创建图片视图
-    UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc]init];
-    imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
+    ImageCollectionFlowLayout *flowLayout =[[ImageCollectionFlowLayout alloc]init];
+    flowLayout.itemSize = CGSizeMake(70, 70);
+    flowLayout.minimumLineSpacing = 10;
+    flowLayout.minimumInteritemSpacing = 10;
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.imgview = [[ImageCollectionView alloc] initWithCollectionViewLayout:flowLayout];
     
-    imgview.showType = self.actionType;
-    imgview.nav = self.navigationController;
+    self.imgview.showType = self.actionType;
     
-    [self addChildViewController:imgview];
-    [self.containerView addSubview:imgview.collectionView];
+    [self addChildViewController:self.imgview];
+    [self.containerView addSubview:self.imgview.collectionView];
     
     //设置 block，当图片行数发生变化时会调用
     __weak typeof(self) weakSelf = self;
-    __weak ImageCollectionView * weakImgview = imgview;
-    imgview.changeHeightBlock = ^(CGFloat viewheight){
+    self.imgview.changeHeightBlock = ^(CGFloat viewheight){
         weakSelf.imgViewHeightCons.constant = viewheight;
-        [weakImgview.collectionView updateConstraintsIfNeeded];
+        [weakSelf.imgview.collectionView updateConstraintsIfNeeded];
     };
     
     //设置视图约束
-    imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.imgview.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *dictViews = @{
                                 @"reactionaddressTextF":self.reactionaddressTextF,
-                                @"imgview":imgview.collectionView,
+                                @"imgview":self.imgview.collectionView,
                                 };
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[reactionaddressTextF]-20-[imgview]-20-|" options:0 metrics:nil views:dictViews]];
-    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
-    [imgview.collectionView addConstraint:self.imgViewHeightCons];
+    self.imgViewHeightCons = [NSLayoutConstraint constraintWithItem:self.imgview.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1.0f constant:87];
+    [self.imgview.collectionView addConstraint:self.imgViewHeightCons];
 }
 
 /**
@@ -178,7 +188,7 @@
  */
 -(void)showReactioninfoData
 {
-    if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit) {
+    if (self.actionType == kActionTypeShow || self.actionType == kactionTypeEdit) {     //显示数据
         self.reactionidTextF.text = self.reactioninfo.reactionid;
         self.reactiontimeTextF.text= self.reactioninfo.reactiontime;
         self.informantnameTextF.text= self.reactioninfo.informantname;
@@ -200,18 +210,19 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSMutableArray *images = [self getImagesWithReleteId:self.reactioninfo.reactionid releteTable:@"REACTIONINFOTAB"];
             dispatch_async(dispatch_get_main_queue(), ^{
-                imgview.dataProvider = images;
+                self.imgview.dataProvider = images;
             });
         });
-    }else {
-        
+    }else {           //新增数据
+        //设置人物反应编号
         self.reactionidTextF.text = [self createUniqueIdWithAbbreTableName:@"FY"];
-        
+        //设置时间
         NSDate *date = [NSDate date];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
         self.reactiontimeTextF.text = [formatter stringFromDate:date];
         
+        //用上一次缓存数据临时显示，减少输入
         ReactionModel *cache = [CacheUtil shareInstance].cacheReaction;
         if (!cache) {
             return;
@@ -234,6 +245,7 @@
     }
 }
 
+#pragma mark -- getter 和 setter 方法 --
 /**
  *  ActionType属性的 setter 方法
  */
@@ -241,17 +253,18 @@
 {
     _actionType = actionType;
     if (actionType == kActionTypeShow) {
-        for (UITextField *txt in self.textInputViews) {
+        for (UIView *txt in self.textInputViews) {
             txt.userInteractionEnabled = NO;
         }
     }else{
-        for (UITextField *txt in self.textInputViews) {
+        for (UIView *txt in self.textInputViews) {
             txt.userInteractionEnabled = YES;
         }
     }
-    imgview.showType = self.actionType;
+    self.imgview.showType = self.actionType;
 }
 
+#pragma mark -- 协议方法 --
 #pragma mark UITextFieldDelegate方法
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
@@ -306,6 +319,183 @@
     return canEdit;
 }
 
+#pragma mark UIAlertViewDelegate方法
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
+    //将选中的按钮标题设为当前文本框的内容
+    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
+    inputView.text = itemStr;
+}
+
+#pragma mark -- 事件方法 --
+/**
+ *  导航栏右侧按钮点击调用
+ */
+-(void)rightItemTap:(UIBarButtonItem *)sender
+{
+    if (self.actionType == kActionTypeShow) {
+        self.navigationItem.rightBarButtonItem.title = @"确定";
+        self.actionType = kactionTypeEdit;
+    }else if(self.actionType == kActionTypeAdd){
+        //判断是否有文本框为空，有空则返回并提示
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(addReactioninfo)];
+        }
+    }else{  //如果是编辑
+        //判断是否有文本框为空，有空则返回并提示
+        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
+            [self showMBProgressHUDWithSel:@selector(updateReactioninfo)];
+            self.navigationItem.rightBarButtonItem.title = @"编辑";
+            self.actionType = kActionTypeShow;
+        }
+    }
+}
+
+/**
+ * 新增人物反应
+ **/
+-(void)addReactioninfo
+{
+    //防止异步加载图片出错
+    self.imgview.isExitThread = YES;
+
+    NSString *reactionid = self.reactionidTextF.text;
+    NSString *reactiontime = self.reactiontimeTextF.text;
+    NSString *informantname = self.informantnameTextF.text;
+    NSString *informantage = self.informantageTextF.text;
+    NSString *informanteducation = self.informanteducationTextF.text;
+    NSString *informantjob = self.informantjobTextF.text;
+    NSString *reactionaddress = self.reactionaddressTextF.text;
+    NSString *rockfeeling = self.rockfeelingTextF.text;
+    NSString *throwfeeling = self.throwfeelingTextF.text;
+    NSString *throwtings = self.throwtingsTextF.text;
+    NSString *throwdistance = self.throwdistanceTextF.text;
+    NSString *fall = self.fallTextF.text;
+    NSString *hang = self.hangTextF.text;
+    NSString *furnituresound = self.furnituresoundTextF.text;
+    NSString *furnituredump = self.furnituredumpTextF.text;
+    NSString *soundsize = self.soundsizeTextF.text;
+    NSString *sounddirection = self.sounddirectionTextF.text;
+    
+    NSString *pointid = self.pointid;
+    NSString *upload = kdidNotUpload;
+    
+    
+    ReactionModel *reactionModel = [[ReactionModel alloc] init];
+    reactionModel.reactionid = reactionid;
+    reactionModel.reactiontime = reactiontime;
+    reactionModel.informantname = informantname;
+    reactionModel.informantage = informantage;
+    reactionModel.informanteducation = informanteducation;
+    reactionModel.informantjob = informantjob;
+    reactionModel.reactionaddress = reactionaddress;
+    reactionModel.rockfeeling = rockfeeling;
+    reactionModel.throwfeeling = throwfeeling;
+    reactionModel.throwtings = throwtings;
+    reactionModel.throwdistance = throwdistance;
+    reactionModel.fall = fall;
+    reactionModel.hang = hang;
+    reactionModel.furnituresound = furnituresound;
+    reactionModel.furnituredump = furnituredump;
+    reactionModel.soundsize = soundsize;
+    reactionModel.sounddirection = sounddirection;
+    reactionModel.pointid = pointid;
+    reactionModel.upload = upload;
+    
+    //数据缓存起来
+    [CacheUtil shareInstance].cacheReaction = reactionModel;
+    //本地数据库保存
+    BOOL result = [[ReactioninfoTableHelper sharedInstance]insertDataWithReactioninfoModel:reactionModel];
+    if (!result) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        });
+    }else{
+        //保存图片
+        [self saveImages:self.imgview.dataProvider releteId:reactionid releteTable:@"REACTIONINFOTAB"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view endEditing:YES];
+            //清空imageCollectionView的数据
+            self.imgview.dataProvider = [[NSMutableArray alloc] init];
+            
+            if ([self.delegate respondsToSelector:@selector(addReactioninfoSuccess:)]) {
+                [self.delegate addReactioninfoSuccess:self];
+            }
+        });
+    }
+}
+
+/**
+ * 更新人物反应
+ **/
+-(void)updateReactioninfo
+{
+    //防止异步加载图片出错
+    self.imgview.isExitThread = YES;
+
+    NSString *informantname = self.informantnameTextF.text;
+    NSString *informantage = self.informantageTextF.text;
+    NSString *informanteducation = self.informanteducationTextF.text;
+    NSString *informantjob = self.informantjobTextF.text;
+    NSString *reactionaddress = self.reactionaddressTextF.text;
+    NSString *rockfeeling = self.rockfeelingTextF.text;
+    NSString *throwfeeling = self.throwfeelingTextF.text;
+    NSString *throwtings = self.throwtingsTextF.text;
+    NSString *throwdistance = self.throwdistanceTextF.text;
+    NSString *fall = self.fallTextF.text;
+    NSString *hang = self.hangTextF.text;
+    NSString *furnituresound = self.furnituresoundTextF.text;
+    NSString *furnituredump = self.furnituredumpTextF.text;
+    NSString *soundsize = self.soundsizeTextF.text;
+    NSString *sounddirection = self.sounddirectionTextF.text;
+
+    NSString *reactionid = self.reactioninfo.reactionid;
+    NSString *reactiontime = self.reactioninfo.reactiontime;
+    NSString *pointid = self.reactioninfo.pointid;
+    NSString *upload = self.reactioninfo.upload;
+    
+    ReactionModel *reactionModel = [[ReactionModel alloc] init];
+    reactionModel.reactionid = reactionid;
+    reactionModel.reactiontime = reactiontime;
+    reactionModel.informantname = informantname;
+    reactionModel.informantage = informantage;
+    reactionModel.informanteducation = informanteducation;
+    reactionModel.informantjob = informantjob;
+    reactionModel.reactionaddress = reactionaddress;
+    reactionModel.rockfeeling = rockfeeling;
+    reactionModel.throwfeeling = throwfeeling;
+    reactionModel.throwtings = throwtings;
+    reactionModel.throwdistance = throwdistance;
+    reactionModel.fall = fall;
+    reactionModel.hang = hang;
+    reactionModel.furnituresound = furnituresound;
+    reactionModel.furnituredump = furnituredump;
+    reactionModel.soundsize = soundsize;
+    reactionModel.sounddirection = sounddirection;
+    reactionModel.pointid = pointid;
+    reactionModel.upload = upload;
+    
+    //数据缓存起来
+    [CacheUtil shareInstance].cacheReaction = reactionModel;
+    //本地数据库保存
+    BOOL result = [[ReactioninfoTableHelper sharedInstance]updateDataWithReactioninfoModel:reactionModel];
+    if (!result) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
+        });
+    }else{
+        //保存图片
+        [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"REACTIONINFOTAB" Releteid:self.reactioninfo.reactionid];
+        [self saveImages:self.imgview.dataProvider releteId:self.reactioninfo.reactionid releteTable:@"REACTIONINFOTAB"];
+
+        if ([self.delegate respondsToSelector:@selector(updateReactioninfoSuccess:)]) {
+            [self.delegate updateReactioninfoSuccess:self];
+        }
+    }
+}
+
+#pragma mark -- 内部方法 --
 /**
  *  使用UIAlertView向文本框输入内容
  *
@@ -326,185 +516,12 @@
     [alert show];
 }
 
-#pragma mark UIAlertViewDelegate方法
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    UITextField *inputView = (UITextField *)[self.view viewWithTag:self.currentInputViewTag];
-    //将选中的按钮标题设为当前文本框的内容
-    NSString *itemStr = [alertView buttonTitleAtIndex:buttonIndex];
-    inputView.text = itemStr;
-}
-
-/**
- *  导航栏右侧按钮点击调用
- */
--(void)rightItemTap:(UIBarButtonItem *)sender
-{
-    if (self.actionType == kActionTypeShow) {
-        self.navigationItem.rightBarButtonItem.title = @"确定";
-        self.actionType = kactionTypeEdit;
-    }else if(self.actionType == kActionTypeAdd){
-        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-            [self showMBProgressHUDWithSel:@selector(addReactioninfo)];
-        }
-    }else{
-        if (![self hasTextBeNullInTextInputViews:self.textInputViews]) {
-            [self showMBProgressHUDWithSel:@selector(updateReactioninfo)];
-            //[self.view endEditing:YES];
-            self.navigationItem.rightBarButtonItem.title = @"编辑";
-            self.actionType = kActionTypeShow;
-        }
-    }
-}
-
-/**
- * 新增人物反应
- **/
--(void)addReactioninfo
-{
-    //防止异步加载图片出错
-    imgview.isExitThread = YES;
-
-    NSString *reactionid = self.reactionidTextF.text;
-    NSString *reactiontime = self.reactiontimeTextF.text;
-    NSString *informantname = self.informantnameTextF.text;
-    NSString *informantage = self.informantageTextF.text;
-    NSString *informanteducation = self.informanteducationTextF.text;
-    NSString *informantjob = self.informantjobTextF.text;
-    NSString *reactionaddress = self.reactionaddressTextF.text;
-    NSString *rockfeeling = self.rockfeelingTextF.text;
-    NSString *throwfeeling = self.throwfeelingTextF.text;
-    NSString *throwtings = self.throwtingsTextF.text;
-    NSString *throwdistance = self.throwdistanceTextF.text;
-    NSString *fall = self.fallTextF.text;
-    NSString *hang = self.hangTextF.text;
-    NSString *furnituresound = self.furnituresoundTextF.text;
-    NSString *furnituredump = self.furnituredumpTextF.text;
-    NSString *soundsize = self.soundsizeTextF.text;
-    NSString *sounddirection = self.sounddirectionTextF.text;
-    
-    //创建字典对象并向表中插和数据
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          reactionid,@"reactionid",
-                          reactiontime,@"reactiontime",
-                          informantname,@"informantname",
-                          informantage, @"informantage",
-                          informanteducation, @"informanteducation",
-                          informantjob,@"informantjob",
-                          reactionaddress,@"reactionaddress",
-                          rockfeeling,@"rockfeeling",
-                          throwfeeling,@"throwfeeling",
-                          throwtings,@"throwtings",
-                          throwdistance,@"throwdistance",
-                          fall,@"fall",
-                          hang,@"hang",
-                          furnituresound,@"furnituresound",
-                          furnituredump,@"furnituredump",
-                          soundsize,@"soundsize",
-                          sounddirection,@"sounddirection",
-                          self.pointid,@"pointid",
-                          kdidNotUpload,@"upload",
-                          nil];
-    
-    [[CacheUtil shareInstance] setCacheReactionWithDict:dict];
-    
-    BOOL result = [[ReactioninfoTableHelper sharedInstance] insertDataWith:dict];
-    if (!result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[UIAlertView alloc] initWithTitle:nil message:@"新建数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-        });
-    }else{
-        
-        //[self saveImagesWithReleteId:reactionid releteTable:@"REACTIONINFOTAB"];
-        [self saveImages:imgview.dataProvider releteId:reactionid releteTable:@"REACTIONINFOTAB"];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view endEditing:YES];
-            //清空imageCollectionView的数据
-            imgview.dataProvider = [[NSMutableArray alloc] init];
-            //防止循环引用导致无法释放当前这个控制器
-            imgview.nav = nil;
-            if ([self.delegate respondsToSelector:@selector(addReactioninfoSuccess:)]) {
-                [self.delegate addReactioninfoSuccess:self];
-            }
-        });
-    }
-}
-
-/**
- * 更新人物反应
- **/
--(void)updateReactioninfo
-{
-    //防止异步加载图片出错
-    imgview.isExitThread = YES;
-
-    //NSString *reactionid = self.reactionidTextF.text;
-    //NSString *reactiontime = self.reactiontimeTextF.text;
-    NSString *informantname = self.informantnameTextF.text;
-    NSString *informantage = self.informantageTextF.text;
-    NSString *informanteducation = self.informanteducationTextF.text;
-    NSString *informantjob = self.informantjobTextF.text;
-    NSString *reactionaddress = self.reactionaddressTextF.text;
-    NSString *rockfeeling = self.rockfeelingTextF.text;
-    NSString *throwfeeling = self.throwfeelingTextF.text;
-    NSString *throwtings = self.throwtingsTextF.text;
-    NSString *throwdistance = self.throwdistanceTextF.text;
-    NSString *fall = self.fallTextF.text;
-    NSString *hang = self.hangTextF.text;
-    NSString *furnituresound = self.furnituresoundTextF.text;
-    NSString *furnituredump = self.furnituredumpTextF.text;
-    NSString *soundsize = self.soundsizeTextF.text;
-    NSString *sounddirection = self.sounddirectionTextF.text;
-
-    //创建字典对象并向表中插和数据
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          self.reactioninfo.reactionid,@"reactionid",
-                          self.reactioninfo.reactiontime,@"reactiontime",
-                          informantname,@"informantname",
-                          informantage, @"informantage",
-                          informanteducation, @"informanteducation",
-                          informantjob,@"informantjob",
-                          reactionaddress,@"reactionaddress",
-                          rockfeeling,@"rockfeeling",
-                          throwfeeling,@"throwfeeling",
-                          throwtings,@"throwtings",
-                          throwdistance,@"throwdistance",
-                          fall,@"fall",
-                          hang,@"hang",
-                          furnituresound,@"furnituresound",
-                          furnituredump,@"furnituredump",
-                          soundsize,@"soundsize",
-                          sounddirection,@"sounddirection",
-                          self.reactioninfo.pointid,@"pointid",
-                          self.reactioninfo.upload,@"upload",
-                          nil];
-    
-    [[CacheUtil shareInstance] setCacheReactionWithDict:dict];
-    
-    BOOL result = [[ReactioninfoTableHelper sharedInstance] updateDataWith:dict];
-    if (!result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[UIAlertView alloc] initWithTitle:nil message:@"更新数据出错" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil] show];
-        });
-    }else{
-        [[PictureInfoTableHelper sharedInstance] deleteDataByReleteTable:@"REACTIONINFOTAB" Releteid:self.reactioninfo.reactionid];
-        //[self saveImagesWithReleteId:self.reactioninfo.reactionid releteTable:@"REACTIONINFOTAB"];
-        [self saveImages:imgview.dataProvider releteId:self.reactioninfo.reactionid releteTable:@"REACTIONINFOTAB"];
-
-        if ([self.delegate respondsToSelector:@selector(updateReactioninfoSuccess:)]) {
-            [self.delegate updateReactioninfoSuccess:self];
-        }
-    }
-}
-
 -(void)back
 {
     //清空imageCollectionView的数据
-    imgview.dataProvider = [[NSMutableArray alloc] init];
-    //防止循环引用导致无法释放当前这个控制器
-    imgview.nav = nil;
+    self.imgview.dataProvider = [[NSMutableArray alloc] init];
     //防止异步加载图片出错
-    imgview.isExitThread = YES;
+    self.imgview.isExitThread = YES;
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -8,10 +8,26 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import "UserModel.h"
 
 @interface SharedAppUtil : NSObject
 
 +(SharedAppUtil *)defaultCommonUtil;
+
+/**
+ *  将罗马数字表示的烈度转换成阿拉伯数字表示
+ */
++(NSString *)switchRomeNumToNum:(NSString *)romeNum;
+
+/**
+ *  将阿拉伯数字表示的烈度转换成罗马数字表示
+ */
++(NSString *)switchNumToRomeNumWithNum:(NSInteger)num;
+
+/**
+ *  将IndexPath转换成罗马数字表示
+ */
++(NSString *)switchIndexPathToRomeNumWithIndexPath:(NSIndexPath *)idx;
+
+
 
 @end

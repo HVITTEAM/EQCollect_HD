@@ -10,38 +10,38 @@
 #import "ChooseIntensityCell.h"
 
 @interface ChooseIntensityViewController ()
-@property(nonatomic,strong)NSArray *dataProvider;
+
+@property(nonatomic,strong)NSArray *dataProvider;       //数据源
+
 @end
 
 @implementation ChooseIntensityViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.navigationController.title = @"选择烈度";
-    
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    self.navigationItem.leftBarButtonItem = leftItem;
-    
-    self.navigationItem.title = @"选择烈度";
-}
-
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
+#pragma mark -- 初始化方法 --
 +(instancetype)sharedInstance
 {
     static ChooseIntensityViewController *chooseIntensityViewController;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         chooseIntensityViewController = [[ChooseIntensityViewController alloc] init];
-
     });
     return chooseIntensityViewController;
 }
 
+#pragma mark -- 生命周期方法 --
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //设置导航栏
+    self.navigationItem.title = @"选择烈度";
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+}
+
+#pragma mark -- getter 和 setter 方法 --
+/**
+ *  dataProvider属性的 setter 方法
+ */
 -(NSArray *)dataProvider
 {
     if (!_dataProvider) {
@@ -110,8 +110,8 @@
     return _dataProvider;
 }
 
+#pragma mark -- 协议方法 --
 #pragma mark - Table view data source
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.dataProvider.count;
@@ -124,29 +124,24 @@
     return cell;
 }
 
+#pragma mark Table view delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *dict = self.dataProvider[indexPath.row];
-    CGFloat h = [ChooseIntensityCell heightForCell:dict];
-    return h;
+    NSDictionary *cellDict = self.dataProvider[indexPath.row];
+    CGFloat height = [ChooseIntensityCell heightForCell:cellDict tableView:tableView];
+    return height;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(viewController:selectedIntensity:)]) {
         
-        NSString *romeNUm = [self switchNumToRomeNumWithNum:indexPath.row];
+        NSString *romeNUm = [SharedAppUtil switchIndexPathToRomeNumWithIndexPath:indexPath];
         
         [self.delegate viewController:self selectedIntensity:romeNUm];
     }
     
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
--(NSString *)switchNumToRomeNumWithNum:(NSInteger)num
-{
-    NSArray *romes = @[@"Ⅰ",@"Ⅱ",@"Ⅲ",@"Ⅳ",@"Ⅴ",@"Ⅵ",@"Ⅶ",@"Ⅷ",@"Ⅸ",@"Ⅹ",@"Ⅺ",@"Ⅻ"];
-    return romes[num];
 }
 
 -(void)back

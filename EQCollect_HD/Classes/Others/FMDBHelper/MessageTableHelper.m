@@ -7,12 +7,14 @@
 //
 //主键自增，内容，号码，调查点外键，时间
 #define TABLENAME      @"MESSAGETAB"
-#define MESSAGEID      @"messageId"
-#define CONTENT        @"content"
-#define PHONENUM       @"phoneNum"
-#define TIME           @"time"
-#define POINTID        @"pointid"
-#define UPLOAD         @"upload"
+#define kMessageId      @"messageId"
+#define kContent        @"content"
+#define kPhoneNum       @"phoneNum"
+#define kTime           @"time"
+
+#define kPointid        @"pointid"
+#define kUploadFlag         @"upload"
+
 
 #import "MessageTableHelper.h"
 #import "MessageModel.h"
@@ -36,14 +38,13 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documents = [paths objectAtIndex:0];
     database_path = [documents stringByAppendingPathComponent:DBNAME];
-    NSLog(@"----messageTableHelper-----%@",database_path);
     db = [FMDatabase databaseWithPath:database_path];
 }
 
 - (void)createTable
 {
     if ([db open]) {
-        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,MESSAGEID,CONTENT,PHONENUM,TIME,POINTID,UPLOAD];
+        NSString *sqlCreateTable =  [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' ('%@' PRIMARY KEY, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT, '%@' TEXT)",TABLENAME,kMessageId,kContent,kPhoneNum,kTime,kPointid,kUploadFlag];
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating message table");
@@ -54,12 +55,12 @@
     }
 }
 
--(BOOL) insertDataWith:(NSDictionary *)dict
+-(BOOL)insertDataWithMessageinfoModel:(MessageModel *)model
 {
     BOOL res = NO;
     if ([db open]) {
-        NSString *insertSql1= [NSString stringWithFormat:@"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@')",TABLENAME,MESSAGEID, CONTENT, PHONENUM,TIME,POINTID,UPLOAD,dict[@"messageId"],dict[@"content"],dict[@"phoneNum"], dict[@"time"], dict[@"pointid"],dict[@"upload"]];
-        res = [db executeUpdate:insertSql1];
+        NSString *insertSql = [NSString stringWithFormat:@"INSERT INTO '%@' ('%@','%@', '%@', '%@', '%@','%@')  VALUES ('%@','%@', '%@', '%@', '%@', '%@')",TABLENAME,kMessageId, kContent, kPhoneNum,kTime,kPointid,kUploadFlag,model.messageId,model.content,model.phoneNum,model.time,model.pointid,model.upload];
+        res = [db executeUpdate:insertSql];
         if (!res) {
             NSLog(@"error when insert message table");
         } else {
@@ -70,15 +71,13 @@
     return res;
 }
 
--(BOOL) updateDataWith:(NSDictionary *)dict
+-(BOOL)updateDataWithMessageinfoModel:(MessageModel *)model
 {
     BOOL res = NO;
     if ([db open])
     {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,CONTENT,dict[@"content"],PHONENUM,dict[@"phoneNum"],TIME,dict[@"time"],POINTID,dict[@"pointid"],UPLOAD,dict[@"upload"],MESSAGEID,dict[@"messageId"]];
-        
-        NSLog(@"%@",updateSql);
+                               @"UPDATE %@ SET %@ = '%@', %@='%@', %@='%@', %@='%@', %@='%@' WHERE %@ = '%@' ",TABLENAME,kContent,model.content,kPhoneNum,model.phoneNum,kTime,model.time,kPointid,model.pointid,kUploadFlag,model.upload,kMessageId,model.messageId];
         res = [db executeUpdate:updateSql];
         if (!res) {
             NSLog(@"error when update message table");
@@ -90,15 +89,14 @@
     return res;
 }
 
--(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
+-(BOOL)deleteDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
     BOOL res = NO;
     if ([db open])
     {
         
         NSString *deleteSql = [NSString stringWithFormat:
-                               @"delete from %@ where %@ = '%@'",
-                               TABLENAME, attribute, value];
+                                                    @"delete from %@ where %@ = '%@'",TABLENAME, attribute, value];
         res = [db executeUpdate:deleteSql];
         
         if (!res) {
@@ -111,7 +109,7 @@
     return res;
 }
 
--(NSMutableArray *) selectDataByAttribute:(NSString *)attribute value:(NSString *)value
+-(NSMutableArray *)selectDataByAttribute:(NSString *)attribute value:(NSString *)value
 {
     NSMutableArray *dataCollect = [[NSMutableArray alloc] init];
     if ([db open])
@@ -120,26 +118,43 @@
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next])
         {
-            NSString * messageId = [rs stringForColumn:MESSAGEID];
-            NSString * content   = [rs stringForColumn:CONTENT];
-            NSString * phoneNum  = [rs stringForColumn:PHONENUM];
-            NSString * time      = [rs stringForColumn:TIME];
-            NSString * pointid   = [rs stringForColumn:POINTID];
-            NSString * upload   = [rs stringForColumn:UPLOAD];
+            NSString * messageId = [rs stringForColumn:kMessageId];
+            NSString * content   = [rs stringForColumn:kContent];
+            NSString * phoneNum  = [rs stringForColumn:kPhoneNum];
+            NSString * time      = [rs stringForColumn:kTime];
+            NSString * pointid   = [rs stringForColumn:kPointid];
+            NSString * upload   = [rs stringForColumn:kUploadFlag];
             
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:messageId forKey:@"messageId"];
-            [dict setObject:content forKey:@"content"];
-            [dict setObject:phoneNum forKey:@"phoneNum"];
-            [dict setObject:time forKey:@"time"];
-            [dict setObject:pointid forKey:@"pointid"];
-            [dict setObject:upload forKey:@"upload"];
+            [dict setObject:messageId forKey:kMessageId];
+            [dict setObject:content forKey:kContent];
+            [dict setObject:phoneNum forKey:kPhoneNum];
+            [dict setObject:time forKey:kTime];
+            [dict setObject:pointid forKey:kPointid];
+            [dict setObject:upload forKey:kUploadFlag];
             
             [dataCollect addObject:[MessageModel objectWithKeyValues:dict]];
         }
         [db close];
     }
     return dataCollect;
+}
+
+-(BOOL)updateUploadFlag:(NSString *)uploadFlag ID:(NSString *)idString
+{
+    BOOL result = NO;
+    if ([db open]) {
+        NSString *updateSql = [NSString stringWithFormat:
+                               @"UPDATE %@ SET %@ = '%@' WHERE %@ = '%@' ",TABLENAME,kUploadFlag,uploadFlag,kPointid,idString];
+        result = [db executeUpdate:updateSql];
+        if (!result) {
+            NSLog(@"error when update other table");
+        }else{
+            NSLog(@"success to update other table");
+        }
+        [db close];
+    }
+    return result;
 }
 
 @end

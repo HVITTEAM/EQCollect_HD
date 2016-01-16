@@ -23,10 +23,10 @@
 #import "CommonRemoteHelper.h"
 #import "ArchiverCacheHelper.h"
 #import "HMControllerTool.h"
-#import "SharedAppUtil.h"
 #import "MBProgressHUD.h"
 #import "NoticeHelper.h"
 #import "MJRefresh.h"
+#import "SharedAppUtil.h"
 
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
@@ -69,23 +69,6 @@
 // 表格选中背景色
 #define HMSelectBg HMColor(220, 220, 220)
 
-
-
-
-/**
- *  附近100公里之内  默认
- */
-#define Near_Distance @"35000"
-
-/**
- *  GPS位置服务 上传时间间隔
- */
-#define LOCATION_INTERVAL 300
-
-
-#define Near_Menu_Click @"nearMenuChange"
-
-
 /**
  *  用户信息归档key
  */
@@ -103,36 +86,6 @@
  *  系统信息归档路径
  */
 #define MapVo_Archiver_Path @"mapvopath"
-
-
-/**
- *   导航历史归档key
- */
-#define MapNav_Archiver_Key @"mapnav"
-/**
- *  导航历史归档路径
- */
-#define MapNav_Archiver_Path @"mapnavpath"
-
-/** 通知 */
-
-#define MTHideHome @"MTHideHome"
-#define MTShowHome @"MTShowHome"
-
-
-#define MTAddFamily @"HMSortDidSelectNotification"
-#define MTSececteFamily @"HMSelectedSort"
-
-#define HMCityDidSelectNotification @"HMCityDidSelectNotification"
-#define HMSelectedCity @"HMSelectedCity"
-
-#define HMCategoryDidSelectNotification @"HMCategoryDidSelectNotification"
-#define HMSelectedCategory @"HMSelectedCategory"
-#define HMSelectedSubCategoryName @"HMSelectedSubCategoryName"
-
-#define HMRegionDidSelectNotification @"HMRegionDidSelectNotification"
-#define HMSelectedRegion @"HMSelectedRegion"
-#define HMSelectedSubRegionName @"HMSelectedSubRegionName"
 
 
 #define MTNotificationCenter [NSNotificationCenter defaultCenter]
@@ -185,12 +138,6 @@
 //#define URL_showusers            @"http://192.168.1.142:3000/showusers"
 //#define URL_addother             @"http://192.168.1.142:3000/addother"
 //#define URL_resources            @"http://192.168.1.142:3000/matters"
-
-
-#define kAddPointinfoSucceedNotification @"AddPointinfosucceedNotifiaction"
-#define kAddAbnormalinfoSucceedNotification @"AddAbnormalinfoSucceedNotification"
-#define kAddReactioninfoSucceedNotification @"AddReactioninfoSucceedNotification"
-#define kAddDamageinfoSucceedNotification @"AddDamageinfoSucceedNotification"
 
 typedef NS_ENUM(NSInteger, ActionType) {
     kActionTypeShow,

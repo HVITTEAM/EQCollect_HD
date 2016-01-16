@@ -10,11 +10,14 @@
 #import "AppDelegate.h"
 #import <AMapSearchKit/AMapSearchAPI.h>
 #import "TrackTableHelper.h"
+#import "CurrentUser.h"
+#import "TrackModel.h"
 
 @interface LocationHelper ()<AMapSearchDelegate>
 
-@property (strong, nonatomic) AMapSearchAPI *searchApi;
-@property (assign, nonatomic) BOOL isUploadUserinfo;
+@property (strong, nonatomic) AMapSearchAPI *searchApi;                 //高德搜索 API
+
+@property (assign, nonatomic) BOOL isUploadUserinfo;                    //指示是上传用户信息还是单单解析地址
 
 @end
 
@@ -29,8 +32,9 @@
     return self;
 }
 
+#pragma mark -- 公开方法 --
 /**
- *  逆地理编码请求
+ *  单纯的逆地理编码请求
  */
 -(void)reverseGeocode
 {
@@ -39,8 +43,8 @@
     AppDelegate *appdl = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     CLLocationCoordinate2D coordinate = appdl.currentCoordinate;
     
+    //创建逆地理编码请求
     AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
-    
     regeo.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
     regeo.requireExtension = YES;
 
@@ -48,7 +52,7 @@
 }
 
 /**
- *  上传用户信息
+ *  逆地理编码请求后上传用户信息
  */
 -(void)uploadUserinfo
 {
@@ -64,12 +68,17 @@
     [formatter setDateFormat:@"yyyyMMddHHmmss"];
     NSDate *date = [NSDate date];
     NSString *datestr = [formatter stringFromDate:date];
-    NSDictionary *trackDict = @{
-                                @"time":datestr,
-                                @"lon":lon,
-                                @"lat":lat
-                                };
-    [[TrackTableHelper sharedInstance] insertDataWith:trackDict];
+//    NSDictionary *trackDict = @{
+//                                @"time":datestr,
+//                                @"lon":lon,
+//                                @"lat":lat
+//                                };
+    TrackModel *trackModel = [[TrackModel alloc] init];
+    trackModel.time = datestr;
+    trackModel.lon = lon;
+    trackModel.lat = lat;
+    
+    [[TrackTableHelper sharedInstance]insertDataWithTrackinfoModel:trackModel];
     
     //发起逆地理编码请求
     AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
@@ -78,45 +87,44 @@
     [self.searchApi AMapReGoecodeSearch:regeo];
 }
 
-
-#pragma mark - AMapSearchDelegate
-/* 逆地理编码回调. */
+#pragma mark -- 协议方法 --
+#pragma mark  AMapSearchDelegate
+/* 逆地理编码回调 */
 - (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
 {
-    if (response.regeocode != nil){
+    if (response.regeocode != nil){         //逆地理编码成功
         
         if (self.isUploadUserinfo) {
             
             NSMutableDictionary *parameters =[[NSMutableDictionary alloc] init];
             
-            UserModel *userinfo = [ArchiverCacheHelper getLocaldataBykey:User_Archiver_Key filePath:User_Archiver_Path];
             NSString *lon = [NSString stringWithFormat:@"%f",request.location.longitude];
             NSString *lat = [NSString stringWithFormat:@"%f",request.location.latitude];
             
             parameters[@"userlon"] = lon;
             parameters[@"userlat"] = lat;
-            parameters[@"userid"] = userinfo.userid;
+            parameters[@"userid"] = [CurrentUser shareInstance].userid;
             parameters[@"useraddress"] = response.regeocode.formattedAddress;
             NSLog(@"上传位置%@",parameters);
-            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-            [manager POST:URL_uploadlocation parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            [CommonRemoteHelper RemoteWithUrl:URL_uploadlocation parameters:parameters type:CommonRemoteTypePost success:^(id responseObject) {
                 NSLog(@"userinfo数据上传成功: %@", responseObject);
-                userinfo.useraddress = response.regeocode.formattedAddress;
-                userinfo.userlat = lat;
-                userinfo.userlon = lon;
-                [ArchiverCacheHelper saveObjectToLoacl:userinfo key:User_Archiver_Key filePath:User_Archiver_Path];
+                [CurrentUser shareInstance].userlat = lat;
+                [CurrentUser shareInstance].userlon = lon;
+                [CurrentUser shareInstance].useraddress = response.regeocode.formattedAddress;
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"userinfo数据上传失败");
+                 NSLog(@"userinfo数据上传失败");
             }];
+  
         }else{
             if ([self.delegate respondsToSelector:@selector(reverseGeocodeSuccess:)]) {
                 [self.delegate reverseGeocodeSuccess:response.regeocode.formattedAddress];
             }
         }
-    }else{
+    }else{                    //逆地理编码失败
         if (self.isUploadUserinfo) {
-            NSLog(@"逆地理编码");
+            NSLog(@"逆地理编码失败");
         }else{
             if ([self.delegate respondsToSelector:@selector(reverseGeocodeFailure)]) {
                 [self.delegate reverseGeocodeFailure];

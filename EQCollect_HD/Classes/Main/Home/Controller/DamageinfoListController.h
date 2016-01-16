@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "DamageinfoViewController.h"
-#import "DamageinfoCell.h"
 
-@interface DamageinfoListController : UITableViewController<InfoCellDelegate,DamageinfoDelegate>
+@interface DamageinfoListController : UITableViewController<DamageinfoDelegate>
 
-@property (strong,nonatomic)UINavigationController *nav;
-@property (copy,nonatomic)NSString *pointid;
-@property (copy,nonatomic)NSString *pointUploadFlag;
+@property (copy,nonatomic)NSString *pointid;                       //对应调查点的 id
+
+@property (copy,nonatomic)NSString *pointUploadFlag;               //对应调查点的上传状态
 
 @end

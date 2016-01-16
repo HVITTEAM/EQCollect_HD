@@ -9,11 +9,11 @@
             <connections>
                 <outlet property="containerView" destination="byq-SJ-GCG" id="IhQ-Qh-OgM"/>
                 <outlet property="otherAddressTextF" destination="OCY-aw-zlJ" id="3FB-cd-VPh"/>
+                <outlet property="otherContentTextView" destination="z2B-Gd-fXI" id="1Cr-V4-i2H"/>
                 <outlet property="otherIdTextF" destination="ecY-Yg-eg7" id="DC2-Xg-3Go"/>
                 <outlet property="otherIdTextFTopCons" destination="nl3-ee-Lux" id="nRW-St-ITD"/>
                 <outlet property="otherLatTextF" destination="8nz-ja-LIf" id="cUK-zy-L2D"/>
                 <outlet property="otherLonTextF" destination="XMt-Nx-VwE" id="vpf-Bd-J2Z"/>
-                <outlet property="otherTextView" destination="z2B-Gd-fXI" id="dWH-cb-1fu"/>
                 <outlet property="otherTimeTextF" destination="IWe-hm-xfx" id="HMP-FD-dDk"/>
                 <outlet property="rootScrollView" destination="lid-RJ-hIH" id="FeF-is-e7e"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

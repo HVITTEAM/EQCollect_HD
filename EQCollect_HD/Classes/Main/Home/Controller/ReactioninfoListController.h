@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ReactioninfoCell.h"
 #import "ReactioninfoViewController.h"
 
-@interface ReactioninfoListController : UITableViewController<InfoCellDelegate,ReactioninfoDelegate>
+@interface ReactioninfoListController : UITableViewController<ReactioninfoDelegate>
 
-@property (strong,nonatomic)UINavigationController *nav;
-@property (copy,nonatomic)NSString *pointid;
-@property (copy,nonatomic)NSString *pointUploadFlag;
+@property (copy,nonatomic)NSString *pointid;                     //对应调查点的 id
+
+@property (copy,nonatomic)NSString *pointUploadFlag;             //对应调查点的上传状态
 
 @end

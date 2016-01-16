@@ -7,7 +7,7 @@
 //  调查点表
 
 #import <Foundation/Foundation.h>
-//@class PointModel;
+@class PointModel;
 
 @interface PointinfoTableHelper : NSObject
 {
@@ -16,18 +16,40 @@
 }
 
 +(PointinfoTableHelper *)sharedInstance;
-/**初始化数据库**/
+
+/**
+ *  初始化数据库
+ */
 - (void)initDataBase;
-/**创建表**/
+
+/**
+ *  创建表
+ */
 - (void)createTable;
-/**插入数据**/
--(BOOL) insertDataWith:(NSDictionary *)dict;
-/**根据某个字段删除数据**/
+
+/**
+ *  插入数据
+ */
+-(BOOL)insertDataWithPointinfoModel:(PointModel *)model;
+
+/**
+ *  根据某个字段删除数据
+ */
 -(BOOL) deleteDataByAttribute:(NSString *)attribute value:(NSString *)value;
-/**查询数据**/
+
+/**
+ *  查询数据
+ */
 - (NSMutableArray *)selectData;
-/**更新数据**/
--(BOOL) updateDataWith:(NSMutableDictionary *)dict;
-/**更新上传标识**/
+
+/**
+ *  更新数据
+ */
+-(BOOL)updateDataWithPointinfoModel:(PointModel *)model;
+
+/**
+ *  更新上传标识
+ */
 -(BOOL)updateUploadFlag:(NSString *)uploadFlag ID:(NSString *)idString;
+
 @end
